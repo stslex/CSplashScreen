@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.core
+package st.slex.csplashscreen.data.core
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose

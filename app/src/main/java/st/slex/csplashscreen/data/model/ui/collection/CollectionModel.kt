@@ -1,10 +1,10 @@
-package com.stslex.splashgallery.ui.model.collection
+package st.slex.csplashscreen.data.model.ui.collection
 
 import android.os.Parcelable
-import com.stslex.splashgallery.ui.model.image.ImageModel
-import com.stslex.splashgallery.ui.model.image.TagModel
-import com.stslex.splashgallery.ui.model.user.UserModel
 import kotlinx.parcelize.Parcelize
+import st.slex.csplashscreen.data.model.ui.image.ImageModel
+import st.slex.csplashscreen.data.model.ui.image.TagModel
+import st.slex.csplashscreen.data.model.ui.user.UserModel
 
 @Parcelize
 data class CollectionModel(

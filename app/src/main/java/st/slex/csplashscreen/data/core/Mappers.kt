@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.core
+package st.slex.csplashscreen.data.core
 
 import st.slex.csplashscreen.data.model.remote.collection.RemoteCollectionModel
 import st.slex.csplashscreen.data.model.remote.collection.RemoteLinksCollectionModel

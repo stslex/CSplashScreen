@@ -1,4 +1,4 @@
-package com.stslex.splashgallery.ui.model.user
+package st.slex.csplashscreen.data.model.ui.user
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,8 +1,8 @@
-package com.stslex.splashgallery.ui.model.user
+package st.slex.csplashscreen.data.model.ui.user
 
 import android.os.Parcelable
-import com.stslex.splashgallery.ui.model.image.ImageModel
 import kotlinx.parcelize.Parcelize
+import st.slex.csplashscreen.data.model.ui.image.ImageModel
 
 @Parcelize
 data class UserModel(

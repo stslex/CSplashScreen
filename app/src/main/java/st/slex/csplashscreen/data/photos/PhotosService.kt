@@ -1,13 +1,13 @@
 package st.slex.csplashscreen.data.photos
 
-import com.stslex.splashgallery.data.model.image.RemoteImageModel
-import com.stslex.splashgallery.utils.QUERY_API_KEY
-import com.stslex.splashgallery.utils.QUERY_PAGE
-import com.stslex.splashgallery.utils.QUERY_PAGE_SIZE
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import st.slex.csplashscreen.data.model.remote.image.RemoteImageModel
+import st.slex.csplashscreen.utiles.QUERY_API_KEY
+import st.slex.csplashscreen.utiles.QUERY_PAGE
+import st.slex.csplashscreen.utiles.QUERY_PAGE_SIZE
 
 interface PhotosService {
 

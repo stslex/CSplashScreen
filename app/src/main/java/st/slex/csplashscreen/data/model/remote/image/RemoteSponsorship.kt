@@ -1,7 +1,7 @@
-package com.stslex.splashgallery.data.model.image
+package st.slex.csplashscreen.data.model.remote.image
 
 import com.google.gson.annotations.SerializedName
-import com.stslex.splashgallery.data.model.user.RemoteUserModel
+import st.slex.csplashscreen.data.model.remote.user.RemoteUserModel
 
 data class RemoteSponsorship(
     @SerializedName("sponsor")

@@ -1,9 +1,9 @@
-package com.stslex.splashgallery.data.model.collection
+package st.slex.csplashscreen.data.model.remote.collection
 
 import com.google.gson.annotations.SerializedName
-import com.stslex.splashgallery.data.model.image.RemoteImageModel
-import com.stslex.splashgallery.data.model.image.RemoteTagModel
-import com.stslex.splashgallery.data.model.user.RemoteUserModel
+import st.slex.csplashscreen.data.model.remote.image.RemoteImageModel
+import st.slex.csplashscreen.data.model.remote.image.RemoteTagModel
+import st.slex.csplashscreen.data.model.remote.user.RemoteUserModel
 
 data class RemoteCollectionModel(
     @SerializedName("id")

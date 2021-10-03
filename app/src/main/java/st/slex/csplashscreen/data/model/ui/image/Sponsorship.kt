@@ -1,8 +1,8 @@
-package com.stslex.splashgallery.ui.model.image
+package st.slex.csplashscreen.data.model.ui.image
 
 import android.os.Parcelable
-import com.stslex.splashgallery.ui.model.user.UserModel
 import kotlinx.parcelize.Parcelize
+import st.slex.csplashscreen.data.model.ui.user.UserModel
 
 @Parcelize
 data class Sponsorship(

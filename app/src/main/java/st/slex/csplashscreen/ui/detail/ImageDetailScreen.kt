@@ -6,12 +6,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModel
 import st.slex.csplashscreen.R
 
 @Composable
 fun ImageDetailScreen() {
-    Column() {
+    Column {
         Image(
             painter = painterResource(id = R.drawable.ic_launcher_foreground),
             contentDescription = "TestImage"
@@ -19,14 +18,6 @@ fun ImageDetailScreen() {
         Text(text = "textProvider")
     }
 
-}
-
-class DetailViewModel : ViewModel() {
-
-    fun getDetailText(): String {
-        // some imaginary backend call
-        return "Detail"
-    }
 }
 
 @Preview
