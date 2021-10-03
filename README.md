@@ -9,7 +9,7 @@
 
 ### Description
 
-SplashGallery on Compose
+SplashGallery on Compose </br>
 The app client with Image library using Unsplash api In order with dark theme support
 
 ### Tools
