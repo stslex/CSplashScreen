@@ -2,7 +2,9 @@ package st.slex.csplashscreen.di.module
 
 import dagger.Binds
 import dagger.Module
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.collections.CollectionsRepository
+import st.slex.csplashscreen.data.photo.PhotoRepository
 import st.slex.csplashscreen.data.photos.PhotosRepository
 
 @Module
@@ -13,4 +15,8 @@ interface RepositoryModule {
 
     @Binds
     fun bindsCollectionsRepository(repository: CollectionsRepository.Base): CollectionsRepository
+
+    @ExperimentalCoroutinesApi
+    @Binds
+    fun bindsPhotoRepository(repository: PhotoRepository.Base): PhotoRepository
 }

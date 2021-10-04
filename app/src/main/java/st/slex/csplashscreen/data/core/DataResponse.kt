@@ -11,11 +11,11 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 interface DataResponse {
 
-    fun <T> create(response: Response<T>): Flow<DataResult<T>>
+    suspend fun <T> create(response: Response<T>): Flow<DataResult<T>>
 
     class Base @Inject constructor() : DataResponse {
 
-        override fun <T> create(response: Response<T>): Flow<DataResult<T>> =
+        override suspend fun <T> create(response: Response<T>): Flow<DataResult<T>> =
             callbackFlow {
                 response.responseEvent {
                     trySendBlocking(it)

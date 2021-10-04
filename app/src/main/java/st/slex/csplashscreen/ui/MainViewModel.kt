@@ -1,20 +1,48 @@
-package st.slex.csplashscreen.ui.main
+package st.slex.csplashscreen.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import st.slex.csplashscreen.data.core.Mapper
+import st.slex.csplashscreen.data.model.remote.download.RemoteDownloadModel
+import st.slex.csplashscreen.data.model.remote.image.RemoteImageModel
+import st.slex.csplashscreen.data.model.ui.DownloadModel
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
+import st.slex.csplashscreen.data.photo.PhotoRepository
+import st.slex.csplashscreen.ui.core.UIResponse
+import st.slex.csplashscreen.ui.core.UIResult
+import st.slex.csplashscreen.ui.main.QueryCollectionsUseCase
+import st.slex.csplashscreen.ui.main.QueryPhotosUseCase
 import javax.inject.Inject
 import javax.inject.Provider
 
 @ExperimentalCoroutinesApi
 class MainViewModel @Inject constructor(
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
-    private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>
+    private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>,
+    private val repository: PhotoRepository,
+    private val photoMapper: Mapper.DataToUI<RemoteImageModel, UIResult<ImageModel>>,
+    private val downloadMapper: Mapper.DataToUI<RemoteDownloadModel, UIResult<DownloadModel>>,
+    private val response: UIResponse
 ) : ViewModel() {
+
+
+    fun getCurrentPhoto(id: String): Flow<UIResult<ImageModel>> = flow {
+        repository.getCurrentPhoto(id).collect {
+            emit(it.map(mapper = photoMapper))
+        }
+    }
+
+
+    suspend fun downloadPhoto(id: String): StateFlow<UIResult<DownloadModel>> =
+        response.getAndMap(repository.downloadPhoto(id), downloadMapper).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = UIResult.Loading
+        )
 
     private val _queryPhotos = MutableStateFlow(emptyList<String>())
     val queryPhotos: StateFlow<List<String>> = _queryPhotos.asStateFlow()

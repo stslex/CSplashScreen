@@ -7,8 +7,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import st.slex.csplashscreen.MainActivity
 import st.slex.csplashscreen.di.module.AppModule
+import st.slex.csplashscreen.ui.MainActivity
 import javax.inject.Singleton
 
 @ExperimentalCoroutinesApi

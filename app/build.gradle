@@ -50,7 +50,6 @@ android {
 }
 
 dependencies {
-
     def accompanistVersion = '0.19.0'
     implementation "com.google.accompanist:accompanist-pager:$accompanistVersion"
     implementation "com.google.accompanist:accompanist-placeholder:$accompanistVersion"
@@ -98,4 +97,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.31"
 }

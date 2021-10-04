@@ -1,4 +1,4 @@
-package st.slex.csplashscreen
+package st.slex.csplashscreen.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,10 +18,11 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import st.slex.csplashscreen.appComponent
 import st.slex.csplashscreen.ui.collection.Collection
 import st.slex.csplashscreen.ui.detail.ImageDetailScreen
 import st.slex.csplashscreen.ui.main.MainScreen
-import st.slex.csplashscreen.ui.main.MainViewModel
+import st.slex.csplashscreen.ui.raw_image.RawImageScreen
 import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
 import javax.inject.Inject
 
@@ -68,14 +69,20 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
         }
 
         composable(
-            route = "detail/{url}",
+            route = "detail/{url}/{imageId}",
             arguments = listOf(
-                navArgument("url") { type = NavType.StringType }
+                navArgument("url") { type = NavType.StringType },
+                navArgument("imageId") { type = NavType.StringType }
             )
         ) {
             val imageId = it.arguments?.getString("imageId").toString()
             val url = it.arguments?.getString("url").toString()
-            ImageDetailScreen(url)
+            ImageDetailScreen(
+                url = url,
+                imageId = imageId,
+                viewModel = viewModel,
+                navController = navController
+            )
         }
 
         composable(
@@ -83,6 +90,13 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
             arguments = listOf(navArgument("collectionId") { type = NavType.StringType })
         ) {
             Collection(navController, viewModel, it.arguments?.getString("collectionId").toString())
+        }
+
+        composable(
+            route = "raw_image/{url}",
+            arguments = listOf(navArgument("url") { type = NavType.StringType })
+        ) {
+            RawImageScreen(url = it.arguments?.getString("url").toString())
         }
     }
 }

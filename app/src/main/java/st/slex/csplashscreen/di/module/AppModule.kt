@@ -12,7 +12,9 @@ import javax.inject.Singleton
     includes = [
         NetworkServiceModule::class,
         RepositoryModule::class,
-        ViewModelFactoryModule::class
+        ViewModelFactoryModule::class,
+        ResponseModule::class,
+        MapperModule::class
     ]
 )
 class AppModule {

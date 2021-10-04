@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.di.key.ViewModelKey
-import st.slex.csplashscreen.ui.main.MainViewModel
+import st.slex.csplashscreen.ui.MainViewModel
 
 @ExperimentalCoroutinesApi
 @Module
