@@ -26,7 +26,7 @@ The app client with Image library using Unsplash api In order with dark theme su
 
 ### Installation
 
-Will be available as soon as posible
+Prerelease you can download here [RELEASES](https://github.com/stslex/CSplashScreen/releases) 
 
 ### Screenshots
 
