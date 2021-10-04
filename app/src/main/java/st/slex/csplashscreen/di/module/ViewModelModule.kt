@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.di.key.ViewModelKey
-import st.slex.csplashscreen.ui.main.PhotosViewModel
+import st.slex.csplashscreen.ui.main.MainViewModel
 
 @ExperimentalCoroutinesApi
 @Module
@@ -14,6 +14,6 @@ interface ViewModelModule {
 
     @IntoMap
     @Binds
-    @ViewModelKey(PhotosViewModel::class)
-    fun bindsPhotosViewModel(viewModel: PhotosViewModel): ViewModel
+    @ViewModelKey(MainViewModel::class)
+    fun bindsPhotosViewModel(viewModel: MainViewModel): ViewModel
 }

@@ -4,31 +4,38 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import st.slex.csplashscreen.ui.collection.Collection
 import st.slex.csplashscreen.ui.detail.ImageDetailScreen
 import st.slex.csplashscreen.ui.main.MainScreen
-import st.slex.csplashscreen.ui.main.PhotosViewModel
+import st.slex.csplashscreen.ui.main.MainViewModel
 import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
 import javax.inject.Inject
 
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
 
-    private val photosViewModel: PhotosViewModel by viewModels { viewModelFactory.get() }
+    private val viewModel: MainViewModel by viewModels { viewModelFactory.get() }
 
-    @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
@@ -38,7 +45,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold {
                     NavigationComponent(
                         navController = navController,
-                        photosViewModel = photosViewModel
+                        viewModel = viewModel
                     )
                 }
             }
@@ -46,20 +53,29 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @Composable
-fun NavigationComponent(navController: NavHostController, photosViewModel: PhotosViewModel) {
+fun NavigationComponent(navController: NavHostController, viewModel: MainViewModel) {
     NavHost(
         navController = navController,
         startDestination = "main"
     ) {
         composable("main") {
-            MainScreen(navController, photosViewModel)
+            MainScreen(navController, viewModel)
         }
 
         composable("detail") {
             ImageDetailScreen()
+        }
+
+        composable(
+            route = "collection/{collectionId}",
+            arguments = listOf(navArgument("collectionId") { type = NavType.StringType })
+        ) {
+            Collection(navController, viewModel, it.arguments?.getString("collectionId").toString())
         }
     }
 }
