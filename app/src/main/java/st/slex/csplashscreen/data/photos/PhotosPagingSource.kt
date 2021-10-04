@@ -65,6 +65,6 @@ class PhotosPagingSource @AssistedInject constructor(
     }
 
     companion object {
-        const val INITIAL_PAGE_NUMBER = 1
+        const val INITIAL_PAGE_NUMBER = 0
     }
 }

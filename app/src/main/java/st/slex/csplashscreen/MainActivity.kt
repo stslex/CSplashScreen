@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.ui.detail.ImageDetailScreen
@@ -27,6 +28,7 @@ class MainActivity : ComponentActivity() {
 
     private val photosViewModel: PhotosViewModel by viewModels { viewModelFactory.get() }
 
+    @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
@@ -44,6 +46,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @Composable
 fun NavigationComponent(navController: NavHostController, photosViewModel: PhotosViewModel) {

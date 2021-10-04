@@ -2,8 +2,11 @@ package st.slex.csplashscreen.ui.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import st.slex.csplashscreen.R
@@ -12,6 +15,9 @@ import st.slex.csplashscreen.R
 fun ImageDetailScreen() {
     Column {
         Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
             painter = painterResource(id = R.drawable.ic_launcher_foreground),
             contentDescription = "TestImage"
         )
