@@ -1,6 +1,9 @@
 package st.slex.csplashscreen.di.component
 
 import android.app.Application
+import androidx.compose.material.ExperimentalMaterialApi
+import coil.annotation.ExperimentalCoilApi
+import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,6 +16,9 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
 
+    @ExperimentalCoilApi
+    @ExperimentalPagerApi
+    @ExperimentalMaterialApi
     fun inject(activity: MainActivity)
 
     @Component.Builder

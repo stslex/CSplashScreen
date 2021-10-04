@@ -15,6 +15,9 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
@@ -28,6 +31,7 @@ import com.google.accompanist.placeholder.fade
 import com.google.accompanist.placeholder.placeholder
 import com.google.android.material.animation.AnimationUtils
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
+import st.slex.csplashscreen.ui.theme.Typography
 
 
 @SuppressLint("RestrictedApi")
@@ -51,7 +55,6 @@ fun ImageItem(item: ImageModel?, navController: NavController, page: Int, scope:
                         scaleX = scale
                         scaleY = scale
                     }
-                // We animate the alpha, between 50% and 100%
                 alpha = AnimationUtils.lerp(
                     0.5f,
                     1f,
@@ -59,10 +62,13 @@ fun ImageItem(item: ImageModel?, navController: NavController, page: Int, scope:
                 )
             }
             .aspectRatio(1f)) {
-        Row(modifier = Modifier.padding(bottom = 8.dp)) {
+        Row(
+            modifier = Modifier
+                .padding(bottom = 8.dp, start = 8.dp)
+        ) {
             Image(
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(48.dp)
                     .clip(CircleShape),
                 painter = rememberImagePainter(
                     data = item?.user?.profile_image?.medium.toString(),
@@ -75,14 +81,19 @@ fun ImageItem(item: ImageModel?, navController: NavController, page: Int, scope:
             )
             Text(
                 modifier = Modifier
-                    .padding(start = 8.dp),
-                text = item?.user?.username.toString()
+                    .padding(start = 16.dp),
+                text = item?.user?.username.toString(),
+                style = Typography.h5,
+                maxLines = 1,
+                textAlign = TextAlign.Start,
+                lineHeight = TextUnit.Unspecified,
+                fontFamily = FontFamily.SansSerif
             )
         }
 
         Card(
             modifier = Modifier.shadow(elevation = 8.dp, clip = true),
-            onClick = { navController.navigate("detail") }
+            onClick = { navController.navigate("detail/url") }
         ) {
             Image(
                 modifier = Modifier
@@ -110,10 +121,10 @@ fun ImageItem(item: ImageModel?, navController: NavController, page: Int, scope:
 @Composable
 fun ImageItemLoading(page: Int, scope: PagerScope) {
     Column(modifier = Modifier.padding(16.dp)) {
-        Row(modifier = Modifier.padding(bottom = 8.dp)) {
+        Row(modifier = Modifier.padding(bottom = 8.dp, start = 8.dp)) {
             Card(
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(48.dp)
                     .clip(CircleShape)
                     .placeholder(
                         visible = true,

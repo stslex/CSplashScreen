@@ -67,8 +67,15 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
             MainScreen(navController, viewModel)
         }
 
-        composable("detail") {
-            ImageDetailScreen()
+        composable(
+            route = "detail/{url}",
+            arguments = listOf(
+                navArgument("url") { type = NavType.StringType }
+            )
+        ) {
+            val imageId = it.arguments?.getString("imageId").toString()
+            val url = it.arguments?.getString("url").toString()
+            ImageDetailScreen(url)
         }
 
         composable(

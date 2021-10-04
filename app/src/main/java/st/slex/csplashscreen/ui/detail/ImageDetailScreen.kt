@@ -3,22 +3,30 @@ package st.slex.csplashscreen.ui.detail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import st.slex.csplashscreen.R
+import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 
+@ExperimentalCoilApi
 @Composable
-fun ImageDetailScreen() {
+fun ImageDetailScreen(url: String) {
     Column {
         Image(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                .height(500.dp),
+            painter = rememberImagePainter(
+                data = url,
+                builder = {
+                    allowHardware(false)
+                    crossfade(500)
+                }
+            ),
             contentDescription = "TestImage"
         )
         Text(text = "textProvider")
@@ -26,8 +34,9 @@ fun ImageDetailScreen() {
 
 }
 
+@ExperimentalCoilApi
 @Preview
 @Composable
 fun DetailScreenPreview() {
-    ImageDetailScreen()
+    ImageDetailScreen("")
 }
