@@ -74,6 +74,7 @@ dependencies {
     def lifecycleVersion = '2.4.0-rc01'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion"
+    implementation 'androidx.compose.runtime:runtime-livedata:1.0.3'
 
     //Coroutines
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1'

@@ -75,13 +75,16 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
                 navArgument("imageId") { type = NavType.StringType }
             )
         ) {
+
             val imageId = it.arguments?.getString("imageId").toString()
             val url = it.arguments?.getString("url").toString()
+
+            viewModel.getCurrentPhoto(imageId)
+
             ImageDetailScreen(
                 url = url,
-                imageId = imageId,
-                viewModel = viewModel,
-                navController = navController
+                navController = navController,
+                viewModel::currentPhoto
             )
         }
 

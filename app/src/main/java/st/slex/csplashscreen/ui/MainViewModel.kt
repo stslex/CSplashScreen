@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import st.slex.csplashscreen.data.core.Mapper
 import st.slex.csplashscreen.data.model.remote.download.RemoteDownloadModel
 import st.slex.csplashscreen.data.model.remote.image.RemoteImageModel
@@ -30,9 +31,13 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    fun getCurrentPhoto(id: String): Flow<UIResult<ImageModel>> = flow {
+    private val _currentPhoto = MutableStateFlow<UIResult<ImageModel>>(UIResult.Loading)
+    val currentPhoto: StateFlow<UIResult<ImageModel>>
+        get() = _currentPhoto.asStateFlow()
+
+    fun getCurrentPhoto(id: String) = viewModelScope.launch {
         repository.getCurrentPhoto(id).collect {
-            emit(it.map(mapper = photoMapper))
+            _currentPhoto.value = it.map(mapper = photoMapper)
         }
     }
 
