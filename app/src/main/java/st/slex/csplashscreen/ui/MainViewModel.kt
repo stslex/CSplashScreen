@@ -31,16 +31,15 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _currentPhoto = MutableStateFlow<UIResult<ImageModel>>(UIResult.Loading)
-    val currentPhoto: StateFlow<UIResult<ImageModel>>
-        get() = _currentPhoto.asStateFlow()
+    private val _currentPhoto = MutableSharedFlow<UIResult<ImageModel>>(replay = 0)
+    val currentPhoto: SharedFlow<UIResult<ImageModel>>
+        get() = _currentPhoto
 
     fun getCurrentPhoto(id: String) = viewModelScope.launch {
         repository.getCurrentPhoto(id).collect {
-            _currentPhoto.value = it.map(mapper = photoMapper)
+            _currentPhoto.emit(it.map(mapper = photoMapper))
         }
     }
-
 
     suspend fun downloadPhoto(id: String): StateFlow<UIResult<DownloadModel>> =
         response.getAndMap(repository.downloadPhoto(id), downloadMapper).stateIn(

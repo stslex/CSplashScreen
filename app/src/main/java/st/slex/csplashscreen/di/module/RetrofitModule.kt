@@ -10,6 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import st.slex.csplashscreen.utiles.BASE_URL
+import javax.inject.Singleton
 
 @Module
 class RetrofitModule {
@@ -22,17 +23,17 @@ class RetrofitModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+    @Singleton
     @Provides
     fun providesRetrofitClient(
         mLoggingInterceptor: HttpLoggingInterceptor,
-        interceptor: Interceptor,
+        onlineInterceptor: Interceptor,
         application: Application
-    ): OkHttpClient =
-        OkHttpClient.Builder()
-            .addInterceptor(mLoggingInterceptor)
-            .addInterceptor(interceptor)
-            .cache(Cache(application.cacheDir, 10 * 1024 * 1024 * 8L))
-            .build()
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(mLoggingInterceptor)
+        .addInterceptor(onlineInterceptor)
+        .cache(Cache(application.cacheDir, 10 * 1024 * 1024 * 8L))
+        .build()
 
     @Provides
     fun providesLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -48,4 +49,18 @@ class RetrofitModule {
             .removeHeader("Pragma")
             .build()
     }
+
+    /*   @OfflineScope
+       @Provides
+       fun providesOfflineInterceptor(): Interceptor = Interceptor { chain ->
+           var request: Request = chain.request()
+           val maxStale = 60 * 60 * 3
+           request = request.newBuilder()
+               .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
+               .removeHeader("Pragma")
+               .build()
+
+           chain.proceed(request)
+       }*/
+
 }
