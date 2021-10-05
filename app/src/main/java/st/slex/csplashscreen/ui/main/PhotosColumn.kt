@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontFamily
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerScope
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
@@ -43,7 +46,7 @@ fun ImageItem(
 ) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
             .graphicsLayer {
                 scope?.let {
                     val pageOffset = it.calculateCurrentOffsetForPage(page)
@@ -77,7 +80,9 @@ fun ImageItem(
         Spacer(modifier = Modifier.padding(4.dp))
 
         Surface(
-            modifier = Modifier.shadow(elevation = 16.dp, shape = Shapes.medium, clip = true),
+            modifier = Modifier
+                .clip(RoundedCornerShape(32.dp))
+                .shadow(elevation = 16.dp, shape = Shapes.medium),
             onClick = {
                 val url = item?.urls?.regular
                 val id = item?.id
@@ -99,7 +104,8 @@ fun UserImageHead(modifier: Modifier, url: String, username: String, navControll
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .shadow(elevation = 0.dp, Shapes.medium),
+            .shadow(elevation = 16.dp, Shapes.medium)
+            .clip(RoundedCornerShape(16.dp)),
         onClick = {
             //navController.navigate("user_profile")
         }
@@ -132,4 +138,27 @@ fun UserImageHead(modifier: Modifier, url: String, username: String, navControll
             )
         }
     }
+}
+
+
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@Composable
+fun CoverPhotoItem(url: String) {
+    Image(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .clip(RoundedCornerShape(32.dp))
+            .clipToBounds(),
+        painter = rememberImagePainter(
+            data = url,
+            builder = {
+                transformations(RoundedCornersTransformation())
+                allowHardware(false)
+                crossfade(500)
+            }
+        ),
+        contentDescription = "Image",
+    )
 }

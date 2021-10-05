@@ -102,17 +102,13 @@ fun Pager(
                         items(lazyPagingPhotosItems) { item ->
                             ImageItem(item, navController, page, this@HorizontalPager)
                         }
-                        lazyPagingPhotosItems.checkState {
-                            loadState(page = page, scope = this@HorizontalPager)
-                        }
+                        lazyPagingPhotosItems.checkState { loadState() }
                     }
                     pages.indexOf("Collections") -> {
                         items(lazyPagingCollectionsItems) { item ->
                             CollectionItem(item, navController, page, this@HorizontalPager)
                         }
-                        lazyPagingCollectionsItems.checkState {
-                            loadState(page = page, scope = this@HorizontalPager)
-                        }
+                        lazyPagingCollectionsItems.checkState { loadState() }
                     }
                 }
 
@@ -125,8 +121,8 @@ fun Pager(
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
-fun LazyListScope.loadState(page: Int = 0, scope: PagerScope? = null) = repeat(3) {
-    item { ImageItemLoading(page = page, scope = scope) }
+fun LazyListScope.loadState() = repeat(3) {
+    item { ImageItemLoading() }
 }
 
 

@@ -1,32 +1,29 @@
 package st.slex.csplashscreen.ui.main
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
-import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerScope
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.android.material.animation.AnimationUtils
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
-import st.slex.csplashscreen.ui.theme.Shapes
 import st.slex.csplashscreen.ui.theme.TransparentGray
 import st.slex.csplashscreen.ui.theme.Typography
 
@@ -76,17 +73,14 @@ fun CollectionItem(
 
         Spacer(modifier = Modifier.padding(4.dp))
 
-        Surface(
-            modifier = Modifier
-                .shadow(elevation = 16.dp, shape = Shapes.medium, clip = true),
-            onClick = { navController.navigate("collection/${item?.id}") },
-        ) {
-            BindCoverImageConstraint(
-                item?.cover_photo?.urls?.regular.toString(),
-                item?.title.toString(),
-                item?.total_photos.toString()
-            )
-        }
+        BindCoverImageConstraint(
+            item?.id.toString(),
+            item?.cover_photo?.urls?.regular.toString(),
+            item?.title.toString(),
+            item?.total_photos.toString(),
+            navController
+        )
+
     }
 
 }
@@ -96,13 +90,17 @@ fun CollectionItem(
 @ExperimentalPagerApi
 @Composable
 fun BindCoverImageConstraint(
+    id: String,
     url: String,
     title: String,
-    totalPhotos: String
+    totalPhotos: String,
+    navController: NavController
 ) {
     ConstraintLayout(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .height(300.dp)
+            .clip(RoundedCornerShape(32.dp))
             .background(color = MaterialTheme.colors.surface)
     ) {
         val (background, content) = createRefs() // 1
@@ -112,55 +110,36 @@ fun BindCoverImageConstraint(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
+                .height(300.dp)
+                .clip(RoundedCornerShape(32.dp))
                 .constrainAs(background) {
                     centerTo(parent)
                 },
-            color = TransparentGray
-        ) {}
+            color = TransparentGray,
+            onClick = { navController.navigate("collection/$id") },
+        ) {
+        }
 
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(32.dp)
+            .padding(start = 16.dp, bottom = 16.dp)
             .constrainAs(content) {
                 bottom.linkTo(parent.bottom)
             }) {
-            CollectionTextCard(text = title)
-            Spacer(modifier = Modifier.padding(8.dp))
-            CollectionTextCard(text = "${totalPhotos} Photos")
+            CollectionTextCard(text = title, Typography.h4)
+            Spacer(modifier = Modifier.padding(4.dp))
+            CollectionTextCard(text = "$totalPhotos Photos", style = Typography.h5)
         }
     }
 }
 
 @Composable
-fun CollectionTextCard(text: String) {
+fun CollectionTextCard(text: String, style: TextStyle) {
     Text(
         text = text,
         textAlign = TextAlign.Start,
         color = Color.White,
-        style = Typography.h3,
+        style = style,
         maxLines = 1
-    )
-}
-
-@ExperimentalCoilApi
-@ExperimentalMaterialApi
-@Composable
-fun CoverPhotoItem(url: String) {
-    Image(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-            .clipToBounds()
-            .background(Color.Black),
-        painter = rememberImagePainter(
-            data = url,
-            builder = {
-                transformations(RoundedCornersTransformation())
-                allowHardware(false)
-                crossfade(500)
-            }
-        ),
-        contentDescription = "Image",
     )
 }

@@ -3,88 +3,99 @@ package st.slex.csplashscreen.ui.main
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerScope
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.fade
 import com.google.accompanist.placeholder.placeholder
-import com.google.android.material.animation.AnimationUtils
+import st.slex.csplashscreen.ui.theme.Shapes
 
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoilApi
 @Composable
-fun ImageItemLoading(page: Int = 0, scope: PagerScope? = null) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Row(modifier = Modifier.padding(bottom = 8.dp, start = 8.dp)) {
+fun ImageItemLoading(
+) {
+    Column(
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
+            .fillMaxWidth()
+    ) {
+        UserImageHeadItemLoading()
+        Spacer(modifier = Modifier.padding(4.dp))
+        CoverPhotoItemItemLoading()
+    }
+}
+
+
+@ExperimentalMaterialApi
+@ExperimentalCoilApi
+@Composable
+fun UserImageHeadItemLoading() {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(elevation = 16.dp, Shapes.medium)
+            .clip(RoundedCornerShape(16.dp))
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
             Surface(
                 modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
+                    .size(32.dp)
+                    .placeholder(
+                        visible = true,
+                        shape = CircleShape,
+                        highlight = PlaceholderHighlight.fade(highlightColor = Color.LightGray),
+                        color = Color.Gray
+                    )
+            ) {}
+
+            Spacer(modifier = Modifier.padding(8.dp))
+
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
                     .placeholder(
                         visible = true,
                         highlight = PlaceholderHighlight.fade(highlightColor = Color.LightGray),
                         color = Color.Gray
                     )
             ) {}
-            Text(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .placeholder(
-                        visible = true,
-                        highlight = PlaceholderHighlight.fade(highlightColor = Color.LightGray),
-                        color = Color.Gray
-                    ),
-                text = "User name placeholder"
-            )
+
         }
-
-        Surface(
-            modifier = Modifier
-                .height(300.dp)
-                .fillMaxWidth()
-                .placeholder(
-                    visible = true,
-                    highlight = PlaceholderHighlight.fade(highlightColor = Color.LightGray),
-                    color = Color.Gray
-                )
-                .graphicsLayer {
-                    scope?.let {
-                        val pageOffset = it.calculateCurrentOffsetForPage(page)
-                        AnimationUtils
-                            .lerp(
-                                0.85f,
-                                1f,
-                                1f - pageOffset.coerceIn(0f, 1f)
-                            )
-                            .also { scale ->
-                                scaleX = scale
-                                scaleY = scale
-                            }
-
-                        alpha = AnimationUtils.lerp(
-                            0.5f,
-                            1f,
-                            1f - pageOffset.coerceIn(0f, 1f)
-                        )
-                    }
-
-                }
-                .aspectRatio(1f)
-                .shadow(elevation = 8.dp, clip = true)
-        ) {}
     }
+}
+
+
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@Composable
+fun CoverPhotoItemItemLoading() {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .placeholder(
+                visible = true,
+                shape = RoundedCornerShape(32.dp),
+                highlight = PlaceholderHighlight.fade(highlightColor = Color.LightGray),
+                color = Color.Gray
+            )
+    ) {}
 }
