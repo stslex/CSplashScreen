@@ -3,7 +3,9 @@ package st.slex.csplashscreen.ui.detail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -13,8 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
@@ -23,9 +23,10 @@ import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharedFlow
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.ui.main.UserImageHead
+import st.slex.csplashscreen.data.model.ui.image.TagModel
+import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
+import st.slex.csplashscreen.ui.core.UIResult
 import st.slex.csplashscreen.ui.theme.Shapes
-import st.slex.csplashscreen.ui.theme.Typography
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -36,92 +37,104 @@ import java.nio.charset.StandardCharsets
 fun ImageDetailScreen(
     url: String,
     navController: NavController,
-    imageFlow: () -> SharedFlow<ImageModel>
+    imageFlow: () -> SharedFlow<UIResult<ImageModel>>
 ) {
-    val imageModel = imageFlow().collectAsState(initial = null).value
-    BindDetailImage(navController, imageModel)
-}
+    val uiResult = imageFlow().collectAsState(initial = null).value
 
-@ExperimentalMaterialApi
-@ExperimentalCoilApi
-@Composable
-private fun BindDetailImage(navController: NavController, imageModel: ImageModel?) {
     Column {
-        Image(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .clickable {
-                    val encodedUrl =
-                        URLEncoder.encode(
-                            imageModel?.urls?.regular,
-                            StandardCharsets.UTF_8.toString()
-                        )
-                    navController.navigate("raw_image/$encodedUrl")
-                },
-            painter = rememberImagePainter(
-                data = imageModel?.urls?.regular,
-                builder = {
-                    transformations(RoundedCornersTransformation())
-                    allowHardware(false)
-                }
-            ),
-            contentDescription = "TestImage"
-        )
-
+        BindTopImageHead(url = url, navController = navController)
         Spacer(modifier = Modifier.padding(4.dp))
-
-        UserImageHead(
-            modifier = Modifier.padding(start = 16.dp),
-            username = imageModel?.user?.username.toString(),
-            url = imageModel?.user?.profile_image?.medium.toString(),
-            navController = navController
-        )
+        when (uiResult) {
+            is UIResult.Success -> {
+                BindDetailImageBody(image = uiResult.data, navController = navController)
+            }
+            is UIResult.Loading -> {
+                BindDetailImageLoading(modifier = Modifier.align(Alignment.CenterHorizontally))
+            }
+            is UIResult.Failure -> {
+                BindDetailImageFailure()
+            }
+        }
     }
-
-
 }
 
 @ExperimentalCoilApi
-@ExperimentalMaterialApi
 @Composable
-fun CurrentImageUser(username: String, url: String, navController: NavController) {
-    Surface(
+private fun BindTopImageHead(url: String, navController: NavController) {
+    Image(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(elevation = 0.dp, Shapes.medium),
-        onClick = {
-            //navController.navigate("user_profile")
-        }
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape),
-                painter = rememberImagePainter(
-                    data = url,
-                    builder = {
-                        allowHardware(false)
-                        crossfade(500)
-                    }
-                ),
-                contentDescription = "User Avatar"
-            )
-            Spacer(modifier = Modifier.padding(8.dp))
-            Text(
-                text = username,
-                style = Typography.h5,
-                maxLines = 1,
-                lineHeight = TextUnit.Unspecified,
-                fontFamily = FontFamily.SansSerif
-            )
-        }
-    }
-
+            .height(300.dp)
+            .clickable {
+                val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
+                navController.navigate("raw_image/$encodedUrl")
+            },
+        painter = rememberImagePainter(
+            data = url,
+            builder = {
+                transformations(RoundedCornersTransformation())
+                allowHardware(false)
+            }
+        ),
+        contentDescription = "Image"
+    )
 }
 
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@Composable
+private fun BindDetailImageBody(image: ImageModel, navController: NavController) {
+    UserImageHeadWithUserName(
+        modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+        username = image.user?.username.toString(),
+        url = image.user?.profile_image?.medium.toString(),
+        navController = navController
+    )
+    Spacer(modifier = Modifier.padding(4.dp))
+    if (!image.tags.isNullOrEmpty()) BindDetailImageBodyTags(image.tags)
+    Spacer(modifier = Modifier.padding(4.dp))
+}
+
+@ExperimentalMaterialApi
+@Composable
+private fun BindDetailImageBodyTags(tags: List<TagModel>) {
+    Surface(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+            .shadow(elevation = 8.dp, Shapes.medium)
+            .clip(RoundedCornerShape(16.dp))
+    ) {
+        LazyRow(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            items(count = tags.size) { key ->
+                Surface(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .shadow(elevation = 4.dp, Shapes.medium)
+                        .clip(RoundedCornerShape(8.dp)),
+                    onClick = {
+
+                    }
+                ) {
+                    Text(
+                        modifier = Modifier.padding(8.dp),
+                        text = tags[key].title.toString()
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BindDetailImageLoading(modifier: Modifier) {
+    CircularProgressIndicator(modifier = modifier)
+}
+
+@Composable
+private fun BindDetailImageFailure() {
+
+}

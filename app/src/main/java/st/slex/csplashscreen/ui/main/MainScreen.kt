@@ -9,8 +9,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.MainViewModel
+import st.slex.csplashscreen.ui.components.ImageItemLoading
 import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
 import st.slex.csplashscreen.utiles.GET_PHOTOS
@@ -50,16 +51,11 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     SideEffect {
-        if (isSystemInDarkTheme) {
-
-        }
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
             darkIcons = useDarkIcons
         )
-        // setStatusBarsColor() and setNavigationBarsColor() also exist
     }
-
 
     Pager(lazyPagingPhotosItems, lazyPagingCollectionsItems, navController)
 }
@@ -85,56 +81,87 @@ fun Pager(
 
     val pages = listOf("Photos", "Collections")
 
-    Column {
-        TabRow(
-            selectedTabIndex = pagerState.currentPage,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-                )
-            }
-        ) {
-            pages.forEachIndexed { index, title ->
-                Tab(
-                    text = {
-                        Text(
-                            text = title,
-                            style = Typography.subtitle1
-                        )
-                    },
-                    selected = pagerState.currentPage == index,
-                    onClick = {
-                        scope.launch { pagerState.scrollToPage(index) }
-                    }
-                )
+    Scaffold(
+        floatingActionButtonPosition = FabPosition.Center,
+        floatingActionButton = {
+            MainScreenFloatingActionButton {
+                //navController.navigate()
             }
         }
+    ) {
+        Column {
+            TabRow(
+                selectedTabIndex = pagerState.currentPage,
+                indicator = { tabPositions ->
+                    TabRowDefaults.Indicator(
+                        Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                    )
+                },
+                divider = {
 
-        HorizontalPager(
-            count = pages.size,
-            state = pagerState
-        ) { page ->
-            LazyColumn {
-                when (page) {
-                    pages.indexOf("Photos") -> {
-                        items(lazyPagingPhotosItems) { item ->
-                            ImageItem(item, navController, page, this@HorizontalPager)
-                        }
-                        lazyPagingPhotosItems.checkState { loadState() }
-                    }
-                    pages.indexOf("Collections") -> {
-                        items(lazyPagingCollectionsItems) { item ->
-                            CollectionItem(item, navController, page, this@HorizontalPager)
-                        }
-                        lazyPagingCollectionsItems.checkState { loadState() }
+                },
+                tabs = {
+                    pages.forEachIndexed { index, title ->
+                        Tab(
+                            text = {
+                                Text(
+                                    text = title,
+                                    style = Typography.subtitle1
+                                )
+                            },
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                scope.launch { pagerState.animateScrollToPage(index) }
+                            }
+                        )
                     }
                 }
+            )
 
+            HorizontalPager(
+                count = pages.size,
+                state = pagerState
+            ) { page ->
+                LazyColumn {
+                    when (page) {
+                        pages.indexOf("Photos") -> {
+                            items(lazyPagingPhotosItems) { item ->
+                                ImageItem(item, navController, page, this@HorizontalPager)
+                            }
+                            lazyPagingPhotosItems.checkState { loadState() }
+                        }
+                        pages.indexOf("Collections") -> {
+                            items(lazyPagingCollectionsItems) { item ->
+                                CollectionItem(item, navController, page, this@HorizontalPager)
+                            }
+                            lazyPagingCollectionsItems.checkState { loadState() }
+                        }
+                    }
+
+                }
             }
+
+
         }
+
+
     }
 
 }
+
+@Composable
+inline fun MainScreenFloatingActionButton(crossinline onClick: () -> Unit) {
+    ExtendedFloatingActionButton(
+        text = {
+            Text(
+                text = "Open all tags",
+                textAlign = TextAlign.Center,
+            )
+        },
+        onClick = { onClick() }
+    )
+}
+
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -146,8 +173,7 @@ fun LazyListScope.loadState() = repeat(3) {
 
 inline fun <T : Any> LazyPagingItems<T>.checkState(crossinline function: () -> Unit) {
     when {
-        loadState.refresh is LoadState.Loading -> function()
-        loadState.append is LoadState.Loading -> function()
+
     }
 }
 

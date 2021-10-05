@@ -1,7 +1,5 @@
 package st.slex.csplashscreen.ui.core
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -17,15 +15,15 @@ interface UIResponse {
 
     suspend fun <D, U> getAndMap(
         flow: Flow<DataResult<D>>,
-        mapper: Mapper.DataToUI<D, U>
-    ): Flow<U>
+        mapper: Mapper.DataToUI<D, UIResult<U>>
+    ): Flow<UIResult<U>>
 
     class Base @Inject constructor() : UIResponse {
 
         override suspend fun <D, U> getAndMap(
             flow: Flow<DataResult<D>>,
-            mapper: Mapper.DataToUI<D, U>
-        ): Flow<U> =
+            mapper: Mapper.DataToUI<D, UIResult<U>>
+        ): Flow<UIResult<U>> =
             callbackFlow {
                 flow.startCollecting(mapper) {
                     trySendBlocking(it)
@@ -34,14 +32,14 @@ interface UIResponse {
             }
 
         private suspend inline fun <D, T> Flow<DataResult<D>>.startCollecting(
-            mapper: Mapper.DataToUI<D, T>,
-            crossinline function: (T) -> Unit,
+            mapper: Mapper.DataToUI<D, UIResult<T>>,
+            crossinline function: (UIResult<T>) -> Unit,
         ) = try {
             collect {
                 function(it.map(mapper))
             }
         } catch (exception: Exception) {
-            Log.e(TAG, exception.message, exception.cause)
+            function(UIResult.Failure(exception = exception))
         }
     }
 }

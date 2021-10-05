@@ -25,13 +25,13 @@ class MainViewModel @Inject constructor(
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
     private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>,
     private val repository: PhotoRepository,
-    private val photoMapper: Mapper.DataToUI<RemoteImageModel, ImageModel>,
+    private val photoMapper: Mapper.DataToUI<RemoteImageModel, UIResult<ImageModel>>,
     private val downloadMapper: Mapper.DataToUI<RemoteDownloadModel, UIResult<DownloadModel>>,
     private val response: UIResponse
 ) : ViewModel() {
 
-    private val _currentPhoto = MutableSharedFlow<ImageModel>(replay = 0)
-    val currentPhoto: SharedFlow<ImageModel>
+    private val _currentPhoto = MutableSharedFlow<UIResult<ImageModel>>(replay = 0)
+    val currentPhoto: SharedFlow<UIResult<ImageModel>>
         get() = _currentPhoto
 
     fun getCurrentPhoto(id: String) = viewModelScope.launch {

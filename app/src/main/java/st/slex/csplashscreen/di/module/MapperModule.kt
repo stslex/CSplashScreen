@@ -15,7 +15,7 @@ import st.slex.csplashscreen.ui.core.UIResult
 class MapperModule {
 
     @Provides
-    fun providesPhotoDataMapper(): Mapper.DataToUI<RemoteImageModel, ImageModel?> =
+    fun providesPhotoDataMapper(): Mapper.DataToUI<RemoteImageModel, UIResult<ImageModel>> =
         PhotoDataMapper()
 
     @Provides

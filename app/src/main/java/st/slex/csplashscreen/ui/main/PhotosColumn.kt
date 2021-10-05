@@ -3,20 +3,15 @@ package st.slex.csplashscreen.ui.main
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
@@ -27,8 +22,8 @@ import com.google.accompanist.pager.PagerScope
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.android.material.animation.AnimationUtils
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
+import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.ui.theme.Shapes
-import st.slex.csplashscreen.ui.theme.Typography
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -70,7 +65,7 @@ fun ImageItem(
             .fillMaxWidth()
             .aspectRatio(1f)) {
 
-        UserImageHead(
+        UserImageHeadWithUserName(
             modifier = Modifier,
             url = item?.user?.profile_image?.medium.toString(),
             username = item?.user?.username.toString(),
@@ -94,52 +89,6 @@ fun ImageItem(
         }
     }
 }
-
-
-@ExperimentalMaterialApi
-@ExperimentalCoilApi
-@Composable
-fun UserImageHead(modifier: Modifier, url: String, username: String, navController: NavController) {
-
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .shadow(elevation = 16.dp, Shapes.medium)
-            .clip(RoundedCornerShape(16.dp)),
-        onClick = {
-            //navController.navigate("user_profile")
-        }
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(CircleShape),
-                painter = rememberImagePainter(
-                    data = url,
-                    builder = {
-                        allowHardware(false)
-                        crossfade(500)
-                    }
-                ),
-                contentDescription = "User Avatar"
-            )
-            Spacer(modifier = Modifier.padding(8.dp))
-            Text(
-                text = username,
-                style = Typography.h6,
-                maxLines = 1,
-                lineHeight = TextUnit.Unspecified,
-                fontFamily = FontFamily.SansSerif
-            )
-        }
-    }
-}
-
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
