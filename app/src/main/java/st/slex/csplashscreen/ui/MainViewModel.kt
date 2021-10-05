@@ -25,19 +25,20 @@ class MainViewModel @Inject constructor(
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
     private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>,
     private val repository: PhotoRepository,
-    private val photoMapper: Mapper.DataToUI<RemoteImageModel, UIResult<ImageModel>>,
+    private val photoMapper: Mapper.DataToUI<RemoteImageModel, ImageModel>,
     private val downloadMapper: Mapper.DataToUI<RemoteDownloadModel, UIResult<DownloadModel>>,
     private val response: UIResponse
 ) : ViewModel() {
 
-
-    private val _currentPhoto = MutableSharedFlow<UIResult<ImageModel>>(replay = 0)
-    val currentPhoto: SharedFlow<UIResult<ImageModel>>
+    private val _currentPhoto = MutableSharedFlow<ImageModel>(replay = 0)
+    val currentPhoto: SharedFlow<ImageModel>
         get() = _currentPhoto
 
     fun getCurrentPhoto(id: String) = viewModelScope.launch {
         repository.getCurrentPhoto(id).collect {
-            _currentPhoto.emit(it.map(mapper = photoMapper))
+            response.getAndMap(repository.getCurrentPhoto(id), mapper = photoMapper).collect {
+                _currentPhoto.emit(it)
+            }
         }
     }
 
@@ -49,7 +50,7 @@ class MainViewModel @Inject constructor(
         )
 
     private val _queryPhotos = MutableStateFlow(emptyList<String>())
-    val queryPhotos: StateFlow<List<String>> = _queryPhotos.asStateFlow()
+    private val queryPhotos: StateFlow<List<String>> = _queryPhotos.asStateFlow()
 
     private var photosPagingSource: PagingSource<*, *>? = null
 
@@ -72,7 +73,7 @@ class MainViewModel @Inject constructor(
     }
 
     private val _queryCollections = MutableStateFlow(emptyList<String>())
-    val queryCollections: StateFlow<List<String>> = _queryCollections.asStateFlow()
+    private val queryCollections: StateFlow<List<String>> = _queryCollections.asStateFlow()
 
     private var newCollectionsPagingSource: PagingSource<*, *>? = null
 

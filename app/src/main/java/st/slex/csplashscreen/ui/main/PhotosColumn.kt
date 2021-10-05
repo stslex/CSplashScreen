@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontFamily
@@ -20,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerScope
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
@@ -66,13 +64,17 @@ fun ImageItem(
                     )
                 }
             }
+            .fillMaxWidth()
             .aspectRatio(1f)) {
 
         UserImageHead(
+            modifier = Modifier,
             url = item?.user?.profile_image?.medium.toString(),
             username = item?.user?.username.toString(),
             navController = navController
         )
+
+        Spacer(modifier = Modifier.padding(4.dp))
 
         Surface(
             modifier = Modifier.shadow(elevation = 16.dp, shape = Shapes.medium, clip = true),
@@ -83,21 +85,7 @@ fun ImageItem(
                 navController.navigate("detail/$encodedUrl/$id")
             }
         ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
-                    .clipToBounds(),
-                painter = rememberImagePainter(
-                    data = item?.urls?.regular,
-                    builder = {
-                        transformations(RoundedCornersTransformation())
-                        allowHardware(false)
-                        crossfade(500)
-                    }
-                ),
-                contentDescription = "Image",
-            )
+            CoverPhotoItem(item?.urls?.regular.toString())
         }
     }
 }
@@ -106,10 +94,10 @@ fun ImageItem(
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
 @Composable
-fun UserImageHead(url: String, username: String, navController: NavController) {
+fun UserImageHead(modifier: Modifier, url: String, username: String, navController: NavController) {
 
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .shadow(elevation = 0.dp, Shapes.medium),
         onClick = {
@@ -123,7 +111,7 @@ fun UserImageHead(url: String, username: String, navController: NavController) {
         ) {
             Image(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(32.dp)
                     .clip(CircleShape),
                 painter = rememberImagePainter(
                     data = url,
@@ -137,12 +125,11 @@ fun UserImageHead(url: String, username: String, navController: NavController) {
             Spacer(modifier = Modifier.padding(8.dp))
             Text(
                 text = username,
-                style = Typography.h5,
+                style = Typography.h6,
                 maxLines = 1,
                 lineHeight = TextUnit.Unspecified,
                 fontFamily = FontFamily.SansSerif
             )
         }
     }
-
 }

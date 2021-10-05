@@ -4,21 +4,26 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerScope
+import com.google.accompanist.pager.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.MainViewModel
+import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
 import st.slex.csplashscreen.utiles.GET_PHOTOS
 
@@ -38,7 +43,6 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
     val lazyPagingPhotosItems = viewModel.photos.collectAsLazyPagingItems()
     val lazyPagingCollectionsItems = viewModel.collections.collectAsLazyPagingItems()
-
     Pager(lazyPagingPhotosItems, lazyPagingCollectionsItems, navController)
 }
 
@@ -52,37 +56,70 @@ fun Pager(
     lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
     navController: NavController
 ) {
-    val mapPages = mutableMapOf(
-        "Photos" to 0,
-        "Collections" to 1
-    )
+    val scope = rememberCoroutineScope()
+    val pagerState = rememberPagerState()
 
-    HorizontalPager(
-        count = mapPages.size,
-        contentPadding = PaddingValues(),
-    ) { page ->
-        LazyColumn {
-            when (page) {
-                mapPages.getValue("Photos") -> {
-                    items(lazyPagingPhotosItems) { item ->
-                        ImageItem(item, navController, page, this@HorizontalPager)
-                    }
-                    lazyPagingPhotosItems.checkState {
-                        loadState(page = page, scope = this@HorizontalPager)
-                    }
-                }
-                mapPages.getValue("Collections") -> {
-                    items(lazyPagingCollectionsItems) { item ->
-                        CollectionItem(item, navController)
-                    }
-                    lazyPagingCollectionsItems.checkState {
-                        loadState(page = page, scope = this@HorizontalPager)
-                    }
-                }
-            }
-
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            AnalyticsService.sendPageSelectedEvent(page)
         }
     }
+
+    val pages = listOf("Photos", "Collections")
+
+    Column {
+        TabRow(
+            selectedTabIndex = pagerState.currentPage,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                )
+            }
+        ) {
+            pages.forEachIndexed { index, title ->
+                Tab(
+                    text = {
+                        Text(
+                            text = title,
+                            style = Typography.subtitle1
+                        )
+                    },
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        scope.launch { pagerState.scrollToPage(index) }
+                    }
+                )
+            }
+        }
+
+        HorizontalPager(
+            count = pages.size,
+            state = pagerState
+        ) { page ->
+            LazyColumn {
+                when (page) {
+                    pages.indexOf("Photos") -> {
+                        items(lazyPagingPhotosItems) { item ->
+                            ImageItem(item, navController, page, this@HorizontalPager)
+                        }
+                        lazyPagingPhotosItems.checkState {
+                            loadState(page = page, scope = this@HorizontalPager)
+                        }
+                    }
+                    pages.indexOf("Collections") -> {
+                        items(lazyPagingCollectionsItems) { item ->
+                            CollectionItem(item, navController, page, this@HorizontalPager)
+                        }
+                        lazyPagingCollectionsItems.checkState {
+                            loadState(page = page, scope = this@HorizontalPager)
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
 }
 
 @ExperimentalCoilApi
@@ -99,5 +136,11 @@ inline fun <T : Any> LazyPagingItems<T>.checkState(crossinline function: () -> U
         loadState.append is LoadState.Loading -> function()
     }
 }
+
+@Suppress("UNUSED_PARAMETER")
+object AnalyticsService {
+    fun sendPageSelectedEvent(page: Int) = Unit
+}
+
 
 

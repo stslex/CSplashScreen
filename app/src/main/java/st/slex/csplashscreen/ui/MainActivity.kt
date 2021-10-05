@@ -99,7 +99,7 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
             route = "raw_image/{url}",
             arguments = listOf(navArgument("url") { type = NavType.StringType })
         ) {
-            RawImageScreen(url = it.arguments?.getString("url").toString())
+            RawImageScreen(url = it.arguments?.getString("url").toString(), navController)
         }
     }
 }
