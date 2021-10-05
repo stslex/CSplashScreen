@@ -40,7 +40,7 @@ fun CollectionItem(
 ) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
             .graphicsLayer {
                 scope?.let {
                     val pageOffset = it.calculateCurrentOffsetForPage(page)

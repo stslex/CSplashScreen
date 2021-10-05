@@ -1,15 +1,14 @@
 package st.slex.csplashscreen.ui.main
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -17,6 +16,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.*
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -43,6 +43,24 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
     val lazyPagingPhotosItems = viewModel.photos.collectAsLazyPagingItems()
     val lazyPagingCollectionsItems = viewModel.collections.collectAsLazyPagingItems()
+
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = MaterialTheme.colors.isLight
+
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+
+    SideEffect {
+        if (isSystemInDarkTheme) {
+
+        }
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = useDarkIcons
+        )
+        // setStatusBarsColor() and setNavigationBarsColor() also exist
+    }
+
+
     Pager(lazyPagingPhotosItems, lazyPagingCollectionsItems, navController)
 }
 
