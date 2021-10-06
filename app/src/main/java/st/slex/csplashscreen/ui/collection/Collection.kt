@@ -3,6 +3,7 @@ package st.slex.csplashscreen.ui.collection
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -41,7 +42,11 @@ fun LazyCollectionPhotosColumn(
 ) {
     LazyColumn {
         items(lazyPagingPhotosItems) { item ->
-            ImageItem(item, navController)
+            ImageItem(
+                item = item,
+                navController = navController,
+                modifier = Modifier
+            )
         }
         lazyPagingPhotosItems.checkState {
             loadState()

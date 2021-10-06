@@ -5,23 +5,24 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharedFlow
+import st.slex.csplashscreen.R
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
@@ -59,6 +60,85 @@ fun ImageDetailScreen(
 }
 
 @ExperimentalCoilApi
+@ExperimentalMaterialApi
+@Composable
+private fun BindDetailImageBody(image: ImageModel, navController: NavController) {
+    UserDetailImageHead(
+        username = image.user?.username.toString(),
+        url = image.user?.profile_image?.medium.toString(),
+        navController = navController
+    )
+    Spacer(modifier = Modifier.size(16.dp))
+    Divider()
+    Spacer(modifier = Modifier.size(16.dp))
+    if (!image.tags.isNullOrEmpty()) {
+        BindDetailImageBodyTags(image.tags) {
+            navController.navigate("search_photos/$it")
+        }
+        Spacer(modifier = Modifier.size(16.dp))
+        Divider()
+        Spacer(modifier = Modifier.size(16.dp))
+    }
+
+}
+
+@ExperimentalMaterialApi
+@ExperimentalCoilApi
+@Composable
+fun UserDetailImageHead(
+    url: String,
+    username: String,
+    navController: NavController
+) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, end = 8.dp)
+    ) {
+        val (userSurface, download) = createRefs()
+
+        UserImageHeadWithUserName(
+            modifier = Modifier.constrainAs(userSurface) {
+                width = Dimension.fillToConstraints
+                start.linkTo(parent.start)
+                end.linkTo(download.start)
+            },
+            url = url,
+            username = username,
+            navController = navController
+        )
+
+        Surface(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(start = 8.dp, end = 8.dp)
+                .shadow(elevation = 16.dp, Shapes.medium)
+                .clip(RoundedCornerShape(16.dp))
+                .constrainAs(download) {
+                    height = Dimension.fillToConstraints
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                },
+            onClick = {
+
+            }
+        ) {
+            Icon(
+                modifier = Modifier.padding(16.dp),
+                painter = painterResource(
+                    id = R.drawable.ic_baseline_arrow_download
+                ),
+                contentDescription = "Download"
+            )
+        }
+
+    }
+
+
+}
+
+@ExperimentalCoilApi
 @Composable
 private fun BindTopImageHead(url: String, navController: NavController) {
     Image(
@@ -80,55 +160,30 @@ private fun BindTopImageHead(url: String, navController: NavController) {
     )
 }
 
-@ExperimentalCoilApi
-@ExperimentalMaterialApi
-@Composable
-private fun BindDetailImageBody(image: ImageModel, navController: NavController) {
-    UserImageHeadWithUserName(
-        modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-        username = image.user?.username.toString(),
-        url = image.user?.profile_image?.medium.toString(),
-        navController = navController
-    )
-    Spacer(modifier = Modifier.padding(4.dp))
-    if (!image.tags.isNullOrEmpty()) BindDetailImageBodyTags(image.tags) {
-        navController.navigate("search_photos/$it")
-    }
-    Spacer(modifier = Modifier.padding(4.dp))
-}
-
 @ExperimentalMaterialApi
 @Composable
 private inline fun BindDetailImageBodyTags(
     tags: List<TagModel>,
     crossinline onClick: (String) -> Unit
 ) {
-    Surface(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
-            .shadow(elevation = 8.dp, Shapes.medium)
-            .clip(RoundedCornerShape(16.dp))
+    LazyRow(
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        LazyRow(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            items(count = tags.size) { key ->
-                Surface(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .shadow(elevation = 4.dp, Shapes.medium)
-                        .clip(RoundedCornerShape(8.dp)),
-                    onClick = {
-                        onClick(tags[key].title.toString())
-                    }
-                ) {
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        text = tags[key].title.toString()
-                    )
+        items(count = tags.size) { key ->
+            Surface(
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp)
+                    .shadow(elevation = 16.dp, Shapes.medium)
+                    .clip(RoundedCornerShape(16.dp)),
+                onClick = {
+                    onClick(tags[key].title.toString())
                 }
+            ) {
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = tags[key].title.toString(),
+                    maxLines = 1
+                )
             }
         }
     }

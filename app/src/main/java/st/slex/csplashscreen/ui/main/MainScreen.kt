@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import androidx.paging.LoadState
@@ -17,6 +18,7 @@ import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.*
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.material.animation.AnimationUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -54,7 +56,7 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
         )
     }
 
-    Pager(
+    MainScreenPager(
         lazyPagingPhotosItems,
         lazyPagingCollectionsItems,
         navController
@@ -62,9 +64,17 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 }
 
 
-sealed class PagerMainTab {
-    class Photos(val data: String = "Photos") : PagerMainTab()
-    class Collections(val data: String = "Collections") : PagerMainTab()
+sealed interface PagerMainTab {
+
+    fun getTitle(): String
+
+    class Photos(val data: String = "Photos") : PagerMainTab {
+        override fun getTitle(): String = data
+    }
+
+    class Collections(val data: String = "Collections") : PagerMainTab {
+        override fun getTitle(): String = data
+    }
 }
 
 @ExperimentalCoroutinesApi
@@ -73,7 +83,7 @@ sealed class PagerMainTab {
 @ExperimentalPagerApi
 @ExperimentalCoilApi
 @Composable
-fun Pager(
+fun MainScreenPager(
     lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
     lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
     navController: NavController
@@ -87,7 +97,7 @@ fun Pager(
         }
     }
 
-    val pages = listOf("Photos", "Collections")
+    val pages = listOf(PagerMainTab.Photos(), PagerMainTab.Collections())
 
     Scaffold(
         floatingActionButtonPosition = FabPosition.Center,
@@ -105,15 +115,12 @@ fun Pager(
                         Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
                     )
                 },
-                divider = {
-
-                },
                 tabs = {
-                    pages.forEachIndexed { index, title ->
+                    pages.forEachIndexed { index, model ->
                         Tab(
                             text = {
                                 Text(
-                                    text = title,
+                                    text = model.getTitle(),
                                     style = Typography.subtitle1
                                 )
                             },
@@ -131,16 +138,32 @@ fun Pager(
                 state = pagerState
             ) { page ->
                 LazyColumn {
-                    when (page) {
-                        pages.indexOf("Photos") -> {
+                    when (pages[page]) {
+                        is PagerMainTab.Photos -> {
                             items(lazyPagingPhotosItems) { item ->
-                                ImageItem(item, navController, page, this@HorizontalPager)
+                                ImageItem(
+                                    item = item,
+                                    navController = navController,
+                                    modifier = Modifier.animationUtilPager(
+                                        scope = this@HorizontalPager,
+                                        page = page
+                                    )
+                                )
                             }
                             lazyPagingPhotosItems.checkState { loadState() }
                         }
-                        pages.indexOf("Collections") -> {
+
+                        is PagerMainTab.Collections -> {
                             items(lazyPagingCollectionsItems) { item ->
-                                CollectionItem(item, navController, page, this@HorizontalPager)
+                                CollectionItem(
+                                    item = item,
+                                    navController = navController,
+                                    modifier = Modifier.animationUtilPager(
+                                        scope = this@HorizontalPager,
+                                        page = page
+                                    )
+                                )
+
                             }
                             lazyPagingCollectionsItems.checkState { loadState() }
                         }
@@ -151,6 +174,29 @@ fun Pager(
     }
 
 }
+
+@SuppressLint("RestrictedApi")
+@ExperimentalPagerApi
+private fun Modifier.animationUtilPager(scope: PagerScope, page: Int): Modifier = this
+    .graphicsLayer {
+        val pageOffset = scope.calculateCurrentOffsetForPage(page)
+        AnimationUtils
+            .lerp(
+                0.85f,
+                1f,
+                1f - pageOffset.coerceIn(0f, 1f)
+            )
+            .also { scale ->
+                scaleX = scale
+                scaleY = scale
+            }
+        alpha = AnimationUtils.lerp(
+            0.5f,
+            1f,
+            1f - pageOffset.coerceIn(0f, 1f)
+        )
+    }
+    .aspectRatio(1f)
 
 @Composable
 inline fun MainScreenFloatingActionButton(crossinline onClick: () -> Unit) {

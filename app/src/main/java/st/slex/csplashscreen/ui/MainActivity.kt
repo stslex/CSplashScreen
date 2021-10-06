@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
+import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,12 +44,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            CSplashScreenTheme {
-                Scaffold {
-                    NavigationComponent(
-                        navController = navController,
-                        viewModel = viewModel
-                    )
+            ProvideWindowInsets {
+                CSplashScreenTheme {
+                    Scaffold {
+                        NavigationComponent(
+                            navController = navController,
+                            viewModel = viewModel
+                        )
+                    }
                 }
             }
         }

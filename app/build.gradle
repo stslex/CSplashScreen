@@ -55,11 +55,14 @@ dependencies {
     implementation "com.google.accompanist:accompanist-placeholder:$accompanistVersion"
     implementation "com.google.accompanist:accompanist-appcompat-theme:$accompanistVersion"
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanistVersion"
-    implementation "com.google.accompanist:accompanist-insets:$accompanistVersion"
-    implementation "com.google.accompanist:accompanist-insets-ui:$accompanistVersion"
-    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanistVersion"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
 
+    /*Test*/
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanistVersion"
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanistVersion"
+    implementation "com.google.accompanist:accompanist-insets:$accompanistVersion"
+    implementation "com.google.accompanist:accompanist-insets-ui:$accompanistVersion"
+    
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01"
 
     /*Navigation*/

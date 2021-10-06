@@ -1,6 +1,9 @@
 package st.slex.csplashscreen.ui.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
@@ -25,7 +28,6 @@ fun UserImageHeadWithUserName(
 ) {
     Surface(
         modifier = modifier
-            .fillMaxWidth()
             .shadow(elevation = 16.dp, Shapes.medium)
             .clip(RoundedCornerShape(16.dp)),
         onClick = {
@@ -33,8 +35,7 @@ fun UserImageHeadWithUserName(
         }
     ) {
         Row(
-            modifier = Modifier
-                .padding(8.dp),
+            modifier = Modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             ImageUserCircle(url = url, modifier = Modifier.size(32.dp))
