@@ -1,7 +1,6 @@
 package st.slex.csplashscreen.ui.main
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -11,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -22,11 +22,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
+import st.slex.csplashscreen.data.photos.QueryPhotos
 import st.slex.csplashscreen.ui.MainViewModel
 import st.slex.csplashscreen.ui.components.ImageItemLoading
 import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
-import st.slex.csplashscreen.utiles.GET_PHOTOS
 
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -36,19 +36,16 @@ import st.slex.csplashscreen.utiles.GET_PHOTOS
 @Composable
 fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
-    val queryPhotos = listOf(GET_PHOTOS)
     val queryCollections = listOf(GET_COLLECTIONS)
 
-    viewModel.setQueryPhotos(queryPhotos)
     viewModel.setQueryCollections(queryCollections)
+    viewModel.setQueryPhotos(QueryPhotos.AllPhotos)
 
     val lazyPagingPhotosItems = viewModel.photos.collectAsLazyPagingItems()
     val lazyPagingCollectionsItems = viewModel.collections.collectAsLazyPagingItems()
 
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = MaterialTheme.colors.isLight
-
-    val isSystemInDarkTheme = isSystemInDarkTheme()
 
     SideEffect {
         systemUiController.setSystemBarsColor(
@@ -57,9 +54,20 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
         )
     }
 
-    Pager(lazyPagingPhotosItems, lazyPagingCollectionsItems, navController)
+    Pager(
+        lazyPagingPhotosItems,
+        lazyPagingCollectionsItems,
+        navController
+    )
 }
 
+
+sealed class PagerMainTab {
+    class Photos(val data: String = "Photos") : PagerMainTab()
+    class Collections(val data: String = "Collections") : PagerMainTab()
+}
+
+@ExperimentalCoroutinesApi
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -85,7 +93,7 @@ fun Pager(
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
             MainScreenFloatingActionButton {
-                //navController.navigate()
+                navController.navigate("search_photos/ ")
             }
         }
     ) {
@@ -137,14 +145,9 @@ fun Pager(
                             lazyPagingCollectionsItems.checkState { loadState() }
                         }
                     }
-
                 }
             }
-
-
         }
-
-
     }
 
 }
@@ -154,7 +157,7 @@ inline fun MainScreenFloatingActionButton(crossinline onClick: () -> Unit) {
     ExtendedFloatingActionButton(
         text = {
             Text(
-                text = "Open all tags",
+                text = "search photos",
                 textAlign = TextAlign.Center,
             )
         },
@@ -173,7 +176,8 @@ fun LazyListScope.loadState() = repeat(3) {
 
 inline fun <T : Any> LazyPagingItems<T>.checkState(crossinline function: () -> Unit) {
     when {
-
+        loadState.append is LoadState.Loading -> function()
+        loadState.prepend is LoadState.Loading -> function()
     }
 }
 

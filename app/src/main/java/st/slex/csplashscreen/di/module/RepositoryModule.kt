@@ -6,6 +6,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.collections.CollectionsRepository
 import st.slex.csplashscreen.data.photo.PhotoRepository
 import st.slex.csplashscreen.data.photos.PhotosRepository
+import st.slex.csplashscreen.data.search.SearchRepository
 
 @Module
 interface RepositoryModule {
@@ -19,4 +20,8 @@ interface RepositoryModule {
     @ExperimentalCoroutinesApi
     @Binds
     fun bindsPhotoRepository(repository: PhotoRepository.Base): PhotoRepository
+
+    @ExperimentalCoroutinesApi
+    @Binds
+    fun bindsPhotoSearchRepository(repository: SearchRepository.Base): SearchRepository
 }

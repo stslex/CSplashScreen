@@ -23,6 +23,7 @@ import st.slex.csplashscreen.ui.collection.Collection
 import st.slex.csplashscreen.ui.detail.ImageDetailScreen
 import st.slex.csplashscreen.ui.main.MainScreen
 import st.slex.csplashscreen.ui.raw_image.RawImageScreen
+import st.slex.csplashscreen.ui.search_photos.SearchPhotosScreen
 import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
 import javax.inject.Inject
 
@@ -100,6 +101,19 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
             arguments = listOf(navArgument("url") { type = NavType.StringType })
         ) {
             RawImageScreen(url = it.arguments?.getString("url").toString(), navController)
+        }
+
+        composable(
+            route = "search_photos/{query}",
+            arguments = listOf(navArgument("query") { type = NavType.StringType })
+        ) {
+            var query = it.arguments?.getString("query").toString()
+            if (query == " ") query = ""
+            SearchPhotosScreen(
+                viewModel = viewModel,
+                navController = navController,
+                querySearch = query
+            )
         }
     }
 }

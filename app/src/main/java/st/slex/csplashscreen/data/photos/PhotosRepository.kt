@@ -7,13 +7,13 @@ import javax.inject.Inject
 
 interface PhotosRepository {
 
-    fun queryAll(query: List<String>): PagingSource<Int, ImageModel>
+    fun queryAll(query: QueryPhotos): PagingSource<Int, ImageModel>
 
     class Base @Inject constructor(
         private val photosPagingSourceFactory: PhotosPagingSource.Factory
     ) : PhotosRepository {
 
-        override fun queryAll(query: List<String>): PagingSource<Int, ImageModel> =
+        override fun queryAll(query: QueryPhotos): PagingSource<Int, ImageModel> =
             photosPagingSourceFactory.create(query)
     }
 }

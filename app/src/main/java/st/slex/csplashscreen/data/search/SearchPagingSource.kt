@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.data.photos
+package st.slex.csplashscreen.data.search
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -10,9 +10,9 @@ import st.slex.csplashscreen.data.core.toImageModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.utiles.API_KEY
 
-class PhotosPagingSource @AssistedInject constructor(
-    private val service: PhotosService,
-    @Assisted val query: QueryPhotos
+class SearchPagingSource @AssistedInject constructor(
+    private val service: SearchService,
+    @Assisted val query: QuerySearch
 ) : PagingSource<Int, ImageModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, ImageModel>): Int? {
@@ -27,16 +27,14 @@ class PhotosPagingSource @AssistedInject constructor(
             val pageSize = params.loadSize
 
             val response = when (query) {
-                is QueryPhotos.AllPhotos ->
-                    service.getPhotos(pageNumber, pageSize, API_KEY)
-                is QueryPhotos.CollectionPhotos ->
-                    service.getPhotos(query.query, pageNumber, pageSize, API_KEY)
-                is QueryPhotos.EmptyQuery -> null
+                is QuerySearch.SearchPhotos ->
+                    service.searchPhoto(query.text, pageNumber, pageSize, API_KEY)
+                is QuerySearch.EmptyQuery -> null
             }
 
             return if (response?.body() != null && response.isSuccessful) {
 
-                val photos = response.body()!!.map {
+                val photos = response.body()!!.results.map {
                     it.toImageModel()
                 }
 
@@ -55,7 +53,7 @@ class PhotosPagingSource @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(@Assisted query: QueryPhotos): PhotosPagingSource
+        fun create(@Assisted query: QuerySearch): SearchPagingSource
     }
 
     companion object {

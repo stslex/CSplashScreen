@@ -91,13 +91,18 @@ private fun BindDetailImageBody(image: ImageModel, navController: NavController)
         navController = navController
     )
     Spacer(modifier = Modifier.padding(4.dp))
-    if (!image.tags.isNullOrEmpty()) BindDetailImageBodyTags(image.tags)
+    if (!image.tags.isNullOrEmpty()) BindDetailImageBodyTags(image.tags) {
+        navController.navigate("search_photos/$it")
+    }
     Spacer(modifier = Modifier.padding(4.dp))
 }
 
 @ExperimentalMaterialApi
 @Composable
-private fun BindDetailImageBodyTags(tags: List<TagModel>) {
+private inline fun BindDetailImageBodyTags(
+    tags: List<TagModel>,
+    crossinline onClick: (String) -> Unit
+) {
     Surface(
         modifier = Modifier
             .padding(8.dp)
@@ -116,7 +121,7 @@ private fun BindDetailImageBodyTags(tags: List<TagModel>) {
                         .shadow(elevation = 4.dp, Shapes.medium)
                         .clip(RoundedCornerShape(8.dp)),
                     onClick = {
-
+                        onClick(tags[key].title.toString())
                     }
                 ) {
                     Text(

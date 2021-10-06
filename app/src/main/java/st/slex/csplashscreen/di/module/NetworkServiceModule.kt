@@ -6,6 +6,7 @@ import retrofit2.Retrofit
 import st.slex.csplashscreen.data.collections.CollectionService
 import st.slex.csplashscreen.data.photo.PhotoService
 import st.slex.csplashscreen.data.photos.PhotosService
+import st.slex.csplashscreen.data.search.SearchService
 
 @Module(includes = [RetrofitModule::class])
 class NetworkServiceModule {
@@ -21,4 +22,8 @@ class NetworkServiceModule {
     @Provides
     fun providesPhotoService(retrofit: Retrofit): PhotoService =
         retrofit.create(PhotoService::class.java)
+
+    @Provides
+    fun providesPhotoSearchService(retrofit: Retrofit): SearchService =
+        retrofit.create(SearchService::class.java)
 }

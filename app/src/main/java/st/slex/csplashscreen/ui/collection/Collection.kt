@@ -11,12 +11,11 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
+import st.slex.csplashscreen.data.photos.QueryPhotos
 import st.slex.csplashscreen.ui.MainViewModel
 import st.slex.csplashscreen.ui.main.ImageItem
 import st.slex.csplashscreen.ui.main.checkState
 import st.slex.csplashscreen.ui.main.loadState
-import st.slex.csplashscreen.utiles.GET_COLLECTIONS
-import st.slex.csplashscreen.utiles.GET_PHOTOS
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -24,8 +23,7 @@ import st.slex.csplashscreen.utiles.GET_PHOTOS
 @ExperimentalCoroutinesApi
 @Composable
 fun Collection(navController: NavController, viewModel: MainViewModel, collectionId: String) {
-    val queryPhotos = listOf(GET_COLLECTIONS, collectionId, GET_PHOTOS)
-    viewModel.setQueryPhotos(queryPhotos)
+    viewModel.setQueryPhotos(QueryPhotos.CollectionPhotos(collectionId))
     val lazyPagingPhotosItems = viewModel.photos.collectAsLazyPagingItems()
     LazyCollectionPhotosColumn(
         lazyPagingPhotosItems = lazyPagingPhotosItems,
