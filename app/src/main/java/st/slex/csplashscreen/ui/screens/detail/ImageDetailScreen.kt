@@ -8,6 +8,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,11 +18,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
-import kotlinx.coroutines.flow.SharedFlow
+import dagger.Lazy
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.R
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
@@ -31,36 +37,45 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
-
 interface ImageDetailScreen {
 
+    @ExperimentalCoroutinesApi
     @ExperimentalCoilApi
     @ExperimentalMaterialApi
     @Composable
     fun BindScreen(
-        url: String,
-        navController: NavController,
-        imageFlow: () -> SharedFlow<UIResult<ImageModel>>
+        args: NavBackStackEntry,
+        navController: NavController
     )
 
-    class Screen @Inject constructor() : ImageDetailScreen {
+    class Base @Inject constructor() : ImageDetailScreen {
 
+        @Inject
+        lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
+
+        @ExperimentalCoroutinesApi
         @ExperimentalCoilApi
         @ExperimentalMaterialApi
         @Composable
         override fun BindScreen(
-            url: String,
-            navController: NavController,
-            imageFlow: () -> SharedFlow<UIResult<ImageModel>>
+            args: NavBackStackEntry,
+            navController: NavController
         ) {
-            val uiResult = imageFlow().collectAsState(initial = null).value
+            val viewModel: DetailPhotoViewModel = viewModel(factory = viewModelFactory.get())
+            val url = args.arguments?.getString("url").toString()
+            val id = args.arguments?.getString("imageId").toString()
+
+            val uiResult by remember(viewModel) {
+                viewModel.getCurrentPhoto(id)
+            }.collectAsState(initial = UIResult.Loading)
 
             Column {
                 BindTopImageHead(url = url, navController = navController)
                 Spacer(modifier = Modifier.padding(4.dp))
                 when (uiResult) {
                     is UIResult.Success -> {
-                        BindDetailImageBody(image = uiResult.data, navController = navController)
+                        val image = (uiResult as UIResult.Success<ImageModel>).data
+                        BindDetailImageBody(image = image, navController = navController)
                     }
                     is UIResult.Loading -> {
                         BindDetailImageLoading(modifier = Modifier.align(Alignment.CenterHorizontally))
@@ -70,6 +85,19 @@ interface ImageDetailScreen {
                     }
                 }
             }
+        }
+
+        @ExperimentalMaterialApi
+        @ExperimentalCoilApi
+        @ExperimentalCoroutinesApi
+        @JvmOverloads
+        @Composable
+        fun Bind(
+            args: NavBackStackEntry,
+            navController: NavController,
+            viewModel: DetailPhotoViewModel = viewModel(factory = viewModelFactory.get())
+        ) {
+
         }
 
         @ExperimentalCoilApi

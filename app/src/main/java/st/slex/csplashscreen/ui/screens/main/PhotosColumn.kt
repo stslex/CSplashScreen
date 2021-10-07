@@ -3,6 +3,7 @@ package st.slex.csplashscreen.ui.screens.main
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
@@ -13,6 +14,8 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
@@ -23,6 +26,26 @@ import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
+
+@ExperimentalCoilApi
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
+@Composable
+fun LazyPhotosColumn(
+    lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
+    navController: NavController
+) {
+    LazyColumn {
+        items(lazyPagingPhotosItems) { item ->
+            ImageItem(
+                item = item,
+                navController = navController,
+                modifier = Modifier
+            )
+        }
+        lazyPagingPhotosItems.checkState(this)
+    }
+}
 
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi

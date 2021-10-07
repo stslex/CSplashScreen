@@ -15,7 +15,8 @@ import javax.inject.Singleton
         RepositoryModule::class,
         ViewModelFactoryModule::class,
         ResponseModule::class,
-        MapperModule::class
+        MapperModule::class,
+        ScreensModule::class
     ]
 )
 class AppModule {
