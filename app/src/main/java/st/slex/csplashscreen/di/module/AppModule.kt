@@ -10,6 +10,7 @@ import javax.inject.Singleton
 @ExperimentalCoroutinesApi
 @Module(
     includes = [
+        NavigationModule::class,
         NetworkServiceModule::class,
         RepositoryModule::class,
         ViewModelFactoryModule::class,

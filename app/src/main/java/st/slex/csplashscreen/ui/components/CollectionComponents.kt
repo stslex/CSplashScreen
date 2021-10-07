@@ -14,7 +14,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
-import st.slex.csplashscreen.ui.main.CoverPhotoItem
+import st.slex.csplashscreen.ui.screens.main.CoverPhotoItem
 import st.slex.csplashscreen.ui.theme.TransparentGray
 import st.slex.csplashscreen.ui.theme.Typography
 

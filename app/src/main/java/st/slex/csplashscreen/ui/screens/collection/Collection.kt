@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.collection
+package st.slex.csplashscreen.ui.screens.collection
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
@@ -13,10 +13,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photos.QueryPhotos
-import st.slex.csplashscreen.ui.main.ImageItem
-import st.slex.csplashscreen.ui.main.MainScreenViewModel
-import st.slex.csplashscreen.ui.main.checkState
-import st.slex.csplashscreen.ui.main.loadState
+import st.slex.csplashscreen.ui.screens.main.ImageItem
+import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
+import st.slex.csplashscreen.ui.screens.main.checkState
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -26,7 +25,7 @@ import st.slex.csplashscreen.ui.main.loadState
 fun Collection(navController: NavController, viewModel: MainScreenViewModel, collectionId: String) {
     viewModel.setQueryPhotos(QueryPhotos.CollectionPhotos(collectionId))
     val lazyPagingPhotosItems = viewModel.photos.collectAsLazyPagingItems()
-    LazyCollectionPhotosColumn(
+    LazyPhotosColumn(
         lazyPagingPhotosItems = lazyPagingPhotosItems,
         navController = navController
     )
@@ -36,7 +35,7 @@ fun Collection(navController: NavController, viewModel: MainScreenViewModel, col
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
-fun LazyCollectionPhotosColumn(
+fun LazyPhotosColumn(
     lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
     navController: NavController
 ) {
@@ -48,8 +47,6 @@ fun LazyCollectionPhotosColumn(
                 modifier = Modifier
             )
         }
-        lazyPagingPhotosItems.checkState {
-            loadState()
-        }
+        lazyPagingPhotosItems.checkState(this)
     }
 }

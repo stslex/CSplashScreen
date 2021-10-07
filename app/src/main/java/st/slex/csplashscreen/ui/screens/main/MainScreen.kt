@@ -1,9 +1,8 @@
-package st.slex.csplashscreen.ui.main
+package st.slex.csplashscreen.ui.screens.main
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -11,7 +10,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -25,7 +23,6 @@ import kotlinx.coroutines.launch
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photos.QueryPhotos
-import st.slex.csplashscreen.ui.components.ImageItemLoading
 import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
 
@@ -63,20 +60,6 @@ fun MainScreen(
         lazyPagingCollectionsItems,
         navController
     )
-}
-
-
-sealed interface PagerMainTab {
-
-    fun getTitle(): String
-
-    class Photos(val data: String = "Photos") : PagerMainTab {
-        override fun getTitle(): String = data
-    }
-
-    class Collections(val data: String = "Collections") : PagerMainTab {
-        override fun getTitle(): String = data
-    }
 }
 
 @ExperimentalCoroutinesApi
@@ -152,7 +135,7 @@ fun MainScreenPager(
                                     )
                                 )
                             }
-                            lazyPagingPhotosItems.checkState { loadState() }
+                            lazyPagingPhotosItems.checkState(this)
                         }
 
                         is PagerMainTab.Collections -> {
@@ -167,7 +150,7 @@ fun MainScreenPager(
                                 )
 
                             }
-                            lazyPagingCollectionsItems.checkState { loadState() }
+                            lazyPagingCollectionsItems.checkState(this)
                         }
                     }
                 }
@@ -201,7 +184,7 @@ private fun Modifier.animationUtilPager(scope: PagerScope, page: Int): Modifier 
     .aspectRatio(1f)
 
 @Composable
-inline fun MainScreenFloatingActionButton(crossinline onClick: () -> Unit) {
+private inline fun MainScreenFloatingActionButton(crossinline onClick: () -> Unit) {
     ExtendedFloatingActionButton(
         text = {
             Text(
@@ -211,22 +194,6 @@ inline fun MainScreenFloatingActionButton(crossinline onClick: () -> Unit) {
         },
         onClick = { onClick() }
     )
-}
-
-
-@ExperimentalCoilApi
-@ExperimentalMaterialApi
-@ExperimentalPagerApi
-fun LazyListScope.loadState() = repeat(3) {
-    item { ImageItemLoading() }
-}
-
-
-inline fun <T : Any> LazyPagingItems<T>.checkState(crossinline function: () -> Unit) {
-    when {
-        loadState.append is LoadState.Loading -> function()
-        loadState.prepend is LoadState.Loading -> function()
-    }
 }
 
 @Suppress("UNUSED_PARAMETER")

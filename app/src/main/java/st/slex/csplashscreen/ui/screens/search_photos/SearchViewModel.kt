@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.search_photos
+package st.slex.csplashscreen.ui.screens.search_photos
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

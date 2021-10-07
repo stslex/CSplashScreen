@@ -6,10 +6,10 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.di.key.ViewModelKey
-import st.slex.csplashscreen.ui.detail.DetailPhotoViewModel
-import st.slex.csplashscreen.ui.main.MainScreenViewModel
-import st.slex.csplashscreen.ui.search_photos.SearchViewModel
-import st.slex.csplashscreen.ui.user.UserViewModel
+import st.slex.csplashscreen.ui.screens.detail.DetailPhotoViewModel
+import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
+import st.slex.csplashscreen.ui.screens.search_photos.SearchViewModel
+import st.slex.csplashscreen.ui.screens.user.UserViewModel
 
 @ExperimentalCoroutinesApi
 @Module

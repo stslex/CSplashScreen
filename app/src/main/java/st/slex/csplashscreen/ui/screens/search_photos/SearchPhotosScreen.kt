@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.search_photos
+package st.slex.csplashscreen.ui.screens.search_photos
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
@@ -10,8 +10,8 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.search.QuerySearch
-import st.slex.csplashscreen.ui.collection.LazyCollectionPhotosColumn
 import st.slex.csplashscreen.ui.components.MyAppTextFieldColors
+import st.slex.csplashscreen.ui.screens.collection.LazyPhotosColumn
 
 @ExperimentalCoilApi
 @ExperimentalPagerApi
@@ -30,7 +30,7 @@ fun SearchPhotosScreen(
     Scaffold(
         topBar = { TopAppBarSearch(querySearch = querySearch) { viewModel.setQueryPhotosSearch(it) } }
     ) {
-        LazyCollectionPhotosColumn(
+        LazyPhotosColumn(
             lazyPagingPhotosItems = lazyPagingPhotosItems,
             navController = navController
         )
@@ -40,7 +40,7 @@ fun SearchPhotosScreen(
 
 
 @Composable
-fun TopAppBarSearch(querySearch: String, search: (QuerySearch) -> Unit) {
+private fun TopAppBarSearch(querySearch: String, search: (QuerySearch) -> Unit) {
     TopAppBar {
         var textInput by remember { mutableStateOf(querySearch) }
         TextField(

@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.search_photos
+package st.slex.csplashscreen.ui.screens.search_photos
 
 import androidx.paging.PagingSource
 import st.slex.csplashscreen.data.model.ui.image.ImageModel

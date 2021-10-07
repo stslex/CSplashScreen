@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.user
+package st.slex.csplashscreen.ui.screens.user
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel

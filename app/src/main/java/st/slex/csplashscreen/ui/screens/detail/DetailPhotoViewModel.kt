@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.detail
+package st.slex.csplashscreen.ui.screens.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

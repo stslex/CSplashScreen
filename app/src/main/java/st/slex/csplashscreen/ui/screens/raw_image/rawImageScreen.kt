@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.raw_image
+package st.slex.csplashscreen.ui.screens.raw_image
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
