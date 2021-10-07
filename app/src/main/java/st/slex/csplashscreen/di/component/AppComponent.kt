@@ -11,14 +11,14 @@ import st.slex.csplashscreen.di.module.AppModule
 import st.slex.csplashscreen.ui.MainActivity
 import javax.inject.Singleton
 
+@ExperimentalCoilApi
 @ExperimentalCoroutinesApi
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
 @Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
 
-    @ExperimentalCoilApi
-    @ExperimentalPagerApi
-    @ExperimentalMaterialApi
     fun inject(activity: MainActivity)
 
     @Component.Builder

@@ -4,45 +4,36 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
-import dagger.Lazy
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.search.QuerySearch
 import st.slex.csplashscreen.ui.components.MyAppTextFieldColors
 import st.slex.csplashscreen.ui.screens.main.LazyPhotosColumn
 import javax.inject.Inject
 
-
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@ExperimentalPagerApi
+@ExperimentalCoroutinesApi
 interface SearchPhotosScreen {
 
-    @ExperimentalCoilApi
-    @ExperimentalMaterialApi
-    @ExperimentalPagerApi
+
     @Composable
     fun BindScreen(
         args: NavBackStackEntry,
-        navController: NavController
+        viewModel: SearchViewModel
     )
 
     class Base @Inject constructor() : SearchPhotosScreen {
 
-        @Inject
-        lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
-
-        @ExperimentalCoilApi
-        @ExperimentalMaterialApi
-        @ExperimentalPagerApi
         @Composable
         override fun BindScreen(
             args: NavBackStackEntry,
-            navController: NavController
+            viewModel: SearchViewModel
         ) {
-            val viewModel: SearchViewModel = viewModel(factory = viewModelFactory.get())
             val query = args.arguments?.getString("query").toString()
             viewModel.setQueryPhotosSearch(QuerySearch.SearchPhotos(query))
             val lazyPagingPhotosItems = viewModel.photosSearch.collectAsLazyPagingItems()
@@ -58,11 +49,12 @@ interface SearchPhotosScreen {
             ) {
                 LazyPhotosColumn(
                     lazyPagingPhotosItems = lazyPagingPhotosItems,
-                    navController = navController
+                    navigation = { destination, args ->
+                        viewModel.navigate(destination, args)
+                    }
                 )
             }
         }
-
 
         @Composable
         private fun TopAppBarSearch(querySearch: String, search: (QuerySearch) -> Unit) {

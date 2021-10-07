@@ -9,10 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -20,43 +17,30 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.*
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.animation.AnimationUtils
-import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photos.QueryPhotos
+import st.slex.csplashscreen.ui.navigation.NavigationState
 import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
 import javax.inject.Inject
 
-
+@ExperimentalCoilApi
+@ExperimentalCoroutinesApi
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
 interface MainScreen {
 
-    @ExperimentalCoilApi
-    @ExperimentalCoroutinesApi
-    @ExperimentalPagerApi
-    @ExperimentalMaterialApi
     @Composable
-    fun BindScreen(
-        args: NavBackStackEntry,
-        navController: NavController
-    )
+    fun BindScreen(args: NavBackStackEntry, viewModel: MainScreenViewModel)
 
     class Base @Inject constructor() : MainScreen {
 
-        @Inject
-        lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
-
-        @ExperimentalCoilApi
-        @ExperimentalCoroutinesApi
-        @ExperimentalPagerApi
-        @ExperimentalMaterialApi
         @Composable
-        override fun BindScreen(args: NavBackStackEntry, navController: NavController) {
-            val viewModel: MainScreenViewModel = viewModel(factory = viewModelFactory.get())
-
+        override fun BindScreen(args: NavBackStackEntry, viewModel: MainScreenViewModel) {
             viewModel.setQueryCollections(listOf(GET_COLLECTIONS))
             viewModel.setQueryPhotos(QueryPhotos.AllPhotos)
 
@@ -76,20 +60,15 @@ interface MainScreen {
             MainScreenPager(
                 lazyPagingPhotosItems,
                 lazyPagingCollectionsItems,
-                navController
+                viewModel
             )
         }
 
-        @ExperimentalCoroutinesApi
-        @SuppressLint("RestrictedApi")
-        @ExperimentalMaterialApi
-        @ExperimentalPagerApi
-        @ExperimentalCoilApi
         @Composable
         private fun MainScreenPager(
             lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
             lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
-            navController: NavController
+            viewModel: MainScreenViewModel
         ) {
             val scope = rememberCoroutineScope()
             val pagerState = rememberPagerState()
@@ -100,13 +79,13 @@ interface MainScreen {
                 }
             }
 
-            val pages = listOf(PagerMainTab.Photos(), PagerMainTab.Collections())
+            val pages = listOf(PagerMainTab.Photos, PagerMainTab.Collections)
 
             Scaffold(
                 floatingActionButtonPosition = FabPosition.Center,
                 floatingActionButton = {
                     MainScreenFloatingActionButton {
-                        navController.navigate("search_photos/ ")
+                        viewModel.navigate(NavigationState.SearchPhotosScreen, listOf(" "))
                     }
                 }
             ) {
@@ -123,7 +102,7 @@ interface MainScreen {
                                 Tab(
                                     text = {
                                         Text(
-                                            text = model.getTitle(),
+                                            text = model.title,
                                             style = Typography.subtitle1
                                         )
                                     },
@@ -146,12 +125,13 @@ interface MainScreen {
                                     items(lazyPagingPhotosItems) { item ->
                                         ImageItem(
                                             item = item,
-                                            navController = navController,
                                             modifier = Modifier.animationUtilPager(
                                                 scope = this@HorizontalPager,
                                                 page = page
                                             )
-                                        )
+                                        ) { destination, args ->
+                                            viewModel.navigate(destination, args)
+                                        }
                                     }
                                     lazyPagingPhotosItems.checkState(this)
                                 }
@@ -160,11 +140,13 @@ interface MainScreen {
                                     items(lazyPagingCollectionsItems) { item ->
                                         CollectionItem(
                                             item = item,
-                                            navController = navController,
                                             modifier = Modifier.animationUtilPager(
                                                 scope = this@HorizontalPager,
                                                 page = page
-                                            )
+                                            ),
+                                            navigation = { destination, args ->
+                                                viewModel.navigate(destination, args)
+                                            }
                                         )
 
                                     }
@@ -179,7 +161,6 @@ interface MainScreen {
         }
 
         @SuppressLint("RestrictedApi")
-        @ExperimentalPagerApi
         private fun Modifier.animationUtilPager(scope: PagerScope, page: Int): Modifier = this
             .graphicsLayer {
                 val pageOffset = scope.calculateCurrentOffsetForPage(page)

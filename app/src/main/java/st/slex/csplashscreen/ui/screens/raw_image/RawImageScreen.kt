@@ -16,9 +16,9 @@ import coil.compose.rememberImagePainter
 import javax.inject.Inject
 
 
+@ExperimentalCoilApi
 interface RawImageScreen {
 
-    @ExperimentalCoilApi
     @Composable
     fun BindScreen(
         args: NavBackStackEntry,
@@ -27,7 +27,6 @@ interface RawImageScreen {
 
     class Base @Inject constructor() : RawImageScreen {
 
-        @ExperimentalCoilApi
         @Composable
         override fun BindScreen(args: NavBackStackEntry, navController: NavController) {
             Row(

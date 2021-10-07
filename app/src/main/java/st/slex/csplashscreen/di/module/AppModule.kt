@@ -1,13 +1,19 @@
 package st.slex.csplashscreen.di.module
 
 import android.app.Application
+import androidx.compose.material.ExperimentalMaterialApi
 import coil.ImageLoader
+import coil.annotation.ExperimentalCoilApi
+import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Singleton
 
+@ExperimentalCoilApi
 @ExperimentalCoroutinesApi
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
 @Module(
     includes = [
         NavigationModule::class,

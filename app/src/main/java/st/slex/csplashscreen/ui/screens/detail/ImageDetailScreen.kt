@@ -18,50 +18,41 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
-import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.R
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.ui.core.UIResult
+import st.slex.csplashscreen.ui.navigation.NavigationState
 import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
 interface ImageDetailScreen {
 
-    @ExperimentalCoroutinesApi
-    @ExperimentalCoilApi
-    @ExperimentalMaterialApi
+
     @Composable
     fun BindScreen(
         args: NavBackStackEntry,
-        navController: NavController
+        viewModel: DetailPhotoViewModel
     )
 
     class Base @Inject constructor() : ImageDetailScreen {
 
-        @Inject
-        lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
-
-        @ExperimentalCoroutinesApi
-        @ExperimentalCoilApi
-        @ExperimentalMaterialApi
         @Composable
         override fun BindScreen(
             args: NavBackStackEntry,
-            navController: NavController
+            viewModel: DetailPhotoViewModel
         ) {
-            val viewModel: DetailPhotoViewModel = viewModel(factory = viewModelFactory.get())
             val url = args.arguments?.getString("url").toString()
             val id = args.arguments?.getString("imageId").toString()
 
@@ -70,12 +61,16 @@ interface ImageDetailScreen {
             }.collectAsState(initial = UIResult.Loading)
 
             Column {
-                BindTopImageHead(url = url, navController = navController)
+                BindTopImageHead(url = url, navigation = { destination, args ->
+                    viewModel.navigate(destination, args)
+                })
                 Spacer(modifier = Modifier.padding(4.dp))
                 when (uiResult) {
                     is UIResult.Success -> {
                         val image = (uiResult as UIResult.Success<ImageModel>).data
-                        BindDetailImageBody(image = image, navController = navController)
+                        BindDetailImageBody(image = image, navigation = { destination, args ->
+                            viewModel.navigate(destination, args)
+                        })
                     }
                     is UIResult.Loading -> {
                         BindDetailImageLoading(modifier = Modifier.align(Alignment.CenterHorizontally))
@@ -87,34 +82,22 @@ interface ImageDetailScreen {
             }
         }
 
-        @ExperimentalMaterialApi
-        @ExperimentalCoilApi
-        @ExperimentalCoroutinesApi
-        @JvmOverloads
         @Composable
-        fun Bind(
-            args: NavBackStackEntry,
-            navController: NavController,
-            viewModel: DetailPhotoViewModel = viewModel(factory = viewModelFactory.get())
+        private fun BindDetailImageBody(
+            image: ImageModel,
+            navigation: (NavigationState, List<String>) -> Unit
         ) {
-
-        }
-
-        @ExperimentalCoilApi
-        @ExperimentalMaterialApi
-        @Composable
-        private fun BindDetailImageBody(image: ImageModel, navController: NavController) {
             UserDetailImageHead(
                 username = image.user?.username.toString(),
                 url = image.user?.profile_image?.medium.toString(),
-                navController = navController
+                navigation = navigation
             )
             Spacer(modifier = Modifier.size(16.dp))
             Divider()
             Spacer(modifier = Modifier.size(16.dp))
             if (!image.tags.isNullOrEmpty()) {
                 BindDetailImageBodyTags(image.tags) {
-                    navController.navigate("search_photos/$it")
+                    navigation(NavigationState.SearchPhotosScreen, listOf(it))
                 }
                 Spacer(modifier = Modifier.size(16.dp))
                 Divider()
@@ -123,13 +106,11 @@ interface ImageDetailScreen {
 
         }
 
-        @ExperimentalMaterialApi
-        @ExperimentalCoilApi
         @Composable
-        fun UserDetailImageHead(
+        private fun UserDetailImageHead(
             url: String,
             username: String,
-            navController: NavController
+            navigation: (NavigationState, List<String>) -> Unit
         ) {
             ConstraintLayout(
                 modifier = Modifier
@@ -146,7 +127,7 @@ interface ImageDetailScreen {
                     },
                     url = url,
                     username = username,
-                    navController = navController
+                    navigation = navigation
                 )
 
                 Surface(
@@ -179,16 +160,18 @@ interface ImageDetailScreen {
 
         }
 
-        @ExperimentalCoilApi
         @Composable
-        private fun BindTopImageHead(url: String, navController: NavController) {
+        private inline fun BindTopImageHead(
+            url: String,
+            crossinline navigation: (NavigationState, List<String>) -> Unit
+        ) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
                     .clickable {
                         val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                        navController.navigate("raw_image/$encodedUrl")
+                        navigation(NavigationState.RawImageScreen, listOf(encodedUrl))
                     },
                 painter = rememberImagePainter(
                     data = url,
@@ -201,7 +184,6 @@ interface ImageDetailScreen {
             )
         }
 
-        @ExperimentalMaterialApi
         @Composable
         private inline fun BindDetailImageBodyTags(
             tags: List<TagModel>,

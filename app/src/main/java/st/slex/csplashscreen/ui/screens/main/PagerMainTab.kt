@@ -2,13 +2,13 @@ package st.slex.csplashscreen.ui.screens.main
 
 sealed interface PagerMainTab {
 
-    fun getTitle(): String
+    val title: String
 
-    class Photos(val data: String = "Photos") : PagerMainTab {
-        override fun getTitle(): String = data
+    object Photos : PagerMainTab {
+        override val title: String = "Photos"
     }
 
-    class Collections(val data: String = "Collections") : PagerMainTab {
-        override fun getTitle(): String = data
+    object Collections : PagerMainTab {
+        override val title: String = "Collections"
     }
 }

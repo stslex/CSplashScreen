@@ -3,17 +3,28 @@ package st.slex.csplashscreen.ui.screens.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photos.QueryPhotos
+import st.slex.csplashscreen.ui.navigation.NavigationActions
+import st.slex.csplashscreen.ui.navigation.NavigationState
+import st.slex.csplashscreen.ui.navigation.Navigator
 import javax.inject.Inject
 import javax.inject.Provider
 
+@ExperimentalCoroutinesApi
 class MainScreenViewModel @Inject constructor(
+    private val navigator: Navigator,
+    private val actions: NavigationActions,
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
     private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>
 ) : ViewModel() {
+
+    fun navigate(destination: NavigationState, args: List<String>) {
+        navigator.navigate(actions.navigation(destination, args))
+    }
 
     private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()

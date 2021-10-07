@@ -10,47 +10,39 @@ sealed interface NavigationDestination {
     val args: List<NamedNavArgument>
 
     object ImageDetailScreen : NavigationDestination {
-        override val destination: String
-            get() = "detail/{url}/{imageId}"
-        override val args: List<NamedNavArgument>
-            get() = listOf(
-                navArgument("url") { type = NavType.StringType },
-                navArgument("imageId") { type = NavType.StringType }
-            )
+        override val destination: String = "detail/{url}/{imageId}"
+        override val args: List<NamedNavArgument> = listOf(
+            navArgument("url") { type = NavType.StringType },
+            navArgument("imageId") { type = NavType.StringType }
+        )
     }
 
     object MainScreen : NavigationDestination {
-        override val destination: String
-            get() = "mainScreen"
-        override val args: List<NamedNavArgument>
-            get() = emptyList()
+        override val destination: String = "mainScreen"
+        override val args: List<NamedNavArgument> = emptyList()
     }
 
     object SingleCollectionScreen : NavigationDestination {
-        override val destination: String
-            get() = "collection/{collectionId}"
-        override val args: List<NamedNavArgument>
-            get() = listOf(navArgument("collectionId") { type = NavType.StringType })
+        override val destination: String = "collection/{collectionId}"
+        override val args: List<NamedNavArgument> =
+            listOf(navArgument("collectionId") { type = NavType.StringType })
     }
 
     object RawImageScreen : NavigationDestination {
-        override val destination: String
-            get() = "raw_image/{url}"
-        override val args: List<NamedNavArgument>
-            get() = listOf(navArgument("url") { type = NavType.StringType })
+        override val destination: String = "raw_image/{url}"
+        override val args: List<NamedNavArgument> =
+            listOf(navArgument("url") { type = NavType.StringType })
     }
 
     object SearchPhotosScreen : NavigationDestination {
-        override val destination: String
-            get() = "search_photos/{query}"
-        override val args: List<NamedNavArgument>
-            get() = listOf(navArgument("query") { type = NavType.StringType })
+        override val destination: String = "search_photos/{query}"
+        override val args: List<NamedNavArgument> =
+            listOf(navArgument("query") { type = NavType.StringType })
     }
 
     object UserScreen : NavigationDestination {
-        override val destination: String
-            get() = "user/{username}"
-        override val args: List<NamedNavArgument>
-            get() = listOf(navArgument("username") { type = NavType.StringType })
+        override val destination: String = "user/{username}"
+        override val args: List<NamedNavArgument> =
+            listOf(navArgument("username") { type = NavType.StringType })
     }
 }
