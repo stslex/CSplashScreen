@@ -23,4 +23,20 @@ interface PhotosService {
         @Query(QUERY_PAGE_SIZE) page_size: Int,
         @Query(QUERY_API_KEY) api_key: String
     ): Response<List<RemoteImageModel>>
+
+    @GET("$GET_USERS/{username}/$GET_PHOTOS")
+    suspend fun getUserPhotos(
+        @Path("username") username: String,
+        @Query(QUERY_PAGE) page: Int,
+        @Query(QUERY_PAGE_SIZE) page_size: Int,
+        @Query(QUERY_API_KEY) api_key: String
+    ): Response<List<RemoteImageModel>>
+
+    @GET("$GET_USERS/{username}/$GET_LIKES")
+    suspend fun getUserLikes(
+        @Path("username") username: String,
+        @Query(QUERY_PAGE) page: Int,
+        @Query(QUERY_PAGE_SIZE) page_size: Int,
+        @Query(QUERY_API_KEY) api_key: String
+    ): Response<List<RemoteImageModel>>
 }

@@ -10,7 +10,6 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.search.QuerySearch
-import st.slex.csplashscreen.ui.MainViewModel
 import st.slex.csplashscreen.ui.collection.LazyCollectionPhotosColumn
 import st.slex.csplashscreen.ui.components.MyAppTextFieldColors
 
@@ -20,7 +19,7 @@ import st.slex.csplashscreen.ui.components.MyAppTextFieldColors
 @ExperimentalCoroutinesApi
 @Composable
 fun SearchPhotosScreen(
-    viewModel: MainViewModel,
+    viewModel: SearchViewModel,
     navController: NavController,
     querySearch: String
 ) {

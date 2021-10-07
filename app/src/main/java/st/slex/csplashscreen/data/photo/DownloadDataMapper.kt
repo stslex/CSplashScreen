@@ -7,12 +7,13 @@ import st.slex.csplashscreen.data.model.ui.DownloadModel
 import st.slex.csplashscreen.ui.core.UIResult
 import javax.inject.Inject
 
-class DownloadDataMapper @Inject constructor() :
-    Mapper.DataToUI<RemoteDownloadModel, UIResult<DownloadModel>> {
+interface DownloadDataMapper : Mapper.DataToUI<RemoteDownloadModel, UIResult<DownloadModel>> {
 
-    override fun map(data: RemoteDownloadModel): UIResult<DownloadModel> =
-        UIResult.Success(data.toDownloadModel())
+    class Base @Inject constructor() : DownloadDataMapper {
+        override fun map(data: RemoteDownloadModel): UIResult<DownloadModel> =
+            UIResult.Success(data.toDownloadModel())
 
-    override fun map(exception: Exception): UIResult<DownloadModel> =
-        UIResult.Failure(exception)
+        override fun map(exception: Exception): UIResult<DownloadModel> =
+            UIResult.Failure(exception)
+    }
 }

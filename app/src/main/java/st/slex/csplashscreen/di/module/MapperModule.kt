@@ -1,24 +1,20 @@
 package st.slex.csplashscreen.di.module
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import st.slex.csplashscreen.data.core.Mapper
-import st.slex.csplashscreen.data.model.remote.download.RemoteDownloadModel
-import st.slex.csplashscreen.data.model.remote.image.RemoteImageModel
-import st.slex.csplashscreen.data.model.ui.DownloadModel
-import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photo.DownloadDataMapper
 import st.slex.csplashscreen.data.photo.PhotoDataMapper
-import st.slex.csplashscreen.ui.core.UIResult
+import st.slex.csplashscreen.data.user.UserDataMapper
 
 @Module
-class MapperModule {
+interface MapperModule {
 
-    @Provides
-    fun providesPhotoDataMapper(): Mapper.DataToUI<RemoteImageModel, UIResult<ImageModel>> =
-        PhotoDataMapper()
+    @Binds
+    fun bindsPhotoDataMapper(mapper: PhotoDataMapper.Base): PhotoDataMapper
 
-    @Provides
-    fun providesDownloadDataMapper(): Mapper.DataToUI<RemoteDownloadModel, UIResult<DownloadModel>> =
-        DownloadDataMapper()
+    @Binds
+    fun bindsDownloadDataMapper(mapper: DownloadDataMapper.Base): DownloadDataMapper
+
+    @Binds
+    fun bindsUserDataMapper(mapper: UserDataMapper.Base): UserDataMapper
 }

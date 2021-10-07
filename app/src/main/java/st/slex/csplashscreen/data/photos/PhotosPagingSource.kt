@@ -31,15 +31,19 @@ class PhotosPagingSource @AssistedInject constructor(
                     service.getPhotos(pageNumber, pageSize, API_KEY)
                 is QueryPhotos.CollectionPhotos ->
                     service.getPhotos(query.query, pageNumber, pageSize, API_KEY)
-                is QueryPhotos.EmptyQuery -> null
+                is QueryPhotos.UserPhotos -> {
+                    service.getUserPhotos(query.username, pageNumber, pageSize, API_KEY)
+                }
+                is QueryPhotos.UserLikes -> {
+                    service.getUserLikes(query.username, pageNumber, pageSize, API_KEY)
+                }
+                is QueryPhotos.EmptyQuery -> {
+                    return LoadResult.Invalid()
+                }
             }
 
-            return if (response?.body() != null && response.isSuccessful) {
-
-                val photos = response.body()!!.map {
-                    it.toImageModel()
-                }
-
+            return if (response.isSuccessful) {
+                val photos = response.body()!!.map { it.toImageModel() }
                 val nextPageNumber = if (photos.isEmpty()) null else pageNumber + 1
                 val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
                 LoadResult.Page(photos, prevPageNumber, nextPageNumber)

@@ -8,6 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -21,11 +22,15 @@ import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.appComponent
 import st.slex.csplashscreen.ui.collection.Collection
+import st.slex.csplashscreen.ui.detail.DetailPhotoViewModel
 import st.slex.csplashscreen.ui.detail.ImageDetailScreen
 import st.slex.csplashscreen.ui.main.MainScreen
+import st.slex.csplashscreen.ui.main.MainScreenViewModel
 import st.slex.csplashscreen.ui.raw_image.RawImageScreen
 import st.slex.csplashscreen.ui.search_photos.SearchPhotosScreen
+import st.slex.csplashscreen.ui.search_photos.SearchViewModel
 import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
+import st.slex.csplashscreen.ui.user.UserScreen
 import javax.inject.Inject
 
 @ExperimentalCoilApi
@@ -37,7 +42,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
 
-    private val viewModel: MainViewModel by viewModels { viewModelFactory.get() }
+    private val viewModel: DetailPhotoViewModel by viewModels { viewModelFactory.get() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
@@ -49,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold {
                         NavigationComponent(
                             navController = navController,
-                            viewModel = viewModel
+                            viewModelFactory = viewModelFactory.get()
                         )
                     }
                 }
@@ -63,12 +68,16 @@ class MainActivity : ComponentActivity() {
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @Composable
-fun NavigationComponent(navController: NavHostController, viewModel: MainViewModel) {
+fun NavigationComponent(
+    navController: NavHostController,
+    viewModelFactory: ViewModelProvider.Factory
+) {
     NavHost(
         navController = navController,
         startDestination = "main"
     ) {
         composable("main") {
+            val viewModel: MainScreenViewModel = viewModel(factory = viewModelFactory)
             MainScreen(navController, viewModel)
         }
 
@@ -79,12 +88,10 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
                 navArgument("imageId") { type = NavType.StringType }
             )
         ) {
-
+            val viewModel: DetailPhotoViewModel = viewModel(factory = viewModelFactory)
             val imageId = it.arguments?.getString("imageId").toString()
             val url = it.arguments?.getString("url").toString()
-
             viewModel.getCurrentPhoto(imageId)
-
             ImageDetailScreen(
                 url = url,
                 navController = navController,
@@ -96,6 +103,7 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
             route = "collection/{collectionId}",
             arguments = listOf(navArgument("collectionId") { type = NavType.StringType })
         ) {
+            val viewModel: MainScreenViewModel = viewModel(factory = viewModelFactory)
             Collection(navController, viewModel, it.arguments?.getString("collectionId").toString())
         }
 
@@ -110,6 +118,7 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
             route = "search_photos/{query}",
             arguments = listOf(navArgument("query") { type = NavType.StringType })
         ) {
+            val viewModel: SearchViewModel = viewModel(factory = viewModelFactory)
             var query = it.arguments?.getString("query").toString()
             if (query == " ") query = ""
             SearchPhotosScreen(
@@ -117,6 +126,18 @@ fun NavigationComponent(navController: NavHostController, viewModel: MainViewMod
                 navController = navController,
                 querySearch = query
             )
+        }
+
+        composable(
+            route = "user/{username}",
+            arguments = listOf(navArgument("username") { type = NavType.StringType })
+        ) {
+            val username = it.arguments?.getString("username").toString()
+            UserScreen(
+                navController = navController,
+                username = username
+            )
+
         }
     }
 }

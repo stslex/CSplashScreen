@@ -13,8 +13,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photos.QueryPhotos
-import st.slex.csplashscreen.ui.MainViewModel
 import st.slex.csplashscreen.ui.main.ImageItem
+import st.slex.csplashscreen.ui.main.MainScreenViewModel
 import st.slex.csplashscreen.ui.main.checkState
 import st.slex.csplashscreen.ui.main.loadState
 
@@ -23,7 +23,7 @@ import st.slex.csplashscreen.ui.main.loadState
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @Composable
-fun Collection(navController: NavController, viewModel: MainViewModel, collectionId: String) {
+fun Collection(navController: NavController, viewModel: MainScreenViewModel, collectionId: String) {
     viewModel.setQueryPhotos(QueryPhotos.CollectionPhotos(collectionId))
     val lazyPagingPhotosItems = viewModel.photos.collectAsLazyPagingItems()
     LazyCollectionPhotosColumn(

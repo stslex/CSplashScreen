@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photos.QueryPhotos
-import st.slex.csplashscreen.ui.MainViewModel
 import st.slex.csplashscreen.ui.components.ImageItemLoading
 import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
@@ -36,7 +35,10 @@ import st.slex.csplashscreen.utiles.GET_COLLECTIONS
 @SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalCoroutinesApi
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainViewModel) {
+fun MainScreen(
+    navController: NavController,
+    viewModel: MainScreenViewModel
+) {
 
     val queryCollections = listOf(GET_COLLECTIONS)
 

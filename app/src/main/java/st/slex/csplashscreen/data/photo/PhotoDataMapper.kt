@@ -8,12 +8,13 @@ import st.slex.csplashscreen.ui.core.UIResult
 import javax.inject.Inject
 
 
-class PhotoDataMapper @Inject constructor() :
-    DataToUI<RemoteImageModel, UIResult<ImageModel>> {
+interface PhotoDataMapper : DataToUI<RemoteImageModel, UIResult<ImageModel>> {
 
-    override fun map(data: RemoteImageModel): UIResult<ImageModel> =
-        UIResult.Success(data = data.toImageModel())
+    class Base @Inject constructor() : PhotoDataMapper {
+        override fun map(data: RemoteImageModel): UIResult<ImageModel> =
+            UIResult.Success(data = data.toImageModel())
 
-    override fun map(exception: Exception): UIResult<ImageModel> =
-        UIResult.Failure(exception = exception)
+        override fun map(exception: Exception): UIResult<ImageModel> =
+            UIResult.Failure(exception = exception)
+    }
 }
