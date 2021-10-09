@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
-import st.slex.csplashscreen.ui.navigation.NavigationState
 import st.slex.csplashscreen.ui.theme.Shapes
 
 @ExperimentalMaterialApi
@@ -24,7 +24,7 @@ fun UserImageHeadWithUserName(
     modifier: Modifier,
     url: String,
     username: String,
-    navigation: (NavigationState, List<String>) -> Unit
+    navController: NavController
 ) {
     Surface(
         modifier = modifier

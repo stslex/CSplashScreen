@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -23,185 +24,205 @@ import kotlinx.coroutines.launch
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photos.QueryPhotos
-import st.slex.csplashscreen.ui.navigation.NavigationState
+import st.slex.csplashscreen.ui.navigation.NavDest
 import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
-import javax.inject.Inject
+
 
 @ExperimentalCoilApi
 @ExperimentalCoroutinesApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
-interface MainScreen {
+@Composable
+fun MainScreen(
+    args: NavBackStackEntry,
+    navController: NavController,
+    viewModel: MainScreenViewModel
+) {
+    viewModel.apply {
+        setQueryCollections(listOf(GET_COLLECTIONS))
+        setQueryPhotos(QueryPhotos.AllPhotos)
+    }
 
-    @Composable
-    fun BindScreen(args: NavBackStackEntry, viewModel: MainScreenViewModel)
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = MaterialTheme.colors.isLight
 
-    class Base @Inject constructor() : MainScreen {
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = useDarkIcons
+        )
+    }
 
-        @Composable
-        override fun BindScreen(args: NavBackStackEntry, viewModel: MainScreenViewModel) {
-            viewModel.setQueryCollections(listOf(GET_COLLECTIONS))
-            viewModel.setQueryPhotos(QueryPhotos.AllPhotos)
+    MainScreenPager(
+        lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
+        lazyPagingCollectionsItems = viewModel::collections.get().collectAsLazyPagingItems(),
+        navController = navController
+    )
+}
 
-            val lazyPagingPhotosItems = viewModel.photos.collectAsLazyPagingItems()
-            val lazyPagingCollectionsItems = viewModel.collections.collectAsLazyPagingItems()
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@ExperimentalPagerApi
+@Composable
+private fun MainScreenPager(
+    lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
+    lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
+    navController: NavController
+) {
+    val pagerState = rememberPagerState()
 
-            val systemUiController = rememberSystemUiController()
-            val useDarkIcons = MaterialTheme.colors.isLight
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            AnalyticsService.sendPageSelectedEvent(page)
+        }
+    }
 
-            SideEffect {
-                systemUiController.setSystemBarsColor(
-                    color = Color.Transparent,
-                    darkIcons = useDarkIcons
-                )
+    val pages = listOf(PagerMainTab.Photos, PagerMainTab.Collections)
+
+    Scaffold(
+        floatingActionButtonPosition = FabPosition.Center,
+        floatingActionButton = {
+            MainScreenFloatingActionButton {
+                navController.navigate("${NavDest.SearchPhotosScreen}/ ")
             }
-
-            MainScreenPager(
-                lazyPagingPhotosItems,
-                lazyPagingCollectionsItems,
-                viewModel
+        }
+    ) {
+        Column {
+            TabRow(pagerState = pagerState, pages = pages)
+            Pager(
+                lazyPagingPhotosItems = lazyPagingPhotosItems,
+                lazyPagingCollectionsItems = lazyPagingCollectionsItems,
+                navController = navController,
+                pagerState = pagerState,
+                pages = pages
             )
         }
+    }
 
-        @Composable
-        private fun MainScreenPager(
-            lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
-            lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
-            viewModel: MainScreenViewModel
-        ) {
-            val scope = rememberCoroutineScope()
-            val pagerState = rememberPagerState()
+}
 
-            LaunchedEffect(pagerState) {
-                snapshotFlow { pagerState.currentPage }.collect { page ->
-                    AnalyticsService.sendPageSelectedEvent(page)
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@ExperimentalPagerApi
+@Composable
+private fun Pager(
+    lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
+    lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
+    navController: NavController,
+    pagerState: PagerState,
+    pages: List<PagerMainTab>
+) {
+    HorizontalPager(
+        count = pages.size,
+        state = pagerState
+    ) { page ->
+        LazyColumn {
+            when (pages[page]) {
+                is PagerMainTab.Photos -> {
+                    items(lazyPagingPhotosItems) { item ->
+                        ImageItem(
+                            item = item,
+                            modifier = Modifier.animationUtilPager(
+                                scope = this@HorizontalPager,
+                                page = page
+                            ),
+                            navController = navController
+                        )
+                    }
+                    lazyPagingPhotosItems.checkState(this)
+                }
+
+                is PagerMainTab.Collections -> {
+                    items(lazyPagingCollectionsItems) { item ->
+                        CollectionItem(
+                            item = item,
+                            modifier = Modifier.animationUtilPager(
+                                scope = this@HorizontalPager,
+                                page = page
+                            ),
+                            navController = navController
+                        )
+
+                    }
+                    lazyPagingCollectionsItems.checkState(this)
                 }
             }
-
-            val pages = listOf(PagerMainTab.Photos, PagerMainTab.Collections)
-
-            Scaffold(
-                floatingActionButtonPosition = FabPosition.Center,
-                floatingActionButton = {
-                    MainScreenFloatingActionButton {
-                        viewModel.navigate(NavigationState.SearchPhotosScreen, listOf(" "))
-                    }
-                }
-            ) {
-                Column {
-                    TabRow(
-                        selectedTabIndex = pagerState.currentPage,
-                        indicator = { tabPositions ->
-                            TabRowDefaults.Indicator(
-                                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-                            )
-                        },
-                        tabs = {
-                            pages.forEachIndexed { index, model ->
-                                Tab(
-                                    text = {
-                                        Text(
-                                            text = model.title,
-                                            style = Typography.subtitle1
-                                        )
-                                    },
-                                    selected = pagerState.currentPage == index,
-                                    onClick = {
-                                        scope.launch { pagerState.animateScrollToPage(index) }
-                                    }
-                                )
-                            }
-                        }
-                    )
-
-                    HorizontalPager(
-                        count = pages.size,
-                        state = pagerState
-                    ) { page ->
-                        LazyColumn {
-                            when (pages[page]) {
-                                is PagerMainTab.Photos -> {
-                                    items(lazyPagingPhotosItems) { item ->
-                                        ImageItem(
-                                            item = item,
-                                            modifier = Modifier.animationUtilPager(
-                                                scope = this@HorizontalPager,
-                                                page = page
-                                            )
-                                        ) { destination, args ->
-                                            viewModel.navigate(destination, args)
-                                        }
-                                    }
-                                    lazyPagingPhotosItems.checkState(this)
-                                }
-
-                                is PagerMainTab.Collections -> {
-                                    items(lazyPagingCollectionsItems) { item ->
-                                        CollectionItem(
-                                            item = item,
-                                            modifier = Modifier.animationUtilPager(
-                                                scope = this@HorizontalPager,
-                                                page = page
-                                            ),
-                                            navigation = { destination, args ->
-                                                viewModel.navigate(destination, args)
-                                            }
-                                        )
-
-                                    }
-                                    lazyPagingCollectionsItems.checkState(this)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
         }
-
-        @SuppressLint("RestrictedApi")
-        private fun Modifier.animationUtilPager(scope: PagerScope, page: Int): Modifier = this
-            .graphicsLayer {
-                val pageOffset = scope.calculateCurrentOffsetForPage(page)
-                AnimationUtils
-                    .lerp(
-                        0.85f,
-                        1f,
-                        1f - pageOffset.coerceIn(0f, 1f)
-                    )
-                    .also { scale ->
-                        scaleX = scale
-                        scaleY = scale
-                    }
-                alpha = AnimationUtils.lerp(
-                    0.5f,
-                    1f,
-                    1f - pageOffset.coerceIn(0f, 1f)
-                )
-            }
-            .aspectRatio(1f)
-
-        @Composable
-        private inline fun MainScreenFloatingActionButton(crossinline onClick: () -> Unit) {
-            ExtendedFloatingActionButton(
-                text = {
-                    Text(
-                        text = "search photos",
-                        textAlign = TextAlign.Center,
-                    )
-                },
-                onClick = { onClick() }
-            )
-        }
-
-        @Suppress("UNUSED_PARAMETER")
-        object AnalyticsService {
-            fun sendPageSelectedEvent(page: Int) = Unit
-        }
-
     }
 }
+
+@ExperimentalPagerApi
+@Composable
+private fun TabRow(pagerState: PagerState, pages: List<PagerMainTab>) {
+    val scope = rememberCoroutineScope()
+    TabRow(
+        selectedTabIndex = pagerState.currentPage,
+        indicator = { tabPositions ->
+            TabRowDefaults.Indicator(
+                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+            )
+        },
+        tabs = {
+            pages.forEachIndexed { index, model ->
+                Tab(
+                    text = {
+                        Text(
+                            text = model.title,
+                            style = Typography.subtitle1
+                        )
+                    },
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        scope.launch { pagerState.animateScrollToPage(index) }
+                    }
+                )
+            }
+        }
+    )
+}
+
+@ExperimentalPagerApi
+@SuppressLint("RestrictedApi")
+private fun Modifier.animationUtilPager(scope: PagerScope, page: Int): Modifier = this
+    .graphicsLayer {
+        val pageOffset = scope.calculateCurrentOffsetForPage(page)
+        AnimationUtils
+            .lerp(
+                0.85f,
+                1f,
+                1f - pageOffset.coerceIn(0f, 1f)
+            )
+            .also { scale ->
+                scaleX = scale
+                scaleY = scale
+            }
+        alpha = AnimationUtils.lerp(
+            0.5f,
+            1f,
+            1f - pageOffset.coerceIn(0f, 1f)
+        )
+    }
+    .aspectRatio(1f)
+
+@Composable
+private inline fun MainScreenFloatingActionButton(crossinline onClick: () -> Unit) {
+    ExtendedFloatingActionButton(
+        text = {
+            Text(
+                text = "search photos",
+                textAlign = TextAlign.Center,
+            )
+        },
+        onClick = { onClick() }
+    )
+}
+
+@Suppress("UNUSED_PARAMETER")
+object AnalyticsService {
+    fun sendPageSelectedEvent(page: Int) = Unit
+}
+
 
 
 

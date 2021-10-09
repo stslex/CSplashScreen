@@ -2,9 +2,6 @@ package st.slex.csplashscreen.ui.navigation
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -25,118 +22,84 @@ import st.slex.csplashscreen.ui.screens.search_photos.SearchPhotosScreen
 import st.slex.csplashscreen.ui.screens.search_photos.SearchViewModel
 import st.slex.csplashscreen.ui.screens.user.UserScreen
 import st.slex.csplashscreen.ui.screens.user.UserViewModel
-import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 @ExperimentalCoilApi
-@ExperimentalPagerApi
 @ExperimentalMaterialApi
-interface NavigationComponent {
-
-    @Composable
-    fun InitNavHost()
-
-    class Base @Inject constructor(
-        private val viewModelFactory: ViewModelProvider.Factory,
-        private val navigator: Navigator
-    ) : NavigationComponent {
-
-        @Inject
-        lateinit var detailScreen: Lazy<ImageDetailScreen>
-
-        @Inject
-        lateinit var mainScreen: Lazy<MainScreen>
-
-        @Inject
-        lateinit var collectionScreen: Lazy<SingleCollectionScreen>
-
-        @Inject
-        lateinit var imageScreen: Lazy<RawImageScreen>
-
-        @Inject
-        lateinit var searchPhotosScreen: Lazy<SearchPhotosScreen>
-
-        @Inject
-        lateinit var userScreen: Lazy<UserScreen>
-
-        @Composable
-        override fun InitNavHost() = SetNavHost()
-
-
-        @Composable
-        private fun SetNavHost(
-            navController: NavHostController = rememberNavController()
-        ) {
-            val lifecycleOwner = LocalLifecycleOwner.current
-            val navigatorState by navigator.navActions.asLifecycleAwareState(
-                lifecycleOwner = lifecycleOwner,
-                initialState = null
-            )
-
-            LaunchedEffect(navigatorState) {
-                navigatorState?.let {
-                    navController.navigate(it.destination)
-                }
-            }
-
-            NavHost(
+@ExperimentalPagerApi
+@ExperimentalCoroutinesApi
+@Composable
+fun NavComponent(
+    navController: NavHostController = rememberNavController(),
+    viewModelFactory: Lazy<ViewModelProvider.Factory>
+) {
+    NavHost(
+        navController = navController,
+        startDestination = NavDest.MainScreen.route
+    ) {
+        composable(route = NavDest.MainScreen.route) {
+            val viewModel: MainScreenViewModel = viewModel(factory = viewModelFactory.get())
+            MainScreen(
+                args = it,
                 navController = navController,
-                startDestination = NavigationDestination.MainScreen.destination
-            ) {
-                composable(route = NavigationDestination.MainScreen.destination) {
-                    val viewModel: MainScreenViewModel = viewModel(factory = viewModelFactory)
-                    mainScreen.get().BindScreen(
-                        args = it,
-                        viewModel = viewModel
-                    )
-                }
-                composable(
-                    route = NavigationDestination.ImageDetailScreen.destination,
-                    arguments = NavigationDestination.ImageDetailScreen.args
-                ) {
-                    val viewModel: DetailPhotoViewModel = viewModel(factory = viewModelFactory)
-                    detailScreen.get().BindScreen(
-                        args = it,
-                        viewModel = viewModel
-                    )
-                }
-                composable(
-                    route = NavigationDestination.SingleCollectionScreen.destination,
-                    arguments = NavigationDestination.SingleCollectionScreen.args
-                ) {
-                    val viewModel: MainScreenViewModel = viewModel(factory = viewModelFactory)
-                    collectionScreen.get().BindScreen(
-                        args = it,
-                        viewModel = viewModel
-                    )
-                }
-                composable(
-                    route = NavigationDestination.RawImageScreen.destination,
-                    arguments = NavigationDestination.RawImageScreen.args
-                ) {
-                    imageScreen.get().BindScreen(args = it, navController = navController)
-                }
-                composable(
-                    route = NavigationDestination.SearchPhotosScreen.destination,
-                    arguments = NavigationDestination.SearchPhotosScreen.args
-                ) {
-                    val viewModel: SearchViewModel = viewModel(factory = viewModelFactory)
-                    searchPhotosScreen.get().BindScreen(
-                        args = it,
-                        viewModel = viewModel
-                    )
-                }
-                composable(
-                    route = NavigationDestination.UserScreen.destination,
-                    arguments = NavigationDestination.UserScreen.args
-                ) {
-                    val viewModel: UserViewModel = viewModel(factory = viewModelFactory)
-                    userScreen.get().BindScreen(
-                        args = it,
-                        viewModel = viewModel
-                    )
-                }
-            }
+                viewModel = viewModel
+            )
+        }
+        composable(
+            route = NavDest.ImageDetailScreen.route,
+            arguments = NavDest.ImageDetailScreen.args
+        ) {
+            val viewModel: DetailPhotoViewModel = viewModel(factory = viewModelFactory.get())
+            val url = it.arguments?.getString("url").toString()
+            val id = it.arguments?.getString("imageId").toString()
+            ImageDetailScreen(
+                navController = navController,
+                viewModel = viewModel,
+                url = url,
+                id = id
+            )
+        }
+        composable(
+            route = NavDest.SingleCollectionScreen.route,
+            arguments = NavDest.SingleCollectionScreen.args
+        ) {
+            val viewModel: MainScreenViewModel = viewModel(factory = viewModelFactory.get())
+            val collectionId = it.arguments?.getString("collectionId").toString()
+            SingleCollectionScreen(
+                id = collectionId,
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
+        composable(
+            route = NavDest.RawImageScreen.route,
+            arguments = NavDest.RawImageScreen.args
+        ) {
+            RawImageScreen(
+                args = it,
+                navController = navController
+            )
+        }
+        composable(
+            route = NavDest.SearchPhotosScreen.route,
+            arguments = NavDest.SearchPhotosScreen.args
+        ) {
+            val viewModel: SearchViewModel = viewModel(factory = viewModelFactory.get())
+            SearchPhotosScreen(
+                args = it,
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
+        composable(
+            route = NavDest.UserScreen.route,
+            arguments = NavDest.UserScreen.args
+        ) {
+            val viewModel: UserViewModel = viewModel(factory = viewModelFactory.get())
+            UserScreen(
+                args = it,
+                navController = navController,
+                viewModel = viewModel
+            )
         }
     }
 }

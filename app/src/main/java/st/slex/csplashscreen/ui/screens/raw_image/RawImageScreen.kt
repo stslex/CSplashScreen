@@ -13,42 +13,27 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import javax.inject.Inject
 
 
 @ExperimentalCoilApi
-interface RawImageScreen {
-
-    @Composable
-    fun BindScreen(
-        args: NavBackStackEntry,
-        navController: NavController
-    )
-
-    class Base @Inject constructor() : RawImageScreen {
-
-        @Composable
-        override fun BindScreen(args: NavBackStackEntry, navController: NavController) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black)
-                    .clickable { navController.popBackStack() },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = rememberImagePainter(
-                        data = args.arguments?.getString("url").toString(),
-                        builder = {
-                            allowHardware(false)
-                            crossfade(500)
-                        }
-                    ),
-                    contentDescription = "TestImage"
-                )
-            }
-        }
-
+@Composable
+fun RawImageScreen(args: NavBackStackEntry, navController: NavController) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .clickable { navController.popBackStack() },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = rememberImagePainter(
+                data = args.arguments?.getString("url").toString(),
+                builder = {
+                    allowHardware(false)
+                    crossfade(500)
+                }
+            ),
+            contentDescription = "TestImage"
+        )
     }
-
 }

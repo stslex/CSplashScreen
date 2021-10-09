@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
@@ -21,7 +22,7 @@ import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
-import st.slex.csplashscreen.ui.navigation.NavigationState
+import st.slex.csplashscreen.ui.navigation.NavDest
 import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -33,13 +34,13 @@ import java.nio.charset.StandardCharsets
 @Composable
 fun LazyPhotosColumn(
     lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
-    navigation: (NavigationState, List<String>) -> Unit
+    navController: NavController
 ) {
     LazyColumn {
         items(lazyPagingPhotosItems) { item ->
             ImageItem(
                 item = item,
-                navigation = navigation,
+                navController = navController,
                 modifier = Modifier
             )
         }
@@ -55,7 +56,7 @@ fun LazyPhotosColumn(
 fun ImageItem(
     item: ImageModel?,
     modifier: Modifier,
-    navigation: (NavigationState, List<String>) -> Unit
+    navController: NavController
 ) {
     Column(
         modifier = modifier
@@ -67,7 +68,7 @@ fun ImageItem(
             modifier = Modifier.fillMaxWidth(),
             url = item?.user?.profile_image?.medium.toString(),
             username = item?.user?.username.toString(),
-            navigation = navigation
+            navController = navController
         )
 
         Spacer(modifier = Modifier.padding(4.dp))
@@ -77,11 +78,10 @@ fun ImageItem(
                 .clip(RoundedCornerShape(32.dp))
                 .shadow(elevation = 16.dp, shape = Shapes.medium),
             onClick = {
-                val url = item?.urls?.regular.toString()
-                val id = item?.id.toString()
+                val url = item?.urls?.regular
+                val id = item?.id
                 val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                val args = listOf(encodedUrl, id)
-                navigation(NavigationState.ImageDetailScreen, args)
+                navController.navigate("${NavDest.ImageDetailScreen.destination}/$encodedUrl/$id")
             }
         ) {
             CoverPhotoItem(item?.urls?.regular.toString())

@@ -5,13 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
+import androidx.lifecycle.ViewModelProvider
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.appComponent
-import st.slex.csplashscreen.ui.navigation.NavigationComponent
+import st.slex.csplashscreen.ui.navigation.NavComponent
 import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var navigationComponent: Lazy<NavigationComponent>
+    lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProvideWindowInsets {
                 CSplashScreenTheme {
-                    Scaffold { navigationComponent.get().InitNavHost() }
+                    Scaffold { NavComponent(viewModelFactory = viewModelFactory) }
                 }
             }
         }

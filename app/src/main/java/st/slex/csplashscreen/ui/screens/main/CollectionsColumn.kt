@@ -9,12 +9,12 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.ui.components.BindCoverImageConstraint
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
-import st.slex.csplashscreen.ui.navigation.NavigationState
 
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
@@ -24,7 +24,7 @@ import st.slex.csplashscreen.ui.navigation.NavigationState
 fun CollectionItem(
     item: CollectionModel?,
     modifier: Modifier,
-    navigation: (NavigationState, List<String>) -> Unit
+    navController: NavController
 ) {
 
     Column(
@@ -37,7 +37,7 @@ fun CollectionItem(
             modifier = Modifier.fillMaxWidth(),
             url = item?.user?.profile_image?.medium.toString(),
             username = item?.user?.username.toString(),
-            navigation = navigation
+            navController = navController
         )
 
         Spacer(modifier = Modifier.padding(4.dp))
@@ -47,7 +47,7 @@ fun CollectionItem(
             item?.cover_photo?.urls?.regular.toString(),
             item?.title.toString(),
             item?.total_photos.toString(),
-            navigation = navigation
+            navController = navController
         )
 
     }

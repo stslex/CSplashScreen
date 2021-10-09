@@ -16,13 +16,11 @@ import javax.inject.Singleton
 @ExperimentalMaterialApi
 @Module(
     includes = [
-        NavigationModule::class,
         NetworkServiceModule::class,
         RepositoryModule::class,
         ViewModelFactoryModule::class,
         ResponseModule::class,
         MapperModule::class,
-        ScreensModule::class
     ]
 )
 class AppModule {
