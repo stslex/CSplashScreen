@@ -8,8 +8,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.navigation.NavBackStackEntry
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -24,6 +25,10 @@ import kotlinx.coroutines.launch
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photos.QueryPhotos
+import st.slex.csplashscreen.ui.MainActivity
+import st.slex.csplashscreen.ui.components.CollectionItem
+import st.slex.csplashscreen.ui.components.ImageItem
+import st.slex.csplashscreen.ui.components.checkState
 import st.slex.csplashscreen.ui.navigation.NavDest
 import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
@@ -35,9 +40,8 @@ import st.slex.csplashscreen.utiles.GET_COLLECTIONS
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
-    args: NavBackStackEntry,
     navController: NavController,
-    viewModel: MainScreenViewModel
+    viewModel: MainScreenViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
     viewModel.apply {
         setQueryCollections(listOf(GET_COLLECTIONS))

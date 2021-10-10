@@ -4,15 +4,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavBackStackEntry
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.search.QuerySearch
+import st.slex.csplashscreen.ui.MainActivity
+import st.slex.csplashscreen.ui.components.LazyPhotosColumn
 import st.slex.csplashscreen.ui.components.MyAppTextFieldColors
-import st.slex.csplashscreen.ui.screens.main.LazyPhotosColumn
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -20,11 +22,10 @@ import st.slex.csplashscreen.ui.screens.main.LazyPhotosColumn
 @ExperimentalCoroutinesApi
 @Composable
 fun SearchPhotosScreen(
-    args: NavBackStackEntry,
     navController: NavController,
-    viewModel: SearchViewModel
+    query: String,
+    viewModel: SearchViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
-    val query = args.arguments?.getString("query").toString()
     viewModel.setQueryPhotosSearch(QuerySearch.SearchPhotos(query))
     val lazyPagingPhotosItems = viewModel.photosSearch.collectAsLazyPagingItems()
 

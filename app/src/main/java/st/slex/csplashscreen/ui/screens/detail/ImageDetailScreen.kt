@@ -14,18 +14,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.R
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
+import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.ui.core.UIResult
 import st.slex.csplashscreen.ui.navigation.NavDest
@@ -34,15 +38,16 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 
+@ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun ImageDetailScreen(
     navController: NavController,
-    viewModel: DetailPhotoViewModel,
     url: String,
-    id: String
+    id: String,
+    viewModel: DetailPhotoViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
     val uiResult by remember(viewModel) {
         viewModel.getCurrentPhoto(id)

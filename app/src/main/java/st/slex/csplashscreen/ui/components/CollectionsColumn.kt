@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.screens.main
+package st.slex.csplashscreen.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -13,8 +13,6 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
-import st.slex.csplashscreen.ui.components.BindCoverImageConstraint
-import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
 
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi

@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -17,7 +16,7 @@ import coil.compose.rememberImagePainter
 
 @ExperimentalCoilApi
 @Composable
-fun RawImageScreen(args: NavBackStackEntry, navController: NavController) {
+fun RawImageScreen(navController: NavController, url: String) {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -27,7 +26,7 @@ fun RawImageScreen(args: NavBackStackEntry, navController: NavController) {
     ) {
         Image(
             painter = rememberImagePainter(
-                data = args.arguments?.getString("url").toString(),
+                data = url,
                 builder = {
                     allowHardware(false)
                     crossfade(500)

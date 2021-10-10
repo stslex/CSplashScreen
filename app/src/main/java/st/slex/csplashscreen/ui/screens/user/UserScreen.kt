@@ -1,14 +1,25 @@
 package st.slex.csplashscreen.ui.screens.user
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavBackStackEntry
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.annotation.ExperimentalCoilApi
+import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import st.slex.csplashscreen.ui.MainActivity
+import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
 
+@ExperimentalCoilApi
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
+@ExperimentalCoroutinesApi
 @Composable
 fun UserScreen(
-    args: NavBackStackEntry,
     navController: NavController,
-    viewModel: UserViewModel
+    username: String,
+    viewModel: MainScreenViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
-    val username = args.arguments?.getString("username").toString()
+
 }

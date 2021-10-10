@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.screens.main
+package st.slex.csplashscreen.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui.screens.main
+package st.slex.csplashscreen.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -21,7 +21,6 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.ui.navigation.NavDest
 import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder

@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.*
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photos.QueryPhotos
+import st.slex.csplashscreen.ui.core.QueryCollectionsUseCase
+import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
 import javax.inject.Inject
 import javax.inject.Provider
 
