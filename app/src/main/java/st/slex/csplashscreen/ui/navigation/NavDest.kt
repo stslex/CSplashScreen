@@ -6,50 +6,50 @@ import androidx.navigation.navArgument
 
 sealed interface NavDest {
 
-    val route: String
-    val args: List<NamedNavArgument>
     val destination: String
+    val arguments: List<String>
+        get() = emptyList()
+    val args: List<NamedNavArgument>
+        get() = emptyList()
 
     object ImageDetailScreen : NavDest {
-        override val route: String = "detail/{url}/{imageId}"
-        override val args: List<NamedNavArgument> = listOf(
-            navArgument("url") { type = NavType.StringType },
-            navArgument("imageId") { type = NavType.StringType }
-        )
         override val destination: String = "detail"
+        override val arguments: List<String> = listOf("url", "imageId")
+        override val args: List<NamedNavArgument> = listOf(
+            navArgument(arguments[0]) { type = NavType.StringType },
+            navArgument(arguments[1]) { type = NavType.StringType }
+        )
     }
 
     object MainScreen : NavDest {
-        override val route: String = "mainScreen"
-        override val args: List<NamedNavArgument> = emptyList()
         override val destination: String = "mainScreen"
     }
 
     object SingleCollectionScreen : NavDest {
-        override val route: String = "collection/{collectionId}"
-        override val args: List<NamedNavArgument> =
-            listOf(navArgument("collectionId") { type = NavType.StringType })
         override val destination: String = "collection"
+        override val arguments: List<String> = listOf("collectionId")
+        override val args: List<NamedNavArgument> =
+            listOf(navArgument(arguments[0]) { type = NavType.StringType })
     }
 
     object RawImageScreen : NavDest {
-        override val route: String = "raw_image/{url}"
-        override val args: List<NamedNavArgument> =
-            listOf(navArgument("url") { type = NavType.StringType })
         override val destination: String = "raw_image"
+        override val arguments: List<String> = listOf("url")
+        override val args: List<NamedNavArgument> =
+            listOf(navArgument(arguments[0]) { type = NavType.StringType })
     }
 
     object SearchPhotosScreen : NavDest {
-        override val route: String = "search_photos/{query}"
-        override val args: List<NamedNavArgument> =
-            listOf(navArgument("query") { type = NavType.StringType })
         override val destination: String = "search_photos"
+        override val arguments: List<String> = listOf("query")
+        override val args: List<NamedNavArgument> =
+            listOf(navArgument(arguments[0]) { type = NavType.StringType })
     }
 
     object UserScreen : NavDest {
-        override val route: String = "user/{username}"
-        override val args: List<NamedNavArgument> =
-            listOf(navArgument("username") { type = NavType.StringType })
         override val destination: String = "user"
+        override val arguments: List<String> = listOf("username")
+        override val args: List<NamedNavArgument> =
+            listOf(navArgument(arguments[0]) { type = NavType.StringType })
     }
 }

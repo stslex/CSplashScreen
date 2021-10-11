@@ -17,6 +17,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.*
+import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.animation.AnimationUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,6 +42,8 @@ import st.slex.csplashscreen.utiles.GET_COLLECTIONS
 @Composable
 fun MainScreen(
     navController: NavController,
+    pagerState: PagerState = rememberPagerState(),
+    systemUiController: SystemUiController = rememberSystemUiController(),
     viewModel: MainScreenViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
     viewModel.apply {
@@ -48,33 +51,13 @@ fun MainScreen(
         setQueryPhotos(QueryPhotos.AllPhotos)
     }
 
-    val systemUiController = rememberSystemUiController()
     val useDarkIcons = MaterialTheme.colors.isLight
-
     SideEffect {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
             darkIcons = useDarkIcons
         )
     }
-
-    MainScreenPager(
-        lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
-        lazyPagingCollectionsItems = viewModel::collections.get().collectAsLazyPagingItems(),
-        navController = navController
-    )
-}
-
-@ExperimentalCoilApi
-@ExperimentalMaterialApi
-@ExperimentalPagerApi
-@Composable
-private fun MainScreenPager(
-    lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
-    lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
-    navController: NavController
-) {
-    val pagerState = rememberPagerState()
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -95,15 +78,15 @@ private fun MainScreenPager(
         Column {
             TabRow(pagerState = pagerState, pages = pages)
             Pager(
-                lazyPagingPhotosItems = lazyPagingPhotosItems,
-                lazyPagingCollectionsItems = lazyPagingCollectionsItems,
+                lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
+                lazyPagingCollectionsItems = viewModel::collections.get()
+                    .collectAsLazyPagingItems(),
                 navController = navController,
                 pagerState = pagerState,
                 pages = pages
             )
         }
     }
-
 }
 
 @ExperimentalCoilApi

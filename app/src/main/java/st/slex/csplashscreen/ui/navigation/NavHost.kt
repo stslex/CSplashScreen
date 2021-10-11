@@ -2,6 +2,7 @@ package st.slex.csplashscreen.ui.navigation
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,62 +27,43 @@ fun NavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavDest.MainScreen.route
+        startDestination = NavDest.MainScreen.destination
     ) {
-        composable(route = NavDest.MainScreen.route) {
+        create(NavDest.MainScreen) {
             MainScreen(navController = navController)
         }
-        composable(
-            route = NavDest.ImageDetailScreen.route,
-            arguments = NavDest.ImageDetailScreen.args
-        ) {
-            val url = it.arguments?.getString("url").toString()
-            val id = it.arguments?.getString("imageId").toString()
-            ImageDetailScreen(
-                navController = navController,
-                url = url,
-                id = id
+        create(NavDest.ImageDetailScreen) {
+            ImageDetailScreen(navController = navController, url = it[0], id = it[1])
+        }
+        create(NavDest.SingleCollectionScreen) {
+            SingleCollectionScreen(navController = navController, id = it[0])
+        }
+        create(NavDest.RawImageScreen) {
+            RawImageScreen(navController = navController, url = it[0])
+        }
+        create(NavDest.SearchPhotosScreen) {
+            SearchPhotosScreen(navController = navController, query = it[0])
+        }
+        create(NavDest.UserScreen) {
+            UserScreen(navController = navController, username = it[0])
+        }
+    }
+}
+
+private inline fun NavGraphBuilder.create(
+    navDest: NavDest,
+    crossinline screen: @Composable (list: List<String>) -> Unit
+) = with(navDest) {
+    val route = if (arguments.isNotEmpty()) arguments.joinToString("}/{", "/{", "}") else ""
+    composable(
+        route = "${destination}$route",
+    ) {
+        val args = mutableListOf<String>()
+        arguments.forEach { argument ->
+            args.add(
+                it.arguments?.getString(argument).toString()
             )
         }
-        composable(
-            route = NavDest.SingleCollectionScreen.route,
-            arguments = NavDest.SingleCollectionScreen.args
-        ) {
-            val collectionId = it.arguments?.getString("collectionId").toString()
-            SingleCollectionScreen(
-                navController = navController,
-                id = collectionId
-            )
-        }
-        composable(
-            route = NavDest.RawImageScreen.route,
-            arguments = NavDest.RawImageScreen.args
-        ) {
-            val url = it.arguments?.getString("url").toString()
-            RawImageScreen(
-                navController = navController,
-                url = url
-            )
-        }
-        composable(
-            route = NavDest.SearchPhotosScreen.route,
-            arguments = NavDest.SearchPhotosScreen.args
-        ) {
-            val query = it.arguments?.getString("query").toString()
-            SearchPhotosScreen(
-                navController = navController,
-                query = query,
-            )
-        }
-        composable(
-            route = NavDest.UserScreen.route,
-            arguments = NavDest.UserScreen.args
-        ) {
-            val username = it.arguments?.getString("username").toString()
-            UserScreen(
-                navController = navController,
-                username = username,
-            )
-        }
+        screen(args)
     }
 }
