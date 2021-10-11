@@ -30,7 +30,6 @@ import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
 import st.slex.csplashscreen.ui.components.checkState
-import st.slex.csplashscreen.ui.navigation.NavDest
 import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
 
@@ -67,25 +66,16 @@ fun MainScreen(
 
     val pages = listOf(PagerMainTab.Photos, PagerMainTab.Collections)
 
-    Scaffold(
-        floatingActionButtonPosition = FabPosition.Center,
-        floatingActionButton = {
-            MainScreenFloatingActionButton {
-                navController.navigate("${NavDest.SearchPhotosScreen.destination}/ ")
-            }
-        }
-    ) {
-        Column {
-            TabRow(pagerState = pagerState, pages = pages)
-            Pager(
-                lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
-                lazyPagingCollectionsItems = viewModel::collections.get()
-                    .collectAsLazyPagingItems(),
-                navController = navController,
-                pagerState = pagerState,
-                pages = pages
-            )
-        }
+    Column {
+        TabRow(pagerState = pagerState, pages = pages)
+        Pager(
+            lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
+            lazyPagingCollectionsItems = viewModel::collections.get()
+                .collectAsLazyPagingItems(),
+            navController = navController,
+            pagerState = pagerState,
+            pages = pages
+        )
     }
 }
 

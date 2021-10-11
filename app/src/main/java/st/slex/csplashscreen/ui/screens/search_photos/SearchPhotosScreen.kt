@@ -66,10 +66,10 @@ private fun TopAppBarSearch(querySearch: String, search: (QuerySearch) -> Unit) 
             label = { Text(text = "Input Search") },
             textStyle = Typography.body2
         )
-        DisposableEffect(Unit) {
+        /*DisposableEffect(Unit) {
             focusRequester.requestFocus()
             onDispose { }
-        }
+        }*/
     }
 }
 

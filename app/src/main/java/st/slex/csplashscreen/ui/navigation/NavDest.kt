@@ -52,4 +52,8 @@ sealed interface NavDest {
         override val args: List<NamedNavArgument> =
             listOf(navArgument(arguments[0]) { type = NavType.StringType })
     }
+
+    object TitlesScreen : NavDest {
+        override val destination: String = "titles"
+    }
 }

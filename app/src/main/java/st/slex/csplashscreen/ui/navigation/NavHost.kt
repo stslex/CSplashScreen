@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,6 +14,7 @@ import st.slex.csplashscreen.ui.screens.detail.ImageDetailScreen
 import st.slex.csplashscreen.ui.screens.main.MainScreen
 import st.slex.csplashscreen.ui.screens.raw_image.RawImageScreen
 import st.slex.csplashscreen.ui.screens.search_photos.SearchPhotosScreen
+import st.slex.csplashscreen.ui.screens.titles.TitleScreen
 import st.slex.csplashscreen.ui.screens.user.UserScreen
 
 @ExperimentalCoilApi
@@ -22,9 +22,7 @@ import st.slex.csplashscreen.ui.screens.user.UserScreen
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @Composable
-fun NavHost(
-    navController: NavHostController = rememberNavController()
-) {
+fun NavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = NavDest.MainScreen.destination
@@ -46,6 +44,9 @@ fun NavHost(
         }
         create(NavDest.UserScreen) {
             UserScreen(navController = navController, username = it[0])
+        }
+        create(NavDest.TitlesScreen) {
+            TitleScreen(navController = navController)
         }
     }
 }
