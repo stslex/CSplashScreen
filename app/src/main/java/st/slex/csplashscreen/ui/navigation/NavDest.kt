@@ -22,7 +22,7 @@ sealed interface NavDest {
     }
 
     object MainScreen : NavDest {
-        override val destination: String = "mainScreen"
+        override val destination: String = "home"
     }
 
     object SingleCollectionScreen : NavDest {
@@ -40,7 +40,7 @@ sealed interface NavDest {
     }
 
     object SearchPhotosScreen : NavDest {
-        override val destination: String = "search_photos"
+        override val destination: String = "search"
         override val arguments: List<String> = listOf("query")
         override val args: List<NamedNavArgument> =
             listOf(navArgument(arguments[0]) { type = NavType.StringType })
@@ -53,7 +53,7 @@ sealed interface NavDest {
             listOf(navArgument(arguments[0]) { type = NavType.StringType })
     }
 
-    object TitlesScreen : NavDest {
-        override val destination: String = "titles"
+    object TopicsScreen : NavDest {
+        override val destination: String = "topics"
     }
 }

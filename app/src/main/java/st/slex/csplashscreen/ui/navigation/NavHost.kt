@@ -14,7 +14,7 @@ import st.slex.csplashscreen.ui.screens.detail.ImageDetailScreen
 import st.slex.csplashscreen.ui.screens.main.MainScreen
 import st.slex.csplashscreen.ui.screens.raw_image.RawImageScreen
 import st.slex.csplashscreen.ui.screens.search_photos.SearchPhotosScreen
-import st.slex.csplashscreen.ui.screens.titles.TitleScreen
+import st.slex.csplashscreen.ui.screens.topics.TopicsScreen
 import st.slex.csplashscreen.ui.screens.user.UserScreen
 
 @ExperimentalCoilApi
@@ -45,8 +45,8 @@ fun NavHost(navController: NavHostController) {
         create(NavDest.UserScreen) {
             UserScreen(navController = navController, username = it[0])
         }
-        create(NavDest.TitlesScreen) {
-            TitleScreen(navController = navController)
+        create(NavDest.TopicsScreen) {
+            TopicsScreen(navController = navController)
         }
     }
 }

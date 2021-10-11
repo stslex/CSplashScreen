@@ -9,6 +9,7 @@ import st.slex.csplashscreen.di.key.ViewModelKey
 import st.slex.csplashscreen.ui.screens.detail.DetailPhotoViewModel
 import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
 import st.slex.csplashscreen.ui.screens.search_photos.SearchViewModel
+import st.slex.csplashscreen.ui.screens.topics.TopicsViewModel
 import st.slex.csplashscreen.ui.screens.user.UserViewModel
 
 @ExperimentalCoroutinesApi
@@ -34,4 +35,9 @@ interface ViewModelModule {
     @Binds
     @ViewModelKey(SearchViewModel::class)
     fun bindsSearchPhotosViewModel(viewModel: SearchViewModel): ViewModel
+
+    @IntoMap
+    @Binds
+    @ViewModelKey(TopicsViewModel::class)
+    fun bindsTopicsViewModel(viewModel: TopicsViewModel): ViewModel
 }

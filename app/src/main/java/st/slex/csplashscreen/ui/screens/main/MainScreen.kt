@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
@@ -181,19 +180,6 @@ private fun Modifier.animationUtilPager(scope: PagerScope, page: Int): Modifier 
         )
     }
     .aspectRatio(1f)
-
-@Composable
-private inline fun MainScreenFloatingActionButton(crossinline onClick: () -> Unit) {
-    ExtendedFloatingActionButton(
-        text = {
-            Text(
-                text = "search photos",
-                textAlign = TextAlign.Center,
-            )
-        },
-        onClick = { onClick() }
-    )
-}
 
 @Suppress("UNUSED_PARAMETER")
 object AnalyticsService {

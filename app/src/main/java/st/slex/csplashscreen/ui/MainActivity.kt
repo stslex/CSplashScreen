@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -58,45 +59,61 @@ class MainActivity : ComponentActivity() {
 private fun MainBottomAppBar(navController: NavController) {
     BottomAppBar(modifier = Modifier.fillMaxWidth()) {
 
-        val selectedItem = remember { mutableStateOf("home") }
+        val listOfItems = listOf(
+            MainBottomAppbarState.TopicsScreen,
+            MainBottomAppbarState.MainScreen,
+            MainBottomAppbarState.SearchScreen
+        )
+        val selectedItem = remember { mutableStateOf(NavDest.MainScreen.destination) }
 
         BottomNavigation {
-            BottomNavigationItem(
-                icon = {
-                    Icon(Icons.Filled.Star, "Titles")
-                },
-                label = { Text(text = "titles") },
-                selected = selectedItem.value == "titles",
-                onClick = {
-                    selectedItem.value = "titles"
-                    navController.navigate(NavDest.TitlesScreen.destination)
-                },
-                alwaysShowLabel = false
-            )
-            BottomNavigationItem(
-                icon = {
-                    Icon(Icons.Filled.Home, "Home")
-                },
-                label = { Text(text = "home") },
-                selected = selectedItem.value == "home",
-                onClick = {
-                    selectedItem.value = "home"
-                    navController.navigate(NavDest.MainScreen.destination)
-                },
-                alwaysShowLabel = false
-            )
-            BottomNavigationItem(
-                icon = {
-                    Icon(Icons.Filled.Search, "")
-                },
-                label = { Text(text = "search") },
-                selected = selectedItem.value == "search",
-                onClick = {
-                    selectedItem.value = "search"
-                    navController.navigate("${NavDest.SearchPhotosScreen.destination}/ ")
-                },
-                alwaysShowLabel = false
-            )
+//            val navBackStackEntry by navController.currentBackStackEntryAsState()
+//            val currentDestination = navBackStackEntry?.destination
+
+            listOfItems.forEach {
+                BottomNavigationItem(
+                    icon = {
+                        Icon(it.icon, it.destination)
+                    },
+                    label = { Text(text = it.destination) },
+                    selected = selectedItem.value == it.destination,
+                    onClick = {
+                        selectedItem.value = it.destination
+                        navController.navigate(it.route) {
+                            popUpTo(it.route) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    alwaysShowLabel = false
+                )
+            }
         }
+    }
+}
+
+private sealed interface MainBottomAppbarState {
+    val destination: String
+    val icon: ImageVector
+    val route: String
+
+    object MainScreen : MainBottomAppbarState {
+        override val destination: String = NavDest.MainScreen.destination
+        override val icon: ImageVector = Icons.Filled.Home
+        override val route: String = destination
+    }
+
+    object TopicsScreen : MainBottomAppbarState {
+        override val destination: String = NavDest.TopicsScreen.destination
+        override val icon: ImageVector = Icons.Filled.Star
+        override val route: String = destination
+    }
+
+    object SearchScreen : MainBottomAppbarState {
+        override val destination: String = NavDest.SearchPhotosScreen.destination
+        override val icon: ImageVector = Icons.Filled.Search
+        override val route: String = "$destination/ "
     }
 }

@@ -7,6 +7,7 @@ import st.slex.csplashscreen.data.collections.CollectionService
 import st.slex.csplashscreen.data.photo.PhotoService
 import st.slex.csplashscreen.data.photos.PhotosService
 import st.slex.csplashscreen.data.search.SearchService
+import st.slex.csplashscreen.data.titles.TopicsService
 import st.slex.csplashscreen.data.user.UserService
 
 @Module(includes = [RetrofitModule::class])
@@ -31,4 +32,8 @@ class NetworkServiceModule {
     @Provides
     fun providesUserService(retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
+
+    @Provides
+    fun providesTopicsService(retrofit: Retrofit): TopicsService =
+        retrofit.create(TopicsService::class.java)
 }

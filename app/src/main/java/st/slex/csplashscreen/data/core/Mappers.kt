@@ -5,6 +5,8 @@ import st.slex.csplashscreen.data.model.remote.collection.RemoteLinksCollectionM
 import st.slex.csplashscreen.data.model.remote.download.RemoteDownloadModel
 import st.slex.csplashscreen.data.model.remote.image.*
 import st.slex.csplashscreen.data.model.remote.statistic.*
+import st.slex.csplashscreen.data.model.remote.topics.RemotePreviewPhotosModel
+import st.slex.csplashscreen.data.model.remote.topics.RemoteTopicsModel
 import st.slex.csplashscreen.data.model.remote.user.RemoteBadgeModel
 import st.slex.csplashscreen.data.model.remote.user.RemoteProfileImageModel
 import st.slex.csplashscreen.data.model.remote.user.RemoteUserLinksModel
@@ -13,6 +15,8 @@ import st.slex.csplashscreen.data.model.ui.*
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.collection.LinksCollectionModel
 import st.slex.csplashscreen.data.model.ui.image.*
+import st.slex.csplashscreen.data.model.ui.topics.PreviewPhotosModel
+import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
 import st.slex.csplashscreen.data.model.ui.user.BadgeModel
 import st.slex.csplashscreen.data.model.ui.user.ProfileImageModel
 import st.slex.csplashscreen.data.model.ui.user.UserLinksModel
@@ -179,3 +183,31 @@ internal fun RemoteHistorical.toHistorical(): Historical =
 internal fun RemoteValue.toValue(): Value = Value(date = date, value = value)
 
 internal fun RemoteDownloadModel.toDownloadModel(): DownloadModel = DownloadModel(url = url)
+
+internal fun RemoteTopicsModel.toTopicsModel(): TopicsModel =
+    TopicsModel(
+        id = id.toString(),
+        slug = slug.toString(),
+        title = title.toString(),
+        description = description.toString(),
+        published_at = published_at.toString(),
+        updated_at = updated_at.toString(),
+        starts_at = starts_at.toString(),
+        ends_at = ends_at.toString(),
+        only_submissions_after = only_submissions_after.toString(),
+        featured = featured.toString(),
+        total_photos = total_photos.toString(),
+        links = links.toLinksCollectionModel(),
+        status = status.toString(),
+        owners = owners?.map { it.toUserModel() },
+        cover_photo = cover_photo?.toImageModel(),
+        preview_photos = preview_photos?.map { it.toPreviewPhotosModel() }
+    )
+
+internal fun RemotePreviewPhotosModel.toPreviewPhotosModel() =
+    PreviewPhotosModel(
+        id = id.toString(),
+        created_at = created_at.toString(),
+        updated_at = updated_at.toString(),
+        urls = urls?.toUrlsModel()
+    )
