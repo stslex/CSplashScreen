@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.ui.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -33,15 +34,19 @@ fun CollectionTextCard(text: String, style: TextStyle) {
 }
 
 @Composable
+fun SetTextFieldColors(isDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isDarkTheme) MyAppTextFieldDarkColors() else MyAppTextFieldColors()
+
+@Composable
 fun MyAppTextFieldColors(
     textColor: Color = Color.Black,
     disabledTextColor: Color = Color.DarkGray,
-    backgroundColor: Color = Color.White,
-    cursorColor: Color = Color.Black,
+    backgroundColor: Color = Color.Transparent,
+    cursorColor: Color = Color.DarkGray,
     errorCursorColor: Color = Color.Black,
-    focusedIndicatorColor: Color = Color.Black,
-    unfocusedIndicatorColor: Color = Color.Black,
-    disabledIndicatorColor: Color = Color.Black,
+    focusedIndicatorColor: Color = Color.DarkGray,
+    unfocusedIndicatorColor: Color = Color.LightGray,
+    disabledIndicatorColor: Color = Color.LightGray,
     errorIndicatorColor: Color = Color.Black,
     leadingIconColor: Color = Color.Black,
     disabledLeadingIconColor: Color = Color.Black,
@@ -49,12 +54,59 @@ fun MyAppTextFieldColors(
     trailingIconColor: Color = Color.Black,
     disabledTrailingIconColor: Color = Color.Black,
     errorTrailingIconColor: Color = Color.Black,
-    focusedLabelColor: Color = Color.Black,
-    unfocusedLabelColor: Color = Color.Black,
-    disabledLabelColor: Color = Color.Black,
+    focusedLabelColor: Color = Color.DarkGray,
+    unfocusedLabelColor: Color = Color.LightGray,
+    disabledLabelColor: Color = Color.LightGray,
     errorLabelColor: Color = Color.Black,
     placeholderColor: Color = Color.Black,
     disabledPlaceholderColor: Color = Color.Black
+) = TextFieldDefaults.textFieldColors(
+    textColor = textColor,
+    disabledTextColor = disabledTextColor,
+    backgroundColor = backgroundColor,
+    cursorColor = cursorColor,
+    errorCursorColor = errorCursorColor,
+    focusedIndicatorColor = focusedIndicatorColor,
+    unfocusedIndicatorColor = unfocusedIndicatorColor,
+    disabledIndicatorColor = disabledIndicatorColor,
+    errorIndicatorColor = errorIndicatorColor,
+    leadingIconColor = leadingIconColor,
+    disabledLeadingIconColor = disabledLeadingIconColor,
+    errorLeadingIconColor = errorLeadingIconColor,
+    trailingIconColor = trailingIconColor,
+    disabledTrailingIconColor = disabledTrailingIconColor,
+    errorTrailingIconColor = errorTrailingIconColor,
+    focusedLabelColor = focusedLabelColor,
+    unfocusedLabelColor = unfocusedLabelColor,
+    disabledLabelColor = disabledLabelColor,
+    errorLabelColor = errorLabelColor,
+    placeholderColor = placeholderColor,
+    disabledPlaceholderColor = disabledPlaceholderColor
+)
+
+@Composable
+fun MyAppTextFieldDarkColors(
+    textColor: Color = Color.White,
+    disabledTextColor: Color = Color.LightGray,
+    backgroundColor: Color = Color.Transparent,
+    cursorColor: Color = Color.LightGray,
+    errorCursorColor: Color = Color.Red,
+    focusedIndicatorColor: Color = Color.LightGray,
+    unfocusedIndicatorColor: Color = Color.DarkGray,
+    disabledIndicatorColor: Color = Color.DarkGray,
+    errorIndicatorColor: Color = Color.White,
+    leadingIconColor: Color = Color.White,
+    disabledLeadingIconColor: Color = Color.White,
+    errorLeadingIconColor: Color = Color.White,
+    trailingIconColor: Color = Color.White,
+    disabledTrailingIconColor: Color = Color.White,
+    errorTrailingIconColor: Color = Color.White,
+    focusedLabelColor: Color = Color.LightGray,
+    unfocusedLabelColor: Color = Color.DarkGray,
+    disabledLabelColor: Color = Color.DarkGray,
+    errorLabelColor: Color = Color.White,
+    placeholderColor: Color = Color.White,
+    disabledPlaceholderColor: Color = Color.White
 ) = TextFieldDefaults.textFieldColors(
     textColor = textColor,
     disabledTextColor = disabledTextColor,

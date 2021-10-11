@@ -20,10 +20,10 @@ private val LightColorPalette = lightColors(
     secondary = Color.White,
     background = Color.White,
     surface = Color.White,
-    onPrimary = Color.DarkGray,
-    onSecondary = Color.DarkGray,
-    onBackground = Color.DarkGray,
-    onSurface = Color.DarkGray
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    onBackground = Color.Black,
+    onSurface = Color.Black
 )
 
 @Composable

@@ -71,7 +71,7 @@ fun MainScreen(
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
             MainScreenFloatingActionButton {
-                navController.navigate("${NavDest.SearchPhotosScreen}/ ")
+                navController.navigate("${NavDest.SearchPhotosScreen.destination}/ ")
             }
         }
     ) {

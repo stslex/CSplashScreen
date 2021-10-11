@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -14,7 +16,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.search.QuerySearch
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.LazyPhotosColumn
-import st.slex.csplashscreen.ui.components.MyAppTextFieldColors
+import st.slex.csplashscreen.ui.components.SetTextFieldColors
+import st.slex.csplashscreen.ui.theme.Typography
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -47,17 +50,26 @@ fun SearchPhotosScreen(
 private fun TopAppBarSearch(querySearch: String, search: (QuerySearch) -> Unit) {
     TopAppBar {
         var textInput by remember { mutableStateOf(querySearch) }
+        val focusRequester = remember { FocusRequester() }
         TextField(
             value = textInput,
-            modifier = Modifier
-                .fillMaxWidth(),
             onValueChange = { text ->
                 textInput = text
                 search(QuerySearch.SearchPhotos(textInput))
+                focusRequester.requestFocus()
             },
-            colors = MyAppTextFieldColors(),
-            label = { Text(text = "Input Search") }
+            modifier = Modifier
+                .focusRequester(focusRequester)
+                .fillMaxWidth(),
+            colors = SetTextFieldColors(),
+            maxLines = 1,
+            label = { Text(text = "Input Search") },
+            textStyle = Typography.body2
         )
+        DisposableEffect(Unit) {
+            focusRequester.requestFocus()
+            onDispose { }
+        }
     }
 }
 

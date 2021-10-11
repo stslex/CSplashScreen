@@ -29,11 +29,12 @@ class MainActivity : ComponentActivity() {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContent {
-            ProvideWindowInsets {
-                CSplashScreenTheme {
+            CSplashScreenTheme {
+                ProvideWindowInsets {
                     Scaffold { NavHost() }
                 }
             }
+
         }
     }
 }
