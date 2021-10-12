@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.ui.screens.detail
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -39,6 +40,7 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi

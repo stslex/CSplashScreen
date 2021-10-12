@@ -37,6 +37,9 @@ class PhotosPagingSource @AssistedInject constructor(
                 is QueryPhotos.UserLikes -> {
                     service.getUserLikes(query.username, pageNumber, pageSize, API_KEY)
                 }
+                is QueryPhotos.TopicPhotos -> {
+                    service.getTopicPhotos(query.id, pageNumber, API_KEY)
+                }
                 is QueryPhotos.EmptyQuery -> {
                     return LoadResult.Invalid()
                 }

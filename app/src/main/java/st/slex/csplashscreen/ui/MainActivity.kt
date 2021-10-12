@@ -3,6 +3,7 @@ package st.slex.csplashscreen.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -32,6 +33,7 @@ import javax.inject.Inject
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
+@ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
 
     @Inject

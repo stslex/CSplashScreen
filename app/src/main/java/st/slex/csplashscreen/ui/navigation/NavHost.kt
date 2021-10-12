@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.ui.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
@@ -17,6 +18,7 @@ import st.slex.csplashscreen.ui.screens.search_photos.SearchPhotosScreen
 import st.slex.csplashscreen.ui.screens.topics.TopicsScreen
 import st.slex.csplashscreen.ui.screens.user.UserScreen
 
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi

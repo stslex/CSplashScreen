@@ -39,4 +39,11 @@ interface PhotosService {
         @Query(QUERY_PAGE_SIZE) page_size: Int,
         @Query(QUERY_API_KEY) api_key: String
     ): Response<List<RemoteImageModel>>
+
+    @GET("$GET_TOPICS/{id}/$GET_PHOTOS")
+    suspend fun getTopicPhotos(
+        @Path("id") id: String,
+        @Query(QUERY_PAGE) page: Int,
+        @Query(QUERY_API_KEY) api_key: String
+    ): Response<List<RemoteImageModel>>
 }

@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.ui.screens.collection
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -15,6 +16,7 @@ import st.slex.csplashscreen.ui.components.LazyPhotosColumn
 import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
 
 
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi

@@ -21,9 +21,9 @@ class TopicsPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TopicsModel> {
         try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
-            val pageSize = params.loadSize
+            //val pageSize = params.loadSize
 
-            val response = service.getTopics(pageNumber, pageSize, API_KEY)
+            val response = service.getTopics(pageNumber, API_KEY)
 
             return if (response.isSuccessful) {
                 val topics = response.body()!!.map { it.toTopicsModel() }

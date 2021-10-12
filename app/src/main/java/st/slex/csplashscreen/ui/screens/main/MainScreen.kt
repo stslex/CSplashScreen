@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.ui.screens.main
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -33,6 +34,7 @@ import st.slex.csplashscreen.ui.theme.Typography
 import st.slex.csplashscreen.utiles.GET_COLLECTIONS
 
 
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalCoroutinesApi
 @ExperimentalPagerApi

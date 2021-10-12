@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.ui.screens.user
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -11,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
 
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi

@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.ui.screens.search_photos
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -19,6 +20,7 @@ import st.slex.csplashscreen.ui.components.LazyPhotosColumn
 import st.slex.csplashscreen.ui.components.SetTextFieldColors
 import st.slex.csplashscreen.ui.theme.Typography
 
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
