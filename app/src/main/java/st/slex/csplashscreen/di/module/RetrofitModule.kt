@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import st.slex.csplashscreen.utiles.BASE_URL
+import st.slex.csplashscreen.data.core.Constants.BASE_URL
 import javax.inject.Singleton
 
 @Module

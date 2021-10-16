@@ -31,12 +31,13 @@ fun SearchPhotosScreen(
     query: String,
     viewModel: SearchViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
-    viewModel.setQueryPhotosSearch(QuerySearch.SearchPhotos(query))
+    val checkedQuery = if (query == " ") "" else query
+    viewModel.setQueryPhotosSearch(QuerySearch.SearchPhotos(checkedQuery))
     val lazyPagingPhotosItems = viewModel.photosSearch.collectAsLazyPagingItems()
 
     Scaffold(
         topBar = {
-            TopAppBarSearch(querySearch = query) {
+            TopAppBarSearch(querySearch = checkedQuery) {
                 viewModel.setQueryPhotosSearch(it)
             }
         }
@@ -68,10 +69,12 @@ private fun TopAppBarSearch(querySearch: String, search: (QuerySearch) -> Unit) 
             label = { Text(text = "Input Search") },
             textStyle = Typography.body2
         )
-        /*DisposableEffect(Unit) {
-            focusRequester.requestFocus()
-            onDispose { }
-        }*/
+        if (querySearch.isEmpty()) {
+            DisposableEffect(Unit) {
+                focusRequester.requestFocus()
+                onDispose { }
+            }
+        }
     }
 }
 

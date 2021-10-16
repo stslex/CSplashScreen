@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.data.photos
 
 import androidx.paging.PagingSource
+import st.slex.csplashscreen.data.core.QueryPhotos
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import javax.inject.Inject
 

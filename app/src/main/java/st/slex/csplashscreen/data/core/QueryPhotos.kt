@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.data.photos
+package st.slex.csplashscreen.data.core
 
 sealed class QueryPhotos {
     class CollectionPhotos(val query: String) : QueryPhotos()

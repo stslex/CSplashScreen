@@ -3,9 +3,9 @@ package st.slex.csplashscreen.data.titles
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import retrofit2.HttpException
-import st.slex.csplashscreen.data.core.toTopicsModel
+import st.slex.csplashscreen.data.core.Constants.API_KEY
+import st.slex.csplashscreen.core.toTopicsModel
 import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
-import st.slex.csplashscreen.utiles.API_KEY
 import javax.inject.Inject
 
 class TopicsPagingSource @Inject constructor(
@@ -21,7 +21,6 @@ class TopicsPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TopicsModel> {
         try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
-            //val pageSize = params.loadSize
 
             val response = service.getTopics(pageNumber, API_KEY)
 

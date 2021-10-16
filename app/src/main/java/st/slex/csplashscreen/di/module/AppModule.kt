@@ -23,8 +23,8 @@ import javax.inject.Singleton
         NetworkServiceModule::class,
         RepositoryModule::class,
         ViewModelFactoryModule::class,
-        ResponseModule::class,
         MapperModule::class,
+        ConverterModule::class
     ]
 )
 class AppModule {

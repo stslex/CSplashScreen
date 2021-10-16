@@ -10,7 +10,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import st.slex.csplashscreen.data.photos.QueryPhotos
+import st.slex.csplashscreen.data.core.QueryPhotos
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.LazyPhotosColumn
 import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel

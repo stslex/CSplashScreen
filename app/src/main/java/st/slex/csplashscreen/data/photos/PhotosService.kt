@@ -4,8 +4,15 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import st.slex.csplashscreen.data.core.Constants.GET_COLLECTIONS
+import st.slex.csplashscreen.data.core.Constants.GET_LIKES
+import st.slex.csplashscreen.data.core.Constants.GET_PHOTOS
+import st.slex.csplashscreen.data.core.Constants.GET_TOPICS
+import st.slex.csplashscreen.data.core.Constants.GET_USERS
+import st.slex.csplashscreen.data.core.Constants.QUERY_API_KEY
+import st.slex.csplashscreen.data.core.Constants.QUERY_PAGE
+import st.slex.csplashscreen.data.core.Constants.QUERY_PAGE_SIZE
 import st.slex.csplashscreen.data.model.remote.image.RemoteImageModel
-import st.slex.csplashscreen.utiles.*
 
 interface PhotosService {
 

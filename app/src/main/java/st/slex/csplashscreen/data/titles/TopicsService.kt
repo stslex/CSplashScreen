@@ -3,10 +3,10 @@ package st.slex.csplashscreen.data.titles
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
+import st.slex.csplashscreen.data.core.Constants.GET_TOPICS
+import st.slex.csplashscreen.data.core.Constants.QUERY_API_KEY
+import st.slex.csplashscreen.data.core.Constants.QUERY_PAGE
 import st.slex.csplashscreen.data.model.remote.topics.RemoteTopicsModel
-import st.slex.csplashscreen.utiles.GET_TOPICS
-import st.slex.csplashscreen.utiles.QUERY_API_KEY
-import st.slex.csplashscreen.utiles.QUERY_PAGE
 
 interface TopicsService {
 

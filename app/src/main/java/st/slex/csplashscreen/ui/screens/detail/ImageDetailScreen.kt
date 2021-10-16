@@ -27,18 +27,18 @@ import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.R
+import st.slex.csplashscreen.core.Resource
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
-import st.slex.csplashscreen.ui.core.UIResult
 import st.slex.csplashscreen.ui.navigation.NavDest
 import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-
 
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
@@ -53,9 +53,9 @@ fun ImageDetailScreen(
     systemUiController: SystemUiController = rememberSystemUiController(),
     viewModel: DetailPhotoViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
-    val uiResult by remember(viewModel) {
+    val result: Resource<ImageModel> by remember(viewModel) {
         viewModel.getCurrentPhoto(id)
-    }.collectAsState(initial = UIResult.Loading)
+    }.collectAsState(initial = Resource.Loading, context = Dispatchers.IO)
 
     val darkIcons = !isSystemInDarkTheme()
     SideEffect {
@@ -65,15 +65,15 @@ fun ImageDetailScreen(
     Column {
         BindTopImageHead(url = url, navController = navController)
         Spacer(modifier = Modifier.padding(4.dp))
-        when (uiResult) {
-            is UIResult.Success -> {
-                val image = (uiResult as UIResult.Success<ImageModel>).data
+        when (result) {
+            is Resource.Success -> {
+                val image = (result as Resource.Success<ImageModel>).data
                 BindDetailImageBody(image = image, navController = navController)
             }
-            is UIResult.Loading -> {
+            is Resource.Loading -> {
                 BindDetailImageLoading(modifier = Modifier.align(Alignment.CenterHorizontally))
             }
-            is UIResult.Failure -> {
+            is Resource.Failure -> {
                 BindDetailImageFailure()
             }
         }

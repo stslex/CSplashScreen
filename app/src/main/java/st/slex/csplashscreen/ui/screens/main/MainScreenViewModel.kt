@@ -5,9 +5,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import st.slex.csplashscreen.data.core.QueryCollections
+import st.slex.csplashscreen.data.core.QueryPhotos
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.data.photos.QueryPhotos
 import st.slex.csplashscreen.ui.core.QueryCollectionsUseCase
 import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
 import javax.inject.Inject
@@ -22,8 +23,8 @@ class MainScreenViewModel @Inject constructor(
     private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()
 
-    private val _queryCollections = MutableStateFlow(emptyList<String>())
-    private val queryCollections: StateFlow<List<String>> = _queryCollections.asStateFlow()
+    private val _queryCollections = MutableStateFlow<QueryCollections>(QueryCollections.EmptyQuery)
+    private val queryCollections: StateFlow<QueryCollections> = _queryCollections.asStateFlow()
 
     val collections: StateFlow<PagingData<CollectionModel>> = queryCollections
         .map(::newPagerCollections)
@@ -40,7 +41,7 @@ class MainScreenViewModel @Inject constructor(
     private var newPagingSource: PagingSource<*, *>? = null
     private var newPagingPhotosSource: PagingSource<*, *>? = null
 
-    fun setQueryCollections(query: List<String>) {
+    fun setQueryCollections(query: QueryCollections) {
         _queryCollections.tryEmit(query)
     }
 
@@ -48,7 +49,7 @@ class MainScreenViewModel @Inject constructor(
         _queryPhotos.tryEmit(query)
     }
 
-    private fun newPagerCollections(query: List<String>): Pager<Int, CollectionModel> {
+    private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionModel> {
         return Pager(PagingConfig(5, enablePlaceholders = false)) {
             newPagingSource?.invalidate()
             val queryCollectionsUseCase = queryCollectionsUseCaseProvider.get()

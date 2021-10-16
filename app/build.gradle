@@ -20,7 +20,6 @@ android {
             useSupportLibrary true
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false

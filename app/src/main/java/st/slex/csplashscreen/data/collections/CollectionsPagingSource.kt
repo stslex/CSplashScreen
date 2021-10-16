@@ -6,13 +6,14 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import retrofit2.HttpException
-import st.slex.csplashscreen.data.core.toCollectionModel
+import st.slex.csplashscreen.data.core.Constants.API_KEY
+import st.slex.csplashscreen.data.core.QueryCollections
+import st.slex.csplashscreen.core.toCollectionModel
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
-import st.slex.csplashscreen.utiles.API_KEY
 
 class CollectionsPagingSource @AssistedInject constructor(
     private val service: CollectionService,
-    @Assisted("query") private val query: List<String>
+    @Assisted("query") private val query: QueryCollections
 ) : PagingSource<Int, CollectionModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, CollectionModel>): Int? {
@@ -22,24 +23,21 @@ class CollectionsPagingSource @AssistedInject constructor(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CollectionModel> {
-        if (query.isEmpty()) {
+        if (query is QueryCollections.EmptyQuery) {
             return LoadResult.Page(emptyList(), prevKey = null, nextKey = null)
         }
         try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val pageSize = params.loadSize
 
-            val response = if (query.size > 1) {
-                service.getCollections(
-                    query[0],
-                    query[1],
-                    query[2],
-                    pageNumber,
-                    pageSize,
-                    API_KEY
-                )
-            } else {
-                service.getCollections(query[0], pageNumber, pageSize, API_KEY)
+            val response = when (query) {
+                is QueryCollections.AllCollections ->
+                    service.getCollections(pageNumber, pageSize, API_KEY)
+                is QueryCollections.UserCollections -> {
+                    service.getCollections(query.query, pageNumber, pageSize, API_KEY)
+                }
+                is QueryCollections.EmptyQuery ->
+                    return LoadResult.Invalid()
             }
 
             return if (response.isSuccessful) {
@@ -61,7 +59,7 @@ class CollectionsPagingSource @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(@Assisted("query") query: List<String>): CollectionsPagingSource
+        fun create(@Assisted("query") query: QueryCollections): CollectionsPagingSource
     }
 
     companion object {

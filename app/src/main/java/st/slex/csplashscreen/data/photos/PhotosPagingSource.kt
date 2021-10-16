@@ -6,9 +6,10 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import retrofit2.HttpException
-import st.slex.csplashscreen.data.core.toImageModel
+import st.slex.csplashscreen.data.core.Constants.API_KEY
+import st.slex.csplashscreen.data.core.QueryPhotos
+import st.slex.csplashscreen.core.toImageModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.utiles.API_KEY
 
 class PhotosPagingSource @AssistedInject constructor(
     private val service: PhotosService,
@@ -22,6 +23,9 @@ class PhotosPagingSource @AssistedInject constructor(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImageModel> {
+        if (query is QueryPhotos.EmptyQuery) {
+            return LoadResult.Page(emptyList(), prevKey = null, nextKey = null)
+        }
         try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val pageSize = params.loadSize

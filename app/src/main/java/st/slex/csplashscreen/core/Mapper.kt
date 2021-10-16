@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.data.core
+package st.slex.csplashscreen.core
 
 interface Mapper {
 
@@ -6,8 +6,9 @@ interface Mapper {
         fun map(data: S): R
     }
 
-    interface DataToUI<S, R> : Data<S, R> {
+    interface ToUI<S, R> : Data<S, R> {
         fun map(exception: Exception): R
+        fun map(): R
     }
 
     class Empty : Mapper

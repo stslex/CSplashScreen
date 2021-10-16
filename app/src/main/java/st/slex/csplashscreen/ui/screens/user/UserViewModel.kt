@@ -5,7 +5,4 @@ import javax.inject.Inject
 
 class UserViewModel @Inject constructor() : ViewModel() {
 
-    /*fun navigate(destination: NavigationState, args: List<String>) {
-        navigator.navigate(actions.navigation(destination, args))
-    }*/
 }

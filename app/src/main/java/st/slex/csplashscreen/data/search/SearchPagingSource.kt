@@ -6,9 +6,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import retrofit2.HttpException
-import st.slex.csplashscreen.data.core.toImageModel
+import st.slex.csplashscreen.data.core.Constants.API_KEY
+import st.slex.csplashscreen.core.toImageModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.utiles.API_KEY
 
 class SearchPagingSource @AssistedInject constructor(
     private val service: SearchService,

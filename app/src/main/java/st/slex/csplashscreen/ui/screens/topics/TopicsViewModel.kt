@@ -3,10 +3,11 @@ package st.slex.csplashscreen.ui.screens.topics
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
-import st.slex.csplashscreen.data.photos.QueryPhotos
+import st.slex.csplashscreen.data.core.QueryPhotos
 import st.slex.csplashscreen.data.titles.TopicsPagingSource
 import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class TopicsViewModel @Inject constructor(
     private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()
 
+    @ExperimentalCoroutinesApi
     val photos: StateFlow<PagingData<ImageModel>> = queryPhotos
         .map(::newPagerPhotos)
         .flatMapLatest { pager -> pager.flow }
@@ -50,6 +52,4 @@ class TopicsViewModel @Inject constructor(
             started = SharingStarted.Lazily,
             initialValue = PagingData.empty()
         )
-
-
 }
