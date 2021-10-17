@@ -10,13 +10,11 @@ import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.di.module.AppModule
 import st.slex.csplashscreen.ui.MainActivity
-import javax.inject.Singleton
 
 @ExperimentalCoilApi
 @ExperimentalCoroutinesApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
-@Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
 

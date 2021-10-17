@@ -12,7 +12,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
 import st.slex.csplashscreen.data.titles.TopicsPagingSource
 import st.slex.csplashscreen.data.titles.TopicsService
-import javax.inject.Singleton
 
 @ExperimentalCoilApi
 @ExperimentalCoroutinesApi
@@ -29,7 +28,6 @@ import javax.inject.Singleton
 )
 class AppModule {
 
-    @Singleton
     @Provides
     fun provideImageLoader(application: Application): ImageLoader =
         ImageLoader.Builder(application).build()

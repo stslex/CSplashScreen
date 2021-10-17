@@ -6,11 +6,12 @@ import dagger.Provides
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import st.slex.csplashscreen.data.core.Constants.BASE_URL
-import javax.inject.Singleton
+import javax.inject.Named
 
 @Module
 class RetrofitModule {
@@ -23,15 +24,16 @@ class RetrofitModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    @Singleton
     @Provides
     fun providesRetrofitClient(
         mLoggingInterceptor: HttpLoggingInterceptor,
-        onlineInterceptor: Interceptor,
+        @Named("OnlineInterceptor") onlineInterceptor: Interceptor,
+        @Named("OfflineInterceptor") offlineInterceptor: Interceptor,
         application: Application
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(mLoggingInterceptor)
         .addInterceptor(onlineInterceptor)
+        .addInterceptor(offlineInterceptor)
         .cache(Cache(application.cacheDir, 10 * 1024 * 1024 * 8L))
         .build()
 
@@ -41,6 +43,7 @@ class RetrofitModule {
     }
 
     @Provides
+    @Named("OnlineInterceptor")
     fun providesOnlineInterceptor(): Interceptor = Interceptor { chain ->
         val response = chain.proceed(chain.request())
         val maxAge = 60 * 60 * 3
@@ -50,17 +53,18 @@ class RetrofitModule {
             .build()
     }
 
-    /*   @OfflineScope
-       @Provides
-       fun providesOfflineInterceptor(): Interceptor = Interceptor { chain ->
-           var request: Request = chain.request()
-           val maxStale = 60 * 60 * 3
-           request = request.newBuilder()
-               .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
-               .removeHeader("Pragma")
-               .build()
 
-           chain.proceed(request)
-       }*/
+    @Provides
+    @Named("OfflineInterceptor")
+    fun providesOfflineInterceptor(): Interceptor = Interceptor { chain ->
+        var request: Request = chain.request()
+        val maxStale = 60 * 60 * 3
+        request = request.newBuilder()
+            .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
+            .removeHeader("Pragma")
+            .build()
+
+        chain.proceed(request)
+    }
 
 }
