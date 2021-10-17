@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -62,19 +63,21 @@ fun ImageDetailScreen(
         systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
     }
 
-    Column {
-        BindTopImageHead(url = url, navController = navController)
-        Spacer(modifier = Modifier.padding(4.dp))
+
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        item { BindTopImageHead(url = url, navController = navController) }
+        item { Spacer(modifier = Modifier.padding(4.dp)) }
+
         when (result) {
             is Resource.Success -> {
                 val image = (result as Resource.Success<ImageModel>).data
-                BindDetailImageBody(image = image, navController = navController)
+                item { BindDetailScreenBody(image = image, navController = navController) }
             }
             is Resource.Loading -> {
-                BindDetailImageLoading(modifier = Modifier.align(Alignment.CenterHorizontally))
+                item { BindDetailImageLoading(modifier = Modifier) }
             }
             is Resource.Failure -> {
-                BindDetailImageFailure()
+                item { BindDetailImageFailure() }
             }
         }
     }
@@ -83,7 +86,7 @@ fun ImageDetailScreen(
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
-private fun BindDetailImageBody(
+private fun BindDetailScreenBody(
     image: ImageModel,
     navController: NavController
 ) {
@@ -103,7 +106,28 @@ private fun BindDetailImageBody(
         Divider()
         Spacer(modifier = Modifier.size(16.dp))
     }
+    BindImageInformation(image)
+    Spacer(modifier = Modifier.size(16.dp))
+}
 
+@ExperimentalMaterialApi
+@Composable
+private fun BindImageInformation(image: ImageModel) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp),
+        shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
+        elevation = 16.dp,
+        onClick = {
+
+        }
+    ) {
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = "Show more information..."
+        )
+    }
 }
 
 @ExperimentalCoilApi

@@ -60,12 +60,9 @@ private inline fun NavGraphBuilder.create(
     val route = if (arguments.isNotEmpty()) arguments.joinToString("}/{", "/{", "}") else ""
     composable(
         route = "${destination}$route",
-    ) {
-        val args = mutableListOf<String>()
-        arguments.forEach { argument ->
-            args.add(
-                it.arguments?.getString(argument).toString()
-            )
+    ) { navBackStackEntry ->
+        val args = arguments.map { argument ->
+            navBackStackEntry.arguments?.getString(argument).toString()
         }
         screen(args)
     }

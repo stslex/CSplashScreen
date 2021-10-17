@@ -11,12 +11,14 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.ProvideWindowInsets
@@ -67,11 +69,7 @@ private fun MainBottomAppBar(navController: NavController) {
             MainBottomAppbarState.SearchScreen
         )
         val selectedItem = remember { mutableStateOf(NavDest.MainScreen.destination) }
-
         BottomNavigation {
-//            val navBackStackEntry by navController.currentBackStackEntryAsState()
-//            val currentDestination = navBackStackEntry?.destination
-
             listOfItems.forEach {
                 BottomNavigationItem(
                     icon = {
@@ -82,8 +80,11 @@ private fun MainBottomAppBar(navController: NavController) {
                     onClick = {
                         selectedItem.value = it.destination
                         navController.navigate(it.route) {
-                            popUpTo(it.route) {
-                                inclusive = true
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    inclusive = true
+                                    saveState = true
+                                }
                             }
                             launchSingleTop = true
                             restoreState = true
