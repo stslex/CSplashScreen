@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
@@ -86,22 +87,24 @@ private fun Pager(
     lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
     navController: NavController,
     pagerState: PagerState,
-    pages: List<PagerMainTab>
+    pages: List<PagerMainTab>,
 ) {
     HorizontalPager(
         count = pages.size,
         state = pagerState
     ) { page ->
-        LazyColumn {
+        LazyColumn() {
             when (pages[page]) {
                 is PagerMainTab.Photos -> {
                     items(lazyPagingPhotosItems) { item ->
                         ImageItem(
                             item = item,
-                            modifier = Modifier.animationUtilPager(
-                                scope = this@HorizontalPager,
-                                page = page
-                            ),
+                            modifier = Modifier
+                                .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
+                                .animationUtilPager(
+                                    scope = this@HorizontalPager,
+                                    page = page
+                                ),
                             navController = navController
                         )
                     }
@@ -112,10 +115,12 @@ private fun Pager(
                     items(lazyPagingCollectionsItems) { item ->
                         CollectionItem(
                             item = item,
-                            modifier = Modifier.animationUtilPager(
-                                scope = this@HorizontalPager,
-                                page = page
-                            ),
+                            modifier = Modifier
+                                .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
+                                .animationUtilPager(
+                                    scope = this@HorizontalPager,
+                                    page = page
+                                ),
                             navController = navController
                         )
 

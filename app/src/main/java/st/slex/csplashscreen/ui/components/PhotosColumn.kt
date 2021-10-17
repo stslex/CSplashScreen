@@ -55,27 +55,29 @@ fun LazyPhotosColumn(
 fun ImageItem(
     item: ImageModel?,
     modifier: Modifier,
-    navController: NavController
+    navController: NavController,
+    isUserVisible: Boolean = true
 ) {
     Column(
         modifier = modifier
-            .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
             .fillMaxWidth()
     ) {
 
-        UserImageHeadWithUserName(
-            modifier = Modifier.fillMaxWidth(),
-            url = item?.user?.profile_image?.medium.toString(),
-            username = item?.user?.username.toString(),
-            navController = navController
-        )
+        if (isUserVisible) {
+            UserImageHeadWithUserName(
+                modifier = Modifier.fillMaxWidth(),
+                url = item?.user?.profile_image?.medium.toString(),
+                username = item?.user?.username.toString(),
+                navController = navController
+            )
+        }
 
         Spacer(modifier = Modifier.padding(4.dp))
 
         Surface(
             modifier = Modifier
                 .clip(RoundedCornerShape(32.dp))
-                .shadow(elevation = 16.dp, shape = Shapes.medium),
+                .shadow(elevation = 4.dp, shape = Shapes.medium),
             onClick = {
                 val url = item?.urls?.regular
                 val id = item?.id

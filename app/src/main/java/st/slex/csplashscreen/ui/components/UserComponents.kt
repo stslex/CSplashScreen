@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -27,10 +28,8 @@ fun UserImageHeadWithUserName(
     username: String,
     navController: NavController
 ) {
-    Surface(
-        modifier = modifier
-            .shadow(elevation = 16.dp, Shapes.medium)
-            .clip(RoundedCornerShape(16.dp)),
+    Card(
+        modifier = modifier,
         onClick = {
             navController.navigate("${NavDest.UserScreen.destination}/$username")
         }

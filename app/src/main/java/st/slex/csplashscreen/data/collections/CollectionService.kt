@@ -20,7 +20,7 @@ interface CollectionService {
         @Query(QUERY_API_KEY) api_key: String
     ): Response<List<RemoteCollectionModel>>
 
-    @GET("$GET_USERS/{query}/{$GET_COLLECTIONS}")
+    @GET("$GET_USERS/{query}/$GET_COLLECTIONS")
     suspend fun getCollections(
         @Path("query") query: String,
         @Query(QUERY_PAGE) page: Int,

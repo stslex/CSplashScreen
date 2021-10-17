@@ -22,21 +22,22 @@ import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 fun CollectionItem(
     item: CollectionModel?,
     modifier: Modifier,
-    navController: NavController
+    navController: NavController,
+    isUserVisible: Boolean = true
 ) {
 
     Column(
-        modifier = modifier
-            .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
 
-        UserImageHeadWithUserName(
-            modifier = Modifier.fillMaxWidth(),
-            url = item?.user?.profile_image?.medium.toString(),
-            username = item?.user?.username.toString(),
-            navController = navController
-        )
+        if (isUserVisible) {
+            UserImageHeadWithUserName(
+                modifier = Modifier.fillMaxWidth(),
+                url = item?.user?.profile_image?.medium.toString(),
+                username = item?.user?.username.toString(),
+                navController = navController
+            )
+        }
 
         Spacer(modifier = Modifier.padding(4.dp))
 
