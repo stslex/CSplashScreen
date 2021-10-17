@@ -169,7 +169,7 @@ private fun UserDetailImageHead(
                     bottom.linkTo(parent.bottom)
                 },
             onClick = {
-
+                navController.navigate("${NavDest.UserScreen.destination}/$username")
             }
         ) {
             Icon(

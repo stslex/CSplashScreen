@@ -12,7 +12,6 @@ import st.slex.csplashscreen.data.photos.PhotosPagingSource
 import st.slex.csplashscreen.data.core.QueryPhotos
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 interface UserRepository {
 
     suspend fun getUser(username: String): Flow<Resource<RemoteUserModel>>

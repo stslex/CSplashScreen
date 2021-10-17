@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
+import st.slex.csplashscreen.ui.navigation.NavDest
 import st.slex.csplashscreen.ui.theme.Shapes
 
 @ExperimentalMaterialApi
@@ -31,7 +32,7 @@ fun UserImageHeadWithUserName(
             .shadow(elevation = 16.dp, Shapes.medium)
             .clip(RoundedCornerShape(16.dp)),
         onClick = {
-            //navController.navigate("user_profile")
+            navController.navigate("${NavDest.UserScreen.destination}/$username")
         }
     ) {
         Row(
