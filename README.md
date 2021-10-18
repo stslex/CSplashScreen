@@ -30,14 +30,10 @@ PreRelease you can download here [RELEASES](https://github.com/stslex/CSplashScr
 
 ### Screenshots
 
-- #### Main screen
-<img src="./screenshots/Screenshot_1.jpg" width="200" > 
+| Main screen                                            | Topics                                                   |
+|--------------------------------------------------------|----------------------------------------------------------|
+| <img src="./screenshots/Screenshot1.png" width="200" > | <img src="./screenshots/Screenshot2.png" width="200" >   |
 
-- #### Topics
-<img src="./screenshots/Screenshot_2.jpg" width="200" > 
-
-- #### Photographer profile
-<img src="./screenshots/Screenshot_3.jpg" width="200" > 
-
-- #### SearchPhotos
-<img src="./screenshots/Screenshot_4.jpg" width="200" > 
+| Photographer profile                                   | SearchPhotos                                             |
+|--------------------------------------------------------|----------------------------------------------------------|
+| <img src="./screenshots/Screenshot3.png" width="200" > | <img src="./screenshots/Screenshot4.png" width="200" >   |
