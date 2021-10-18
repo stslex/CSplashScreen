@@ -1,18 +1,21 @@
 package st.slex.csplashscreen.ui.components
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
+import st.slex.csplashscreen.ui.navigation.NavDest
+import st.slex.csplashscreen.ui.theme.TransparentGray
+import st.slex.csplashscreen.ui.theme.Typography
 
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
@@ -25,11 +28,9 @@ fun CollectionItem(
     navController: NavController,
     isUserVisible: Boolean = true
 ) {
-
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
-
         if (isUserVisible) {
             UserImageHeadWithUserName(
                 modifier = Modifier.fillMaxWidth(),
@@ -38,18 +39,55 @@ fun CollectionItem(
                 navController = navController
             )
         }
-
         Spacer(modifier = Modifier.padding(4.dp))
-
-        BindCoverImageConstraint(
+        BindCoverImageCard(
             item?.id.toString(),
             item?.cover_photo?.urls?.regular.toString(),
             item?.title.toString(),
             item?.total_photos.toString(),
             navController = navController
         )
-
     }
+}
 
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@ExperimentalPagerApi
+@Composable
+fun BindCoverImageCard(
+    id: String,
+    url: String,
+    title: String,
+    totalPhotos: String,
+    navController: NavController
+) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(300.dp)
+        .shadow(elevation = 0.dp),
+        elevation = 0.dp,
+        onClick = {
+            navController.navigate("${NavDest.SingleCollectionScreen.destination}/$id")
+        }
+    ) {
+        CoverPhotoItem(
+            url = url,
+            modifier = Modifier
+        )
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = TransparentGray
+        ) {}
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 16.dp, bottom = 16.dp),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            CollectionTextCard(text = title, Typography.h4)
+            Spacer(modifier = Modifier.padding(4.dp))
+            CollectionTextCard(text = "$totalPhotos Photos", style = Typography.h5)
+        }
+    }
 }
 

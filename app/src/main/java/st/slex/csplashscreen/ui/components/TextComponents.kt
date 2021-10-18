@@ -6,7 +6,6 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import st.slex.csplashscreen.ui.theme.Typography
@@ -15,10 +14,9 @@ import st.slex.csplashscreen.ui.theme.Typography
 fun TextUsernamePrimary(username: String) {
     Text(
         text = username,
-        style = Typography.h6,
+        style = Typography.subtitle1,
         maxLines = 1,
-        lineHeight = TextUnit.Unspecified,
-        fontFamily = FontFamily.SansSerif
+        lineHeight = TextUnit.Unspecified
     )
 }
 

@@ -1,12 +1,16 @@
 package st.slex.csplashscreen.ui.screens.main
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -18,6 +22,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.*
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.material.animation.AnimationUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -28,9 +33,10 @@ import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
-import st.slex.csplashscreen.ui.components.animationUtilPager
 import st.slex.csplashscreen.ui.components.checkState
+import st.slex.csplashscreen.ui.components.normalizedItemPosition
 import st.slex.csplashscreen.ui.theme.Typography
+import kotlin.math.absoluteValue
 
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
@@ -93,18 +99,19 @@ private fun Pager(
         count = pages.size,
         state = pagerState
     ) { page ->
-        LazyColumn() {
+        val lazyListState = rememberLazyListState()
+        LazyColumn(state = lazyListState) {
             when (pages[page]) {
                 is PagerMainTab.Photos -> {
-                    items(lazyPagingPhotosItems) { item ->
+                    items(lazyPagingPhotosItems, key = { it.id }) { item ->
                         ImageItem(
                             item = item,
-                            modifier = Modifier
-                                .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
-                                .animationUtilPager(
-                                    scope = this@HorizontalPager,
-                                    page = page
-                                ),
+                            modifier = Modifier.animateColumn(
+                                scope = this@HorizontalPager,
+                                page = page,
+                                lazyListState = lazyListState,
+                                id = item?.id.toString()
+                            ),
                             navController = navController
                         )
                     }
@@ -112,15 +119,15 @@ private fun Pager(
                 }
 
                 is PagerMainTab.Collections -> {
-                    items(lazyPagingCollectionsItems) { item ->
+                    items(lazyPagingCollectionsItems, key = { it.id }) { item ->
                         CollectionItem(
                             item = item,
-                            modifier = Modifier
-                                .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
-                                .animationUtilPager(
-                                    scope = this@HorizontalPager,
-                                    page = page
-                                ),
+                            modifier = Modifier.animateColumn(
+                                scope = this@HorizontalPager,
+                                page = page,
+                                lazyListState = lazyListState,
+                                id = item?.id.toString()
+                            ),
                             navController = navController
                         )
 
@@ -166,6 +173,42 @@ private fun TabRow(pagerState: PagerState, pages: List<PagerMainTab>) {
 object AnalyticsService {
     fun sendPageSelectedEvent(page: Int) = Unit
 }
+
+@ExperimentalPagerApi
+@SuppressLint("RestrictedApi")
+fun Modifier.animateColumn(
+    scope: PagerScope,
+    page: Int,
+    lazyListState: LazyListState,
+    id: String
+): Modifier = this
+    .padding(start = 8.dp, end = 8.dp, top = 32.dp, bottom = 32.dp)
+    .graphicsLayer {
+        val pageOffset = scope.calculateCurrentOffsetForPage(page).absoluteValue
+        AnimationUtils
+            .lerp(
+                0.85f,
+                1f,
+                1f - pageOffset.coerceIn(0f, 1f)
+            )
+            .also { scale ->
+                scaleX = scale
+                scaleY = scale
+            }
+        translationY = lazyListState.layoutInfo.normalizedItemPosition(id) * -50
+        alpha = AnimationUtils.lerp(
+            0.5f,
+            1f,
+            1f - pageOffset.coerceIn(0f, 1f)
+        )
+    }
+    .graphicsLayer {
+        val value =
+            1 - (lazyListState.layoutInfo.normalizedItemPosition(id).absoluteValue * 0.05f)
+        alpha = value
+        scaleX = value
+        scaleY = value
+    }
 
 
 

@@ -1,5 +1,11 @@
 package st.slex.csplashscreen.ui.screens.detail
 
+import android.annotation.SuppressLint
+import android.app.DownloadManager
+import android.content.Context
+import android.database.Cursor
+import android.net.Uri
+import android.os.Environment
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -7,6 +13,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -30,8 +37,10 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import st.slex.csplashscreen.R
 import st.slex.csplashscreen.core.Resource
+import st.slex.csplashscreen.data.model.ui.DownloadModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
 import st.slex.csplashscreen.ui.MainActivity
@@ -40,6 +49,8 @@ import st.slex.csplashscreen.ui.navigation.NavDest
 import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
@@ -58,6 +69,13 @@ fun ImageDetailScreen(
         viewModel.getCurrentPhoto(id)
     }.collectAsState(initial = Resource.Loading, context = Dispatchers.IO)
 
+    val downloadUrl: Resource<DownloadModel> by remember(viewModel) {
+        viewModel.getDownloadUrl(id)
+    }.collectAsState(initial = Resource.Loading, context = Dispatchers.IO)
+
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     val darkIcons = !isSystemInDarkTheme()
     SideEffect {
         systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
@@ -71,6 +89,18 @@ fun ImageDetailScreen(
         when (result) {
             is Resource.Success -> {
                 val image = (result as Resource.Success<ImageModel>).data
+                item {
+                    UserDetailImageHead(
+                        username = image.user?.username.toString(),
+                        url = image.user?.profile_image?.medium.toString(),
+                        navController = navController
+                    ) {
+                        if (downloadUrl is Resource.Success) scope.launch(Dispatchers.IO) {
+                            val url = (downloadUrl as Resource.Success).data.url
+                            download(url, image.id, context)
+                        }
+                    }
+                }
                 item { BindDetailScreenBody(image = image, navController = navController) }
             }
             is Resource.Loading -> {
@@ -90,11 +120,6 @@ private fun BindDetailScreenBody(
     image: ImageModel,
     navController: NavController
 ) {
-    UserDetailImageHead(
-        username = image.user?.username.toString(),
-        url = image.user?.profile_image?.medium.toString(),
-        navController = navController
-    )
     Spacer(modifier = Modifier.size(16.dp))
     Divider()
     Spacer(modifier = Modifier.size(16.dp))
@@ -136,7 +161,8 @@ private fun BindImageInformation(image: ImageModel) {
 private fun UserDetailImageHead(
     url: String,
     username: String,
-    navController: NavController
+    navController: NavController,
+    downloadFunction: () -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -160,28 +186,25 @@ private fun UserDetailImageHead(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(start = 8.dp, end = 8.dp)
-                .shadow(elevation = 16.dp, Shapes.medium)
-                .clip(RoundedCornerShape(16.dp))
+                .shadow(elevation = 16.dp, shape = CircleShape)
                 .constrainAs(download) {
                     height = Dimension.fillToConstraints
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
+            shape = CircleShape,
             onClick = {
-                navController.navigate("${NavDest.UserScreen.destination}/$username")
+                downloadFunction()
             }
         ) {
             Icon(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(16.dp).clip(CircleShape),
                 painter = painterResource(id = R.drawable.ic_baseline_arrow_download),
                 contentDescription = "Download"
             )
         }
-
     }
-
-
 }
 
 @ExperimentalCoilApi
@@ -248,6 +271,36 @@ private fun BindDetailImageFailure() {
 
 }
 
+@SuppressLint("Range")
+private suspend fun download(
+    url: String,
+    fileName: String,
+    context: Context
+): Resource<Nothing?> = suspendCoroutine { continuation ->
+    val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+    val request = DownloadManager
+        .Request(Uri.parse(url))
+        .setTitle("Downloading")
+        .setDescription("Downloading image...")
+        .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, fileName)
+        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+    downloadManager.enqueue(request)
+    var cursor: Cursor? = null
+    val query = DownloadManager.Query()
+    query.setFilterByStatus(DownloadManager.STATUS_FAILED)
+    query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL)
+    cursor = downloadManager.query(query)
+    if (cursor.moveToFirst()) {
+        when (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
+            DownloadManager.STATUS_SUCCESSFUL -> {
+                continuation.resumeWith(Result.success(Resource.Success(null)))
+            }
+            DownloadManager.STATUS_FAILED -> {
+                continuation.resumeWithException(Exception("Failed"))
+            }
+        }
+    }
+}
 
 
 

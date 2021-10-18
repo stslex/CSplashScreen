@@ -295,7 +295,7 @@ private fun TabRow(
 
 @ExperimentalPagerApi
 @SuppressLint("RestrictedApi")
-fun Modifier.animate(
+private fun Modifier.animate(
     scope: PagerScope,
     page: Int,
     lazyListState: LazyListState,

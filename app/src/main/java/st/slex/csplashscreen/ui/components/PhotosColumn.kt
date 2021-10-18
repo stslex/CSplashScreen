@@ -4,14 +4,13 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
@@ -22,9 +21,9 @@ import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.navigation.NavDest
-import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import kotlin.math.absoluteValue
 
 
 @ExperimentalCoilApi
@@ -35,12 +34,22 @@ fun LazyPhotosColumn(
     lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
     navController: NavController
 ) {
-    LazyColumn {
-        items(lazyPagingPhotosItems) { item ->
+    val lazyListState = rememberLazyListState()
+    LazyColumn(state = lazyListState) {
+        items(lazyPagingPhotosItems, key = { it.id }) { item ->
             ImageItem(
                 item = item,
                 navController = navController,
                 modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, top = 32.dp, bottom = 32.dp)
+                    .graphicsLayer {
+                        val value =
+                            1 - (lazyListState.layoutInfo.normalizedItemPosition(item!!.id).absoluteValue * 0.05f)
+                        alpha = value
+                        scaleX = value
+                        scaleY = value
+                    }
+
             )
         }
         lazyPagingPhotosItems.checkState(this)
@@ -74,10 +83,7 @@ fun ImageItem(
 
         Spacer(modifier = Modifier.padding(4.dp))
 
-        Surface(
-            modifier = Modifier
-                .clip(RoundedCornerShape(32.dp))
-                .shadow(elevation = 4.dp, shape = Shapes.medium),
+        Card(
             onClick = {
                 val url = item?.urls?.regular
                 val id = item?.id
@@ -93,12 +99,11 @@ fun ImageItem(
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
-fun CoverPhotoItem(url: String) {
+fun CoverPhotoItem(url: String, modifier: Modifier = Modifier) {
     Image(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(300.dp)
-            .clip(RoundedCornerShape(32.dp))
             .clipToBounds(),
         painter = rememberImagePainter(
             data = url,

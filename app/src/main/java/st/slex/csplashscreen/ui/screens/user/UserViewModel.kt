@@ -80,7 +80,7 @@ class UserViewModel @Inject constructor(
     }
 
     private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionModel> {
-        return Pager(PagingConfig(5, enablePlaceholders = false)) {
+        return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingCollectionsSource?.invalidate()
             val queryCollectionsUseCase = queryCollectionsUseCaseProvider.get()
             queryCollectionsUseCase(query).also { newPagingCollectionsSource = it }
@@ -88,7 +88,7 @@ class UserViewModel @Inject constructor(
     }
 
     private fun newPagerPhotos(query: QueryPhotos): Pager<Int, ImageModel> {
-        return Pager(PagingConfig(5, enablePlaceholders = false)) {
+        return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingPhotosSource?.invalidate()
             val queryPhotosUseCase = queryPhotosUseCaseProvider.get()
             queryPhotosUseCase(query).also { newPagingPhotosSource = it }
@@ -96,7 +96,7 @@ class UserViewModel @Inject constructor(
     }
 
     private fun newPagerLikes(query: QueryPhotos): Pager<Int, ImageModel> {
-        return Pager(PagingConfig(5, enablePlaceholders = false)) {
+        return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingLikesSource?.invalidate()
             val queryPhotosUseCase = queryPhotosUseCaseProvider.get()
             queryPhotosUseCase(query).also { newPagingLikesSource = it }

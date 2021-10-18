@@ -26,11 +26,18 @@ The app client with Image library using Unsplash api In order with dark theme su
 
 ### Installation
 
-Prerelease you can download here [RELEASES](https://github.com/stslex/CSplashScreen/releases) 
+PreRelease you can download here [RELEASES](https://github.com/stslex/CSplashScreen/releases) 
 
 ### Screenshots
 
 - #### Main screen
-<img src="./screenshots/Screenshot_1.jpg" width="200" > <img src="./screenshots/Screenshot_2.jpg" width="200" > 
+<img src="./screenshots/Screenshot_1.jpg" width="200" > 
 
-It'll be updated as soon as possible
+- #### Topics
+<img src="./screenshots/Screenshot_2.jpg" width="200" > 
+
+- #### Photographer profile
+<img src="./screenshots/Screenshot_3.jpg" width="200" > 
+
+- #### SearchPhotos
+<img src="./screenshots/Screenshot_4.jpg" width="200" > 

@@ -1,6 +1,9 @@
 package st.slex.csplashscreen.di.module
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -32,10 +35,23 @@ class RetrofitModule {
         application: Application
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(mLoggingInterceptor)
-        .addInterceptor(onlineInterceptor)
-        .addInterceptor(offlineInterceptor)
+        .addInterceptor(if (checkNetwork(application.applicationContext)) onlineInterceptor else offlineInterceptor)
         .cache(Cache(application.cacheDir, 10 * 1024 * 1024 * 8L))
         .build()
+
+    private fun checkNetwork(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return when {
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+            else -> false
+        }
+    }
 
     @Provides
     fun providesLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -53,17 +69,15 @@ class RetrofitModule {
             .build()
     }
 
-
     @Provides
     @Named("OfflineInterceptor")
     fun providesOfflineInterceptor(): Interceptor = Interceptor { chain ->
         var request: Request = chain.request()
-        val maxStale = 60 * 60 * 3
+        val maxStale = 60 * 60 * 12
         request = request.newBuilder()
             .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
             .removeHeader("Pragma")
             .build()
-
         chain.proceed(request)
     }
 

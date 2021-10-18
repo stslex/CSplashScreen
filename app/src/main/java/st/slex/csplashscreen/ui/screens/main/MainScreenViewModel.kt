@@ -50,7 +50,7 @@ class MainScreenViewModel @Inject constructor(
     }
 
     private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionModel> {
-        return Pager(PagingConfig(5, enablePlaceholders = false)) {
+        return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingSource?.invalidate()
             val queryCollectionsUseCase = queryCollectionsUseCaseProvider.get()
             queryCollectionsUseCase(query).also { newPagingSource = it }
@@ -58,7 +58,7 @@ class MainScreenViewModel @Inject constructor(
     }
 
     private fun newPagerPhotos(query: QueryPhotos): Pager<Int, ImageModel> {
-        return Pager(PagingConfig(5, enablePlaceholders = false)) {
+        return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingPhotosSource?.invalidate()
             val queryPhotosUseCase = queryPhotosUseCaseProvider.get()
             queryPhotosUseCase(query).also { newPagingPhotosSource = it }
