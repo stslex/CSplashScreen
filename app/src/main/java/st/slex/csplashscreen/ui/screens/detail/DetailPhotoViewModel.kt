@@ -20,14 +20,14 @@ class DetailPhotoViewModel @Inject constructor(
     private val repository: PhotoRepository,
     private val photoMapper: PhotoDataMapper,
     private val downloadMapper: DownloadDataMapper,
-    private val downloadImageResource: DownloadImageResource,
+    private val downloadImageUseCase: DownloadImageUseCase,
 ) : ViewModel() {
 
-    fun downloadImage(id: String, context: Context) = viewModelScope.launch(Dispatchers.IO) {
+    fun getUrlAndDownloadImage(id: String) = viewModelScope.launch(Dispatchers.IO) {
         getDownloadUrl(id).collect {
             when (it) {
                 is Resource.Success -> {
-                    downloadImageResource.download(it.data.url, id, context)
+                    downloadImageUseCase.download(it.data.url, id)
                 }
                 is Resource.Loading -> {
 

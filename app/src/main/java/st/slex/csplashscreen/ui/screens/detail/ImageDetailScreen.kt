@@ -37,7 +37,7 @@ import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
-import st.slex.csplashscreen.ui.navigation.NavigationResource
+import st.slex.csplashscreen.ui.navigation.NavHostResource
 import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -80,7 +80,7 @@ fun ImageDetailScreen(
                         url = image.user.profile_image.medium,
                         navController = navController
                     ) {
-                        viewModel.downloadImage(id, context)
+                        viewModel.getUrlAndDownloadImage(id)
                     }
                 }
                 item { BindDetailScreenBody(image = image, navController = navController) }
@@ -107,7 +107,7 @@ private fun BindDetailScreenBody(
     Spacer(modifier = Modifier.size(16.dp))
     if (!image.tags.isNullOrEmpty()) {
         BindDetailImageBodyTags(image.tags) {
-            navController.navigate("${NavigationResource.SearchPhotosScreen.destination}/$it")
+            navController.navigate("${NavHostResource.SearchPhotosScreen.destination}/$it")
         }
         Spacer(modifier = Modifier.size(16.dp))
         Divider()
@@ -203,7 +203,7 @@ private fun BindTopImageHead(
             .height(300.dp)
             .clickable {
                 val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                navController.navigate("${NavigationResource.RawImageScreen.destination}/$encodedUrl")
+                navController.navigate("${NavHostResource.RawImageScreen.destination}/$encodedUrl")
             },
         painter = rememberImagePainter(
             data = url,

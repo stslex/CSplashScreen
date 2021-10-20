@@ -20,7 +20,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.ui.navigation.NavigationResource
+import st.slex.csplashscreen.ui.navigation.NavHostResource
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import kotlin.math.absoluteValue
@@ -92,7 +92,7 @@ fun ImageItem(
                 val url = item.urls.regular
                 val id = item.id
                 val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                navController.navigate("${NavigationResource.ImageDetailScreen.destination}/$encodedUrl/$id")
+                navController.navigate("${NavHostResource.ImageDetailScreen.destination}/$encodedUrl/$id")
             }
         ) {
             CoverPhotoItem(item.urls.regular)

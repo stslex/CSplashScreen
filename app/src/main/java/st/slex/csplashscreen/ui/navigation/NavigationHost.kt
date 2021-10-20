@@ -7,7 +7,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,6 +15,8 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import st.slex.csplashscreen.ui.navigation.NavigationRouteConverter.convertArgs
+import st.slex.csplashscreen.ui.navigation.NavigationRouteConverter.convertRoute
 import st.slex.csplashscreen.ui.screens.collection.SingleCollectionScreen
 import st.slex.csplashscreen.ui.screens.detail.ImageDetailScreen
 import st.slex.csplashscreen.ui.screens.main.MainScreen
@@ -42,59 +43,68 @@ interface NavigationHost {
         @Composable
         override fun CreateNavigationHost(navController: NavHostController) {
             val lifecycleOwner = LocalLifecycleOwner.current
-            val navigatorState by navigator.navAction.asLifecycleAwareState(
+            val navigatorState by navigator.navActions.asLifecycleAwareState(
                 lifecycleOwner = lifecycleOwner,
                 initialState = null
             )
+
+            val popBackState by navigator.navPopBackStack.asLifecycleAwareState(
+                lifecycleOwner = lifecycleOwner,
+                initialState = null
+            )
+
             LaunchedEffect(navigatorState) {
                 navigatorState?.let {
-                    navController.navigate(it.destinations)
+                    it.arguments.forEach { arg ->
+                        navController.currentBackStackEntry?.arguments?.putString(
+                            arg.key,
+                            arg.value
+                        )
+                    }
+                    navController.navigate(it.convertRoute(), it.navOptions)
                 }
             }
+
+            LaunchedEffect(popBackState) {
+                popBackState?.let {
+                    if (it) navController.popBackStack()
+                }
+            }
+
             NavHost(
                 navController = navController,
-                startDestination = NavigationResource.MainScreen.destination,
+                startDestination = NavHostResource.MainScreen.destination,
             ) {
-                create(NavigationResource.MainScreen) {
+                create(NavHostResource.MainScreen) {
                     MainScreen(navController = navController)
                 }
-                create(NavigationResource.ImageDetailScreen) {
+                create(NavHostResource.ImageDetailScreen) {
                     ImageDetailScreen(navController = navController, url = it[0], id = it[1])
                 }
-                create(NavigationResource.SingleCollectionScreen) {
+                create(NavHostResource.SingleCollectionScreen) {
                     SingleCollectionScreen(navController = navController, it[0])
                 }
-                create(NavigationResource.RawImageScreen) {
+                create(NavHostResource.RawImageScreen) {
                     RawImageScreen(navController = navController, it[0])
                 }
-                create(NavigationResource.SearchPhotosScreen) {
+                create(NavHostResource.SearchPhotosScreen) {
                     SearchPhotosScreen(navController = navController, it[0])
                 }
-                create(NavigationResource.UserScreen) {
+                create(NavHostResource.UserScreen) {
                     UserScreen(navController = navController, it[0])
                 }
-                create(NavigationResource.TopicsScreen) {
+                create(NavHostResource.TopicsScreen) {
                     TopicsScreen(navController = navController)
                 }
             }
         }
 
         private inline fun NavGraphBuilder.create(
-            navDest: NavigationResource,
+            navDest: NavHostResource,
             crossinline screen: @Composable (list: List<String>) -> Unit
         ) = with(navDest) {
             composable(route = convertRoute()) { screen(it.convertArgs(arguments)) }
         }
-
-        private fun NavBackStackEntry.convertArgs(args: List<String>): List<String> =
-            args.map { arguments?.getString(it).toString() }
-
-        private fun NavigationResource.convertRoute() =
-            "$destination${arguments.convertArgumentsRoute()}"
-
-        private fun List<String>.convertArgumentsRoute() = if (!isNullOrEmpty()) {
-            joinToString(separator = "}/{", prefix = "/{", postfix = "}")
-        } else ""
 
         @Composable
         private fun <T> Flow<T>.asLifecycleAwareState(

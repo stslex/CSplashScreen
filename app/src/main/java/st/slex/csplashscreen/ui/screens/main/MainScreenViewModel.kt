@@ -19,10 +19,15 @@ import javax.inject.Provider
 class MainScreenViewModel @Inject constructor(
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
     private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>,
-    private val _navigator: Navigator
+    private val _navigator: Navigator,
 ) : ViewModel() {
 
-    val navigator: Navigator = _navigator
+    init {
+        _navigator.navigate(null)
+    }
+
+    val navigator: Navigator
+        get() = _navigator
 
     private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()

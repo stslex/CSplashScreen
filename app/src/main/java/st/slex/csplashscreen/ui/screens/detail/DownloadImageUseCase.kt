@@ -1,9 +1,9 @@
 package st.slex.csplashscreen.ui.screens.detail
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.app.DownloadManager
 import android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
-import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
 import android.database.Cursor
 import android.net.Uri
@@ -13,24 +13,25 @@ import javax.inject.Inject
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-interface DownloadImageResource {
+interface DownloadImageUseCase {
 
-    suspend fun download(url: String, fileName: String, context: Context): Resource<Nothing?>
+    suspend fun download(url: String, fileName: String): Resource<Nothing?>
 
-    class Base @Inject constructor() : DownloadImageResource {
+    class Base @Inject constructor(
+        private val application: Application
+    ) : DownloadImageUseCase {
 
         @SuppressLint("Range")
         override suspend fun download(
             url: String,
-            fileName: String,
-            context: Context
+            fileName: String
         ): Resource<Nothing?> = suspendCoroutine { continuation ->
-            val downloadManager = context.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+            val downloadManager = application.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
             val request = DownloadManager
                 .Request(Uri.parse(url))
                 .setTitle("Downloading")
                 .setDescription("Downloading image...")
-                .setDestinationInExternalFilesDir(context, DIRECTORY_DOWNLOADS, fileName)
+                .setDestinationInExternalFilesDir(application, DIRECTORY_DOWNLOADS, fileName)
                 .setNotificationVisibility(VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             downloadManager.enqueue(request)
             var cursor: Cursor? = null

@@ -35,7 +35,6 @@ import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
 import st.slex.csplashscreen.ui.components.checkState
 import st.slex.csplashscreen.ui.components.normalizedItemPosition
-import st.slex.csplashscreen.ui.navigation.Navigator
 import st.slex.csplashscreen.ui.theme.Typography
 import kotlin.math.absoluteValue
 
@@ -51,8 +50,9 @@ fun MainScreen(
     navController: NavController,
     viewModel: MainScreenViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
-    val navigator: Navigator = viewModel.navigator
-
+    val navigator = remember(viewModel) {
+        viewModel.navigator
+    }
 
     viewModel.apply {
         setQueryCollections(QueryCollections.AllCollections)

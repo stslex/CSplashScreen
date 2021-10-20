@@ -25,7 +25,7 @@ import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.appComponent
 import st.slex.csplashscreen.ui.navigation.NavigationHost
-import st.slex.csplashscreen.ui.navigation.NavigationResource
+import st.slex.csplashscreen.ui.navigation.NavHostResource
 import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
 import javax.inject.Inject
 
@@ -40,20 +40,21 @@ class MainActivity : ComponentActivity() {
     lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
 
     @Inject
-    lateinit var navigationHost: NavigationHost
+    lateinit var navigationHost: Lazy<NavigationHost>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContent {
-            CSplashScreenTheme {
-                val navController = rememberNavController()
-                ProvideWindowInsets {
+            val navController = rememberNavController()
+            ProvideWindowInsets {
+                CSplashScreenTheme {
                     Scaffold(
                         bottomBar = { MainBottomAppBar(navController = navController) }
                     ) {
-                        navigationHost.CreateNavigationHost(navController = navController)
+                        navigationHost.get().CreateNavigationHost(navController = navController)
                     }
+
                 }
             }
         }
@@ -106,17 +107,17 @@ private sealed interface BottomAppBarResource {
         get() = destination
 
     object MainScreen : BottomAppBarResource {
-        override val destination: String = NavigationResource.MainScreen.destination
+        override val destination: String = NavHostResource.MainScreen.destination
         override val icon: ImageVector = Icons.Filled.Home
     }
 
     object TopicsScreen : BottomAppBarResource {
-        override val destination: String = NavigationResource.TopicsScreen.destination
+        override val destination: String = NavHostResource.TopicsScreen.destination
         override val icon: ImageVector = Icons.Filled.Star
     }
 
     object SearchScreen : BottomAppBarResource {
-        override val destination: String = NavigationResource.SearchPhotosScreen.destination
+        override val destination: String = NavHostResource.SearchPhotosScreen.destination
         override val icon: ImageVector = Icons.Filled.Search
         override val route: String = "$destination/ "
     }

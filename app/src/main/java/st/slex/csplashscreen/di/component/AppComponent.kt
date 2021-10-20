@@ -10,7 +10,9 @@ import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.di.module.AppModule
 import st.slex.csplashscreen.ui.MainActivity
+import javax.inject.Singleton
 
+@Singleton
 @ExperimentalCoilApi
 @ExperimentalCoroutinesApi
 @ExperimentalPagerApi

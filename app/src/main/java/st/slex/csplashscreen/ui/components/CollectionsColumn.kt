@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
-import st.slex.csplashscreen.ui.navigation.NavigationResource
+import st.slex.csplashscreen.ui.navigation.NavHostResource
 import st.slex.csplashscreen.ui.theme.TransparentGray
 import st.slex.csplashscreen.ui.theme.Typography
 
@@ -67,7 +67,7 @@ fun BindCoverImageCard(
         .shadow(elevation = 0.dp),
         elevation = 0.dp,
         onClick = {
-            navController.navigate("${NavigationResource.SingleCollectionScreen.destination}/$id")
+            navController.navigate("${NavHostResource.SingleCollectionScreen.destination}/$id")
         }
     ) {
         CoverPhotoItem(

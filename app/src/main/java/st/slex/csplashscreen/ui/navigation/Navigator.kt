@@ -8,18 +8,31 @@ import javax.inject.Inject
 
 interface Navigator {
 
-    val navAction: StateFlow<NavigationDestinations?>
-    fun navigate(navigationDestination: NavigationDestinations?)
+    val navActions: StateFlow<NavActions?>
+    val navPopBackStack: StateFlow<Boolean>
+    fun navigate(navAction: NavActions?)
+    fun popBackStack()
 
     class Base @Inject constructor() : Navigator {
-        private val _navAction: MutableStateFlow<NavigationDestinations?> by lazy {
+
+        private val _navPopBackStack: MutableStateFlow<Boolean> by lazy {
+            MutableStateFlow(false)
+        }
+
+        override val navPopBackStack: StateFlow<Boolean> = _navPopBackStack.asStateFlow()
+
+        private val _navActions: MutableStateFlow<NavActions?> by lazy {
             MutableStateFlow(null)
         }
-        override val navAction: StateFlow<NavigationDestinations?>
-            get() = _navAction.asStateFlow()
 
-        override fun navigate(navigationDestination: NavigationDestinations?) {
-            _navAction.update { navigationDestination }
+        override val navActions = _navActions.asStateFlow()
+
+        override fun navigate(navAction: NavActions?) {
+            _navActions.update { navAction }
+        }
+
+        override fun popBackStack() {
+            _navPopBackStack.update { true }
         }
     }
 }
