@@ -14,7 +14,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import st.slex.csplashscreen.data.core.Constants.BASE_URL
-import javax.inject.Named
+import st.slex.csplashscreen.di.scopes.OfflineInterceptor
+import st.slex.csplashscreen.di.scopes.OnlineInterceptor
 
 @Module
 class RetrofitModule {
@@ -30,8 +31,8 @@ class RetrofitModule {
     @Provides
     fun providesRetrofitClient(
         mLoggingInterceptor: HttpLoggingInterceptor,
-        @Named("OnlineInterceptor") onlineInterceptor: Interceptor,
-        @Named("OfflineInterceptor") offlineInterceptor: Interceptor,
+        @OnlineInterceptor onlineInterceptor: Interceptor,
+        @OfflineInterceptor offlineInterceptor: Interceptor,
         application: Application
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(mLoggingInterceptor)
@@ -59,7 +60,7 @@ class RetrofitModule {
     }
 
     @Provides
-    @Named("OnlineInterceptor")
+    @OnlineInterceptor
     fun providesOnlineInterceptor(): Interceptor = Interceptor { chain ->
         val response = chain.proceed(chain.request())
         val maxAge = 60 * 60 * 3
@@ -70,7 +71,7 @@ class RetrofitModule {
     }
 
     @Provides
-    @Named("OfflineInterceptor")
+    @OfflineInterceptor
     fun providesOfflineInterceptor(): Interceptor = Interceptor { chain ->
         var request: Request = chain.request()
         val maxStale = 60 * 60 * 12
@@ -80,5 +81,4 @@ class RetrofitModule {
             .build()
         chain.proceed(request)
     }
-
 }

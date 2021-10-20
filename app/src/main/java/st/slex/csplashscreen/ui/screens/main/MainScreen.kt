@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.ui.screens.main
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,8 +15,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
@@ -52,11 +51,6 @@ fun MainScreen(
 ) {
     val navigator = viewModel.navigator
 
-    viewModel.apply {
-        setQueryCollections(QueryCollections.AllCollections)
-        setQueryPhotos(QueryPhotos.AllPhotos)
-    }
-
     val useDarkIcons = MaterialTheme.colors.isLight
     SideEffect {
         systemUiController.setSystemBarsColor(
@@ -71,83 +65,83 @@ fun MainScreen(
         }
     }
 
-    val pages = listOf(PagerMainTab.Photos, PagerMainTab.Collections)
-
     Column {
-        TabRow(pagerState = pagerState, pages = pages)
-        Pager(
-            lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
-            lazyPagingCollectionsItems = viewModel::collections.get()
-                .collectAsLazyPagingItems(),
-            navigator = navigator,
-            pagerState = pagerState,
-            pages = pages
-        )
+        Pager(navigator = navigator, listPagesResource = viewModel.getListOfPagesResource())
     }
 }
+
+@Composable
+@ExperimentalCoroutinesApi
+private fun MainScreenViewModel.getListOfPagesResource(): List<MainPagerTabResource<out Parcelable>> =
+    listOf(
+        MainPagerTabResource.Photos(photos.collectAsLazyPagingItems()),
+        MainPagerTabResource.Collections(collections.collectAsLazyPagingItems())
+    )
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable
 private fun Pager(
-    lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
-    lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
     navigator: Navigator,
-    pagerState: PagerState,
-    pages: List<PagerMainTab>,
+    pagerState: PagerState = rememberPagerState(),
+    listPagesResource: List<MainPagerTabResource<out Parcelable>>,
 ) {
+    TabRow(pagerState = pagerState, listPagesResource = listPagesResource)
     HorizontalPager(
-        count = pages.size,
+        count = listPagesResource.size,
         state = pagerState
-    ) { page ->
-        val lazyListState = rememberLazyListState()
-        LazyColumn(state = lazyListState) {
-            when (pages[page]) {
-                is PagerMainTab.Photos -> {
-                    items(lazyPagingPhotosItems, key = { it.id }) { item ->
-                        item?.let { notNullImageModel ->
-                            ImageItem(
-                                item = notNullImageModel,
-                                modifier = Modifier.animateColumn(
-                                    scope = this@HorizontalPager,
-                                    page = page,
-                                    lazyListState = lazyListState,
-                                    id = notNullImageModel.id
-                                ),
-                                navigator = navigator
-                            )
-                        }
+    ) { pageNumber ->
+        val listState = rememberLazyListState()
+        val pagingResource = listPagesResource[pageNumber]
+
+        @Composable
+        fun Parcelable.SetItemDependsOfType(id: String) {
+            val animateModifier: Modifier =
+                Modifier.animateColumn(this@HorizontalPager, pageNumber, listState, id)
+            SetCurrentItem(navigator = navigator, modifier = animateModifier)
+        }
+
+        LazyColumn(state = listState) {
+            when (pagingResource) {
+                is MainPagerTabResource.Photos -> {
+                    items(pagingResource.pagingItems, key = { it.id }) { item ->
+                        item?.SetItemDependsOfType(id = item.id)
                     }
-                    lazyPagingPhotosItems.checkState(this)
                 }
 
-                is PagerMainTab.Collections -> {
-                    items(lazyPagingCollectionsItems, key = { it.id }) { item ->
-                        item?.let {
-                            CollectionItem(
-                                item = item,
-                                modifier = Modifier.animateColumn(
-                                    scope = this@HorizontalPager,
-                                    page = page,
-                                    lazyListState = lazyListState,
-                                    id = item.id
-                                ),
-                                navigator = navigator
-                            )
-                        }
-
+                is MainPagerTabResource.Collections -> {
+                    items(pagingResource.pagingItems, key = { it.id }) { item ->
+                        item?.SetItemDependsOfType(id = item.id)
                     }
-                    lazyPagingCollectionsItems.checkState(this)
                 }
             }
+            pagingResource.pagingItems.checkState(this)
         }
+    }
+}
+
+@ExperimentalCoilApi
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
+@Composable
+private fun Parcelable.SetCurrentItem(
+    navigator: Navigator,
+    modifier: Modifier
+) {
+    if (this is ImageModel) {
+        ImageItem(item = this, modifier = modifier, navigator = navigator)
+    } else if (this is CollectionModel) {
+        CollectionItem(item = this, modifier = modifier, navigator = navigator)
     }
 }
 
 @ExperimentalPagerApi
 @Composable
-private fun TabRow(pagerState: PagerState, pages: List<PagerMainTab>) {
+private fun TabRow(
+    pagerState: PagerState,
+    listPagesResource: List<MainPagerTabResource<out Parcelable>>
+) {
     val scope = rememberCoroutineScope()
     TabRow(
         selectedTabIndex = pagerState.currentPage,
@@ -157,11 +151,11 @@ private fun TabRow(pagerState: PagerState, pages: List<PagerMainTab>) {
             )
         },
         tabs = {
-            pages.forEachIndexed { index, model ->
+            listPagesResource.forEachIndexed { index, page ->
                 Tab(
                     text = {
                         Text(
-                            text = model.title,
+                            text = page.title,
                             style = Typography.subtitle1
                         )
                     },
