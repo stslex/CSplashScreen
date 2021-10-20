@@ -9,7 +9,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -18,6 +17,7 @@ import st.slex.csplashscreen.data.search.QuerySearch
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.LazyPhotosColumn
 import st.slex.csplashscreen.ui.components.setTextFieldColors
+import st.slex.csplashscreen.ui.navigation.Navigator
 import st.slex.csplashscreen.ui.theme.Typography
 
 @ExperimentalAnimationApi
@@ -27,10 +27,11 @@ import st.slex.csplashscreen.ui.theme.Typography
 @ExperimentalCoroutinesApi
 @Composable
 fun SearchPhotosScreen(
-    navController: NavController,
-    query: String,
     viewModel: SearchViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
+    val navigator: Navigator = viewModel.navigator
+    val arguments: Map<String, String> = navigator.argumets.value ?: emptyMap()
+    val query: String = arguments["query"] ?: ""
     val checkedQuery = if (query == " ") "" else query
     viewModel.setQueryPhotosSearch(QuerySearch.SearchPhotos(checkedQuery))
     val lazyPagingPhotosItems = viewModel.photosSearch.collectAsLazyPagingItems()
@@ -44,7 +45,7 @@ fun SearchPhotosScreen(
     ) {
         LazyPhotosColumn(
             lazyPagingPhotosItems = lazyPagingPhotosItems,
-            navController = navController
+            navigator = navigator
         )
     }
 }

@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
-import st.slex.csplashscreen.ui.navigation.NavHostResource
+import st.slex.csplashscreen.ui.navigation.NavActions
+import st.slex.csplashscreen.ui.navigation.Navigator
 
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
@@ -18,13 +18,13 @@ fun UserImageHeadWithUserName(
     modifier: Modifier,
     url: String,
     username: String,
-    navController: NavController
+    navigator: Navigator
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
         elevation = 0.dp,
         onClick = {
-            navController.navigate("${NavHostResource.UserScreen.destination}/$username")
+            navigator.navigate(NavActions.UserScreen(username))
         }
     ) {
         Row(

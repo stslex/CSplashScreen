@@ -18,7 +18,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
@@ -28,6 +27,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.normalizedItemPosition
+import st.slex.csplashscreen.ui.navigation.Navigator
 import st.slex.csplashscreen.ui.theme.Typography
 import kotlin.math.absoluteValue
 
@@ -40,10 +40,10 @@ import kotlin.math.absoluteValue
 @ExperimentalMaterialApi
 @Composable
 fun TopicsScreen(
-    navController: NavController,
     state: LazyListState = rememberLazyListState(),
     viewModel: TopicsViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
+    val navigator: Navigator = viewModel.navigator
     val lazyPagingItems = viewModel.topics.collectAsLazyPagingItems()
     LazyRow(state = state) {
         items(lazyPagingItems, key = { it.id }) { item ->

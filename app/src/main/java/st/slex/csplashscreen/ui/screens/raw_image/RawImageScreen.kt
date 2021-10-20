@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -28,15 +27,17 @@ import st.slex.csplashscreen.ui.MainActivity
 @ExperimentalCoilApi
 @Composable
 fun RawImageScreen(
-    navController: NavController,
-    url: String,
     viewModel: RawImageViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
+    val navigator = viewModel.navigator
+    val arguments = navigator.argumets.value ?: emptyMap()
+    val url: String = arguments["url"] ?: ""
+
     Row(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
-            .clickable { navController.popBackStack() },
+            .clickable { navigator.popBackStack() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(

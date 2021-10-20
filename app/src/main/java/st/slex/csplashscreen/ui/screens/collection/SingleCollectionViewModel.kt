@@ -8,12 +8,16 @@ import kotlinx.coroutines.flow.*
 import st.slex.csplashscreen.data.core.QueryPhotos
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
+import st.slex.csplashscreen.ui.navigation.Navigator
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SingleCollectionViewModel @Inject constructor(
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
+    private val _navigator: Navigator
 ) : ViewModel() {
+
+    val navigator: Navigator = _navigator
 
     private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()

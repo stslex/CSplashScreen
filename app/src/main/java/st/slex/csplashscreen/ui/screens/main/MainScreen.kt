@@ -35,6 +35,7 @@ import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
 import st.slex.csplashscreen.ui.components.checkState
 import st.slex.csplashscreen.ui.components.normalizedItemPosition
+import st.slex.csplashscreen.ui.navigation.Navigator
 import st.slex.csplashscreen.ui.theme.Typography
 import kotlin.math.absoluteValue
 
@@ -47,12 +48,9 @@ import kotlin.math.absoluteValue
 fun MainScreen(
     pagerState: PagerState = rememberPagerState(),
     systemUiController: SystemUiController = rememberSystemUiController(),
-    navController: NavController,
     viewModel: MainScreenViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
-    val navigator = remember(viewModel) {
-        viewModel.navigator
-    }
+    val navigator = viewModel.navigator
 
     viewModel.apply {
         setQueryCollections(QueryCollections.AllCollections)
@@ -81,7 +79,7 @@ fun MainScreen(
             lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
             lazyPagingCollectionsItems = viewModel::collections.get()
                 .collectAsLazyPagingItems(),
-            navController = navController,
+            navigator = navigator,
             pagerState = pagerState,
             pages = pages
         )
@@ -95,7 +93,7 @@ fun MainScreen(
 private fun Pager(
     lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
     lazyPagingCollectionsItems: LazyPagingItems<CollectionModel>,
-    navController: NavController,
+    navigator: Navigator,
     pagerState: PagerState,
     pages: List<PagerMainTab>,
 ) {
@@ -117,7 +115,7 @@ private fun Pager(
                                     lazyListState = lazyListState,
                                     id = notNullImageModel.id
                                 ),
-                                navController = navController
+                                navigator = navigator
                             )
                         }
                     }
@@ -135,7 +133,7 @@ private fun Pager(
                                     lazyListState = lazyListState,
                                     id = item.id
                                 ),
-                                navController = navController
+                                navigator = navigator
                             )
                         }
 

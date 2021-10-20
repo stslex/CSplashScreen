@@ -17,6 +17,7 @@ import st.slex.csplashscreen.data.user.UserDataMapper
 import st.slex.csplashscreen.data.user.UserRepository
 import st.slex.csplashscreen.ui.core.QueryCollectionsUseCase
 import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
+import st.slex.csplashscreen.ui.navigation.Navigator
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -25,7 +26,10 @@ class UserViewModel @Inject constructor(
     private val mapper: UserDataMapper,
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
     private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>,
+    private val _navigator: Navigator
 ) : ViewModel() {
+
+    val navigator: Navigator = _navigator
 
     fun setAllQueries(username: String) = viewModelScope.launch(Dispatchers.IO) {
         _queryPhotos.tryEmit(QueryPhotos.UserPhotos(username))

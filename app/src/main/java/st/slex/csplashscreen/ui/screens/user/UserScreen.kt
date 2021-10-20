@@ -44,6 +44,7 @@ import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
 import st.slex.csplashscreen.ui.components.checkState
 import st.slex.csplashscreen.ui.components.normalizedItemPosition
+import st.slex.csplashscreen.ui.navigation.Navigator
 import st.slex.csplashscreen.ui.screens.main.AnalyticsService
 import st.slex.csplashscreen.ui.theme.Typography
 import kotlin.math.absoluteValue
@@ -55,10 +56,12 @@ import kotlin.math.absoluteValue
 @ExperimentalCoroutinesApi
 @Composable
 fun UserScreen(
-    navController: NavController,
-    username: String,
     viewModel: UserViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
+    val navigator: Navigator = viewModel.navigator
+    val arguments: Map<String, String> = navigator.argumets.value ?: emptyMap()
+    val username: String = arguments["username"] ?: ""
+
     viewModel.setAllQueries(username = username)
 
     val userResource: Resource<UserModel> by remember(viewModel) {
@@ -69,13 +72,13 @@ fun UserScreen(
         topBar = {
             BindUserTopAppBar(
                 username = username,
-                navController = navController
+                navigator = navigator
             )
         }
     ) {
         CheckResultAndBind(
             userResource = userResource,
-            navController = navController
+            navigator = navigator
         ) { user ->
             viewModel.getListOfPagesResource(user = user)
         }
@@ -89,7 +92,7 @@ fun UserScreen(
 @Composable
 private fun CheckResultAndBind(
     userResource: Resource<UserModel>,
-    navController: NavController,
+    navigator: Navigator,
     getListOfPagesResource: @Composable (UserModel) -> List<UserPagerTabResource<out Parcelable>>,
 ) {
     when (userResource) {
@@ -99,7 +102,7 @@ private fun CheckResultAndBind(
                 BindUserScreenMainHeader(user = userResource.data)
                 BindPagerWithTabs(
                     listPagesResource = listPagesResource,
-                    navController = navController
+                    navigator = navigator
                 )
             }
         }
@@ -154,7 +157,7 @@ fun BindUserScreenMainHeader(
 private fun BindPagerWithTabs(
     listPagesResource: List<UserPagerTabResource<out Parcelable>>,
     pagerState: PagerState = rememberPagerState(),
-    navController: NavController
+    navigator: Navigator
 ) {
     PagerLaunchedEffect(pagerState = pagerState)
 
@@ -171,7 +174,7 @@ private fun BindPagerWithTabs(
             val animateModifier: Modifier =
                 Modifier.animate(this@HorizontalPager, pageNumber, listState, id)
             SetCurrentItem(
-                navController = navController,
+                navigator = navigator,
                 modifier = animateModifier,
                 isUserVisible = isUserVisible
             )
@@ -214,7 +217,7 @@ private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerSt
 @ExperimentalMaterialApi
 @Composable
 private fun Parcelable.SetCurrentItem(
-    navController: NavController,
+    navigator: Navigator,
     modifier: Modifier,
     isUserVisible: Boolean
 ) {
@@ -222,14 +225,14 @@ private fun Parcelable.SetCurrentItem(
         ImageItem(
             item = this,
             modifier = modifier,
-            navController = navController,
+            navigator = navigator,
             isUserVisible = isUserVisible
         )
     } else if (this is CollectionModel) {
         CollectionItem(
             item = this,
             modifier = modifier,
-            navController = navController,
+            navigator = navigator,
             isUserVisible = isUserVisible
         )
     }
@@ -384,7 +387,7 @@ fun BindUserHeader(
 @Composable
 fun BindUserTopAppBar(
     username: String,
-    navController: NavController
+    navigator: Navigator
 ) {
     TopAppBar(
         modifier = Modifier.fillMaxWidth()
@@ -392,7 +395,7 @@ fun BindUserTopAppBar(
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
                 onClick = {
-                    navController.popBackStack()
+                    navigator.popBackStack()
                 }
             ) {
                 Icon(

@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
@@ -20,7 +19,8 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.ui.navigation.NavHostResource
+import st.slex.csplashscreen.ui.navigation.NavActions
+import st.slex.csplashscreen.ui.navigation.Navigator
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import kotlin.math.absoluteValue
@@ -32,7 +32,7 @@ import kotlin.math.absoluteValue
 @Composable
 fun LazyPhotosColumn(
     lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
-    navController: NavController
+    navigator: Navigator
 ) {
     val lazyListState = rememberLazyListState()
     LazyColumn(state = lazyListState) {
@@ -40,7 +40,7 @@ fun LazyPhotosColumn(
             item?.let { notNullImageModel ->
                 ImageItem(
                     item = notNullImageModel,
-                    navController = navController,
+                    navigator = navigator,
                     modifier = Modifier
                         .padding(start = 8.dp, end = 8.dp, top = 32.dp, bottom = 32.dp)
                         .graphicsLayer {
@@ -70,7 +70,7 @@ fun LazyPhotosColumn(
 fun ImageItem(
     item: ImageModel,
     modifier: Modifier,
-    navController: NavController,
+    navigator: Navigator,
     isUserVisible: Boolean = true
 ) {
     Column(
@@ -82,7 +82,7 @@ fun ImageItem(
                 modifier = Modifier.fillMaxWidth(),
                 url = item.user.profile_image.medium,
                 username = item.user.username,
-                navController = navController
+                navigator = navigator
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
@@ -92,7 +92,7 @@ fun ImageItem(
                 val url = item.urls.regular
                 val id = item.id
                 val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                navController.navigate("${NavHostResource.ImageDetailScreen.destination}/$encodedUrl/$id")
+                navigator.navigate(NavActions.ImageDetailScreen(encodedUrl, id))
             }
         ) {
             CoverPhotoItem(item.urls.regular)

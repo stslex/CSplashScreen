@@ -7,11 +7,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
+import st.slex.csplashscreen.ui.navigation.Navigator
 import javax.inject.Inject
 
 class TopicsViewModel @Inject constructor(
     private val pagingSource: PagingSource<Int, TopicsModel>,
+    private val _navigator: Navigator
 ) : ViewModel() {
+
+    val navigator: Navigator = _navigator
 
     private val newPager by lazy {
         Pager(PagingConfig(10, enablePlaceholders = false)) { pagingSource }

@@ -34,7 +34,7 @@ sealed interface NavActions {
     }
 
     data class SearchPhotosScreen(val query: String) : NavActions {
-        override val destination: String = "search_photos"
+        override val destination: String = "search"
         override val arguments: Map<String, String>
             get() = mapOf("query" to query)
     }

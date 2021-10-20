@@ -16,6 +16,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import st.slex.csplashscreen.ui.navigation.NavigationRouteConverter.convertArgs
+import st.slex.csplashscreen.ui.navigation.NavigationRouteConverter.convertArgumentsToMap
 import st.slex.csplashscreen.ui.navigation.NavigationRouteConverter.convertRoute
 import st.slex.csplashscreen.ui.screens.collection.SingleCollectionScreen
 import st.slex.csplashscreen.ui.screens.detail.ImageDetailScreen
@@ -75,27 +76,13 @@ interface NavigationHost {
                 navController = navController,
                 startDestination = NavHostResource.MainScreen.destination,
             ) {
-                create(NavHostResource.MainScreen) {
-                    MainScreen(navController = navController)
-                }
-                create(NavHostResource.ImageDetailScreen) {
-                    ImageDetailScreen(navController = navController, url = it[0], id = it[1])
-                }
-                create(NavHostResource.SingleCollectionScreen) {
-                    SingleCollectionScreen(navController = navController, it[0])
-                }
-                create(NavHostResource.RawImageScreen) {
-                    RawImageScreen(navController = navController, it[0])
-                }
-                create(NavHostResource.SearchPhotosScreen) {
-                    SearchPhotosScreen(navController = navController, it[0])
-                }
-                create(NavHostResource.UserScreen) {
-                    UserScreen(navController = navController, it[0])
-                }
-                create(NavHostResource.TopicsScreen) {
-                    TopicsScreen(navController = navController)
-                }
+                create(NavHostResource.MainScreen) { MainScreen() }
+                create(NavHostResource.ImageDetailScreen) { ImageDetailScreen() }
+                create(NavHostResource.SingleCollectionScreen) { SingleCollectionScreen() }
+                create(NavHostResource.RawImageScreen) { RawImageScreen() }
+                create(NavHostResource.SearchPhotosScreen) { SearchPhotosScreen() }
+                create(NavHostResource.UserScreen) { UserScreen() }
+                create(NavHostResource.TopicsScreen) { TopicsScreen() }
             }
         }
 
@@ -103,7 +90,11 @@ interface NavigationHost {
             navDest: NavHostResource,
             crossinline screen: @Composable (list: List<String>) -> Unit
         ) = with(navDest) {
-            composable(route = convertRoute()) { screen(it.convertArgs(arguments)) }
+            composable(route = convertRoute()) {
+                navigator.updateActions()
+                navigator.setArguments(it.convertArgumentsToMap(arguments))
+                screen(it.convertArgs(arguments))
+            }
         }
 
         @Composable

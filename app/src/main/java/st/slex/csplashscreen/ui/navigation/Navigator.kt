@@ -10,8 +10,11 @@ interface Navigator {
 
     val navActions: StateFlow<NavActions?>
     val navPopBackStack: StateFlow<Boolean>
+    val argumets: StateFlow<Map<String, String>?>
     fun navigate(navAction: NavActions?)
     fun popBackStack()
+    fun updateActions()
+    fun setArguments(arguments: Map<String, String>)
 
     class Base @Inject constructor() : Navigator {
 
@@ -33,6 +36,22 @@ interface Navigator {
 
         override fun popBackStack() {
             _navPopBackStack.update { true }
+        }
+
+        override fun updateActions() {
+            _navActions.update { null }
+            _navPopBackStack.update { false }
+        }
+
+        private val _arguments: MutableStateFlow<Map<String, String>?> by lazy {
+            MutableStateFlow(null)
+        }
+
+        override val argumets: StateFlow<Map<String, String>?>
+            get() = _arguments
+
+        override fun setArguments(arguments: Map<String, String>) {
+            _arguments.update { arguments }
         }
     }
 }

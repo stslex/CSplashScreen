@@ -7,6 +7,9 @@ object NavigationRouteConverter {
     fun NavBackStackEntry.convertArgs(args: List<String>): List<String> =
         args.map { arguments?.getString(it).toString() }
 
+    fun NavBackStackEntry.convertArgumentsToMap(argumentKeys: List<String>) =
+        argumentKeys.map { it to arguments?.getString(it).toString() }.toMap()
+
     fun NavHostResource.convertRoute() = "$destination${arguments.convertHostArgumentsRoute()}"
 
     fun NavActions.convertRoute() =
