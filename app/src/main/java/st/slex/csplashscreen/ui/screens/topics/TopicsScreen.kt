@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListLayoutInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -42,10 +41,10 @@ import kotlin.math.absoluteValue
 @Composable
 fun TopicsScreen(
     navController: NavController,
+    state: LazyListState = rememberLazyListState(),
     viewModel: TopicsViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
     val lazyPagingItems = viewModel.topics.collectAsLazyPagingItems()
-    val state: LazyListState = rememberLazyListState()
     LazyRow(state = state) {
         items(lazyPagingItems, key = { it.id }) { item ->
             Column(
@@ -59,7 +58,7 @@ fun TopicsScreen(
                     }
                     .width(250.dp)
                     .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 Text(
                     text = item?.title.toString(),

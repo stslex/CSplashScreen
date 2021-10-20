@@ -13,7 +13,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.core.QueryPhotos
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.LazyPhotosColumn
-import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
 
 
 @ExperimentalAnimationApi
@@ -23,9 +22,9 @@ import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
 @ExperimentalPagerApi
 @Composable
 fun SingleCollectionScreen(
-    id: String,
     navController: NavController,
-    viewModel: MainScreenViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
+    id: String,
+    viewModel: SingleCollectionViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
     viewModel.setQueryPhotos(QueryPhotos.CollectionPhotos(id))
     LazyPhotosColumn(

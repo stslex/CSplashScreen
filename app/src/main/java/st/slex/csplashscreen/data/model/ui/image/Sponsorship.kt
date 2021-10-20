@@ -6,5 +6,5 @@ import st.slex.csplashscreen.data.model.ui.user.UserModel
 
 @Parcelize
 data class Sponsorship(
-    val sponsor: UserModel?
+    val sponsor: UserModel
 ) : Parcelable

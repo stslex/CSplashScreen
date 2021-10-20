@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.ui.screens.user
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
@@ -15,7 +16,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -25,7 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
@@ -37,13 +36,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.Resource
-import st.slex.csplashscreen.data.core.QueryCollections
-import st.slex.csplashscreen.data.core.QueryPhotos
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.user.UserModel
 import st.slex.csplashscreen.ui.MainActivity
-import st.slex.csplashscreen.ui.components.*
+import st.slex.csplashscreen.ui.components.CollectionItem
+import st.slex.csplashscreen.ui.components.ImageItem
+import st.slex.csplashscreen.ui.components.checkState
+import st.slex.csplashscreen.ui.components.normalizedItemPosition
 import st.slex.csplashscreen.ui.screens.main.AnalyticsService
 import st.slex.csplashscreen.ui.theme.Typography
 import kotlin.math.absoluteValue
@@ -59,62 +59,70 @@ fun UserScreen(
     username: String,
     viewModel: UserViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
-    viewModel.apply {
-        setQueryCollections(QueryCollections.UserCollections(username))
-        setQueryPhotos(QueryPhotos.UserPhotos(username))
-        setQueryLikes(QueryPhotos.UserLikes(username))
-    }
+    viewModel.setAllQueries(username = username)
 
-    val lazyPagingPhotos = viewModel.photos.collectAsLazyPagingItems()
-    val lazyPagingCollections = viewModel.collections.collectAsLazyPagingItems()
-    val lazyPagingLikes = viewModel.likes.collectAsLazyPagingItems()
-
-    val result: Resource<UserModel> by remember(viewModel) {
+    val userResource: Resource<UserModel> by remember(viewModel) {
         viewModel.getUser(username = username)
     }.collectAsState(Resource.Loading)
-
-    val listState = rememberLazyListState()
 
     Scaffold(
         topBar = {
             BindUserTopAppBar(
                 username = username,
-                navController = navController,
-                listState = listState
+                navController = navController
             )
         }
     ) {
-        when (result) {
-            is Resource.Success -> {
-                val user = (result as Resource.Success<UserModel>).data
-                val pages = mapOf(
-                    PagerUserTab.Photos to user.total_photos,
-                    PagerUserTab.Likes to user.total_likes,
-                    PagerUserTab.Collections to user.total_collections
-                ).filter { map -> map.value != 0 }.keys.toList()
-                Column(modifier = Modifier.fillMaxSize()) {
-                    BindUserScreenMainHeader(
-                        user = user
-                    )
-                    BindUserMainBody(
-                        pages = pages,
-                        lazyPagingPhotos = lazyPagingPhotos,
-                        lazyPagingLikes = lazyPagingLikes,
-                        lazyPagingCollections = lazyPagingCollections,
-                        navController = navController
-                    )
-                }
-            }
-            is Resource.Failure -> {
-
-            }
-            is Resource.Loading -> {
-
-            }
+        CheckResultAndBind(
+            userResource = userResource,
+            navController = navController
+        ) { user ->
+            viewModel.getListOfPagesResource(user = user)
         }
     }
-
 }
+
+@ExperimentalCoilApi
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
+@Composable
+private fun CheckResultAndBind(
+    userResource: Resource<UserModel>,
+    navController: NavController,
+    getListOfPagesResource: @Composable (UserModel) -> List<UserPagerTabResource<out Parcelable>>,
+) {
+    when (userResource) {
+        is Resource.Success -> {
+            val listPagesResource = getListOfPagesResource(userResource.data)
+            Column(modifier = Modifier.fillMaxSize()) {
+                BindUserScreenMainHeader(user = userResource.data)
+                BindPagerWithTabs(
+                    listPagesResource = listPagesResource,
+                    navController = navController
+                )
+            }
+        }
+        is Resource.Failure -> {
+
+        }
+        is Resource.Loading -> {
+
+        }
+    }
+}
+
+@Composable
+@ExperimentalCoroutinesApi
+private fun UserViewModel.getListOfPagesResource(user: UserModel): List<UserPagerTabResource<out Parcelable>> =
+    mapOf(
+        UserPagerTabResource.Photos(photos.collectAsLazyPagingItems()) to user.total_photos,
+        UserPagerTabResource.Likes(likes.collectAsLazyPagingItems()) to user.total_likes,
+        UserPagerTabResource.Collections(collections.collectAsLazyPagingItems()) to user.total_collections
+    ).filterEmptyItems()
+
+private fun Map<UserPagerTabResource<out Parcelable>, Int>.filterEmptyItems() =
+    this.filter { map -> map.value != 0 }.keys.toList()
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
@@ -124,10 +132,10 @@ fun BindUserScreenMainHeader(
     user: UserModel
 ) {
     BindUserHeader(
-        total_photos = user.total_photos.toString(),
-        total_likes = user.total_likes.toString(),
-        total_collections = user.total_collections.toString(),
-        url = user.profile_image?.large.toString()
+        total_photos = user.total_photos,
+        total_likes = user.total_likes,
+        total_collections = user.total_collections,
+        url = user.profile_image.large
     )
     Spacer(modifier = Modifier.size(16.dp))
     Divider(modifier = Modifier.padding(start = 8.dp, end = 8.dp))
@@ -139,124 +147,91 @@ fun BindUserScreenMainHeader(
     }
 }
 
-sealed interface PagerUserTab {
-    val title: String
-
-    object Photos : PagerUserTab {
-        override val title: String = "Photos"
-    }
-
-    object Likes : PagerUserTab {
-        override val title: String = "Likes"
-    }
-
-    object Collections : PagerUserTab {
-        override val title: String = "Collections"
-    }
-}
-
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable
-fun BindUserMainBody(
-    pages: List<PagerUserTab>,
-    lazyPagingPhotos: LazyPagingItems<ImageModel>,
-    lazyPagingLikes: LazyPagingItems<ImageModel>,
-    lazyPagingCollections: LazyPagingItems<CollectionModel>,
-    navController: NavController,
+private fun BindPagerWithTabs(
+    listPagesResource: List<UserPagerTabResource<out Parcelable>>,
     pagerState: PagerState = rememberPagerState(),
+    navController: NavController
 ) {
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect { page ->
-            AnalyticsService.sendPageSelectedEvent(page)
-        }
-    }
-    TabRow(pagerState = pagerState, pages = pages)
-    Pages(
-        lazyPagingPhotos = lazyPagingPhotos,
-        lazyPagingCollections = lazyPagingCollections,
-        lazyPagingLikes = lazyPagingLikes,
-        navController = navController,
-        pagerState = pagerState,
-        pages = pages,
-    )
+    PagerLaunchedEffect(pagerState = pagerState)
 
-}
+    TabRow(pagerState = pagerState, listPagesResource = listPagesResource)
 
-@ExperimentalCoilApi
-@ExperimentalMaterialApi
-@ExperimentalPagerApi
-@Composable
-private fun Pages(
-    lazyPagingPhotos: LazyPagingItems<ImageModel>,
-    lazyPagingCollections: LazyPagingItems<CollectionModel>,
-    lazyPagingLikes: LazyPagingItems<ImageModel>,
-    navController: NavController,
-    pagerState: PagerState,
-    pages: List<PagerUserTab>,
-) {
     HorizontalPager(
-        count = pages.size,
-        state = pagerState,
-    ) { page ->
-        val lazyListState = rememberLazyListState()
+        count = listPagesResource.size,
+        state = pagerState
+    ) { pageNumber ->
+        val listState = rememberLazyListState()
 
-        LazyColumn(
-            state = lazyListState
-        ) {
-            when (pages[page]) {
-                is PagerUserTab.Photos -> {
-                    items(lazyPagingPhotos, key = { it.id }) { item ->
-                        ImageItem(
-                            item = item,
-                            modifier = Modifier.animate(
-                                scope = this@HorizontalPager,
-                                page = page,
-                                lazyListState = lazyListState,
-                                id = item?.id.toString()
-                            ),
-                            navController = navController,
-                            isUserVisible = false
-                        )
+        @Composable
+        fun Parcelable.SetItemDependsOfType(id: String, isUserVisible: Boolean) {
+            val animateModifier: Modifier =
+                Modifier.animate(this@HorizontalPager, pageNumber, listState, id)
+            SetCurrentItem(
+                navController = navController,
+                modifier = animateModifier,
+                isUserVisible = isUserVisible
+            )
+        }
+
+        LazyColumn(state = listState) {
+            val pagingResource = listPagesResource[pageNumber]
+            when (pagingResource) {
+                is UserPagerTabResource.Photos -> {
+                    items(pagingResource.pagingItems, key = { it.id }) { item ->
+                        item?.SetItemDependsOfType(id = item.id, isUserVisible = false)
                     }
-                    lazyPagingPhotos.checkState(this)
                 }
-
-                is PagerUserTab.Likes -> {
-                    items(lazyPagingLikes, key = { it.id }) { item ->
-                        ImageItem(
-                            item = item,
-                            modifier = Modifier.animate(
-                                scope = this@HorizontalPager,
-                                page = page,
-                                lazyListState = lazyListState,
-                                id = item?.id.toString()
-                            ),
-                            navController = navController
-                        )
+                is UserPagerTabResource.Likes -> {
+                    items(pagingResource.pagingItems, key = { it.id }) { item ->
+                        item?.SetItemDependsOfType(id = item.id, isUserVisible = true)
                     }
-                    lazyPagingLikes.checkState(this)
                 }
-
-                is PagerUserTab.Collections -> {
-                    items(lazyPagingCollections, key = { it.id }) { item ->
-                        CollectionItem(
-                            item = item,
-                            modifier = Modifier.animate(
-                                scope = this@HorizontalPager,
-                                page = page,
-                                lazyListState = lazyListState,
-                                id = item?.id.toString()
-                            ),
-                            navController = navController,
-                            isUserVisible = false
-                        )
+                is UserPagerTabResource.Collections -> {
+                    items(pagingResource.pagingItems, key = { it.id }) { item ->
+                        item?.SetItemDependsOfType(id = item.id, isUserVisible = false)
                     }
-                    lazyPagingCollections.checkState(this)
                 }
             }
+            pagingResource.pagingItems.checkState(this)
         }
+    }
+}
+
+@ExperimentalPagerApi
+@Composable
+private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerState) {
+    snapshotFlow { pagerState.currentPage }.collect { page ->
+        AnalyticsService.sendPageSelectedEvent(page)
+    }
+}
+
+@ExperimentalCoilApi
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
+@Composable
+private fun Parcelable.SetCurrentItem(
+    navController: NavController,
+    modifier: Modifier,
+    isUserVisible: Boolean
+) {
+    if (this is ImageModel) {
+        ImageItem(
+            item = this,
+            modifier = modifier,
+            navController = navController,
+            isUserVisible = isUserVisible
+        )
+    } else if (this is CollectionModel) {
+        CollectionItem(
+            item = this,
+            modifier = modifier,
+            navController = navController,
+            isUserVisible = isUserVisible
+        )
     }
 }
 
@@ -264,7 +239,7 @@ private fun Pages(
 @Composable
 private fun TabRow(
     pagerState: PagerState,
-    pages: List<PagerUserTab>,
+    listPagesResource: List<UserPagerTabResource<out Parcelable>>,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
     TabRow(
@@ -275,7 +250,7 @@ private fun TabRow(
             )
         },
         tabs = {
-            pages.forEachIndexed { index, model ->
+            listPagesResource.forEachIndexed { index, model ->
                 Tab(
                     text = {
                         Text(
@@ -364,9 +339,9 @@ fun BindUserBio(bio: String) {
 @ExperimentalCoilApi
 @Composable
 fun BindUserHeader(
-    total_photos: String,
-    total_likes: String,
-    total_collections: String,
+    total_photos: Int,
+    total_likes: Int,
+    total_collections: Int,
     url: String
 ) {
     Row(
@@ -397,11 +372,11 @@ fun BindUserHeader(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            TextHeaderColumn("Photos", total_photos)
+            TextHeaderColumn("Photos", total_photos.toString())
             Spacer(modifier = Modifier.size(16.dp))
-            TextHeaderColumn("Likes", total_likes)
+            TextHeaderColumn("Likes", total_likes.toString())
             Spacer(modifier = Modifier.size(16.dp))
-            TextHeaderColumn("Collections", total_collections)
+            TextHeaderColumn("Collections", total_collections.toString())
         }
     }
 }
@@ -409,18 +384,10 @@ fun BindUserHeader(
 @Composable
 fun BindUserTopAppBar(
     username: String,
-    navController: NavController,
-    listState: LazyListState,
+    navController: NavController
 ) {
     TopAppBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .alpha(
-                kotlin.math.max(
-                    0.3f,
-                    listState.firstVisibleItemIndex / listState.firstVisibleItemScrollOffset.toFloat()
-                )
-            )
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(

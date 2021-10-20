@@ -11,14 +11,18 @@ import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.core.QueryCollectionsUseCase
 import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
+import st.slex.csplashscreen.ui.navigation.Navigator
 import javax.inject.Inject
 import javax.inject.Provider
 
 @ExperimentalCoroutinesApi
 class MainScreenViewModel @Inject constructor(
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
-    private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>
+    private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>,
+    private val _navigator: Navigator
 ) : ViewModel() {
+
+    val navigator: Navigator = _navigator
 
     private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()
@@ -38,7 +42,7 @@ class MainScreenViewModel @Inject constructor(
         .cachedIn(viewModelScope)
         .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
-    private var newPagingSource: PagingSource<*, *>? = null
+    private var newPagingCollectionsSource: PagingSource<*, *>? = null
     private var newPagingPhotosSource: PagingSource<*, *>? = null
 
     fun setQueryCollections(query: QueryCollections) {
@@ -51,9 +55,9 @@ class MainScreenViewModel @Inject constructor(
 
     private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
-            newPagingSource?.invalidate()
+            newPagingCollectionsSource?.invalidate()
             val queryCollectionsUseCase = queryCollectionsUseCaseProvider.get()
-            queryCollectionsUseCase(query).also { newPagingSource = it }
+            queryCollectionsUseCase(query).also { newPagingCollectionsSource = it }
         }
     }
 

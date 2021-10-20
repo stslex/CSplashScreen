@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
-import st.slex.csplashscreen.ui.navigation.NavDest
+import st.slex.csplashscreen.ui.navigation.NavigationResource
 import st.slex.csplashscreen.ui.theme.TransparentGray
 import st.slex.csplashscreen.ui.theme.Typography
 
@@ -23,7 +23,7 @@ import st.slex.csplashscreen.ui.theme.Typography
 @ExperimentalCoilApi
 @Composable
 fun CollectionItem(
-    item: CollectionModel?,
+    item: CollectionModel,
     modifier: Modifier,
     navController: NavController,
     isUserVisible: Boolean = true
@@ -34,17 +34,17 @@ fun CollectionItem(
         if (isUserVisible) {
             UserImageHeadWithUserName(
                 modifier = Modifier.fillMaxWidth(),
-                url = item?.user?.profile_image?.medium.toString(),
-                username = item?.user?.username.toString(),
+                url = item.user.profile_image.medium,
+                username = item.user.username,
                 navController = navController
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
         BindCoverImageCard(
-            item?.id.toString(),
-            item?.cover_photo?.urls?.regular.toString(),
-            item?.title.toString(),
-            item?.total_photos.toString(),
+            item.id,
+            item.cover_photo.urls.regular,
+            item.title,
+            item.total_photos,
             navController = navController
         )
     }
@@ -58,7 +58,7 @@ fun BindCoverImageCard(
     id: String,
     url: String,
     title: String,
-    totalPhotos: String,
+    totalPhotos: Int,
     navController: NavController
 ) {
     Card(modifier = Modifier
@@ -67,7 +67,7 @@ fun BindCoverImageCard(
         .shadow(elevation = 0.dp),
         elevation = 0.dp,
         onClick = {
-            navController.navigate("${NavDest.SingleCollectionScreen.destination}/$id")
+            navController.navigate("${NavigationResource.SingleCollectionScreen.destination}/$id")
         }
     ) {
         CoverPhotoItem(

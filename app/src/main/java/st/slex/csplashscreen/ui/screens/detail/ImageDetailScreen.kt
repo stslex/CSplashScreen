@@ -1,11 +1,5 @@
 package st.slex.csplashscreen.ui.screens.detail
 
-import android.annotation.SuppressLint
-import android.app.DownloadManager
-import android.content.Context
-import android.database.Cursor
-import android.net.Uri
-import android.os.Environment
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -37,20 +31,16 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import st.slex.csplashscreen.R
 import st.slex.csplashscreen.core.Resource
-import st.slex.csplashscreen.data.model.ui.DownloadModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
-import st.slex.csplashscreen.ui.navigation.NavDest
+import st.slex.csplashscreen.ui.navigation.NavigationResource
 import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
@@ -59,28 +49,23 @@ import kotlin.coroutines.suspendCoroutine
 @ExperimentalMaterialApi
 @Composable
 fun ImageDetailScreen(
+    systemUiController: SystemUiController = rememberSystemUiController(),
     navController: NavController,
     url: String,
     id: String,
-    systemUiController: SystemUiController = rememberSystemUiController(),
     viewModel: DetailPhotoViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
+
     val result: Resource<ImageModel> by remember(viewModel) {
         viewModel.getCurrentPhoto(id)
     }.collectAsState(initial = Resource.Loading, context = Dispatchers.IO)
-
-    val downloadUrl: Resource<DownloadModel> by remember(viewModel) {
-        viewModel.getDownloadUrl(id)
-    }.collectAsState(initial = Resource.Loading, context = Dispatchers.IO)
-
-    val scope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     val darkIcons = !isSystemInDarkTheme()
     SideEffect {
         systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
     }
 
+    val context = LocalContext.current
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item { BindTopImageHead(url = url, navController = navController) }
@@ -91,14 +76,11 @@ fun ImageDetailScreen(
                 val image = (result as Resource.Success<ImageModel>).data
                 item {
                     UserDetailImageHead(
-                        username = image.user?.username.toString(),
-                        url = image.user?.profile_image?.medium.toString(),
+                        username = image.user.username,
+                        url = image.user.profile_image.medium,
                         navController = navController
                     ) {
-                        if (downloadUrl is Resource.Success) scope.launch(Dispatchers.IO) {
-                            val url = (downloadUrl as Resource.Success).data.url
-                            download(url, image.id, context)
-                        }
+                        viewModel.downloadImage(id, context)
                     }
                 }
                 item { BindDetailScreenBody(image = image, navController = navController) }
@@ -125,7 +107,7 @@ private fun BindDetailScreenBody(
     Spacer(modifier = Modifier.size(16.dp))
     if (!image.tags.isNullOrEmpty()) {
         BindDetailImageBodyTags(image.tags) {
-            navController.navigate("${NavDest.SearchPhotosScreen.destination}/$it")
+            navController.navigate("${NavigationResource.SearchPhotosScreen.destination}/$it")
         }
         Spacer(modifier = Modifier.size(16.dp))
         Divider()
@@ -199,7 +181,9 @@ private fun UserDetailImageHead(
             }
         ) {
             Icon(
-                modifier = Modifier.padding(16.dp).clip(CircleShape),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clip(CircleShape),
                 painter = painterResource(id = R.drawable.ic_baseline_arrow_download),
                 contentDescription = "Download"
             )
@@ -219,7 +203,7 @@ private fun BindTopImageHead(
             .height(300.dp)
             .clickable {
                 val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                navController.navigate("${NavDest.RawImageScreen.destination}/$encodedUrl")
+                navController.navigate("${NavigationResource.RawImageScreen.destination}/$encodedUrl")
             },
         painter = rememberImagePainter(
             data = url,
@@ -248,12 +232,12 @@ private inline fun BindDetailImageBodyTags(
                     .shadow(elevation = 16.dp, Shapes.medium)
                     .clip(RoundedCornerShape(16.dp)),
                 onClick = {
-                    onClick(tags[key].title.toString())
+                    onClick(tags[key].title)
                 }
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
-                    text = tags[key].title.toString(),
+                    text = tags[key].title,
                     maxLines = 1
                 )
             }
@@ -269,37 +253,6 @@ private fun BindDetailImageLoading(modifier: Modifier) {
 @Composable
 private fun BindDetailImageFailure() {
 
-}
-
-@SuppressLint("Range")
-private suspend fun download(
-    url: String,
-    fileName: String,
-    context: Context
-): Resource<Nothing?> = suspendCoroutine { continuation ->
-    val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-    val request = DownloadManager
-        .Request(Uri.parse(url))
-        .setTitle("Downloading")
-        .setDescription("Downloading image...")
-        .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, fileName)
-        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-    downloadManager.enqueue(request)
-    var cursor: Cursor? = null
-    val query = DownloadManager.Query()
-    query.setFilterByStatus(DownloadManager.STATUS_FAILED)
-    query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL)
-    cursor = downloadManager.query(query)
-    if (cursor.moveToFirst()) {
-        when (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
-            DownloadManager.STATUS_SUCCESSFUL -> {
-                continuation.resumeWith(Result.success(Resource.Success(null)))
-            }
-            DownloadManager.STATUS_FAILED -> {
-                continuation.resumeWithException(Exception("Failed"))
-            }
-        }
-    }
 }
 
 

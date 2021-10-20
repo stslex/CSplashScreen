@@ -12,7 +12,7 @@ import javax.inject.Provider
 
 @ExperimentalCoroutinesApi
 class SearchViewModel @Inject constructor(
-    private val querySearchUseCaseProvider: Provider<QuerySearchUseCase>
+    private val querySearchUseCaseProvider: Provider<QuerySearchUseCase>,
 ) : ViewModel() {
 
     private val _querySearch = MutableStateFlow<QuerySearch>(QuerySearch.EmptyQuery)

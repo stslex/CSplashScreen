@@ -10,6 +10,4 @@ interface Mapper {
         fun map(exception: Exception): R
         fun map(): R
     }
-
-    class Empty : Mapper
 }

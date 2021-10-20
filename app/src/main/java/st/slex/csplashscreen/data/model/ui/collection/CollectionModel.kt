@@ -18,9 +18,9 @@ data class CollectionModel(
     val total_photos: Int,
     val private: Boolean,
     val share_key: String,
-    val tags: List<TagModel>?,
-    val cover_photo: ImageModel?,
-    val preview_photos: List<ImageModel>?,
-    val user: UserModel?,
-    val links: LinksCollectionModel?
+    val tags: List<TagModel>,
+    val cover_photo: ImageModel,
+    val preview_photos: List<ImageModel>,
+    val user: UserModel,
+    val links: LinksCollectionModel
 ) : Parcelable

@@ -35,6 +35,7 @@ import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
 import st.slex.csplashscreen.ui.components.checkState
 import st.slex.csplashscreen.ui.components.normalizedItemPosition
+import st.slex.csplashscreen.ui.navigation.Navigator
 import st.slex.csplashscreen.ui.theme.Typography
 import kotlin.math.absoluteValue
 
@@ -45,11 +46,14 @@ import kotlin.math.absoluteValue
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
-    navController: NavController,
     pagerState: PagerState = rememberPagerState(),
     systemUiController: SystemUiController = rememberSystemUiController(),
+    navController: NavController,
     viewModel: MainScreenViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
+    val navigator: Navigator = viewModel.navigator
+
+
     viewModel.apply {
         setQueryCollections(QueryCollections.AllCollections)
         setQueryPhotos(QueryPhotos.AllPhotos)
@@ -104,32 +108,36 @@ private fun Pager(
             when (pages[page]) {
                 is PagerMainTab.Photos -> {
                     items(lazyPagingPhotosItems, key = { it.id }) { item ->
-                        ImageItem(
-                            item = item,
-                            modifier = Modifier.animateColumn(
-                                scope = this@HorizontalPager,
-                                page = page,
-                                lazyListState = lazyListState,
-                                id = item?.id.toString()
-                            ),
-                            navController = navController
-                        )
+                        item?.let { notNullImageModel ->
+                            ImageItem(
+                                item = notNullImageModel,
+                                modifier = Modifier.animateColumn(
+                                    scope = this@HorizontalPager,
+                                    page = page,
+                                    lazyListState = lazyListState,
+                                    id = notNullImageModel.id
+                                ),
+                                navController = navController
+                            )
+                        }
                     }
                     lazyPagingPhotosItems.checkState(this)
                 }
 
                 is PagerMainTab.Collections -> {
                     items(lazyPagingCollectionsItems, key = { it.id }) { item ->
-                        CollectionItem(
-                            item = item,
-                            modifier = Modifier.animateColumn(
-                                scope = this@HorizontalPager,
-                                page = page,
-                                lazyListState = lazyListState,
-                                id = item?.id.toString()
-                            ),
-                            navController = navController
-                        )
+                        item?.let {
+                            CollectionItem(
+                                item = item,
+                                modifier = Modifier.animateColumn(
+                                    scope = this@HorizontalPager,
+                                    page = page,
+                                    lazyListState = lazyListState,
+                                    id = item.id
+                                ),
+                                navController = navController
+                            )
+                        }
 
                     }
                     lazyPagingCollectionsItems.checkState(this)

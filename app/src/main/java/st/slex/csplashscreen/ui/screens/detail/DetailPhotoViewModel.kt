@@ -1,9 +1,12 @@
 package st.slex.csplashscreen.ui.screens.detail
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.Resource
 import st.slex.csplashscreen.data.model.ui.DownloadModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
@@ -16,8 +19,25 @@ import javax.inject.Inject
 class DetailPhotoViewModel @Inject constructor(
     private val repository: PhotoRepository,
     private val photoMapper: PhotoDataMapper,
-    private val downloadMapper: DownloadDataMapper
+    private val downloadMapper: DownloadDataMapper,
+    private val downloadImageResource: DownloadImageResource,
 ) : ViewModel() {
+
+    fun downloadImage(id: String, context: Context) = viewModelScope.launch(Dispatchers.IO) {
+        getDownloadUrl(id).collect {
+            when (it) {
+                is Resource.Success -> {
+                    downloadImageResource.download(it.data.url, id, context)
+                }
+                is Resource.Loading -> {
+
+                }
+                is Resource.Failure -> {
+
+                }
+            }
+        }
+    }
 
     fun getCurrentPhoto(id: String): StateFlow<Resource<ImageModel>> = flow {
         repository.getCurrentPhoto(id = id).collect { emit(it.map(photoMapper)) }
@@ -27,11 +47,12 @@ class DetailPhotoViewModel @Inject constructor(
         initialValue = Resource.Loading
     )
 
-    fun getDownloadUrl(id: String): StateFlow<Resource<DownloadModel>> = flow {
-        repository.getDownloadUrl(id = id).collect { emit(it.map(downloadMapper)) }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = Resource.Loading
-    )
+    private suspend fun getDownloadUrl(id: String): StateFlow<Resource<DownloadModel>> =
+        repository.getDownloadUrl(id = id)
+            .flatMapLatest { flowOf(it.map(downloadMapper)) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(),
+                initialValue = Resource.Loading
+            )
 }

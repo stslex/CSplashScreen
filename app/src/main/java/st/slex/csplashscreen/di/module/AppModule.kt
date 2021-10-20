@@ -1,17 +1,16 @@
 package st.slex.csplashscreen.di.module
 
-import android.app.Application
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.paging.PagingSource
-import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
 import st.slex.csplashscreen.data.titles.TopicsPagingSource
-import st.slex.csplashscreen.data.titles.TopicsService
+import st.slex.csplashscreen.ui.navigation.NavigationHost
 
 @ExperimentalCoilApi
 @ExperimentalCoroutinesApi
@@ -26,13 +25,12 @@ import st.slex.csplashscreen.data.titles.TopicsService
         ConverterModule::class
     ]
 )
-class AppModule {
+interface AppModule {
 
-    @Provides
-    fun provideImageLoader(application: Application): ImageLoader =
-        ImageLoader.Builder(application).build()
+    @Binds
+    fun bindsTopicsPagingSource(source: TopicsPagingSource): PagingSource<Int, TopicsModel>
 
-    @Provides
-    fun providesTopicsPagingSource(service: TopicsService): PagingSource<Int, TopicsModel> =
-        TopicsPagingSource(service)
+    @ExperimentalAnimationApi
+    @Binds
+    fun bindsNavigationHost(navigationHost: NavigationHost.Base): NavigationHost
 }

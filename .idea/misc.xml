@@ -9,8 +9,19 @@
         <entry key="../../../../../layout/compose-model-1633340704351.xml" value="0.6767676767676768" />
         <entry key="../../../../../layout/compose-model-1633352808866.xml" value="0.1962962962962963" />
         <entry key="../../../../../layout/compose-model-1633366707198.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/drawable/ic_baseline_sentiment_very_dissatisfied_24.xml" value="0.2635416666666667" />
       </map>
     </option>
+  </component>
+  <component name="EntryPointsManager">
+    <list size="6">
+      <item index="0" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="1" class="java.lang.String" itemvalue="dagger.multibindings.IntoMap" />
+      <item index="2" class="java.lang.String" itemvalue="dagger.multibindings.IntoMap" />
+      <item index="3" class="java.lang.String" itemvalue="dagger.multibindings.IntoMap" />
+      <item index="4" class="java.lang.String" itemvalue="dagger.multibindings.IntoMap" />
+      <item index="5" class="java.lang.String" itemvalue="dagger.multibindings.IntoMap" />
+    </list>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

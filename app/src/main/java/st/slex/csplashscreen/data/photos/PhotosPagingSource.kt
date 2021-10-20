@@ -6,9 +6,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import retrofit2.HttpException
+import st.slex.csplashscreen.core.map
 import st.slex.csplashscreen.data.core.Constants.API_KEY
 import st.slex.csplashscreen.data.core.QueryPhotos
-import st.slex.csplashscreen.core.toImageModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 
 class PhotosPagingSource @AssistedInject constructor(
@@ -50,7 +50,7 @@ class PhotosPagingSource @AssistedInject constructor(
             }
 
             return if (response.isSuccessful) {
-                val photos = response.body()!!.map { it.toImageModel() }
+                val photos = response.body()!!.map { it.map() }
                 val nextPageNumber = if (photos.isEmpty()) null else pageNumber + 1
                 val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
                 LoadResult.Page(photos, prevPageNumber, nextPageNumber)

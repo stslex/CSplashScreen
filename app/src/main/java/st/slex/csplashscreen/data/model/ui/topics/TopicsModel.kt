@@ -18,7 +18,7 @@ data class TopicsModel(
     val total_photos: String,
     val links: LinksCollectionModel,
     val status: String,
-    val owners: List<UserModel>?,
-    val cover_photo: ImageModel?,
-    val preview_photos: List<PreviewPhotosModel>?
+    val owners: List<UserModel>,
+    val cover_photo: ImageModel,
+    val preview_photos: List<PreviewPhotosModel>
 )

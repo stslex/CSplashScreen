@@ -32,11 +32,11 @@ fun CollectionTextCard(text: String, style: TextStyle) {
 }
 
 @Composable
-fun SetTextFieldColors(isDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isDarkTheme) MyAppTextFieldDarkColors() else MyAppTextFieldColors()
+fun setTextFieldColors(isDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isDarkTheme) myAppTextFieldDarkColors() else myAppTextFieldColors()
 
 @Composable
-fun MyAppTextFieldColors(
+fun myAppTextFieldColors(
     textColor: Color = Color.Black,
     disabledTextColor: Color = Color.DarkGray,
     backgroundColor: Color = Color.Transparent,
@@ -83,7 +83,7 @@ fun MyAppTextFieldColors(
 )
 
 @Composable
-fun MyAppTextFieldDarkColors(
+fun myAppTextFieldDarkColors(
     textColor: Color = Color.White,
     disabledTextColor: Color = Color.LightGray,
     backgroundColor: Color = Color.Transparent,

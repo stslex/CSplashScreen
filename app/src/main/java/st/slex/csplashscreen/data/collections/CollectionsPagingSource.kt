@@ -1,13 +1,12 @@
 package st.slex.csplashscreen.data.collections
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import retrofit2.HttpException
-import st.slex.csplashscreen.core.toCollectionModel
+import st.slex.csplashscreen.core.map
 import st.slex.csplashscreen.data.core.Constants.API_KEY
 import st.slex.csplashscreen.data.core.QueryCollections
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
@@ -42,9 +41,7 @@ class CollectionsPagingSource @AssistedInject constructor(
             }
 
             return if (response.isSuccessful) {
-                val photos = response.body()!!.map {
-                    it.toCollectionModel()
-                }
+                val photos = response.body()!!.map { it.map() }
                 val nextPageNumber = if (photos.isEmpty()) null else pageNumber + 1
                 val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
                 LoadResult.Page(photos, prevPageNumber, nextPageNumber)

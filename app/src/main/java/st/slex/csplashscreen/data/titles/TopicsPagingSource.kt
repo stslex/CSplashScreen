@@ -3,8 +3,8 @@ package st.slex.csplashscreen.data.titles
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import retrofit2.HttpException
+import st.slex.csplashscreen.core.map
 import st.slex.csplashscreen.data.core.Constants.API_KEY
-import st.slex.csplashscreen.core.toTopicsModel
 import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class TopicsPagingSource @Inject constructor(
             val response = service.getTopics(pageNumber, API_KEY)
 
             return if (response.isSuccessful) {
-                val topics = response.body()!!.map { it.toTopicsModel() }
+                val topics = response.body()!!.map { it.map() }
                 val nextPageNumber = if (topics.isEmpty()) null else pageNumber + 1
                 val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
                 LoadResult.Page(topics, prevPageNumber, nextPageNumber)

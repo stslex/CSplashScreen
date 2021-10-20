@@ -17,7 +17,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.search.QuerySearch
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.LazyPhotosColumn
-import st.slex.csplashscreen.ui.components.SetTextFieldColors
+import st.slex.csplashscreen.ui.components.setTextFieldColors
 import st.slex.csplashscreen.ui.theme.Typography
 
 @ExperimentalAnimationApi
@@ -64,7 +64,7 @@ private fun TopAppBarSearch(querySearch: String, search: (QuerySearch) -> Unit) 
             modifier = Modifier
                 .focusRequester(focusRequester)
                 .fillMaxWidth(),
-            colors = SetTextFieldColors(),
+            colors = setTextFieldColors(),
             maxLines = 1,
             label = { Text(text = "Input Search") },
             textStyle = Typography.body2

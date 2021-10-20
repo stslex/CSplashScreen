@@ -24,8 +24,8 @@ data class UserModel(
     val followers_count: Int,
     val following_count: Int,
     val downloads: Int,
-    val profile_image: ProfileImageModel?,
-    val badge: BadgeModel?,
-    val links: UserLinksModel?,
-    val photos: List<ImageModel>?
+    val profile_image: ProfileImageModel,
+    val badge: BadgeModel,
+    val links: UserLinksModel,
+    val photos: List<ImageModel>
 ) : Parcelable

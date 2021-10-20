@@ -20,7 +20,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.ui.navigation.NavDest
+import st.slex.csplashscreen.ui.navigation.NavigationResource
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import kotlin.math.absoluteValue
@@ -37,20 +37,26 @@ fun LazyPhotosColumn(
     val lazyListState = rememberLazyListState()
     LazyColumn(state = lazyListState) {
         items(lazyPagingPhotosItems, key = { it.id }) { item ->
-            ImageItem(
-                item = item,
-                navController = navController,
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, top = 32.dp, bottom = 32.dp)
-                    .graphicsLayer {
-                        val value =
-                            1 - (lazyListState.layoutInfo.normalizedItemPosition(item!!.id).absoluteValue * 0.05f)
-                        alpha = value
-                        scaleX = value
-                        scaleY = value
-                    }
+            item?.let { notNullImageModel ->
+                ImageItem(
+                    item = notNullImageModel,
+                    navController = navController,
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp, top = 32.dp, bottom = 32.dp)
+                        .graphicsLayer {
+                            val value =
+                                1 - (lazyListState
+                                    .layoutInfo
+                                    .normalizedItemPosition(notNullImageModel.id)
+                                    .absoluteValue * 0.05f)
+                            alpha = value
+                            scaleX = value
+                            scaleY = value
+                        }
 
-            )
+                )
+            }
+
         }
         lazyPagingPhotosItems.checkState(this)
     }
@@ -62,7 +68,7 @@ fun LazyPhotosColumn(
 @ExperimentalCoilApi
 @Composable
 fun ImageItem(
-    item: ImageModel?,
+    item: ImageModel,
     modifier: Modifier,
     navController: NavController,
     isUserVisible: Boolean = true
@@ -71,27 +77,25 @@ fun ImageItem(
         modifier = modifier
             .fillMaxWidth()
     ) {
-
         if (isUserVisible) {
             UserImageHeadWithUserName(
                 modifier = Modifier.fillMaxWidth(),
-                url = item?.user?.profile_image?.medium.toString(),
-                username = item?.user?.username.toString(),
+                url = item.user.profile_image.medium,
+                username = item.user.username,
                 navController = navController
             )
         }
-
         Spacer(modifier = Modifier.padding(4.dp))
 
         Card(
             onClick = {
-                val url = item?.urls?.regular
-                val id = item?.id
+                val url = item.urls.regular
+                val id = item.id
                 val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                navController.navigate("${NavDest.ImageDetailScreen.destination}/$encodedUrl/$id")
+                navController.navigate("${NavigationResource.ImageDetailScreen.destination}/$encodedUrl/$id")
             }
         ) {
-            CoverPhotoItem(item?.urls?.regular.toString())
+            CoverPhotoItem(item.urls.regular)
         }
     }
 }

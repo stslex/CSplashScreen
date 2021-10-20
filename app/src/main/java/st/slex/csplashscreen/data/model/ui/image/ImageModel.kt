@@ -21,14 +21,14 @@ data class ImageModel(
     var liked_by_user: Boolean,
     val description: String,
     val alt_description: String,
-    val exif: ExifModel?,
-    val location: LocationModel?,
-    val tags: List<TagModel>?,
-    val current_user_collections: List<CollectionModel>?,
-    val sponsorship: Sponsorship?,
+    val exif: ExifModel,
+    val location: LocationModel,
+    val tags: List<TagModel>,
+    val current_user_collections: List<CollectionModel>,
+    val sponsorship: Sponsorship,
     val urls: UrlsModel,
-    val links: LinksImageModel?,
-    val user: UserModel?,
-    val statistics: PhotoStatistics?
+    val links: LinksImageModel,
+    val user: UserModel,
+    val statistics: PhotoStatistics
 ) : Parcelable
 

@@ -6,8 +6,10 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.di.key.ViewModelKey
+import st.slex.csplashscreen.ui.screens.collection.SingleCollectionViewModel
 import st.slex.csplashscreen.ui.screens.detail.DetailPhotoViewModel
 import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
+import st.slex.csplashscreen.ui.screens.raw_image.RawImageViewModel
 import st.slex.csplashscreen.ui.screens.search_photos.SearchViewModel
 import st.slex.csplashscreen.ui.screens.topics.TopicsViewModel
 import st.slex.csplashscreen.ui.screens.user.UserViewModel
@@ -40,4 +42,14 @@ interface ViewModelModule {
     @Binds
     @ViewModelKey(TopicsViewModel::class)
     fun bindsTopicsViewModel(viewModel: TopicsViewModel): ViewModel
+
+    @IntoMap
+    @Binds
+    @ViewModelKey(RawImageViewModel::class)
+    fun bindsRawImageViewModel(viewModel: RawImageViewModel): ViewModel
+
+    @IntoMap
+    @Binds
+    @ViewModelKey(SingleCollectionViewModel::class)
+    fun bindsSingleCollectionViewModel(viewModelKey: SingleCollectionViewModel): ViewModel
 }

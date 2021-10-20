@@ -3,8 +3,10 @@ package st.slex.csplashscreen.ui.screens.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.Resource
 import st.slex.csplashscreen.data.core.QueryCollections
 import st.slex.csplashscreen.data.core.QueryPhotos
@@ -22,8 +24,14 @@ class UserViewModel @Inject constructor(
     private val repository: UserRepository,
     private val mapper: UserDataMapper,
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
-    private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>
+    private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>,
 ) : ViewModel() {
+
+    fun setAllQueries(username: String) = viewModelScope.launch(Dispatchers.IO) {
+        _queryPhotos.tryEmit(QueryPhotos.UserPhotos(username))
+        _queryLikes.tryEmit(QueryPhotos.UserLikes(username))
+        _queryCollections.tryEmit(QueryCollections.UserCollections(username))
+    }
 
     fun getUser(username: String): StateFlow<Resource<UserModel>> = flow {
         repository.getUser(username).collect { emit(it.map(mapper = mapper)) }
@@ -66,18 +74,6 @@ class UserViewModel @Inject constructor(
     private var newPagingCollectionsSource: PagingSource<*, *>? = null
     private var newPagingPhotosSource: PagingSource<*, *>? = null
     private var newPagingLikesSource: PagingSource<*, *>? = null
-
-    fun setQueryCollections(query: QueryCollections) {
-        _queryCollections.tryEmit(query)
-    }
-
-    fun setQueryPhotos(query: QueryPhotos) {
-        _queryPhotos.tryEmit(query)
-    }
-
-    fun setQueryLikes(query: QueryPhotos){
-        _queryLikes.tryEmit(query)
-    }
 
     private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
