@@ -37,7 +37,7 @@ class RetrofitModule {
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(mLoggingInterceptor)
         .addInterceptor(if (checkNetwork(application.applicationContext)) onlineInterceptor else offlineInterceptor)
-        .cache(Cache(application.cacheDir, 10 * 1024 * 1024 * 8L))
+        .cache(Cache(application.cacheDir, CACHE_SIZE))
         .build()
 
     private fun checkNetwork(context: Context): Boolean {
@@ -45,14 +45,17 @@ class RetrofitModule {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork ?: return false
         val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return when {
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+        return activeNetwork.checkTransport
+    }
+
+    private val NetworkCapabilities.checkTransport: Boolean
+        get() = when {
+            hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
             else -> false
         }
-    }
 
     @Provides
     fun providesLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -63,10 +66,9 @@ class RetrofitModule {
     @OnlineInterceptor
     fun providesOnlineInterceptor(): Interceptor = Interceptor { chain ->
         val response = chain.proceed(chain.request())
-        val maxAge = 60 * 60 * 3
         response.newBuilder()
-            .header("Cache-Control", "public, max-age=$maxAge")
-            .removeHeader("Pragma")
+            .header(HEADER_NAME, HEADER_ONLINE_VALUE)
+            .removeHeader(HEADER_PRAGMA)
             .build()
     }
 
@@ -74,11 +76,20 @@ class RetrofitModule {
     @OfflineInterceptor
     fun providesOfflineInterceptor(): Interceptor = Interceptor { chain ->
         var request: Request = chain.request()
-        val maxStale = 60 * 60 * 12
         request = request.newBuilder()
-            .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
-            .removeHeader("Pragma")
+            .header(HEADER_NAME, HEADER_OFFLINE_VALUE)
+            .removeHeader(HEADER_PRAGMA)
             .build()
         chain.proceed(request)
+    }
+
+    companion object {
+        private const val MAX_STALE: Int = 60 * 60 * 12
+        private const val MAX_AGE: Int = 60 * 60 * 3
+        private const val HEADER_NAME = "Cache-Control"
+        private const val HEADER_OFFLINE_VALUE = "public, only-if-cached, max-stale=$MAX_STALE"
+        private const val HEADER_ONLINE_VALUE = "public, max-age=$MAX_AGE"
+        private const val HEADER_PRAGMA = "Pragma"
+        private const val CACHE_SIZE: Long = 10 * 1024 * 1024 * 8L
     }
 }

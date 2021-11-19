@@ -1,0 +1,61 @@
+package st.slex.csplashscreen.ui.screens.main
+
+import android.os.Parcelable
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import st.slex.csplashscreen.ui.theme.Typography
+
+@ExperimentalPagerApi
+@Composable
+fun TabRow(
+    pagerState: PagerState,
+    listPagesResource: List<MainPagerTabResource<out Parcelable>>
+) {
+    TabRow(
+        selectedTabIndex = pagerState.currentPage,
+        indicator = tabIndicator(pagerState = pagerState),
+        tabs = tabsContent(listPagesResource, pagerState)
+    )
+}
+
+@ExperimentalPagerApi
+private fun tabIndicator(
+    pagerState: PagerState
+): @Composable (List<TabPosition>) -> Unit = { tabPositions ->
+    TabRowDefaults.Indicator(
+        Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+    )
+}
+
+@Composable
+@ExperimentalPagerApi
+private fun tabsContent(
+    listPagesResource: List<MainPagerTabResource<out Parcelable>>,
+    pagerState: PagerState,
+    scope: CoroutineScope = rememberCoroutineScope()
+): @Composable () -> Unit = {
+    listPagesResource.forEachIndexed { index, page ->
+        Tab(
+            text = page.tabTitle(),
+            selected = pagerState.currentPage == index,
+            onClick = {
+                scope.launch { pagerState.animateScrollToPage(index) }
+            }
+        )
+    }
+}
+
+@Composable
+private fun MainPagerTabResource<out Parcelable>.tabTitle(): @Composable () -> Unit = {
+    Text(
+        text = title,
+        style = Typography.subtitle1
+    )
+}
