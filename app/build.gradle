@@ -50,14 +50,31 @@ android {
 
 dependencies {
 
+    /*Voyager*/
+    def voyagerVersion = "1.0.0-beta13"
+    implementation "cafe.adriel.voyager:voyager-navigator:$voyagerVersion"
+    implementation "cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion"
+    implementation "cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion"
+    implementation "cafe.adriel.voyager:voyager-transitions:$voyagerVersion"
+    implementation "cafe.adriel.voyager:voyager-androidx:$voyagerVersion"
+    implementation "cafe.adriel.voyager:voyager-koin:$voyagerVersion"
+    implementation "cafe.adriel.voyager:voyager-livedata:$voyagerVersion"
+
+    /*koin*/
+    def koin_version = "3.1.3"
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
     /*Accompanist*/
-    def accompanistVersion = '0.19.0'
+    def accompanistVersion = "0.19.0"
     implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-placeholder:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-appcompat-theme:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02")
 
     /*Test*/
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
@@ -72,7 +89,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:1.3.2")
 
     /*Paging*/
-    implementation("androidx.paging:paging-runtime-ktx:3.0.1")
+    implementation("androidx.paging:paging-runtime-ktx:3.1.0")
     implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 
     //Dagger 2
@@ -99,7 +116,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.compose.ui:ui:$compose_version")
     implementation("androidx.compose.material:material:$compose_version")
@@ -111,5 +128,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
     debugImplementation("androidx.compose.ui:ui-tooling:$compose_version")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
 }

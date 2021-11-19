@@ -23,12 +23,14 @@ import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import st.slex.csplashscreen.appComponent
-import st.slex.csplashscreen.ui.navigation.NavigationHost
 import st.slex.csplashscreen.ui.navigation.NavHostResource
+import st.slex.csplashscreen.ui.navigation.NavigationHost
 import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
 import javax.inject.Inject
 
+@FlowPreview
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -54,7 +56,6 @@ class MainActivity : ComponentActivity() {
                     ) {
                         navigationHost.get().CreateNavigationHost(navController = navController)
                     }
-
                 }
             }
         }

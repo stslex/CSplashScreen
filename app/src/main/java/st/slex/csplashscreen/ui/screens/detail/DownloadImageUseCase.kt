@@ -15,7 +15,7 @@ import kotlin.coroutines.suspendCoroutine
 
 interface DownloadImageUseCase {
 
-    suspend fun download(url: String, fileName: String): Resource<Nothing?>
+    suspend fun download(url: String, fileName: String = url): Resource<Nothing?>
 
     class Base @Inject constructor(
         private val application: Application

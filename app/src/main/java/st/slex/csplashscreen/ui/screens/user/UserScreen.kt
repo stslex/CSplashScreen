@@ -44,7 +44,6 @@ import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
 import st.slex.csplashscreen.ui.components.checkState
 import st.slex.csplashscreen.ui.components.normalizedItemPosition
-import st.slex.csplashscreen.ui.navigation.Navigator
 import st.slex.csplashscreen.ui.screens.main.AnalyticsService
 import st.slex.csplashscreen.ui.theme.Typography
 import kotlin.math.absoluteValue
@@ -56,11 +55,11 @@ import kotlin.math.absoluteValue
 @ExperimentalCoroutinesApi
 @Composable
 fun UserScreen(
+    navController: NavController,
+    arguments: List<String>,
     viewModel: UserViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
-    val navigator: Navigator = viewModel.navigator
-    val arguments: Map<String, String> = navigator.argumets.value ?: emptyMap()
-    val username: String = arguments["username"] ?: ""
+    val username: String = arguments.first()
 
     viewModel.setAllQueries(username = username)
 
@@ -69,20 +68,12 @@ fun UserScreen(
     }.collectAsState(Resource.Loading)
 
     Scaffold(
-        topBar = {
-            BindUserTopAppBar(
-                username = username,
-                navigator = navigator
-            )
-        }
-    ) {
-        CheckResultAndBind(
-            userResource = userResource,
-            navigator = navigator
-        ) { user ->
-            viewModel.getListOfPagesResource(user = user)
-        }
-    }
+        topBar = bindUserTopAppBar(username, navController),
+        content = checkResultAndBind(
+            userResource,
+            navController
+        ) { viewModel.getListOfPagesResource(it) }
+    )
 }
 
 @ExperimentalCoilApi
@@ -90,11 +81,11 @@ fun UserScreen(
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-private fun CheckResultAndBind(
+private fun checkResultAndBind(
     userResource: Resource<UserModel>,
-    navigator: Navigator,
+    navController: NavController,
     getListOfPagesResource: @Composable (UserModel) -> List<UserPagerTabResource<out Parcelable>>,
-) {
+): @Composable (PaddingValues) -> Unit = {
     when (userResource) {
         is Resource.Success -> {
             val listPagesResource = getListOfPagesResource(userResource.data)
@@ -102,27 +93,24 @@ private fun CheckResultAndBind(
                 BindUserScreenMainHeader(user = userResource.data)
                 BindPagerWithTabs(
                     listPagesResource = listPagesResource,
-                    navigator = navigator
+                    navController = navController
                 )
             }
         }
-        is Resource.Failure -> {
-
-        }
-        is Resource.Loading -> {
-
-        }
+        is Resource.Failure -> Unit
+        is Resource.Loading -> Unit
     }
 }
 
 @Composable
 @ExperimentalCoroutinesApi
-private fun UserViewModel.getListOfPagesResource(user: UserModel): List<UserPagerTabResource<out Parcelable>> =
-    mapOf(
-        UserPagerTabResource.Photos(photos.collectAsLazyPagingItems()) to user.total_photos,
-        UserPagerTabResource.Likes(likes.collectAsLazyPagingItems()) to user.total_likes,
-        UserPagerTabResource.Collections(collections.collectAsLazyPagingItems()) to user.total_collections
-    ).filterEmptyItems()
+private fun UserViewModel.getListOfPagesResource(
+    user: UserModel
+): List<UserPagerTabResource<out Parcelable>> = mapOf(
+    UserPagerTabResource.Photos(photos.collectAsLazyPagingItems()) to user.total_photos,
+    UserPagerTabResource.Likes(likes.collectAsLazyPagingItems()) to user.total_likes,
+    UserPagerTabResource.Collections(collections.collectAsLazyPagingItems()) to user.total_collections
+).filterEmptyItems()
 
 private fun Map<UserPagerTabResource<out Parcelable>, Int>.filterEmptyItems() =
     this.filter { map -> map.value != 0 }.keys.toList()
@@ -157,7 +145,7 @@ fun BindUserScreenMainHeader(
 private fun BindPagerWithTabs(
     listPagesResource: List<UserPagerTabResource<out Parcelable>>,
     pagerState: PagerState = rememberPagerState(),
-    navigator: Navigator
+    navController: NavController
 ) {
     PagerLaunchedEffect(pagerState = pagerState)
 
@@ -174,7 +162,7 @@ private fun BindPagerWithTabs(
             val animateModifier: Modifier =
                 Modifier.animate(this@HorizontalPager, pageNumber, listState, id)
             SetCurrentItem(
-                navigator = navigator,
+                navController = navController,
                 modifier = animateModifier,
                 isUserVisible = isUserVisible
             )
@@ -217,22 +205,21 @@ private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerSt
 @ExperimentalMaterialApi
 @Composable
 private fun Parcelable.SetCurrentItem(
-    navigator: Navigator,
+    navController: NavController,
     modifier: Modifier,
     isUserVisible: Boolean
 ) {
-    if (this is ImageModel) {
-        ImageItem(
+    when (this) {
+        is ImageModel -> ImageItem(
             item = this,
             modifier = modifier,
-            navigator = navigator,
+            navController = navController,
             isUserVisible = isUserVisible
         )
-    } else if (this is CollectionModel) {
-        CollectionItem(
+        is CollectionModel -> CollectionItem(
             item = this,
             modifier = modifier,
-            navigator = navigator,
+            navController = navController,
             isUserVisible = isUserVisible
         )
     }
@@ -385,17 +372,17 @@ fun BindUserHeader(
 }
 
 @Composable
-fun BindUserTopAppBar(
+fun bindUserTopAppBar(
     username: String,
-    navigator: Navigator
-) {
+    navController: NavController
+): @Composable () -> Unit = {
     TopAppBar(
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
                 onClick = {
-                    navigator.popBackStack()
+                    navController.popBackStack()
                 }
             ) {
                 Icon(

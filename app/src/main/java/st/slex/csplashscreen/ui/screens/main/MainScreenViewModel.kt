@@ -14,19 +14,14 @@ import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.core.QueryCollectionsUseCase
 import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
-import st.slex.csplashscreen.ui.navigation.Navigator
 import javax.inject.Inject
 import javax.inject.Provider
 
 @ExperimentalCoroutinesApi
 class MainScreenViewModel @Inject constructor(
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
-    private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>,
-    private val _navigator: Navigator,
+    private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>
 ) : ViewModel() {
-
-    val navigator: Navigator
-        get() = _navigator
 
     private val newPagerCollections: Pager<Int, CollectionModel> by lazy {
         Pager(PagingConfig(10, enablePlaceholders = false)) {

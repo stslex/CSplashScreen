@@ -8,8 +8,6 @@ import dagger.Binds
 import dagger.Module
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.ui.navigation.NavigationHost
-import st.slex.csplashscreen.ui.navigation.Navigator
-import javax.inject.Singleton
 
 @Module
 interface NavigationModule {
@@ -22,8 +20,4 @@ interface NavigationModule {
     @ExperimentalAnimationApi
     @Binds
     fun bindsNavigationHost(navigationHost: NavigationHost.Base): NavigationHost
-
-    @Singleton
-    @Binds
-    fun bindsNavigator(navigator: Navigator.Base): Navigator
 }

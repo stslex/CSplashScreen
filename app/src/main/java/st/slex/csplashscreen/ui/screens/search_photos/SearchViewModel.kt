@@ -7,17 +7,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.search.QuerySearch
-import st.slex.csplashscreen.ui.navigation.Navigator
 import javax.inject.Inject
 import javax.inject.Provider
 
 @ExperimentalCoroutinesApi
 class SearchViewModel @Inject constructor(
     private val querySearchUseCaseProvider: Provider<QuerySearchUseCase>,
-    private val _navigator: Navigator
 ) : ViewModel() {
 
-    val navigator: Navigator = _navigator
     private val _querySearch = MutableStateFlow<QuerySearch>(QuerySearch.EmptyQuery)
     private val querySearch: StateFlow<QuerySearch> = _querySearch.asStateFlow()
 

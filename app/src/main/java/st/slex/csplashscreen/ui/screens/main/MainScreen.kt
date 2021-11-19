@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
@@ -25,8 +26,6 @@ import com.google.android.material.animation.AnimationUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import st.slex.csplashscreen.data.core.QueryCollections
-import st.slex.csplashscreen.data.core.QueryPhotos
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.MainActivity
@@ -34,7 +33,6 @@ import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
 import st.slex.csplashscreen.ui.components.checkState
 import st.slex.csplashscreen.ui.components.normalizedItemPosition
-import st.slex.csplashscreen.ui.navigation.Navigator
 import st.slex.csplashscreen.ui.theme.Typography
 import kotlin.math.absoluteValue
 
@@ -45,12 +43,11 @@ import kotlin.math.absoluteValue
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
+    navController: NavController,
     pagerState: PagerState = rememberPagerState(),
     systemUiController: SystemUiController = rememberSystemUiController(),
     viewModel: MainScreenViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
-    val navigator = viewModel.navigator
-
     val useDarkIcons = MaterialTheme.colors.isLight
     SideEffect {
         systemUiController.setSystemBarsColor(
@@ -66,7 +63,7 @@ fun MainScreen(
     }
 
     Column {
-        Pager(navigator = navigator, listPagesResource = viewModel.getListOfPagesResource())
+        Pager(navController = navController, listPagesResource = viewModel.getListOfPagesResource())
     }
 }
 
@@ -83,7 +80,7 @@ private fun MainScreenViewModel.getListOfPagesResource(): List<MainPagerTabResou
 @ExperimentalPagerApi
 @Composable
 private fun Pager(
-    navigator: Navigator,
+    navController: NavController,
     pagerState: PagerState = rememberPagerState(),
     listPagesResource: List<MainPagerTabResource<out Parcelable>>,
 ) {
@@ -99,7 +96,7 @@ private fun Pager(
         fun Parcelable.SetItemDependsOfType(id: String) {
             val animateModifier: Modifier =
                 Modifier.animateColumn(this@HorizontalPager, pageNumber, listState, id)
-            SetCurrentItem(navigator = navigator, modifier = animateModifier)
+            SetCurrentItem(navController = navController, modifier = animateModifier)
         }
 
         LazyColumn(state = listState) {
@@ -126,13 +123,13 @@ private fun Pager(
 @ExperimentalMaterialApi
 @Composable
 private fun Parcelable.SetCurrentItem(
-    navigator: Navigator,
+    navController: NavController,
     modifier: Modifier
 ) {
     if (this is ImageModel) {
-        ImageItem(item = this, modifier = modifier, navigator = navigator)
+        ImageItem(item = this, modifier = modifier, navController = navController)
     } else if (this is CollectionModel) {
-        CollectionItem(item = this, modifier = modifier, navigator = navigator)
+        CollectionItem(item = this, modifier = modifier, navController = navController)
     }
 }
 

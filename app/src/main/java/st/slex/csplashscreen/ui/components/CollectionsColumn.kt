@@ -9,11 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
-import st.slex.csplashscreen.ui.navigation.NavActions
-import st.slex.csplashscreen.ui.navigation.Navigator
+import st.slex.csplashscreen.ui.navigation.NavHostResource
 import st.slex.csplashscreen.ui.theme.TransparentGray
 import st.slex.csplashscreen.ui.theme.Typography
 
@@ -25,7 +25,7 @@ import st.slex.csplashscreen.ui.theme.Typography
 fun CollectionItem(
     item: CollectionModel,
     modifier: Modifier,
-    navigator: Navigator,
+    navController: NavController,
     isUserVisible: Boolean = true
 ) {
     Column(
@@ -36,7 +36,7 @@ fun CollectionItem(
                 modifier = Modifier.fillMaxWidth(),
                 url = item.user.profile_image.medium,
                 username = item.user.username,
-                navigator = navigator
+                navController = navController
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
@@ -45,7 +45,7 @@ fun CollectionItem(
             item.cover_photo.urls.regular,
             item.title,
             item.total_photos,
-            navigator = navigator
+            navController = navController
         )
     }
 }
@@ -59,7 +59,7 @@ fun BindCoverImageCard(
     url: String,
     title: String,
     totalPhotos: Int,
-    navigator: Navigator
+    navController: NavController
 ) {
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -67,7 +67,9 @@ fun BindCoverImageCard(
         .shadow(elevation = 0.dp),
         elevation = 0.dp,
         onClick = {
-            navigator.navigate(NavActions.SingleCollectionScreen(id))
+            val destination = NavHostResource.SingleCollectionScreen.destination
+            val route = "$destination/$id"
+            navController.navigate(route)
         }
     ) {
         CoverPhotoItem(

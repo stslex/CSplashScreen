@@ -12,7 +12,6 @@ import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.photo.DownloadDataMapper
 import st.slex.csplashscreen.data.photo.PhotoDataMapper
 import st.slex.csplashscreen.data.photo.PhotoRepository
-import st.slex.csplashscreen.ui.navigation.Navigator
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -21,24 +20,14 @@ class DetailPhotoViewModel @Inject constructor(
     private val photoMapper: PhotoDataMapper,
     private val downloadMapper: DownloadDataMapper,
     private val downloadImageUseCase: DownloadImageUseCase,
-    private val _navigator: Navigator
 ) : ViewModel() {
 
-    val navigator: Navigator
-        get() = _navigator
-
     fun getUrlAndDownloadImage(id: String) = viewModelScope.launch(Dispatchers.IO) {
-        getDownloadUrl(id).collect {
-            when (it) {
-                is Resource.Success -> {
-                    downloadImageUseCase.download(it.data.url, id)
-                }
-                is Resource.Loading -> {
-
-                }
-                is Resource.Failure -> {
-
-                }
+        getDownloadUrl(id).collect { request ->
+            when (request) {
+                is Resource.Success -> downloadImageUseCase.download(request.data.url, id)
+                is Resource.Loading -> Unit
+                is Resource.Failure -> Unit
             }
         }
     }
