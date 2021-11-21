@@ -16,8 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
         RepositoryModule::class,
         ViewModelFactoryModule::class,
         MapperModule::class,
-        UseCaseModule::class,
-        NavigationModule::class
+        UseCaseModule::class
     ]
 )
 class AppModule

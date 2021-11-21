@@ -3,21 +3,22 @@ package st.slex.csplashscreen.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import cafe.adriel.voyager.navigator.CurrentScreen
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabNavigator
+import cafe.adriel.voyager.navigator.tab.TabOptions
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -25,8 +26,9 @@ import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import st.slex.csplashscreen.appComponent
-import st.slex.csplashscreen.ui.navigation.NavHostResource
-import st.slex.csplashscreen.ui.navigation.NavigationHost
+import st.slex.csplashscreen.ui.screens.main.MainScreen
+import st.slex.csplashscreen.ui.screens.search_photos.SearchPhotosScreen
+import st.slex.csplashscreen.ui.screens.topics.TopicsScreen
 import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
 import javax.inject.Inject
 
@@ -35,91 +37,111 @@ import javax.inject.Inject
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
-@ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
 
-    @Inject
-    lateinit var navigationHost: Lazy<NavigationHost>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
             ProvideWindowInsets {
                 CSplashScreenTheme {
-                    Scaffold(
-                        bottomBar = { MainBottomAppBar(navController = navController) }
-                    ) {
-                        navigationHost.get().CreateNavigationHost(navController = navController)
+                    TabNavigator(tab = HomeTab) {
+                        Scaffold(
+                            content = { CurrentScreen() },
+                            bottomBar = {
+                                BottomNavigation {
+                                    TabNavigationItem(tab = TopicsTab)
+                                    TabNavigationItem(tab = HomeTab)
+                                    TabNavigationItem(tab = SearchTab)
+                                }
+                            }
+                        )
                     }
                 }
             }
         }
     }
-}
 
-@ExperimentalCoilApi
-@Composable
-private fun MainBottomAppBar(navController: NavController) {
-    val listOfItems: List<BottomAppBarResource> = listOf(
-        BottomAppBarResource.TopicsScreen,
-        BottomAppBarResource.MainScreen,
-        BottomAppBarResource.SearchScreen
-    )
-    BottomAppBar(modifier = Modifier.fillMaxWidth()) {
-        val selectedItem = remember { mutableStateOf(BottomAppBarResource.MainScreen.destination) }
-        BottomNavigation {
-            listOfItems.forEach {
-                BottomNavigationItem(
-                    icon = {
-                        Icon(it.icon, it.destination)
-                    },
-                    label = { Text(text = it.destination) },
-                    selected = selectedItem.value == it.destination,
-                    onClick = {
-                        selectedItem.value = it.destination
-                        navController.navigate(it.route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    inclusive = true
-                                    saveState = true
-                                }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    alwaysShowLabel = false
-                )
+    @Composable
+    private fun RowScope.TabNavigationItem(tab: Tab) {
+        val tabNavigator = LocalTabNavigator.current
+
+        BottomNavigationItem(
+            selected = tabNavigator.current == tab,
+            onClick = { tabNavigator.current = tab },
+            icon = { Icon(painter = tab.options.icon!!, contentDescription = tab.options.title) }
+        )
+    }
+
+    object HomeTab : Tab {
+
+        override val options: TabOptions
+            @Composable
+            get() {
+                val title = "home"
+                val icon = rememberVectorPainter(image = Icons.Filled.Home)
+
+                return remember {
+                    TabOptions(
+                        index = 1u,
+                        title = title,
+                        icon = icon
+                    )
+                }
             }
+
+        @Composable
+        override fun Content() {
+            Navigator(screen = MainScreen())
         }
     }
-}
 
-private sealed interface BottomAppBarResource {
+    object TopicsTab : Tab {
 
-    val destination: String
-    val icon: ImageVector
-    val route: String
-        get() = destination
+        override val options: TabOptions
+            @Composable
+            get() {
+                val title = "topics"
+                val icon = rememberVectorPainter(image = Icons.Filled.Star)
 
-    object MainScreen : BottomAppBarResource {
-        override val destination: String = NavHostResource.MainScreen.destination
-        override val icon: ImageVector = Icons.Filled.Home
+                return remember {
+                    TabOptions(
+                        index = 0u,
+                        title = title,
+                        icon = icon
+                    )
+                }
+            }
+
+        @Composable
+        override fun Content() {
+            Navigator(screen = TopicsScreen())
+        }
     }
 
-    object TopicsScreen : BottomAppBarResource {
-        override val destination: String = NavHostResource.TopicsScreen.destination
-        override val icon: ImageVector = Icons.Filled.Star
-    }
+    object SearchTab : Tab {
 
-    object SearchScreen : BottomAppBarResource {
-        override val destination: String = NavHostResource.SearchPhotosScreen.destination
-        override val icon: ImageVector = Icons.Filled.Search
-        override val route: String = "$destination/ "
+        override val options: TabOptions
+            @Composable
+            get() {
+                val title = "search"
+                val icon = rememberVectorPainter(image = Icons.Filled.Search)
+
+                return remember {
+                    TabOptions(
+                        index = 2u,
+                        title = title,
+                        icon = icon
+                    )
+                }
+            }
+
+        @Composable
+        override fun Content() {
+            Navigator(screen = SearchPhotosScreen(" "))
+        }
     }
 }

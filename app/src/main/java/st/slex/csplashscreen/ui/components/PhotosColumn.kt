@@ -1,7 +1,7 @@
 package st.slex.csplashscreen.ui.components
 
 import android.annotation.SuppressLint
-import android.util.Log
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,36 +13,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
-import org.koin.core.logger.KOIN_TAG
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.ui.navigation.NavHostResource
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
+import st.slex.csplashscreen.ui.screens.detail.ImageDetailScreen
 import kotlin.math.absoluteValue
 
 
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
-fun LazyPhotosColumn(
-    lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
-    navController: NavController
-) {
+fun LazyPhotosColumn(lazyPagingPhotosItems: LazyPagingItems<ImageModel>) {
     val lazyListState = rememberLazyListState()
     LazyColumn(state = lazyListState) {
         items(lazyPagingPhotosItems, key = { it.id }) { item ->
             item?.let { notNullImageModel ->
                 ImageItem(
                     item = notNullImageModel,
-                    navController = navController,
                     modifier = Modifier
                         .padding(start = 8.dp, end = 8.dp, top = 32.dp, bottom = 32.dp)
                         .graphicsLayer {
@@ -64,6 +61,7 @@ fun LazyPhotosColumn(
     }
 }
 
+@ExperimentalCoroutinesApi
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -72,8 +70,8 @@ fun LazyPhotosColumn(
 fun ImageItem(
     item: ImageModel,
     modifier: Modifier,
-    navController: NavController,
-    isUserVisible: Boolean = true
+    isUserVisible: Boolean = true,
+    navigator: Navigator = LocalNavigator.currentOrThrow
 ) {
     Column(
         modifier = modifier
@@ -84,22 +82,17 @@ fun ImageItem(
                 modifier = Modifier.fillMaxWidth(),
                 url = item.user.profile_image.medium,
                 username = item.user.username,
-                navController = navController
+                navigator = navigator
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
 
         Card(
             onClick = {
-                if (item.id.isNotEmpty() && item.urls.regular.isNotEmpty()) {
-                    val url = item.urls.regular
-                    val id = item.id
-                    val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                    val destination = NavHostResource.ImageDetailScreen.destination
-                    val route = "$destination/$encodedUrl/$id"
-                    navController.navigate(route)
-                } else Log.e(KOIN_TAG, "::is empty:")
-
+                val url = item.urls.regular
+                val id = item.id
+                val imageScreen = ImageDetailScreen(url, id)
+                navigator.push(imageScreen)
             }
         ) {
             CoverPhotoItem(item.urls.regular)
