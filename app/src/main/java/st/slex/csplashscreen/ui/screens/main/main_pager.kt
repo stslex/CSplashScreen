@@ -1,12 +1,12 @@
 package st.slex.csplashscreen.ui.screens.main
 
 import android.os.Parcelable
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -18,14 +18,14 @@ import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
 import st.slex.csplashscreen.ui.components.checkState
 
-@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable
 fun Pager(
     pagesResource: List<MainPagerTabResource<out Parcelable>>,
-    pagerState: PagerState
+    pagerState: PagerState,
+    navController: NavController
 ) {
     HorizontalPager(
         count = pagesResource.size,
@@ -38,7 +38,7 @@ fun Pager(
         fun Parcelable.SetItemDependsOfType(id: String) {
             val animateModifier: Modifier =
                 Modifier.animateColumn(this@HorizontalPager, pageNumber, listState, id)
-            SetCurrentItem(modifier = animateModifier)
+            SetCurrentItem(navController = navController, modifier = animateModifier)
         }
 
         LazyColumn(state = listState) {
@@ -60,15 +60,17 @@ fun Pager(
     }
 }
 
-@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
-private fun Parcelable.SetCurrentItem(modifier: Modifier) {
+private fun Parcelable.SetCurrentItem(
+    navController: NavController,
+    modifier: Modifier
+) {
     if (this is ImageModel) {
-        ImageItem(item = this, modifier = modifier)
+        ImageItem(item = this, modifier = modifier, navController = navController)
     } else if (this is CollectionModel) {
-        CollectionItem(item = this, modifier = modifier)
+        CollectionItem(item = this, modifier = modifier, navController = navController)
     }
 }

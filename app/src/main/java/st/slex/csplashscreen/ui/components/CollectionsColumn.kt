@@ -1,7 +1,6 @@
 package st.slex.csplashscreen.ui.components
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
@@ -10,19 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
-import st.slex.csplashscreen.ui.screens.collection.SingleCollectionScreen
+import st.slex.csplashscreen.ui.navigation.NavHostResource
 import st.slex.csplashscreen.ui.theme.TransparentGray
 import st.slex.csplashscreen.ui.theme.Typography
 
-@ExperimentalAnimationApi
-@ExperimentalCoroutinesApi
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -31,6 +25,7 @@ import st.slex.csplashscreen.ui.theme.Typography
 fun CollectionItem(
     item: CollectionModel,
     modifier: Modifier,
+    navController: NavController,
     isUserVisible: Boolean = true
 ) {
     Column(
@@ -40,7 +35,8 @@ fun CollectionItem(
             UserImageHeadWithUserName(
                 modifier = Modifier.fillMaxWidth(),
                 url = item.user.profile_image.medium,
-                username = item.user.username
+                username = item.user.username,
+                navController = navController
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
@@ -48,12 +44,12 @@ fun CollectionItem(
             item.id,
             item.cover_photo.urls.regular,
             item.title,
-            item.total_photos
+            item.total_photos,
+            navController = navController
         )
     }
 }
 
-@ExperimentalCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -63,7 +59,7 @@ fun BindCoverImageCard(
     url: String,
     title: String,
     totalPhotos: Int,
-    navigator: Navigator = LocalNavigator.currentOrThrow
+    navController: NavController
 ) {
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -71,7 +67,9 @@ fun BindCoverImageCard(
         .shadow(elevation = 0.dp),
         elevation = 0.dp,
         onClick = {
-            navigator.push(SingleCollectionScreen(id))
+            val destination = NavHostResource.SingleCollectionScreen.destination
+            val route = "$destination/$id"
+            navController.navigate(route)
         }
     ) {
         CoverPhotoItem(

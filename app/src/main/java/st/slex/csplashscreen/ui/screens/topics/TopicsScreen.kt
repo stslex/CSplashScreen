@@ -1,5 +1,7 @@
 package st.slex.csplashscreen.ui.screens.topics
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
@@ -15,74 +17,60 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.paging.compose.LazyPagingItems
+import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import cafe.adriel.voyager.androidx.AndroidScreen
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
-import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import st.slex.csplashscreen.appComponent
-import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
+import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.normalizedItemPosition
 import st.slex.csplashscreen.ui.theme.Typography
-import javax.inject.Inject
 import kotlin.math.absoluteValue
 
 
+@ExperimentalAnimationApi
+@SuppressLint("RememberReturnType", "RestrictedApi")
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
-@ExperimentalMaterialApi
 @ExperimentalPagerApi
-class TopicsScreen : AndroidScreen() {
-
-    @Inject
-    lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
-
-    @Composable
-    override fun Content() {
-        LocalContext.current.applicationContext.appComponent.inject(this)
-        val viewModel: TopicsViewModel = viewModel(factory = viewModelFactory.get())
-        val lazyPagingItems = viewModel.topics.collectAsLazyPagingItems()
-        BindLazyRow(lazyPagingItems = lazyPagingItems)
-    }
-
-    @Composable
-    private fun BindLazyRow(
-        lazyPagingItems: LazyPagingItems<TopicsModel>,
-        state: LazyListState = rememberLazyListState()
-    ) {
-        LazyRow(state = state) {
-            items(lazyPagingItems, key = { it.id }) { item ->
-                Column(
-                    modifier = Modifier
-                        .graphicsLayer {
-                            val value =
-                                1 - (state.layoutInfo.normalizedItemPosition(item?.id!!).absoluteValue * 0.15F)
-                            alpha = value
-                            scaleX = value
-                            scaleY = value
-                        }
-                        .width(250.dp)
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Text(
-                        text = item?.title.toString(),
-                        style = Typography.h5,
-                        maxLines = 1
-                    )
-                    ItemImage(
-                        item?.cover_photo?.urls?.regular.toString(),
-                    )
-                }
+@ExperimentalMaterialApi
+@Composable
+fun TopicsScreen(
+    navController: NavController,
+    state: LazyListState = rememberLazyListState(),
+    viewModel: TopicsViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
+) {
+    val lazyPagingItems = viewModel.topics.collectAsLazyPagingItems()
+    LazyRow(state = state) {
+        items(lazyPagingItems, key = { it.id }) { item ->
+            Column(
+                modifier = Modifier
+                    .graphicsLayer {
+                        val value =
+                            1 - (state.layoutInfo.normalizedItemPosition(item?.id!!).absoluteValue * 0.15F)
+                        alpha = value
+                        scaleX = value
+                        scaleY = value
+                    }
+                    .width(250.dp)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = item?.title.toString(),
+                    style = Typography.h5,
+                    maxLines = 1
+                )
+                ItemImage(
+                    item?.cover_photo?.urls?.regular.toString(),
+                )
             }
         }
+
     }
 }
 

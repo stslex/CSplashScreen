@@ -7,14 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
-import com.google.accompanist.pager.ExperimentalPagerApi
-import st.slex.csplashscreen.ui.screens.user.UserScreen
+import st.slex.csplashscreen.ui.navigation.NavHostResource
 
-@ExperimentalPagerApi
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
 @Composable
@@ -22,13 +18,15 @@ fun UserImageHeadWithUserName(
     modifier: Modifier,
     url: String,
     username: String,
-    navigator: Navigator = LocalNavigator.currentOrThrow
+    navController: NavController
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
         elevation = 0.dp,
         onClick = {
-            navigator.push(UserScreen(username))
+            val destination = NavHostResource.UserScreen.destination
+            val route = "$destination/$username"
+            navController.navigate(route = route)
         }
     ) {
         Row(

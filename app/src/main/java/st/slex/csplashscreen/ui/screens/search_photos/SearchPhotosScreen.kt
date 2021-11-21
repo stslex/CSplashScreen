@@ -8,47 +8,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import cafe.adriel.voyager.androidx.AndroidScreen
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
-import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import st.slex.csplashscreen.appComponent
 import st.slex.csplashscreen.data.search.QuerySearch
+import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.LazyPhotosColumn
 import st.slex.csplashscreen.ui.components.setTextFieldColors
 import st.slex.csplashscreen.ui.theme.Typography
-import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
-class SearchPhotosScreen(private val query: String) : AndroidScreen() {
+@ExperimentalCoroutinesApi
+@Composable
+fun SearchPhotosScreen(
+    navController: NavController,
+    arguments: List<String>,
+    viewModel: SearchViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
+) {
+    val query: String = arguments[0]
+    val checkedQuery = if (query == " ") "" else query
+    viewModel.setQueryPhotosSearch(QuerySearch.SearchPhotos(checkedQuery))
+    val lazyPagingPhotosItems = viewModel.photosSearch.collectAsLazyPagingItems()
 
-    @Inject
-    lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
-
-    @ExperimentalAnimationApi
-    @Composable
-    override fun Content() {
-        LocalContext.current.applicationContext.appComponent.inject(this)
-        val viewModel: SearchViewModel = viewModel(factory = viewModelFactory.get())
-        val checkedQuery = if (query == " ") "" else query
-        viewModel.setQueryPhotosSearch(QuerySearch.SearchPhotos(checkedQuery))
-        val lazyPagingPhotosItems = viewModel.photosSearch.collectAsLazyPagingItems()
-        Scaffold(
-            topBar = {
-                TopAppBarSearch(querySearch = checkedQuery) {
-                    viewModel.setQueryPhotosSearch(it)
-                }
+    Scaffold(
+        topBar = {
+            TopAppBarSearch(querySearch = checkedQuery) {
+                viewModel.setQueryPhotosSearch(it)
             }
-        ) {
-            LazyPhotosColumn(lazyPagingPhotosItems = lazyPagingPhotosItems)
         }
+    ) {
+        LazyPhotosColumn(
+            lazyPagingPhotosItems = lazyPagingPhotosItems,
+            navController = navController
+        )
     }
 }
 

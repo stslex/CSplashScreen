@@ -3,6 +3,7 @@ package st.slex.csplashscreen.ui.screens.detail
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,112 +21,94 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.androidx.AndroidScreen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import dagger.Lazy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.R
-import st.slex.csplashscreen.appComponent
 import st.slex.csplashscreen.core.Resource
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
+import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
-import st.slex.csplashscreen.ui.screens.raw_image.RawImageScreen
-import st.slex.csplashscreen.ui.screens.search_photos.SearchPhotosScreen
+import st.slex.csplashscreen.ui.navigation.NavHostResource
 import st.slex.csplashscreen.ui.theme.Shapes
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-import javax.inject.Inject
 
-
-@ExperimentalCoilApi
-@ExperimentalCoroutinesApi
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
+@ExperimentalCoroutinesApi
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
-data class ImageDetailScreen(
-    val url: String,
-    val id: String
-) : AndroidScreen() {
+@Composable
+fun ImageDetailScreen(
+    navController: NavController,
+    arguments: List<String>,
+    systemUiController: SystemUiController = rememberSystemUiController(),
+    viewModel: DetailPhotoViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
+) {
+    val url: String = arguments[0]
+    val id: String = arguments[1]
 
-    @Inject
-    lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
+    val result: Resource<ImageModel> by remember(viewModel) {
+        viewModel.getCurrentPhoto(id)
+    }.collectAsState(initial = Resource.Loading, context = Dispatchers.IO)
 
-    @ExperimentalAnimationApi
-    @Composable
-    override fun Content() {
-        LocalContext.current.applicationContext.appComponent.inject(this)
+    val darkIcons = !isSystemInDarkTheme()
+    SideEffect {
+        systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
+    }
 
-        val viewModel: DetailPhotoViewModel = viewModel(factory = viewModelFactory.get())
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        item { BindTopImageHead(url = url, navController = navController) }
+        item { Spacer(modifier = Modifier.padding(4.dp)) }
 
-        val result: Resource<ImageModel> by remember(viewModel) {
-            viewModel.getCurrentPhoto(id)
-        }.collectAsState(initial = Resource.Loading, context = Dispatchers.IO)
-
-        SideEffect(sideEffect())
-
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            item { BindTopImageHead(url = url) }
-            item { Spacer(modifier = Modifier.padding(4.dp)) }
-
-            when (result) {
-                is Resource.Success -> {
-                    val image = (result as Resource.Success<ImageModel>).data
-                    item {
-                        UserDetailImageHead(
-                            username = image.user.username,
-                            url = image.user.profile_image.medium
-                        ) {
-                            viewModel.getUrlAndDownloadImage(id)
-                        }
+        when (result) {
+            is Resource.Success -> {
+                val image = (result as Resource.Success<ImageModel>).data
+                item {
+                    UserDetailImageHead(
+                        username = image.user.username,
+                        url = image.user.profile_image.medium,
+                        navController = navController
+                    ) {
+                        viewModel.getUrlAndDownloadImage(id)
                     }
-                    item { BindDetailScreenBody(image = image) }
                 }
-                is Resource.Loading -> {
-                    item { BindDetailImageLoading(modifier = Modifier) }
-                }
-                is Resource.Failure -> {
-                    item { BindDetailImageFailure() }
-                }
+                item { BindDetailScreenBody(image = image, navController = navController) }
+            }
+            is Resource.Loading -> {
+                item { BindDetailImageLoading(modifier = Modifier) }
+            }
+            is Resource.Failure -> {
+                item { BindDetailImageFailure() }
             }
         }
     }
-
-    @Composable
-    private fun sideEffect(
-        systemUiController: SystemUiController = rememberSystemUiController(),
-        useDarkIcons: Boolean = MaterialTheme.colors.isLight
-    ): () -> Unit = {
-        systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = useDarkIcons)
-    }
 }
 
-
-@ExperimentalCoroutinesApi
-@ExperimentalPagerApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 private fun BindDetailScreenBody(
     image: ImageModel,
-    navigator: Navigator = LocalNavigator.currentOrThrow
+    navController: NavController
 ) {
     Spacer(modifier = Modifier.size(16.dp))
     Divider()
     Spacer(modifier = Modifier.size(16.dp))
     if (!image.tags.isNullOrEmpty()) {
         BindDetailImageBodyTags(image.tags) { tag ->
-            navigator.push(SearchPhotosScreen(tag))
+            val destination = NavHostResource.SearchPhotosScreen.destination
+            val route = "$destination/$tag"
+            navController.navigate(route)
         }
         Spacer(modifier = Modifier.size(16.dp))
         Divider()
@@ -155,14 +138,13 @@ private fun BindImageInformation(image: ImageModel) {
     }
 }
 
-@ExperimentalAnimationApi
-@ExperimentalPagerApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 private fun UserDetailImageHead(
     url: String,
     username: String,
+    navController: NavController,
     downloadFunction: () -> Unit
 ) {
     ConstraintLayout(
@@ -179,7 +161,8 @@ private fun UserDetailImageHead(
                 end.linkTo(download.start)
             },
             url = url,
-            username = username
+            username = username,
+            navController = navController
         )
 
         Surface(
@@ -213,7 +196,7 @@ private fun UserDetailImageHead(
 @Composable
 private fun BindTopImageHead(
     url: String,
-    navigator: Navigator = LocalNavigator.currentOrThrow
+    navController: NavController
 ) {
     Image(
         modifier = Modifier
@@ -221,7 +204,9 @@ private fun BindTopImageHead(
             .height(300.dp)
             .clickable {
                 val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                navigator.push(RawImageScreen(url = encodedUrl))
+                val destination = NavHostResource.RawImageScreen.destination
+                val route = "$destination/$encodedUrl"
+                navController.navigate(route)
             },
         painter = rememberImagePainter(
             data = url,
@@ -272,3 +257,6 @@ private fun BindDetailImageLoading(modifier: Modifier) {
 private fun BindDetailImageFailure() {
 
 }
+
+
+

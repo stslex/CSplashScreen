@@ -23,69 +23,67 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import cafe.adriel.voyager.androidx.AndroidScreen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.google.accompanist.pager.*
 import com.google.android.material.animation.AnimationUtils
-import dagger.Lazy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import st.slex.csplashscreen.appComponent
 import st.slex.csplashscreen.core.Resource
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.user.UserModel
+import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
 import st.slex.csplashscreen.ui.components.checkState
 import st.slex.csplashscreen.ui.components.normalizedItemPosition
-import st.slex.csplashscreen.ui.screens.main.MainScreen
+import st.slex.csplashscreen.ui.screens.main.AnalyticsService
 import st.slex.csplashscreen.ui.theme.Typography
-import javax.inject.Inject
 import kotlin.math.absoluteValue
-
-
-@ExperimentalMaterialApi
-@ExperimentalPagerApi
-class UserScreen(private val username: String) : AndroidScreen() {
-
-    @Inject
-    lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
-
-    @ExperimentalAnimationApi
-    @Composable
-    override fun Content() {
-        LocalContext.current.applicationContext.appComponent.inject(this)
-        val viewModel: UserViewModel = viewModel(factory = viewModelFactory.get())
-        viewModel.setAllQueries(username = username)
-        val userResource: Resource<UserModel> by remember(viewModel) {
-            viewModel.getUser(username = username)
-        }.collectAsState(Resource.Loading)
-        Scaffold(
-            topBar = bindUserTopAppBar(username),
-            content = checkResultAndBind(userResource) { viewModel.getListOfPagesResource(it) }
-        )
-    }
-}
 
 @ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
+@ExperimentalCoroutinesApi
+@Composable
+fun UserScreen(
+    navController: NavController,
+    arguments: List<String>,
+    viewModel: UserViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
+) {
+    val username: String = arguments.first()
+
+    viewModel.setAllQueries(username = username)
+
+    val userResource: Resource<UserModel> by remember(viewModel) {
+        viewModel.getUser(username = username)
+    }.collectAsState(Resource.Loading)
+
+    Scaffold(
+        topBar = bindUserTopAppBar(username, navController),
+        content = checkResultAndBind(
+            userResource,
+            navController
+        ) { viewModel.getListOfPagesResource(it) }
+    )
+}
+
+@ExperimentalCoilApi
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
 @Composable
 private fun checkResultAndBind(
     userResource: Resource<UserModel>,
+    navController: NavController,
     getListOfPagesResource: @Composable (UserModel) -> List<UserPagerTabResource<out Parcelable>>,
 ): @Composable (PaddingValues) -> Unit = {
     when (userResource) {
@@ -93,7 +91,10 @@ private fun checkResultAndBind(
             val listPagesResource = getListOfPagesResource(userResource.data)
             Column(modifier = Modifier.fillMaxSize()) {
                 BindUserScreenMainHeader(user = userResource.data)
-                BindPagerWithTabs(listPagesResource = listPagesResource)
+                BindPagerWithTabs(
+                    listPagesResource = listPagesResource,
+                    navController = navController
+                )
             }
         }
         is Resource.Failure -> Unit
@@ -114,8 +115,8 @@ private fun UserViewModel.getListOfPagesResource(
 private fun Map<UserPagerTabResource<out Parcelable>, Int>.filterEmptyItems() =
     this.filter { map -> map.value != 0 }.keys.toList()
 
-@ExperimentalAnimationApi
 @ExperimentalMaterialApi
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @Composable
 fun BindUserScreenMainHeader(
@@ -137,7 +138,6 @@ fun BindUserScreenMainHeader(
     }
 }
 
-@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -145,6 +145,7 @@ fun BindUserScreenMainHeader(
 private fun BindPagerWithTabs(
     listPagesResource: List<UserPagerTabResource<out Parcelable>>,
     pagerState: PagerState = rememberPagerState(),
+    navController: NavController
 ) {
     PagerLaunchedEffect(pagerState = pagerState)
 
@@ -161,6 +162,7 @@ private fun BindPagerWithTabs(
             val animateModifier: Modifier =
                 Modifier.animate(this@HorizontalPager, pageNumber, listState, id)
             SetCurrentItem(
+                navController = navController,
                 modifier = animateModifier,
                 isUserVisible = isUserVisible
             )
@@ -190,34 +192,34 @@ private fun BindPagerWithTabs(
     }
 }
 
-@ExperimentalAnimationApi
-@FlowPreview
-@ExperimentalCoilApi
-@ExperimentalCoroutinesApi
-@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable
 private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerState) {
     snapshotFlow { pagerState.currentPage }.collect { page ->
-        MainScreen.sendPageSelectedEvent(page)
+        AnalyticsService.sendPageSelectedEvent(page)
     }
 }
 
-@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
-private fun Parcelable.SetCurrentItem(modifier: Modifier, isUserVisible: Boolean) {
+private fun Parcelable.SetCurrentItem(
+    navController: NavController,
+    modifier: Modifier,
+    isUserVisible: Boolean
+) {
     when (this) {
         is ImageModel -> ImageItem(
             item = this,
             modifier = modifier,
+            navController = navController,
             isUserVisible = isUserVisible
         )
         is CollectionModel -> CollectionItem(
             item = this,
             modifier = modifier,
+            navController = navController,
             isUserVisible = isUserVisible
         )
     }
@@ -372,7 +374,7 @@ fun BindUserHeader(
 @Composable
 fun bindUserTopAppBar(
     username: String,
-    navigator: Navigator = LocalNavigator.currentOrThrow
+    navController: NavController
 ): @Composable () -> Unit = {
     TopAppBar(
         modifier = Modifier.fillMaxWidth()
@@ -380,7 +382,7 @@ fun bindUserTopAppBar(
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
                 onClick = {
-                    navigator.pop()
+                    navController.popBackStack()
                 }
             ) {
                 Icon(
