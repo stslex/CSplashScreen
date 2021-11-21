@@ -3,12 +3,14 @@ package st.slex.csplashscreen.ui.screens.topics
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
 import javax.inject.Inject
 
+@HiltViewModel
 class TopicsViewModel @Inject constructor(
     private val pagingSource: PagingSource<Int, TopicsModel>,
 ) : ViewModel() {

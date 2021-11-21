@@ -3,6 +3,7 @@ package st.slex.csplashscreen.ui.screens.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -20,6 +21,7 @@ import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
 import javax.inject.Inject
 import javax.inject.Provider
 
+@HiltViewModel
 class UserViewModel @Inject constructor(
     private val repository: UserRepository,
     private val mapper: UserDataMapper,

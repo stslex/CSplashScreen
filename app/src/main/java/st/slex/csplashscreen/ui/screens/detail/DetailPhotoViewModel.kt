@@ -2,6 +2,7 @@ package st.slex.csplashscreen.ui.screens.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -15,6 +16,7 @@ import st.slex.csplashscreen.data.photo.PhotoRepository
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
+@HiltViewModel
 class DetailPhotoViewModel @Inject constructor(
     private val repository: PhotoRepository,
     private val photoMapper: PhotoDataMapper,

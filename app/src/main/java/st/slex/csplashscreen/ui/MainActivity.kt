@@ -15,16 +15,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Lazy
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import st.slex.csplashscreen.appComponent
 import st.slex.csplashscreen.ui.navigation.NavHostResource
 import st.slex.csplashscreen.ui.navigation.NavigationHost
 import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
@@ -36,16 +35,13 @@ import javax.inject.Inject
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @ExperimentalAnimationApi
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
 
     @Inject
     lateinit var navigationHost: Lazy<NavigationHost>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
@@ -60,66 +56,68 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@ExperimentalCoilApi
-@Composable
-private fun MainBottomAppBar(navController: NavController) {
-    val listOfItems: List<BottomAppBarResource> = listOf(
-        BottomAppBarResource.TopicsScreen,
-        BottomAppBarResource.MainScreen,
-        BottomAppBarResource.SearchScreen
-    )
-    BottomAppBar(modifier = Modifier.fillMaxWidth()) {
-        val selectedItem = remember { mutableStateOf(BottomAppBarResource.MainScreen.destination) }
-        BottomNavigation {
-            listOfItems.forEach {
-                BottomNavigationItem(
-                    icon = {
-                        Icon(it.icon, it.destination)
-                    },
-                    label = { Text(text = it.destination) },
-                    selected = selectedItem.value == it.destination,
-                    onClick = {
-                        selectedItem.value = it.destination
-                        navController.navigate(it.route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    inclusive = true
-                                    saveState = true
+    @ExperimentalCoilApi
+    @Composable
+    private fun MainBottomAppBar(navController: NavController) {
+        val listOfItems: List<BottomAppBarResource> = listOf(
+            BottomAppBarResource.TopicsScreen,
+            BottomAppBarResource.MainScreen,
+            BottomAppBarResource.SearchScreen
+        )
+        BottomAppBar(modifier = Modifier.fillMaxWidth()) {
+            val selectedItem =
+                remember { mutableStateOf(BottomAppBarResource.MainScreen.destination) }
+            BottomNavigation {
+                listOfItems.forEach {
+                    BottomNavigationItem(
+                        icon = {
+                            Icon(it.icon, it.destination)
+                        },
+                        label = { Text(text = it.destination) },
+                        selected = selectedItem.value == it.destination,
+                        onClick = {
+                            selectedItem.value = it.destination
+                            navController.navigate(it.route) {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        inclusive = true
+                                        saveState = true
+                                    }
                                 }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    alwaysShowLabel = false
-                )
+                        },
+                        alwaysShowLabel = false
+                    )
+                }
             }
+        }
+    }
+
+    private sealed interface BottomAppBarResource {
+
+        val destination: String
+        val icon: ImageVector
+        val route: String
+            get() = destination
+
+        object MainScreen : BottomAppBarResource {
+            override val destination: String = NavHostResource.MainScreen.destination
+            override val icon: ImageVector = Icons.Filled.Home
+        }
+
+        object TopicsScreen : BottomAppBarResource {
+            override val destination: String = NavHostResource.TopicsScreen.destination
+            override val icon: ImageVector = Icons.Filled.Star
+        }
+
+        object SearchScreen : BottomAppBarResource {
+            override val destination: String = NavHostResource.SearchPhotosScreen.destination
+            override val icon: ImageVector = Icons.Filled.Search
+            override val route: String = "$destination/ "
         }
     }
 }
 
-private sealed interface BottomAppBarResource {
-
-    val destination: String
-    val icon: ImageVector
-    val route: String
-        get() = destination
-
-    object MainScreen : BottomAppBarResource {
-        override val destination: String = NavHostResource.MainScreen.destination
-        override val icon: ImageVector = Icons.Filled.Home
-    }
-
-    object TopicsScreen : BottomAppBarResource {
-        override val destination: String = NavHostResource.TopicsScreen.destination
-        override val icon: ImageVector = Icons.Filled.Star
-    }
-
-    object SearchScreen : BottomAppBarResource {
-        override val destination: String = NavHostResource.SearchPhotosScreen.destination
-        override val icon: ImageVector = Icons.Filled.Search
-        override val route: String = "$destination/ "
-    }
-}

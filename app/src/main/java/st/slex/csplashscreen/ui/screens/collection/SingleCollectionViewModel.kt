@@ -3,6 +3,7 @@ package st.slex.csplashscreen.ui.screens.collection
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import st.slex.csplashscreen.data.core.QueryPhotos
@@ -11,6 +12,7 @@ import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
 import javax.inject.Inject
 import javax.inject.Provider
 
+@HiltViewModel
 class SingleCollectionViewModel @Inject constructor(
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>
 ) : ViewModel() {

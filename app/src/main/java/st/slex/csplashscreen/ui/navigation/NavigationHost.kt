@@ -3,6 +3,7 @@ package st.slex.csplashscreen.ui.navigation
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,12 +14,19 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import st.slex.csplashscreen.ui.screens.collection.SingleCollectionScreen
+import st.slex.csplashscreen.ui.screens.collection.SingleCollectionViewModel
+import st.slex.csplashscreen.ui.screens.detail.DetailPhotoViewModel
 import st.slex.csplashscreen.ui.screens.detail.ImageDetailScreen
 import st.slex.csplashscreen.ui.screens.main.MainScreen
+import st.slex.csplashscreen.ui.screens.main.MainScreenViewModel
 import st.slex.csplashscreen.ui.screens.raw_image.RawImageScreen
+import st.slex.csplashscreen.ui.screens.raw_image.RawImageViewModel
 import st.slex.csplashscreen.ui.screens.search_photos.SearchPhotosScreen
+import st.slex.csplashscreen.ui.screens.search_photos.SearchViewModel
 import st.slex.csplashscreen.ui.screens.topics.TopicsScreen
+import st.slex.csplashscreen.ui.screens.topics.TopicsViewModel
 import st.slex.csplashscreen.ui.screens.user.UserScreen
+import st.slex.csplashscreen.ui.screens.user.UserViewModel
 import javax.inject.Inject
 
 @ExperimentalAnimationApi
@@ -41,24 +49,33 @@ interface NavigationHost {
                 navController = navController,
                 startDestination = NavHostResource.MainScreen.destination,
             ) {
-                create(NavHostResource.MainScreen) { MainScreen(navController) }
+                create(NavHostResource.MainScreen) {
+                    val viewModel: MainScreenViewModel = hiltViewModel()
+                    MainScreen(navController, viewModel = viewModel)
+                }
                 create(NavHostResource.ImageDetailScreen) {
-                    ImageDetailScreen(navController, it)
+                    val viewModel: DetailPhotoViewModel = hiltViewModel()
+                    ImageDetailScreen(navController, it, viewModel = viewModel)
                 }
                 create(NavHostResource.SingleCollectionScreen) {
-                    SingleCollectionScreen(navController, it)
+                    val viewModel: SingleCollectionViewModel = hiltViewModel()
+                    SingleCollectionScreen(navController, it, viewModel = viewModel)
                 }
                 create(NavHostResource.RawImageScreen) {
-                    RawImageScreen(navController, it)
+                    val viewModel: RawImageViewModel = hiltViewModel()
+                    RawImageScreen(navController, it, viewModel = viewModel)
                 }
                 create(NavHostResource.SearchPhotosScreen) {
-                    SearchPhotosScreen(navController, it)
+                    val viewModel: SearchViewModel = hiltViewModel()
+                    SearchPhotosScreen(navController, it, viewModel = viewModel)
                 }
                 create(NavHostResource.UserScreen) {
-                    UserScreen(navController, it)
+                    val viewModel: UserViewModel = hiltViewModel()
+                    UserScreen(navController, it, viewModel = viewModel)
                 }
                 create(NavHostResource.TopicsScreen) {
-                    TopicsScreen(navController)
+                    val viewModel: TopicsViewModel = hiltViewModel()
+                    TopicsScreen(navController, viewModel = viewModel)
                 }
             }
         }

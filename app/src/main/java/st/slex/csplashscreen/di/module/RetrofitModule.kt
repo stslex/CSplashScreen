@@ -6,6 +6,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -17,6 +19,7 @@ import st.slex.csplashscreen.data.core.Constants.BASE_URL
 import st.slex.csplashscreen.di.scopes.OfflineInterceptor
 import st.slex.csplashscreen.di.scopes.OnlineInterceptor
 
+@InstallIn(SingletonComponent::class)
 @Module
 class RetrofitModule {
 

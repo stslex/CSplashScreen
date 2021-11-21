@@ -2,6 +2,8 @@ package st.slex.csplashscreen.di.module
 
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import st.slex.csplashscreen.data.collections.CollectionService
 import st.slex.csplashscreen.data.photo.PhotoService
@@ -10,7 +12,8 @@ import st.slex.csplashscreen.data.search.SearchService
 import st.slex.csplashscreen.data.titles.TopicsService
 import st.slex.csplashscreen.data.user.UserService
 
-@Module(includes = [RetrofitModule::class])
+@InstallIn(SingletonComponent::class)
+@Module
 class NetworkServiceModule {
 
     @Provides

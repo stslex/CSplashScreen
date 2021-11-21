@@ -16,12 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -37,7 +35,6 @@ import st.slex.csplashscreen.R
 import st.slex.csplashscreen.core.Resource
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
-import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.ui.core.UtilsExtensions.convertUrl
 import st.slex.csplashscreen.ui.navigation.NavHostResource
@@ -52,7 +49,7 @@ import st.slex.csplashscreen.ui.navigation.NavHostResource
 fun ImageDetailScreen(
     navController: NavController,
     arguments: List<String>,
-    viewModel: DetailPhotoViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
+    viewModel: DetailPhotoViewModel
 ) {
     val url: String = arguments[0]
     val id: String = arguments[1]

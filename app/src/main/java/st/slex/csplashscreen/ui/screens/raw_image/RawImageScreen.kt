@@ -26,7 +26,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun RawImageScreen(
     navController: NavController,
-    arguments: List<String>
+    arguments: List<String>,
+    viewModel: RawImageViewModel
 ) {
     val url: String = arguments[0]
 
