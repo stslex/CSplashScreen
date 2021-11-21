@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -54,7 +55,7 @@ import kotlin.math.absoluteValue
 fun UserScreen(
     navController: NavController,
     arguments: List<String>,
-    viewModel: UserViewModel
+    viewModel: UserViewModel = hiltViewModel()
 ) {
     val username: String = arguments.first()
 

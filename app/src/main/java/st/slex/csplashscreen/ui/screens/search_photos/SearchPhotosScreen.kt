@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
@@ -26,7 +27,7 @@ import st.slex.csplashscreen.ui.theme.Typography
 fun SearchPhotosScreen(
     navController: NavController,
     arguments: List<String>,
-    viewModel: SearchViewModel
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
     val query: String = arguments[0]
     val checkedQuery = if (query == " ") "" else query

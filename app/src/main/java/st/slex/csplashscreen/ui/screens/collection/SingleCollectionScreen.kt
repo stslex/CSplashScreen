@@ -3,6 +3,7 @@ package st.slex.csplashscreen.ui.screens.collection
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
@@ -18,10 +19,10 @@ import st.slex.csplashscreen.ui.components.LazyPhotosColumn
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable
-fun SingleCollectionScreen(
+fun CollectionScreen(
     navController: NavController,
     arguments: List<String>,
-    viewModel: SingleCollectionViewModel
+    viewModel: SingleCollectionViewModel = hiltViewModel()
 ) {
     val id: String = arguments.first()
     viewModel.setQueryPhotos(QueryPhotos.CollectionPhotos(id))
@@ -30,5 +31,4 @@ fun SingleCollectionScreen(
         navController = navController
     )
 }
-
 

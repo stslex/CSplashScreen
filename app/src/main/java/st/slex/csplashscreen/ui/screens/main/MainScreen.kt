@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
@@ -33,7 +34,7 @@ fun MainScreen(
     navController: NavController,
     pagerState: PagerState = rememberPagerState(),
     systemUiController: SystemUiController = rememberSystemUiController(),
-    viewModel: MainScreenViewModel
+    viewModel: MainScreenViewModel = hiltViewModel()
 ) {
     val useDarkIcons = MaterialTheme.colors.isLight
     SideEffect {

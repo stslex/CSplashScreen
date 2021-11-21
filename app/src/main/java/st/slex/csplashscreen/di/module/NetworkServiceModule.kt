@@ -9,7 +9,7 @@ import st.slex.csplashscreen.data.collections.CollectionService
 import st.slex.csplashscreen.data.photo.PhotoService
 import st.slex.csplashscreen.data.photos.PhotosService
 import st.slex.csplashscreen.data.search.SearchService
-import st.slex.csplashscreen.data.titles.TopicsService
+import st.slex.csplashscreen.data.topics.TopicsService
 import st.slex.csplashscreen.data.user.UserService
 
 @InstallIn(SingletonComponent::class)

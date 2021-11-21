@@ -67,7 +67,7 @@ fun BindCoverImageCard(
         .shadow(elevation = 0.dp),
         elevation = 0.dp,
         onClick = {
-            val destination = NavHostResource.SingleCollectionScreen.destination
+            val destination = NavHostResource.CollectionScreen.destination
             val route = "$destination/$id"
             navController.navigate(route)
         }

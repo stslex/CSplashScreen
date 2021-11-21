@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -49,7 +50,7 @@ import st.slex.csplashscreen.ui.navigation.NavHostResource
 fun ImageDetailScreen(
     navController: NavController,
     arguments: List<String>,
-    viewModel: DetailPhotoViewModel
+    viewModel: DetailPhotoViewModel = hiltViewModel()
 ) {
     val url: String = arguments[0]
     val id: String = arguments[1]

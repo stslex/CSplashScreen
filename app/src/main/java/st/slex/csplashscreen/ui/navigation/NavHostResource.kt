@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.ui.navigation
 
 import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
@@ -11,6 +12,16 @@ sealed interface NavHostResource {
         get() = emptyList()
     val args: List<NamedNavArgument>
         get() = emptyList()
+
+    val NavBackStackEntry.convertArgs: List<String>
+        get() = this@NavHostResource.arguments.map { arguments?.getString(it).toString() }
+
+    val convertRoute: String
+        get() = "$destination${arguments.convertHostArgumentsRoute()}"
+
+    private fun List<String>.convertHostArgumentsRoute() = if (!isNullOrEmpty()) {
+        joinToString(separator = "}/{", prefix = "/{", postfix = "}")
+    } else ""
 
     object ImageDetailScreen : NavHostResource {
         override val destination: String = "detail"
@@ -25,7 +36,7 @@ sealed interface NavHostResource {
         override val destination: String = "home"
     }
 
-    object SingleCollectionScreen : NavHostResource {
+    object CollectionScreen : NavHostResource {
         override val destination: String = "collection"
         override val arguments: List<String> = listOf("collectionId")
         override val args: List<NamedNavArgument> =

@@ -11,6 +11,7 @@ import st.slex.csplashscreen.data.photos.PhotosRepository
 import st.slex.csplashscreen.data.search.SearchRepository
 import st.slex.csplashscreen.data.user.UserRepository
 
+@ExperimentalCoroutinesApi
 @InstallIn(SingletonComponent::class)
 @Module
 interface RepositoryModule {
@@ -21,15 +22,12 @@ interface RepositoryModule {
     @Binds
     fun bindsCollectionsRepository(repository: CollectionsRepository.Base): CollectionsRepository
 
-    @ExperimentalCoroutinesApi
     @Binds
     fun bindsPhotoRepository(repository: PhotoRepository.Base): PhotoRepository
 
-    @ExperimentalCoroutinesApi
     @Binds
     fun bindsPhotoSearchRepository(repository: SearchRepository.Base): SearchRepository
 
-    @ExperimentalCoroutinesApi
     @Binds
     fun bindsUserRepository(repository: UserRepository.Base): UserRepository
 }
