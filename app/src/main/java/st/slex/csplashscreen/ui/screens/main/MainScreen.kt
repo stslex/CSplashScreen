@@ -84,10 +84,3 @@ private fun LazyListColumn(
 object AnalyticsService {
     fun sendPageSelectedEvent(page: Int) = Unit
 }
-
-
-
-
-
-
-

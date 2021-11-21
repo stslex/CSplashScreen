@@ -31,17 +31,18 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import st.slex.csplashscreen.R
 import st.slex.csplashscreen.core.Resource
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.image.TagModel
 import st.slex.csplashscreen.ui.MainActivity
 import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
+import st.slex.csplashscreen.ui.core.UtilsExtensions.convertUrl
 import st.slex.csplashscreen.ui.navigation.NavHostResource
-import st.slex.csplashscreen.ui.theme.Shapes
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
+@FlowPreview
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
@@ -51,7 +52,6 @@ import java.nio.charset.StandardCharsets
 fun ImageDetailScreen(
     navController: NavController,
     arguments: List<String>,
-    systemUiController: SystemUiController = rememberSystemUiController(),
     viewModel: DetailPhotoViewModel = viewModel(factory = (LocalContext.current as MainActivity).viewModelFactory.get())
 ) {
     val url: String = arguments[0]
@@ -61,36 +61,54 @@ fun ImageDetailScreen(
         viewModel.getCurrentPhoto(id)
     }.collectAsState(initial = Resource.Loading, context = Dispatchers.IO)
 
-    val darkIcons = !isSystemInDarkTheme()
-    SideEffect {
-        systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
-    }
+    SideEffect(sideEffect())
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item { BindTopImageHead(url = url, navController = navController) }
-        item { Spacer(modifier = Modifier.padding(4.dp)) }
+        item { Spacer(Modifier.padding(4.dp)) }
+        item { CheckReceivedData(result, navController, viewModel::getUrlAndDownloadImage) }
+    }
+}
 
-        when (result) {
-            is Resource.Success -> {
-                val image = (result as Resource.Success<ImageModel>).data
-                item {
-                    UserDetailImageHead(
-                        username = image.user.username,
-                        url = image.user.profile_image.medium,
-                        navController = navController
-                    ) {
-                        viewModel.getUrlAndDownloadImage(id)
-                    }
-                }
-                item { BindDetailScreenBody(image = image, navController = navController) }
-            }
-            is Resource.Loading -> {
-                item { BindDetailImageLoading(modifier = Modifier) }
-            }
-            is Resource.Failure -> {
-                item { BindDetailImageFailure() }
-            }
+@Composable
+private fun sideEffect(
+    systemUiController: SystemUiController = rememberSystemUiController(),
+    darkIcons: Boolean = !isSystemInDarkTheme()
+): () -> Unit = {
+    systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
+}
+
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@Composable
+private fun CheckReceivedData(
+    result: Resource<ImageModel>,
+    navController: NavController,
+    getUrlAndDownloadImage: (String) -> Job
+) {
+    when (result) {
+        is Resource.Success -> result.data.BindSuccessResult(navController, getUrlAndDownloadImage)
+        is Resource.Loading -> BindDetailImageLoading(Modifier)
+        is Resource.Failure -> BindDetailImageFailure()
+    }
+}
+
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@Composable
+private fun ImageModel.BindSuccessResult(
+    navController: NavController,
+    getUrlAndDownloadImage: (String) -> Job
+) {
+    Column {
+        UserDetailImageHead(
+            username = user.username,
+            url = user.profile_image.medium,
+            navController = navController
+        ) {
+            getUrlAndDownloadImage.invoke(id)
         }
+        BindDetailScreenBody(tags = tags, navController = navController)
     }
 }
 
@@ -98,38 +116,39 @@ fun ImageDetailScreen(
 @ExperimentalMaterialApi
 @Composable
 private fun BindDetailScreenBody(
-    image: ImageModel,
+    tags: List<TagModel>,
     navController: NavController
 ) {
     Spacer(modifier = Modifier.size(16.dp))
     Divider()
     Spacer(modifier = Modifier.size(16.dp))
-    if (!image.tags.isNullOrEmpty()) {
-        BindDetailImageBodyTags(image.tags) { tag ->
-            val destination = NavHostResource.SearchPhotosScreen.destination
-            val route = "$destination/$tag"
-            navController.navigate(route)
-        }
-        Spacer(modifier = Modifier.size(16.dp))
-        Divider()
-        Spacer(modifier = Modifier.size(16.dp))
-    }
-    BindImageInformation(image)
+    if (tags.isNotEmpty()) BindTags(tags = tags, navController = navController)
+    BindImageInformation()
     Spacer(modifier = Modifier.size(16.dp))
 }
 
 @ExperimentalMaterialApi
 @Composable
-private fun BindImageInformation(image: ImageModel) {
+private fun BindTags(tags: List<TagModel>, navController: NavController) {
+    BindDetailImageBodyTags(tags) { tag ->
+        val destination = NavHostResource.SearchPhotosScreen.destination
+        val route = "$destination/$tag"
+        navController.navigate(route)
+    }
+    Spacer(modifier = Modifier.size(16.dp))
+    Divider()
+    Spacer(modifier = Modifier.size(16.dp))
+}
+
+@ExperimentalMaterialApi
+@Composable
+private fun BindImageInformation() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp),
         shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-        elevation = 16.dp,
-        onClick = {
-
-        }
+        elevation = 16.dp
     ) {
         Text(
             modifier = Modifier.padding(16.dp),
@@ -203,7 +222,7 @@ private fun BindTopImageHead(
             .fillMaxWidth()
             .height(300.dp)
             .clickable {
-                val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
+                val encodedUrl = url.convertUrl()
                 val destination = NavHostResource.RawImageScreen.destination
                 val route = "$destination/$encodedUrl"
                 navController.navigate(route)
@@ -229,11 +248,10 @@ private inline fun BindDetailImageBodyTags(
         verticalAlignment = Alignment.CenterVertically
     ) {
         items(count = tags.size) { key ->
-            Surface(
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .shadow(elevation = 16.dp, Shapes.medium)
-                    .clip(RoundedCornerShape(16.dp)),
+            Card(
+                modifier = Modifier.padding(8.dp),
+                shape = RoundedCornerShape(8.dp),
+                elevation = 16.dp,
                 onClick = {
                     onClick(tags[key].title)
                 }

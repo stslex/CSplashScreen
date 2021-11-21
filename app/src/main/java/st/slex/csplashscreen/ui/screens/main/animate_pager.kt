@@ -22,7 +22,7 @@ fun Modifier.animateColumn(
     lazyListState: LazyListState,
     id: String
 ): Modifier = this
-    .padding(start = 8.dp, end = 8.dp, top = 32.dp, bottom = 32.dp)
+    .padding(start = 8.dp, end = 8.dp, top = 16.dp, bottom = 32.dp)
     .pagerGraphicLayer(scope, page, lazyListState, id)
     .lazyListGraphicLazy(lazyListState, id)
 
@@ -38,7 +38,6 @@ private fun Modifier.lazyListGraphicLazy(
 
 private fun LazyListState.calculateValue(id: String) =
     1 - (layoutInfo.normalizedItemPosition(id).absoluteValue * 0.05f)
-
 
 @SuppressLint("RestrictedApi")
 @ExperimentalPagerApi
