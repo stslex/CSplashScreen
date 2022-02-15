@@ -16,13 +16,14 @@ The app client with Image library using Unsplash api In order with dark theme su
 
 - JetpackCompose
 - MVVM
-- Hilt
+- Hilt (Hilt compose navigation)
 - Retrofit 2
 - Coroutines / Flow
-- Jetpack pagination 3 / jetpack compose pagination
+- Jetpack pagination 3 (Jetpack compose pagination)
 - Jetpack compose navigation
-- ViewPager2
-- Coil 
+- ViewPager (compose version)
+- Coil (migrate to Glide)
+- Material disign 3 (Material YOU)
 
 ### Installation
 
