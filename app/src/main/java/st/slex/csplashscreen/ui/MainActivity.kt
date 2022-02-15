@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Lazy
@@ -30,7 +29,6 @@ import st.slex.csplashscreen.ui.theme.CSplashScreenTheme
 import javax.inject.Inject
 
 @FlowPreview
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
@@ -57,7 +55,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @ExperimentalCoilApi
     @Composable
     private fun MainBottomAppBar(navController: NavController) {
         val listOfItems: List<BottomAppBarResource> = listOf(

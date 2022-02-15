@@ -1,7 +1,6 @@
 package st.slex.csplashscreen.ui.components
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -11,21 +10,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
-import coil.transform.RoundedCornersTransformation
+import com.bumptech.glide.Glide
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.skydoves.landscapist.CircularReveal
+import com.skydoves.landscapist.glide.GlideImage
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.core.UtilsExtensions.convertUrl
 import st.slex.csplashscreen.ui.navigation.NavHostResource
 import kotlin.math.absoluteValue
 
 
-@ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
@@ -64,7 +64,6 @@ fun LazyPhotosColumn(
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
-@ExperimentalCoilApi
 @Composable
 fun ImageItem(
     item: ImageModel,
@@ -100,23 +99,19 @@ fun ImageItem(
     }
 }
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun CoverPhotoItem(url: String, modifier: Modifier = Modifier) {
-    Image(
+    GlideImage(
         modifier = modifier
             .fillMaxWidth()
             .height(300.dp)
             .clipToBounds(),
-        painter = rememberImagePainter(
-            data = url,
-            builder = {
-                transformations(RoundedCornersTransformation())
-                allowHardware(false)
-                crossfade(500)
-            }
-        ),
-        contentDescription = "Image",
+        imageModel = url,
+        contentScale = ContentScale.FillBounds,
+        circularReveal = CircularReveal(duration = 1000),
+        requestBuilder = {
+            Glide.with(LocalContext.current.applicationContext).asDrawable()
+        }
     )
 }

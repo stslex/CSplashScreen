@@ -7,7 +7,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -21,7 +20,6 @@ import st.slex.csplashscreen.ui.screens.user.UserScreen
 import javax.inject.Inject
 
 @ExperimentalAnimationApi
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi

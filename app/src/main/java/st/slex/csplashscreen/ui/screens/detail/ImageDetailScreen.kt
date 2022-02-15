@@ -1,7 +1,6 @@
 package st.slex.csplashscreen.ui.screens.detail
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -14,20 +13,23 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
-import coil.transform.RoundedCornersTransformation
+import com.bumptech.glide.Glide
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.skydoves.landscapist.CircularReveal
+import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -44,7 +46,6 @@ import st.slex.csplashscreen.ui.navigation.NavHostResource
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun ImageDetailScreen(
@@ -76,7 +77,6 @@ private fun sideEffect(
     systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
 }
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 private fun CheckReceivedData(
@@ -91,7 +91,6 @@ private fun CheckReceivedData(
     }
 }
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 private fun ImageModel.BindSuccessResult(
@@ -110,7 +109,6 @@ private fun ImageModel.BindSuccessResult(
     }
 }
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 private fun BindDetailScreenBody(
@@ -155,7 +153,6 @@ private fun BindImageInformation() {
     }
 }
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 private fun UserDetailImageHead(
@@ -209,30 +206,28 @@ private fun UserDetailImageHead(
     }
 }
 
-@ExperimentalCoilApi
 @Composable
 private fun BindTopImageHead(
     url: String,
     navController: NavController
 ) {
-    Image(
+    GlideImage(
         modifier = Modifier
             .fillMaxWidth()
             .height(300.dp)
+            .clipToBounds()
             .clickable {
                 val encodedUrl = url.convertUrl()
                 val destination = NavHostResource.RawImageScreen.destination
                 val route = "$destination/$encodedUrl"
                 navController.navigate(route)
             },
-        painter = rememberImagePainter(
-            data = url,
-            builder = {
-                transformations(RoundedCornersTransformation())
-                allowHardware(false)
-            }
-        ),
-        contentDescription = "Image"
+        imageModel = url,
+        contentScale = ContentScale.FillBounds,
+        circularReveal = CircularReveal(duration = 1000),
+        requestBuilder = {
+            Glide.with(LocalContext.current.applicationContext).asDrawable()
+        }
     )
 }
 

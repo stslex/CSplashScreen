@@ -5,7 +5,6 @@ import android.app.Application
 import android.app.DownloadManager
 import android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
 import android.content.Context.DOWNLOAD_SERVICE
-import android.database.Cursor
 import android.net.Uri
 import android.os.Environment.DIRECTORY_DOWNLOADS
 import st.slex.csplashscreen.core.Resource
@@ -34,14 +33,12 @@ interface DownloadImageUseCase {
                 .setDestinationInExternalFilesDir(application, DIRECTORY_DOWNLOADS, fileName)
                 .setNotificationVisibility(VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             downloadManager.enqueue(request)
-            var cursor: Cursor? = null
             val query = DownloadManager.Query()
             query.setFilterByStatus(DownloadManager.STATUS_FAILED)
             query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL)
-            cursor = downloadManager.query(query)
+            val cursor = downloadManager.query(query)
             if (cursor.moveToFirst()) {
-                val status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
-                when (status) {
+                when (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
                     DownloadManager.STATUS_SUCCESSFUL -> {
                         continuation.resumeWith(Result.success(Resource.Success(null)))
                     }

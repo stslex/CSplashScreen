@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Parcelable
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -20,16 +19,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import com.bumptech.glide.Glide
 import com.google.accompanist.pager.*
 import com.google.android.material.animation.AnimationUtils
+import com.skydoves.landscapist.CircularReveal
+import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -47,7 +48,6 @@ import st.slex.csplashscreen.ui.theme.Typography
 import kotlin.math.absoluteValue
 
 @ExperimentalAnimationApi
-@ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
@@ -74,7 +74,6 @@ fun UserScreen(
     )
 }
 
-@ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -115,7 +114,6 @@ private fun Map<UserPagerTabResource<out Parcelable>, Int>.filterEmptyItems() =
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
-@ExperimentalCoilApi
 @Composable
 fun BindUserScreenMainHeader(
     user: UserModel
@@ -136,7 +134,6 @@ fun BindUserScreenMainHeader(
     }
 }
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable
@@ -198,7 +195,6 @@ private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerSt
     }
 }
 
-@ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
@@ -324,7 +320,6 @@ fun BindUserBio(bio: String) {
     }
 }
 
-@ExperimentalCoilApi
 @Composable
 fun BindUserHeader(
     total_photos: Int,
@@ -340,20 +335,17 @@ fun BindUserHeader(
         horizontalArrangement = Arrangement.Center
     ) {
         Spacer(modifier = Modifier.size(16.dp))
-        Image(
+        GlideImage(
             modifier = Modifier
                 .padding(start = 32.dp, end = 32.dp)
                 .clip(CircleShape)
-                .width(64.dp),
-            painter = rememberImagePainter(
-                data = url,
-                builder = {
-                    allowHardware(false)
-                }
-            ),
-            contentDescription = "User Profile Image",
-            alignment = Alignment.Center,
-            contentScale = ContentScale.Crop
+                .size(64.dp),
+            imageModel = url,
+            contentScale = ContentScale.FillBounds,
+            circularReveal = CircularReveal(duration = 1000),
+            requestBuilder = {
+                Glide.with(LocalContext.current.applicationContext).asDrawable()
+            }
         )
         Row(
             modifier = Modifier.fillMaxWidth(),

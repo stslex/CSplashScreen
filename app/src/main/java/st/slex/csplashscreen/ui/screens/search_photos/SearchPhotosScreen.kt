@@ -10,7 +10,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.search.QuerySearch
@@ -19,7 +18,6 @@ import st.slex.csplashscreen.ui.components.setTextFieldColors
 import st.slex.csplashscreen.ui.theme.Typography
 
 @ExperimentalAnimationApi
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi

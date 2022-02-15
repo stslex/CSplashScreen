@@ -16,14 +16,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.fade
 import com.google.accompanist.placeholder.placeholder
 import st.slex.csplashscreen.ui.theme.Shapes
 
-@ExperimentalCoilApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 fun <T : Any> LazyPagingItems<T>.checkState(scope: LazyListScope) {
@@ -33,14 +31,12 @@ fun <T : Any> LazyPagingItems<T>.checkState(scope: LazyListScope) {
     }
 }
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 private fun LazyListScope.loadState() = repeat(3) {
     item { ImageItemLoading() }
 }
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 private fun CoverPhotoItemItemLoading() {
@@ -60,7 +56,6 @@ private fun CoverPhotoItemItemLoading() {
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
-@ExperimentalCoilApi
 @Composable
 private fun ImageItemLoading(
 ) {
@@ -77,7 +72,6 @@ private fun ImageItemLoading(
 
 
 @ExperimentalMaterialApi
-@ExperimentalCoilApi
 @Composable
 private fun UserImageHeadItemLoading() {
     Surface(

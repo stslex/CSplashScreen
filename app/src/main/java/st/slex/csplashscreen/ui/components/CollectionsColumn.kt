@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.ui.navigation.NavHostResource
@@ -20,7 +19,6 @@ import st.slex.csplashscreen.ui.theme.Typography
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
-@ExperimentalCoilApi
 @Composable
 fun CollectionItem(
     item: CollectionModel,
@@ -50,7 +48,6 @@ fun CollectionItem(
     }
 }
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable

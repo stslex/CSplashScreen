@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.collect
 
 @FlowPreview
 @ExperimentalAnimationApi
-@ExperimentalCoilApi
 @ExperimentalCoroutinesApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
@@ -63,7 +61,6 @@ private fun MainScreenViewModel.getListOfPagesResource(): List<MainPagerTabResou
         MainPagerTabResource.Collections(collections.collectAsLazyPagingItems())
     )
 
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable

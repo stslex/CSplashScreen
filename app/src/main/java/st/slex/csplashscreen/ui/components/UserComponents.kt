@@ -8,11 +8,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.annotation.ExperimentalCoilApi
 import st.slex.csplashscreen.ui.navigation.NavHostResource
 
 @ExperimentalMaterialApi
-@ExperimentalCoilApi
 @Composable
 fun UserImageHeadWithUserName(
     modifier: Modifier,
