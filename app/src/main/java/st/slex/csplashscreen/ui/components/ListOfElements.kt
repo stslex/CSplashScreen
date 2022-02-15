@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -16,6 +17,7 @@ import st.slex.csplashscreen.ui.navigation.NavHostResource
 import st.slex.csplashscreen.ui.theme.TransparentGray
 import st.slex.csplashscreen.ui.theme.Typography
 
+@ExperimentalMaterial3Api
 @SuppressLint("RestrictedApi")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -69,10 +71,7 @@ fun BindCoverImageCard(
             navController.navigate(route)
         }
     ) {
-        CoverPhotoItem(
-            url = url,
-            modifier = Modifier
-        )
+        CoverPhotoItem(url = url)
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = TransparentGray
@@ -83,9 +82,9 @@ fun BindCoverImageCard(
                 .padding(start = 16.dp, bottom = 16.dp),
             verticalArrangement = Arrangement.Bottom
         ) {
-            CollectionTextCard(text = title, Typography.h4)
+            CollectionTextCard(text = title, Typography.titleMedium)
             Spacer(modifier = Modifier.padding(4.dp))
-            CollectionTextCard(text = "$totalPhotos Photos", style = Typography.h5)
+            CollectionTextCard(text = "$totalPhotos Photos", style = Typography.titleLarge)
         }
     }
 }

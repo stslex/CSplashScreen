@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -15,8 +16,10 @@ import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
 import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
+import st.slex.csplashscreen.ui.components.animatePager
 import st.slex.csplashscreen.ui.components.checkState
 
+@ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable
@@ -34,8 +37,9 @@ fun Pager(
 
         @Composable
         fun Parcelable.SetItemDependsOfType(id: String) {
-            val animateModifier: Modifier =
-                Modifier.animateColumn(this@HorizontalPager, pageNumber, listState, id)
+            val animateModifier: Modifier = Modifier.animatePager(
+                this@HorizontalPager, pageNumber, listState, id
+            )
             SetCurrentItem(navController = navController, modifier = animateModifier)
         }
 
@@ -58,6 +62,7 @@ fun Pager(
     }
 }
 
+@ExperimentalMaterial3Api
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable

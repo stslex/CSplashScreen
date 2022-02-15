@@ -15,11 +15,16 @@ class TopicsViewModel @Inject constructor(
     private val pagingSource: PagingSource<Int, TopicsModel>,
 ) : ViewModel() {
 
-    private val newPager by lazy {
-        Pager(PagingConfig(10, enablePlaceholders = false)) { pagingSource }
+    private val pagingConfig: PagingConfig by lazy {
+        PagingConfig(pageSize = 10, enablePlaceholders = false)
     }
 
-    val topics: StateFlow<PagingData<TopicsModel>> = newPager.flow.cachedIn(viewModelScope)
+    private val newPager by lazy {
+        Pager(pagingConfig) { pagingSource }
+    }
+
+    val topics: StateFlow<PagingData<TopicsModel>> = newPager.flow
+        .cachedIn(viewModelScope)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,

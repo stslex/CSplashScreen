@@ -12,11 +12,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -28,7 +28,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.bumptech.glide.Glide
 import com.google.accompanist.pager.*
-import com.google.android.material.animation.AnimationUtils
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
@@ -41,12 +40,12 @@ import st.slex.csplashscreen.data.model.ui.image.ImageModel
 import st.slex.csplashscreen.data.model.ui.user.UserModel
 import st.slex.csplashscreen.ui.components.CollectionItem
 import st.slex.csplashscreen.ui.components.ImageItem
+import st.slex.csplashscreen.ui.components.animatePager
 import st.slex.csplashscreen.ui.components.checkState
-import st.slex.csplashscreen.ui.components.normalizedItemPosition
 import st.slex.csplashscreen.ui.screens.main.AnalyticsService
 import st.slex.csplashscreen.ui.theme.Typography
-import kotlin.math.absoluteValue
 
+@ExperimentalMaterial3Api
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
@@ -74,6 +73,7 @@ fun UserScreen(
     )
 }
 
+@ExperimentalMaterial3Api
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -134,6 +134,7 @@ fun BindUserScreenMainHeader(
     }
 }
 
+@ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable
@@ -195,6 +196,7 @@ private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerSt
     }
 }
 
+@ExperimentalMaterial3Api
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
@@ -239,7 +241,7 @@ private fun TabRow(
                     text = {
                         Text(
                             text = model.title,
-                            style = Typography.subtitle1
+                            style = Typography.titleMedium
                         )
                     },
                     selected = pagerState.currentPage == index,
@@ -262,32 +264,7 @@ private fun Modifier.animate(
 ): Modifier = this
     .size(250.dp, 250.dp)
     .padding(top = 32.dp, bottom = 32.dp)
-    .graphicsLayer {
-        val pageOffset = scope.calculateCurrentOffsetForPage(page).absoluteValue
-        AnimationUtils
-            .lerp(
-                0.85f,
-                1f,
-                1f - pageOffset.coerceIn(0f, 1f)
-            )
-            .also { scale ->
-                scaleX = scale
-                scaleY = scale
-            }
-        translationY = lazyListState.layoutInfo.normalizedItemPosition(id) * -50
-        alpha = AnimationUtils.lerp(
-            0.5f,
-            1f,
-            1f - pageOffset.coerceIn(0f, 1f)
-        )
-    }
-    .graphicsLayer {
-        val value =
-            1 - (lazyListState.layoutInfo.normalizedItemPosition(id).absoluteValue * 0.1f)
-        alpha = value
-        scaleX = value
-        scaleY = value
-    }
+    .animatePager(scope, page, lazyListState, id)
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -304,7 +281,7 @@ fun BindUserBio(bio: String) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "Bio",
-                style = Typography.subtitle1
+                style = Typography.titleMedium
             )
             Spacer(modifier = Modifier.size(8.dp))
             AnimatedContent(
@@ -313,7 +290,7 @@ fun BindUserBio(bio: String) {
                 Text(
                     text = bio,
                     maxLines = target,
-                    style = Typography.body1,
+                    style = Typography.titleMedium,
                 )
             }
         }
@@ -382,7 +359,7 @@ fun bindUserTopAppBar(
             }
             Spacer(modifier = Modifier.size(16.dp))
             Text(
-                style = Typography.subtitle1,
+                style = Typography.titleMedium,
                 text = username,
                 textAlign = TextAlign.Start,
                 maxLines = 1
@@ -396,12 +373,12 @@ fun TextHeaderColumn(title: String, contentTitle: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = title,
-            style = Typography.subtitle1
+            style = Typography.titleMedium
         )
         Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = contentTitle,
-            style = Typography.subtitle2
+            style = Typography.titleMedium
         )
     }
 }
