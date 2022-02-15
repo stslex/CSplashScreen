@@ -1,7 +1,12 @@
 package st.slex.csplashscreen.ui.screens.main
 
 import android.os.Parcelable
-import androidx.compose.material.*
+import androidx.compose.material.Tab
+import androidx.compose.material.TabPosition
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -21,7 +26,9 @@ fun TabRow(
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         indicator = tabIndicator(pagerState = pagerState),
-        tabs = tabsContent(listPagesResource, pagerState)
+        tabs = tabsContent(listPagesResource, pagerState),
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface
     )
 }
 
@@ -54,8 +61,5 @@ private fun tabsContent(
 
 @Composable
 private fun MainPagerTabResource<out Parcelable>.tabTitle(): @Composable () -> Unit = {
-    Text(
-        text = title,
-        style = Typography.subtitle1
-    )
+    Text(text = title, style = Typography.labelMedium)
 }

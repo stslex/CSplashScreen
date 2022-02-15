@@ -2,6 +2,7 @@ package st.slex.csplashscreen.di.module
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.paging.PagingSource
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.Binds
@@ -29,6 +30,7 @@ interface UseCaseModule {
     @Binds
     fun bindsTopicsPagingSource(source: TopicsPagingSource): PagingSource<Int, TopicsModel>
 
+    @ExperimentalMaterial3Api
     @FlowPreview
     @ExperimentalCoroutinesApi
     @ExperimentalPagerApi

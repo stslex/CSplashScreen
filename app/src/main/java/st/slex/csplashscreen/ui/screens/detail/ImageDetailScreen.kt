@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +43,7 @@ import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.ui.core.UtilsExtensions.convertUrl
 import st.slex.csplashscreen.ui.navigation.NavHostResource
 
+@ExperimentalMaterial3Api
 @FlowPreview
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
@@ -77,6 +79,7 @@ private fun sideEffect(
     systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
 }
 
+@ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @Composable
 private fun CheckReceivedData(
@@ -91,6 +94,7 @@ private fun CheckReceivedData(
     }
 }
 
+@ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @Composable
 private fun ImageModel.BindSuccessResult(
@@ -153,6 +157,7 @@ private fun BindImageInformation() {
     }
 }
 
+@ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @Composable
 private fun UserDetailImageHead(

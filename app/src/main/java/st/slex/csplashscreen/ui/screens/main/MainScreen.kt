@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -22,6 +23,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 
+@ExperimentalMaterial3Api
 @FlowPreview
 @ExperimentalAnimationApi
 @ExperimentalCoroutinesApi
@@ -30,9 +32,9 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun MainScreen(
     navController: NavController,
+    viewModel: MainScreenViewModel = hiltViewModel(),
     pagerState: PagerState = rememberPagerState(),
     systemUiController: SystemUiController = rememberSystemUiController(),
-    viewModel: MainScreenViewModel = hiltViewModel()
 ) {
     val useDarkIcons = MaterialTheme.colors.isLight
     SideEffect {
@@ -61,6 +63,7 @@ private fun MainScreenViewModel.getListOfPagesResource(): List<MainPagerTabResou
         MainPagerTabResource.Collections(collections.collectAsLazyPagingItems())
     )
 
+@ExperimentalMaterial3Api
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable

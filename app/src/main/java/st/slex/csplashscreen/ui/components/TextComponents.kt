@@ -14,7 +14,7 @@ import st.slex.csplashscreen.ui.theme.Typography
 fun TextUsernamePrimary(username: String) {
     Text(
         text = username,
-        style = Typography.subtitle1,
+        style = Typography.labelMedium,
         maxLines = 1,
         lineHeight = TextUnit.Unspecified
     )

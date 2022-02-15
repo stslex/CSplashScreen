@@ -20,7 +20,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.fade
 import com.google.accompanist.placeholder.placeholder
-import st.slex.csplashscreen.ui.theme.Shapes
 
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
@@ -77,7 +76,7 @@ private fun UserImageHeadItemLoading() {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(elevation = 16.dp, Shapes.medium)
+            .shadow(elevation = 16.dp)
             .clip(RoundedCornerShape(16.dp))
     ) {
         Row(

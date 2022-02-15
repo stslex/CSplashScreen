@@ -3,6 +3,7 @@ package st.slex.csplashscreen.ui.screens.search_photos
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -13,10 +14,11 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import st.slex.csplashscreen.data.search.QuerySearch
-import st.slex.csplashscreen.ui.components.LazyPhotosColumn
+import st.slex.csplashscreen.ui.components.ListOfElements
 import st.slex.csplashscreen.ui.components.setTextFieldColors
 import st.slex.csplashscreen.ui.theme.Typography
 
+@ExperimentalMaterial3Api
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -39,7 +41,7 @@ fun SearchPhotosScreen(
             }
         }
     ) {
-        LazyPhotosColumn(
+        ListOfElements(
             lazyPagingPhotosItems = lazyPagingPhotosItems,
             navController = navController
         )
@@ -64,7 +66,7 @@ private fun TopAppBarSearch(querySearch: String, search: (QuerySearch) -> Unit) 
             colors = setTextFieldColors(),
             maxLines = 1,
             label = { Text(text = "Input Search") },
-            textStyle = Typography.body2
+            textStyle = Typography.bodyMedium
         )
         if (querySearch.isEmpty()) {
             DisposableEffect(Unit) {

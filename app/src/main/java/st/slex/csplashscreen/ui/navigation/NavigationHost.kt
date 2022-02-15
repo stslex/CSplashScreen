@@ -1,7 +1,9 @@
 package st.slex.csplashscreen.ui.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -25,14 +27,15 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 interface NavigationHost {
 
-    @Composable
-    fun CreateNavigationHost(navController: NavHostController)
+    fun createNavigationHost(navController: NavHostController): @Composable (PaddingValues) -> Unit
 
+    @ExperimentalMaterial3Api
     @FlowPreview
     class Base @Inject constructor() : NavigationHost {
 
-        @Composable
-        override fun CreateNavigationHost(navController: NavHostController) {
+        override fun createNavigationHost(
+            navController: NavHostController
+        ): @Composable (PaddingValues) -> Unit = {
             NavHost(
                 navController = navController,
                 startDestination = NavHostResource.MainScreen.destination,
@@ -40,6 +43,7 @@ interface NavigationHost {
             )
         }
 
+        @ExperimentalMaterial3Api
         private fun builder(navController: NavHostController): NavGraphBuilder.() -> Unit = {
             create(NavHostResource.MainScreen) { MainScreen(navController) }
             create(NavHostResource.ImageDetailScreen) { ImageDetailScreen(navController, it) }
