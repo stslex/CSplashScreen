@@ -15,7 +15,7 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import st.slex.csplashscreen.data.core.Constants.BASE_URL
+import st.slex.feature_main.data.Constants.BASE_URL
 import st.slex.csplashscreen.di.scopes.OfflineInterceptor
 import st.slex.csplashscreen.di.scopes.OnlineInterceptor
 

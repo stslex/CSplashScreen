@@ -6,9 +6,8 @@ import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import st.slex.csplashscreen.data.core.QueryPhotos
-import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
+import st.slex.feature_main.data.photos.QueryPhotos
+import st.slex.feature_main.ui.QueryPhotosUseCase
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -21,7 +20,7 @@ class SingleCollectionViewModel @Inject constructor(
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()
 
     @ExperimentalCoroutinesApi
-    val photos: StateFlow<PagingData<ImageModel>> = queryPhotos
+    val photos: StateFlow<PagingData<st.slex.core_network.model.ui.image.ImageModel>> = queryPhotos
         .map(::newPagerPhotos)
         .flatMapLatest { pager -> pager.flow }
         .cachedIn(viewModelScope)
@@ -33,7 +32,7 @@ class SingleCollectionViewModel @Inject constructor(
         _queryPhotos.tryEmit(query)
     }
 
-    private fun newPagerPhotos(query: QueryPhotos): Pager<Int, ImageModel> {
+    private fun newPagerPhotos(query: QueryPhotos): Pager<Int, st.slex.core_network.model.ui.image.ImageModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingPhotosSource?.invalidate()
             val queryPhotosUseCase = queryPhotosUseCaseProvider.get()

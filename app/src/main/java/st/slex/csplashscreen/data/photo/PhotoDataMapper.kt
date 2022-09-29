@@ -1,14 +1,13 @@
 package st.slex.csplashscreen.data.photo
 
-import st.slex.csplashscreen.core.Mapper
-import st.slex.csplashscreen.core.Resource
-import st.slex.csplashscreen.core.map
-import st.slex.csplashscreen.data.model.remote.image.RemoteImageModel
-import st.slex.csplashscreen.data.model.ui.image.ImageModel
+import st.slex.core.Resource
+import st.slex.core_network.model.remote.image.RemoteImageModel
+import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.feature_main.map
 import javax.inject.Inject
 
 
-interface PhotoDataMapper : Mapper.ToUI<RemoteImageModel, Resource<ImageModel>> {
+interface PhotoDataMapper : st.slex.core.Mapper.ToUI<RemoteImageModel, Resource<ImageModel>> {
 
     class Base @Inject constructor() : PhotoDataMapper {
 

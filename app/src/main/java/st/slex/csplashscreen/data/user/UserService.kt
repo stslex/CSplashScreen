@@ -4,13 +4,11 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import st.slex.csplashscreen.data.core.Constants.GET_COLLECTIONS
-import st.slex.csplashscreen.data.core.Constants.GET_USERS
-import st.slex.csplashscreen.data.core.Constants.QUERY_API_KEY
-import st.slex.csplashscreen.data.core.Constants.QUERY_PAGE
-import st.slex.csplashscreen.data.core.Constants.QUERY_PAGE_SIZE
-import st.slex.csplashscreen.data.model.remote.collection.RemoteCollectionModel
-import st.slex.csplashscreen.data.model.remote.user.RemoteUserModel
+import st.slex.feature_main.data.Constants.GET_COLLECTIONS
+import st.slex.feature_main.data.Constants.GET_USERS
+import st.slex.feature_main.data.Constants.QUERY_API_KEY
+import st.slex.feature_main.data.Constants.QUERY_PAGE
+import st.slex.feature_main.data.Constants.QUERY_PAGE_SIZE
 
 interface UserService {
 
@@ -18,7 +16,7 @@ interface UserService {
     suspend fun getUser(
         @Path("username") username: String,
         @Query(QUERY_API_KEY) api_key: String
-    ): Response<RemoteUserModel>
+    ): Response<st.slex.core_network.model.remote.user.RemoteUserModel>
 
     @GET("$GET_USERS/{username}/$GET_COLLECTIONS")
     suspend fun getUserCollections(
@@ -26,5 +24,5 @@ interface UserService {
         @Query(QUERY_PAGE) page: Int,
         @Query(QUERY_PAGE_SIZE) page_size: Int,
         @Query(QUERY_API_KEY) api_key: String
-    ): Response<List<RemoteCollectionModel>>
+    ): Response<List<st.slex.core_network.model.remote.collection.RemoteCollectionModel>>
 }

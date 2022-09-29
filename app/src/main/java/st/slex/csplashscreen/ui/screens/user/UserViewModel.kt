@@ -2,22 +2,32 @@ package st.slex.csplashscreen.ui.screens.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import st.slex.csplashscreen.core.Resource
-import st.slex.csplashscreen.data.core.QueryCollections
-import st.slex.csplashscreen.data.core.QueryPhotos
-import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
-import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.data.model.ui.user.UserModel
+import st.slex.core.Resource
+import st.slex.core_network.model.ui.collection.CollectionModel
+import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.user.UserModel
 import st.slex.csplashscreen.data.user.UserDataMapper
 import st.slex.csplashscreen.data.user.UserRepository
-import st.slex.csplashscreen.ui.core.QueryCollectionsUseCase
-import st.slex.csplashscreen.ui.core.QueryPhotosUseCase
+import st.slex.feature_main.data.QueryCollections
+import st.slex.feature_main.data.photos.QueryPhotos
+import st.slex.feature_main.ui.QueryCollectionsUseCase
+import st.slex.feature_main.ui.QueryPhotosUseCase
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -52,21 +62,18 @@ class UserViewModel @Inject constructor(
     private val _queryLikes = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
     private val queryLikes: StateFlow<QueryPhotos> = _queryLikes.asStateFlow()
 
-    @ExperimentalCoroutinesApi
     val collections: StateFlow<PagingData<CollectionModel>> = queryCollections
         .map(::newPagerCollections)
         .flatMapLatest { pager -> pager.flow }
         .cachedIn(viewModelScope)
         .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
-    @ExperimentalCoroutinesApi
     val photos: StateFlow<PagingData<ImageModel>> = queryPhotos
         .map(::newPagerPhotos)
         .flatMapLatest { pager -> pager.flow }
         .cachedIn(viewModelScope)
         .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
-    @ExperimentalCoroutinesApi
     val likes: StateFlow<PagingData<ImageModel>> = queryLikes
         .map(::newPagerLikes)
         .flatMapLatest { pager -> pager.flow }

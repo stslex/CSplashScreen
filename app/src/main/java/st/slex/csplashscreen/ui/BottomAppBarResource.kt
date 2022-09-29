@@ -5,7 +5,8 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
-import st.slex.csplashscreen.ui.navigation.NavHostResource
+import st.slex.core_navigation.AppDestinations
+import st.slex.core_navigation.NavHostResource
 
 
 sealed interface BottomAppBarResource {
@@ -16,7 +17,7 @@ sealed interface BottomAppBarResource {
         get() = destination
 
     object MainScreen : BottomAppBarResource {
-        override val destination: String = NavHostResource.MainScreen.destination
+        override val destination: String = AppDestinations.Home.route
         override val icon: ImageVector = Icons.Outlined.Home
     }
 

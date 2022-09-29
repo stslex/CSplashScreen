@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
-import st.slex.csplashscreen.ui.components.ImageComponent
+import st.slex.core_network.model.ui.topics.TopicsModel
+import st.slex.core_ui.components.ImageComponent
 
 fun topicsColumnContent(item: TopicsModel?): @Composable ColumnScope.() -> Unit = {
     TopicsTitle(title = item?.title.toString())

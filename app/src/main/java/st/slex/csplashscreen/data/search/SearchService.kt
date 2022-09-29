@@ -3,13 +3,12 @@ package st.slex.csplashscreen.data.search
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-import st.slex.csplashscreen.data.core.Constants.GET_PHOTOS
-import st.slex.csplashscreen.data.core.Constants.GET_SEARCH
-import st.slex.csplashscreen.data.core.Constants.QUERY
-import st.slex.csplashscreen.data.core.Constants.QUERY_API_KEY
-import st.slex.csplashscreen.data.core.Constants.QUERY_PAGE
-import st.slex.csplashscreen.data.core.Constants.QUERY_PAGE_SIZE
-import st.slex.csplashscreen.data.model.remote.image.RemoteImageSearchModel
+import st.slex.feature_main.data.Constants.GET_PHOTOS
+import st.slex.feature_main.data.Constants.GET_SEARCH
+import st.slex.feature_main.data.Constants.QUERY
+import st.slex.feature_main.data.Constants.QUERY_API_KEY
+import st.slex.feature_main.data.Constants.QUERY_PAGE
+import st.slex.feature_main.data.Constants.QUERY_PAGE_SIZE
 
 
 interface SearchService {
@@ -20,5 +19,5 @@ interface SearchService {
         @Query(QUERY_PAGE) page: Int,
         @Query(QUERY_PAGE_SIZE) page_size: Int,
         @Query(QUERY_API_KEY) api_key: String
-    ): Response<RemoteImageSearchModel>
+    ): Response<st.slex.core_network.model.remote.image.RemoteImageSearchModel>
 }

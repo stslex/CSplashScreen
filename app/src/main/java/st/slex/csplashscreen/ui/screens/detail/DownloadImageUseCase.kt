@@ -7,7 +7,7 @@ import android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
 import android.content.Context.DOWNLOAD_SERVICE
 import android.net.Uri
 import android.os.Environment.DIRECTORY_DOWNLOADS
-import st.slex.csplashscreen.core.Resource
+import st.slex.core.Resource
 import javax.inject.Inject
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine

@@ -1,16 +1,32 @@
 package st.slex.csplashscreen.ui.screens.detail
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.*
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,36 +40,27 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.bumptech.glide.Glide
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import st.slex.core.Resource
+import st.slex.core.UtilsExtensions.convertUrl
+import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.image.TagModel
+import st.slex.core_ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.R
-import st.slex.csplashscreen.core.Resource
-import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.data.model.ui.image.TagModel
-import st.slex.csplashscreen.ui.components.UserImageHeadWithUserName
-import st.slex.csplashscreen.ui.core.UtilsExtensions.convertUrl
-import st.slex.csplashscreen.ui.navigation.NavHostResource
 
-@ExperimentalMaterial3Api
-@FlowPreview
-@ExperimentalAnimationApi
-@ExperimentalPagerApi
-@ExperimentalCoroutinesApi
-@ExperimentalMaterialApi
 @Composable
 fun ImageDetailScreen(
-    navController: NavController,
     arguments: List<String>,
-    viewModel: DetailPhotoViewModel = hiltViewModel()
+    viewModel: DetailPhotoViewModel = hiltViewModel(),
+    onImageClick: (url: String) -> Unit,
+    onTagClick: (tag: String) -> Unit,
+    onProfileClick: (username: String) -> Unit
 ) {
     val url: String = arguments[0]
     val id: String = arguments[1]
@@ -65,9 +72,16 @@ fun ImageDetailScreen(
     SideEffect(sideEffect())
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        item { BindTopImageHead(url = url, navController = navController) }
+        item { BindTopImageHead(url = url, onImageClick = onImageClick) }
         item { Spacer(Modifier.padding(4.dp)) }
-        item { CheckReceivedData(result, navController, viewModel::getUrlAndDownloadImage) }
+        item {
+            CheckReceivedData(
+                result,
+                viewModel::getUrlAndDownloadImage,
+                onTagClick,
+                onProfileClick
+            )
+        }
     }
 }
 
@@ -79,68 +93,61 @@ private fun sideEffect(
     systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
 }
 
-@ExperimentalMaterial3Api
-@ExperimentalMaterialApi
 @Composable
 private fun CheckReceivedData(
     result: Resource<ImageModel>,
-    navController: NavController,
-    getUrlAndDownloadImage: (String) -> Job
+    getUrlAndDownloadImage: (String) -> Job,
+    tagClickListener: (tag: String) -> Unit,
+    onProfileClick: (username: String) -> Unit
 ) {
     when (result) {
-        is Resource.Success -> result.data.BindSuccessResult(navController, getUrlAndDownloadImage)
+        is Resource.Success -> with(result.data) {
+            this.id
+            Column {
+                UserDetailImageHead(
+                    username = user.username,
+                    url = user.profile_image.medium,
+                    onProfileClick = onProfileClick,
+                    onDownloadClick = { getUrlAndDownloadImage(id) }
+                )
+                BindDetailScreenBody(tags = tags, tagClickListener = tagClickListener)
+            }
+        }
+
         is Resource.Loading -> BindDetailImageLoading(Modifier)
         is Resource.Failure -> BindDetailImageFailure()
     }
 }
 
-@ExperimentalMaterial3Api
-@ExperimentalMaterialApi
-@Composable
-private fun ImageModel.BindSuccessResult(
-    navController: NavController,
-    getUrlAndDownloadImage: (String) -> Job
-) {
-    Column {
-        UserDetailImageHead(
-            username = user.username,
-            url = user.profile_image.medium,
-            navController = navController
-        ) {
-            getUrlAndDownloadImage.invoke(id)
-        }
-        BindDetailScreenBody(tags = tags, navController = navController)
-    }
-}
-
-@ExperimentalMaterialApi
 @Composable
 private fun BindDetailScreenBody(
     tags: List<TagModel>,
-    navController: NavController
+    tagClickListener: (tag: String) -> Unit
 ) {
     Spacer(modifier = Modifier.size(16.dp))
     Divider()
     Spacer(modifier = Modifier.size(16.dp))
-    if (tags.isNotEmpty()) BindTags(tags = tags, navController = navController)
+    if (tags.isNotEmpty()) BindTags(tags = tags, tagClickListener = tagClickListener)
     BindImageInformation()
     Spacer(modifier = Modifier.size(16.dp))
 }
 
-@ExperimentalMaterialApi
 @Composable
-private fun BindTags(tags: List<TagModel>, navController: NavController) {
+private fun BindTags(
+    tags: List<TagModel>,
+    tagClickListener: (tag: String) -> Unit
+) {
     BindDetailImageBodyTags(tags) { tag ->
-        val destination = NavHostResource.SearchPhotosScreen.destination
-        val route = "$destination/$tag"
-        navController.navigate(route)
+        tagClickListener(tag)
+//        val destination = NavHostResource.SearchPhotosScreen.destination
+//        val route = "$destination/$tag"
+//        navController.navigate(route)
     }
     Spacer(modifier = Modifier.size(16.dp))
     Divider()
     Spacer(modifier = Modifier.size(16.dp))
 }
 
-@ExperimentalMaterialApi
 @Composable
 private fun BindImageInformation() {
     Card(
@@ -148,7 +155,7 @@ private fun BindImageInformation() {
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp),
         shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-        elevation = 16.dp
+        elevation = CardDefaults.cardElevation(16.dp)
     ) {
         Text(
             modifier = Modifier.padding(16.dp),
@@ -157,14 +164,13 @@ private fun BindImageInformation() {
     }
 }
 
-@ExperimentalMaterial3Api
-@ExperimentalMaterialApi
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserDetailImageHead(
     url: String,
     username: String,
-    navController: NavController,
-    downloadFunction: () -> Unit
+    onDownloadClick: () -> Unit,
+    onProfileClick: (username: String) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -181,7 +187,7 @@ private fun UserDetailImageHead(
             },
             url = url,
             username = username,
-            navController = navController
+            onProfileClick = onProfileClick
         )
 
         Surface(
@@ -197,7 +203,7 @@ private fun UserDetailImageHead(
                 },
             shape = CircleShape,
             onClick = {
-                downloadFunction()
+                onDownloadClick()
             }
         ) {
             Icon(
@@ -214,7 +220,7 @@ private fun UserDetailImageHead(
 @Composable
 private fun BindTopImageHead(
     url: String,
-    navController: NavController
+    onImageClick: (url: String) -> Unit
 ) {
     GlideImage(
         modifier = Modifier
@@ -223,9 +229,10 @@ private fun BindTopImageHead(
             .clipToBounds()
             .clickable {
                 val encodedUrl = url.convertUrl()
-                val destination = NavHostResource.RawImageScreen.destination
-                val route = "$destination/$encodedUrl"
-                navController.navigate(route)
+                onImageClick(encodedUrl)
+//                val destination = NavHostResource.RawImageScreen.destination
+//                val route = "$destination/$encodedUrl"
+//                navController.navigate(route)
             },
         imageModel = url,
         contentScale = ContentScale.FillBounds,
@@ -236,7 +243,6 @@ private fun BindTopImageHead(
     )
 }
 
-@ExperimentalMaterialApi
 @Composable
 private inline fun BindDetailImageBodyTags(
     tags: List<TagModel>,
@@ -247,12 +253,13 @@ private inline fun BindDetailImageBodyTags(
     ) {
         items(count = tags.size) { key ->
             Card(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable {
+                        onClick(tags[key].title)
+                    },
                 shape = RoundedCornerShape(8.dp),
-                elevation = 16.dp,
-                onClick = {
-                    onClick(tags[key].title)
-                }
+                elevation = CardDefaults.cardElevation(16.dp)
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
