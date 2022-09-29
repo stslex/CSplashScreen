@@ -3,8 +3,8 @@ package st.slex.csplashscreen.data.topics
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import retrofit2.HttpException
-import st.slex.csplashscreen.core.map
-import st.slex.csplashscreen.data.model.ui.topics.TopicsModel
+import st.slex.core_network.model.ui.topics.TopicsModel
+import st.slex.feature_main.map
 import javax.inject.Inject
 
 class TopicsPagingSource @Inject constructor(

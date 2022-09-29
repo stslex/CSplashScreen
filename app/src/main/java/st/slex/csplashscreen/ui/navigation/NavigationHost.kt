@@ -1,64 +1,107 @@
 package st.slex.csplashscreen.ui.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import st.slex.core_navigation.AppDestinations
+import st.slex.core_navigation.NavHostResource
+import st.slex.core_navigation.NavHostResource.CollectionScreen
+import st.slex.core_navigation.NavHostResource.ImageDetailScreen
+import st.slex.core_navigation.NavHostResource.RawImageScreen
+import st.slex.core_navigation.NavHostResource.SearchPhotosScreen
+import st.slex.core_navigation.NavHostResource.UserScreen
 import st.slex.csplashscreen.ui.screens.collection.CollectionScreen
 import st.slex.csplashscreen.ui.screens.detail.ImageDetailScreen
-import st.slex.csplashscreen.ui.screens.main.MainScreen
 import st.slex.csplashscreen.ui.screens.raw_image.RawImageScreen
 import st.slex.csplashscreen.ui.screens.search_photos.SearchPhotosScreen
 import st.slex.csplashscreen.ui.screens.topics.TopicsScreen
 import st.slex.csplashscreen.ui.screens.user.UserScreen
-import javax.inject.Inject
+import st.slex.feature_main.navigation.homeGraph
 
-@ExperimentalAnimationApi
-@ExperimentalMaterialApi
-@ExperimentalPagerApi
-@ExperimentalCoroutinesApi
-interface NavigationHost {
+@Composable
+fun NavigationHost(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    startDestination: String = AppDestinations.Home.route
+) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        builder = builder(navController, modifier)
+    )
+}
 
-    fun createNavigationHost(navController: NavHostController): @Composable (PaddingValues) -> Unit
 
-    @ExperimentalMaterial3Api
-    @FlowPreview
-    class Base @Inject constructor() : NavigationHost {
+private fun builder(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+): NavGraphBuilder.() -> Unit = {
 
-        override fun createNavigationHost(
-            navController: NavHostController
-        ): @Composable (PaddingValues) -> Unit = {
-            NavHost(
-                navController = navController,
-                startDestination = NavHostResource.MainScreen.destination,
-                builder = builder(navController)
-            )
+    homeGraph(
+        modifier = modifier,
+        onProfileClick = { username ->
+            navController.navigate("${UserScreen.destination}/$username")
+        },
+        onCollectionClick = { id ->
+            navController.navigate("${CollectionScreen.destination}/$id")
+        },
+        onImageClick = { url, id ->
+            navController.navigate("${ImageDetailScreen.destination}/$url/$id")
         }
+    )
 
-        @ExperimentalMaterial3Api
-        private fun builder(navController: NavHostController): NavGraphBuilder.() -> Unit = {
-            create(NavHostResource.MainScreen) { MainScreen(navController) }
-            create(NavHostResource.ImageDetailScreen) { ImageDetailScreen(navController, it) }
-            create(NavHostResource.RawImageScreen) { RawImageScreen(navController, it) }
-            create(NavHostResource.SearchPhotosScreen) { SearchPhotosScreen(navController, it) }
-            create(NavHostResource.UserScreen) { UserScreen(navController, it) }
-            create(NavHostResource.TopicsScreen) { TopicsScreen() }
-            create(NavHostResource.CollectionScreen) { CollectionScreen(navController, it) }
-        }
-
-        private inline fun NavGraphBuilder.create(
-            navDest: NavHostResource,
-            crossinline screen: @Composable (list: List<String>) -> Unit
-        ) = with(navDest) {
-            composable(route = convertRoute) { screen(it.convertArgs) }
-        }
+    create(ImageDetailScreen) { arguments ->
+        ImageDetailScreen(
+            onProfileClick = { username ->
+                navController.navigate("${UserScreen.destination}/$username")
+            },
+            onTagClick = { tag ->
+                navController.navigate("${SearchPhotosScreen.destination}/$tag")
+            },
+            onImageClick = { url ->
+                navController.navigate("${RawImageScreen.destination}/$url")
+            },
+            arguments = arguments
+        )
     }
+
+    create(RawImageScreen) { RawImageScreen(navController, it) }
+    create(SearchPhotosScreen) { arguments ->
+        SearchPhotosScreen(
+            onProfileClick = { username ->
+                navController.navigate("${UserScreen.destination}/$username")
+            },
+            onImageClick = { url, id ->
+                navController.navigate("${ImageDetailScreen.destination}/$url/$id")
+            },
+            arguments = arguments
+        )
+    }
+    create(UserScreen) { UserScreen(navController, it) }
+    create(NavHostResource.TopicsScreen) { TopicsScreen() }
+    create(CollectionScreen) { arguments ->
+        CollectionScreen(
+            onProfileClick = { username ->
+                navController.navigate("${UserScreen.destination}/$username")
+            },
+            onImageClick = { url, id ->
+                navController.navigate("${ImageDetailScreen.destination}/$url/$id")
+            },
+            arguments = arguments
+        )
+    }
+}
+
+private inline fun NavGraphBuilder.create(
+    navDest: NavHostResource,
+    crossinline screen: @Composable (list: List<String>) -> Unit
+) = with(navDest) {
+    composable(route = convertRoute) { screen(it.convertArgs) }
 }

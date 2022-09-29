@@ -4,19 +4,44 @@ import android.annotation.SuppressLint
 import android.os.Parcelable
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.*
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -27,29 +52,30 @@ import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.bumptech.glide.Glide
-import com.google.accompanist.pager.*
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerScope
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import st.slex.csplashscreen.core.Resource
-import st.slex.csplashscreen.data.model.ui.collection.CollectionModel
-import st.slex.csplashscreen.data.model.ui.image.ImageModel
-import st.slex.csplashscreen.data.model.ui.user.UserModel
-import st.slex.csplashscreen.ui.components.CollectionItem
-import st.slex.csplashscreen.ui.components.ImageItem
-import st.slex.csplashscreen.ui.components.animatePager
-import st.slex.csplashscreen.ui.components.checkState
-import st.slex.csplashscreen.ui.screens.main.AnalyticsService
-import st.slex.csplashscreen.ui.theme.Typography
+import st.slex.core.Resource
+import st.slex.core_navigation.NavHostResource
+import st.slex.core_network.model.ui.collection.CollectionModel
+import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.user.UserModel
+import st.slex.core_ui.components.CollectionItem
+import st.slex.core_ui.components.ImageItem
+import st.slex.core_ui.components.animatePager
+import st.slex.core_ui.components.checkState
+import st.slex.core_ui.theme.Typography
+import st.slex.feature_main.ui.AnalyticsService
 
-@ExperimentalMaterial3Api
-@ExperimentalAnimationApi
-@ExperimentalPagerApi
-@ExperimentalMaterialApi
-@ExperimentalCoroutinesApi
+
 @Composable
 fun UserScreen(
     navController: NavController,
@@ -73,10 +99,7 @@ fun UserScreen(
     )
 }
 
-@ExperimentalMaterial3Api
-@ExperimentalPagerApi
-@ExperimentalAnimationApi
-@ExperimentalMaterialApi
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun checkResultAndBind(
     userResource: Resource<UserModel>,
@@ -94,6 +117,7 @@ private fun checkResultAndBind(
                 )
             }
         }
+
         is Resource.Failure -> Unit
         is Resource.Loading -> Unit
     }
@@ -112,8 +136,7 @@ private fun UserViewModel.getListOfPagesResource(
 private fun Map<UserPagerTabResource<out Parcelable>, Int>.filterEmptyItems() =
     this.filter { map -> map.value != 0 }.keys.toList()
 
-@ExperimentalMaterialApi
-@ExperimentalAnimationApi
+
 @Composable
 fun BindUserScreenMainHeader(
     user: UserModel
@@ -134,9 +157,7 @@ fun BindUserScreenMainHeader(
     }
 }
 
-@ExperimentalMaterial3Api
-@ExperimentalMaterialApi
-@ExperimentalPagerApi
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun BindPagerWithTabs(
     listPagesResource: List<UserPagerTabResource<out Parcelable>>,
@@ -172,11 +193,13 @@ private fun BindPagerWithTabs(
                         item?.SetItemDependsOfType(id = item.id, isUserVisible = false)
                     }
                 }
+
                 is UserPagerTabResource.Likes -> {
                     items(pagingResource.pagingItems, key = { it.id }) { item ->
                         item?.SetItemDependsOfType(id = item.id, isUserVisible = true)
                     }
                 }
+
                 is UserPagerTabResource.Collections -> {
                     items(pagingResource.pagingItems, key = { it.id }) { item ->
                         item?.SetItemDependsOfType(id = item.id, isUserVisible = false)
@@ -188,7 +211,7 @@ private fun BindPagerWithTabs(
     }
 }
 
-@ExperimentalPagerApi
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerState) {
     snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -196,9 +219,6 @@ private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerSt
     }
 }
 
-@ExperimentalMaterial3Api
-@ExperimentalPagerApi
-@ExperimentalMaterialApi
 @Composable
 private fun Parcelable.SetCurrentItem(
     navController: NavController,
@@ -209,19 +229,46 @@ private fun Parcelable.SetCurrentItem(
         is ImageModel -> ImageItem(
             item = this,
             modifier = modifier,
-            navController = navController,
-            isUserVisible = isUserVisible
+            isUserVisible = isUserVisible,
+            onProfileClick = onUserHeadClick(navController),
+            onImageClick = onImageClick(navController)
         )
+
         is CollectionModel -> CollectionItem(
             item = this,
             modifier = modifier,
-            navController = navController,
-            isUserVisible = isUserVisible
+            isUserVisible = isUserVisible,
+            onUserHeadClick = onUserHeadClick(navController),
+            onCollectionClick = onCollectionClick(navController)
         )
     }
 }
 
-@ExperimentalPagerApi
+private fun onUserHeadClick(
+    navController: NavController
+): (username: String) -> Unit = { username ->
+    val destination = NavHostResource.UserScreen.destination
+    val route = "$destination/$username"
+    navController.navigate(route = route)
+}
+
+private fun onImageClick(
+    navController: NavController
+): (url: String, id: String) -> Unit = { url, id ->
+    val destination = NavHostResource.ImageDetailScreen.destination
+    val route = "$destination/$url/$id"
+    navController.navigate(route)
+}
+
+private fun onCollectionClick(
+    navController: NavController
+): (id: String) -> Unit = { id ->
+    val destination = NavHostResource.CollectionScreen.destination
+    val route = "$destination/$id"
+    navController.navigate(route)
+}
+
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun TabRow(
     pagerState: PagerState,
@@ -254,7 +301,7 @@ private fun TabRow(
     )
 }
 
-@ExperimentalPagerApi
+@OptIn(ExperimentalPagerApi::class)
 @SuppressLint("RestrictedApi")
 private fun Modifier.animate(
     scope: PagerScope,
@@ -266,17 +313,18 @@ private fun Modifier.animate(
     .padding(top = 32.dp, bottom = 32.dp)
     .animatePager(scope, page, lazyListState, id)
 
-@ExperimentalAnimationApi
-@ExperimentalMaterialApi
+
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BindUserBio(bio: String) {
     val maxLinesOfBio = remember { mutableStateOf(1) }
     Surface(
-        elevation = 16.dp,
-        modifier = Modifier.fillMaxWidth(),
-        onClick = {
-            maxLinesOfBio.value = if (maxLinesOfBio.value == 1) Int.MAX_VALUE else 1
-        }
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(elevation = 16.dp)
+            .clickable {
+                maxLinesOfBio.value = if (maxLinesOfBio.value == 1) Int.MAX_VALUE else 1
+            }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(

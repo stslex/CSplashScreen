@@ -6,9 +6,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import retrofit2.HttpException
-import st.slex.csplashscreen.core.map
-import st.slex.csplashscreen.data.core.Constants.API_KEY
-import st.slex.csplashscreen.data.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.feature_main.data.Constants.API_KEY
+import st.slex.feature_main.map
 
 class SearchPagingSource @AssistedInject constructor(
     private val service: SearchService,
@@ -29,6 +29,7 @@ class SearchPagingSource @AssistedInject constructor(
             val response = when (query) {
                 is QuerySearch.SearchPhotos ->
                     service.searchPhoto(query.text, pageNumber, pageSize, API_KEY)
+
                 is QuerySearch.EmptyQuery -> return LoadResult.Error(NullPointerException("QuerySearch.EmptyQuery"))
             }
 

@@ -1,10 +1,10 @@
 package st.slex.csplashscreen.data.user
 
-import st.slex.csplashscreen.core.Mapper
-import st.slex.csplashscreen.core.Resource
-import st.slex.csplashscreen.core.map
-import st.slex.csplashscreen.data.model.remote.user.RemoteUserModel
-import st.slex.csplashscreen.data.model.ui.user.UserModel
+import st.slex.core.Mapper
+import st.slex.core.Resource
+import st.slex.core_network.model.remote.user.RemoteUserModel
+import st.slex.core_network.model.ui.user.UserModel
+import st.slex.feature_main.map
 import javax.inject.Inject
 
 interface UserDataMapper : Mapper.ToUI<RemoteUserModel, Resource<UserModel>> {

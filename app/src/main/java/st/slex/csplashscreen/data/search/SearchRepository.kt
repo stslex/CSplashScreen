@@ -1,7 +1,7 @@
 package st.slex.csplashscreen.data.search
 
 import androidx.paging.PagingSource
-import st.slex.csplashscreen.data.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.image.ImageModel
 import javax.inject.Inject
 
 interface SearchRepository {

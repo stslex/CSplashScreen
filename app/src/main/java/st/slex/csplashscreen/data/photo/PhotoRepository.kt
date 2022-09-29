@@ -2,11 +2,11 @@ package st.slex.csplashscreen.data.photo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import st.slex.csplashscreen.core.Resource
-import st.slex.csplashscreen.data.core.Constants.API_KEY
+import st.slex.core.Resource
+import st.slex.core_network.model.remote.download.RemoteDownloadModel
+import st.slex.core_network.model.remote.image.RemoteImageModel
 import st.slex.csplashscreen.data.core.DataResponseConverter
-import st.slex.csplashscreen.data.model.remote.download.RemoteDownloadModel
-import st.slex.csplashscreen.data.model.remote.image.RemoteImageModel
+import st.slex.feature_main.data.Constants.API_KEY
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi

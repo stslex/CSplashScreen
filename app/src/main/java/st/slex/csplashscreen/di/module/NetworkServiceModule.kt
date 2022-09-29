@@ -5,9 +5,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import st.slex.csplashscreen.data.collections.CollectionService
+import st.slex.feature_main.data.collections.CollectionService
 import st.slex.csplashscreen.data.photo.PhotoService
-import st.slex.csplashscreen.data.photos.PhotosService
+import st.slex.feature_main.data.photos.PhotosService
 import st.slex.csplashscreen.data.search.SearchService
 import st.slex.csplashscreen.data.topics.TopicsService
 import st.slex.csplashscreen.data.user.UserService
