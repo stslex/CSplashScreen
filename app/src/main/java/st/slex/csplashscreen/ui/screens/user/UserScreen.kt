@@ -29,6 +29,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -72,7 +73,6 @@ import st.slex.core_ui.components.CollectionItem
 import st.slex.core_ui.components.ImageItem
 import st.slex.core_ui.components.animatePager
 import st.slex.core_ui.components.checkState
-import st.slex.core_ui.theme.Typography
 import st.slex.feature_main.ui.AnalyticsService
 
 
@@ -288,7 +288,7 @@ private fun TabRow(
                     text = {
                         Text(
                             text = model.title,
-                            style = Typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium
                         )
                     },
                     selected = pagerState.currentPage == index,
@@ -329,7 +329,7 @@ fun BindUserBio(bio: String) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "Bio",
-                style = Typography.titleMedium
+                style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.size(8.dp))
             AnimatedContent(
@@ -338,7 +338,7 @@ fun BindUserBio(bio: String) {
                 Text(
                     text = bio,
                     maxLines = target,
-                    style = Typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
         }
@@ -407,7 +407,7 @@ fun bindUserTopAppBar(
             }
             Spacer(modifier = Modifier.size(16.dp))
             Text(
-                style = Typography.titleMedium,
+                style = MaterialTheme.typography.titleMedium,
                 text = username,
                 textAlign = TextAlign.Start,
                 maxLines = 1
@@ -421,12 +421,12 @@ fun TextHeaderColumn(title: String, contentTitle: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = title,
-            style = Typography.titleMedium
+            style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = contentTitle,
-            style = Typography.titleMedium
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }
