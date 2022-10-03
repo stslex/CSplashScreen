@@ -1,7 +1,9 @@
 package st.slex.feature_main.ui
 
 import android.os.Parcelable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
@@ -30,6 +32,7 @@ fun MainScreen(
     val pagesResource = viewModel.listOfPagesResource()
     Column(
         modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
     ) {
         TabRow(pagerState = pagerState, listPagesResource = pagesResource)
         MainScreenPager(

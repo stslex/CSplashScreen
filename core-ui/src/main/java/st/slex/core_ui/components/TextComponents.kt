@@ -3,18 +3,18 @@ package st.slex.core_ui.components
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
-import st.slex.core_ui.theme.Typography
 
 @Composable
 fun TextUsernamePrimary(username: String) {
     Text(
         text = username,
-        style = Typography.labelMedium,
+        style = MaterialTheme.typography.titleMedium,
         maxLines = 1,
         lineHeight = TextUnit.Unspecified
     )

@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.ui.screens.topics
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,7 +24,10 @@ fun TopicsScreen(
     viewModel: TopicsViewModel = hiltViewModel()
 ) {
     val lazyPagingItems = viewModel.topics.collectAsLazyPagingItems()
-    LazyRow(state = state) {
+    LazyRow(
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        state = state
+    ) {
         items(
             items = lazyPagingItems,
             key = { it.id },

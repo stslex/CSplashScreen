@@ -15,7 +15,6 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import st.slex.core_ui.theme.Typography
 
 @ExperimentalPagerApi
 @Composable
@@ -61,5 +60,10 @@ private fun tabsContent(
 
 @Composable
 private fun MainPagerTabResource<out Parcelable>.tabTitle(): @Composable () -> Unit = {
-    Text(text = title, style = Typography.labelMedium)
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleMedium,
+        maxLines = 1,
+        color = MaterialTheme.colorScheme.onBackground
+    )
 }

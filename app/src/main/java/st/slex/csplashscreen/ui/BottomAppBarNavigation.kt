@@ -23,15 +23,22 @@ fun mainBottomAppBar(navController: NavController): @Composable () -> Unit = {
     val selectedItem = remember {
         mutableStateOf(BottomAppBarResource.MainScreen.destination)
     }
+    val isSelected = remember {
+        mutableStateOf(false)
+    }
     NavigationBar(
         modifier = Modifier.fillMaxWidth()
     ) {
         listOfItems.forEach { item ->
+            isSelected.value = selectedItem.value == item.destination
             NavigationBarItem(
-                selected = selectedItem.value == item.destination,
+                selected = isSelected.value,
                 onClick = onBottomAppBarClick(navController, item, selectedItem),
-                icon = { Icon(item.icon, item.destination) },
-                label = { Text(text = item.destination) },
+                icon = {
+                    val icon = if (isSelected.value) item.selectedIcon else item.unselectedIcon
+                    Icon(icon, item.destination)
+                },
+                label = { Text(text = item.title) },
                 alwaysShowLabel = false
             )
         }

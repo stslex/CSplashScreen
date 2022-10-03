@@ -1,17 +1,22 @@
 package st.slex.core_ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import st.slex.core_network.model.ui.collection.CollectionModel
-import st.slex.core_ui.theme.TransparentGray
-import st.slex.core_ui.theme.Typography
 
 
 @Composable
@@ -69,7 +74,7 @@ fun BindCoverImageCard(
         CoverPhotoItem(url = url)
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = TransparentGray
+            color = MaterialTheme.colorScheme.surface
         ) {}
         Column(
             modifier = Modifier
@@ -77,9 +82,12 @@ fun BindCoverImageCard(
                 .padding(start = 16.dp, bottom = 16.dp),
             verticalArrangement = Arrangement.Bottom
         ) {
-            CollectionTextCard(text = title, Typography.titleMedium)
+            CollectionTextCard(text = title, MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.padding(4.dp))
-            CollectionTextCard(text = "$totalPhotos Photos", style = Typography.titleLarge)
+            CollectionTextCard(
+                text = "$totalPhotos Photos",
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 }

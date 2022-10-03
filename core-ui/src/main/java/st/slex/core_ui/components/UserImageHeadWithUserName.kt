@@ -1,5 +1,6 @@
 package st.slex.core_ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,15 +24,12 @@ fun UserImageHeadWithUserName(
     username: String,
     onProfileClick: (username: String) -> Unit
 ) {
-    OutlinedCard(
+    Card(
         modifier = modifier
+            .background(MaterialTheme.colorScheme.surface)
             .fillMaxWidth()
             .clickable {
                 onProfileClick(username)
-//                val destination = NavHostResource.UserScreen.destination
-//                val route = "$destination/$username"
-//                navController.navigate(route = route)
-//                TODO
             }
     ) {
         Row(

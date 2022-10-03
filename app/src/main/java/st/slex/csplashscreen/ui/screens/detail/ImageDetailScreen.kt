@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.ui.screens.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -71,7 +73,11 @@ fun ImageDetailScreen(
 
     SideEffect(sideEffect())
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
         item { BindTopImageHead(url = url, onImageClick = onImageClick) }
         item { Spacer(Modifier.padding(4.dp)) }
         item {
@@ -192,6 +198,7 @@ private fun UserDetailImageHead(
 
         Surface(
             modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
                 .wrapContentSize()
                 .padding(start = 8.dp, end = 8.dp)
                 .shadow(elevation = 16.dp, shape = CircleShape)
@@ -211,7 +218,8 @@ private fun UserDetailImageHead(
                     .padding(16.dp)
                     .clip(CircleShape),
                 painter = painterResource(id = R.drawable.ic_baseline_arrow_download),
-                contentDescription = "Download"
+                contentDescription = "Download",
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
     }
