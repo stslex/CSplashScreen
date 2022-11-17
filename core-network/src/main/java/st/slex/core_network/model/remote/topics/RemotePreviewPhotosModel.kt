@@ -1,8 +1,10 @@
 package st.slex.core_network.model.remote.topics
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 import st.slex.core_network.model.remote.image.RemoteUrlsModel
 
+@Serializable
 data class RemotePreviewPhotosModel(
     @SerializedName("id") val id: String? = "",
     @SerializedName("created_at") val created_at: String? = "",

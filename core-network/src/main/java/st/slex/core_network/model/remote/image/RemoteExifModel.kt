@@ -1,7 +1,9 @@
 package st.slex.core_network.model.remote.image
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RemoteExifModel(
     @SerializedName("make") val make: String?,
     @SerializedName("model") val model: String?,

@@ -67,7 +67,7 @@ fun ImageDetailScreen(
     val id: String = arguments[1]
 
     val result: Resource<ImageModel> by remember(viewModel) {
-        viewModel.currentPhoto(id)
+        viewModel.getPhotoById(id)
     }.collectAsState(
         initial = Resource.Loading,
         context = Dispatchers.IO

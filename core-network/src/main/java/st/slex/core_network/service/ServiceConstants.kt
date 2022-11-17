@@ -2,7 +2,7 @@ package st.slex.core_network.service
 
 import st.slex.core.BuildConfig
 
-internal object ServiceConstants {
+ object ServiceConstants {
     const val API_KEY = BuildConfig.API_KEY
 
     const val GET_PHOTOS = "photos"
