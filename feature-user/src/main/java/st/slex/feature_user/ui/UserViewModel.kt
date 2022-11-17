@@ -1,6 +1,5 @@
 package st.slex.feature_user.ui
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -26,6 +24,7 @@ import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_photos.data.QueryPhotos
 import st.slex.core_photos.ui.QueryPhotosUseCase
+import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_user.data.UserDataMapper
 import st.slex.feature_user.data.UserRepository
 import javax.inject.Inject
@@ -37,7 +36,7 @@ class UserViewModel @Inject constructor(
     private val mapper: UserDataMapper,
     private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
     private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>
-) : ViewModel() {
+) : BaseViewModel() {
 
     fun setAllQueries(username: String) = viewModelScope.launch(Dispatchers.IO) {
         _queryPhotos.tryEmit(QueryPhotos.UserPhotos(username))
@@ -45,13 +44,8 @@ class UserViewModel @Inject constructor(
         _queryCollections.tryEmit(QueryCollections.UserCollections(username))
     }
 
-    fun getUser(username: String): StateFlow<Resource<UserModel>> = flow {
-        repository.getUser(username).collect { emit(it.map(mapper = mapper)) }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = Resource.Loading
-    )
+    fun getUser(username: String): StateFlow<Resource<UserModel>> =
+        repository.getUser(username).primaryFlow
 
     private val _queryPhotos =
         MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)

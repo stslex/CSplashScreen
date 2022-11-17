@@ -1,10 +1,12 @@
 package st.slex.core_network.model.remote.topics
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 import st.slex.core_network.model.remote.collection.RemoteLinksCollectionModel
 import st.slex.core_network.model.remote.image.RemoteImageModel
 import st.slex.core_network.model.remote.user.RemoteUserModel
 
+@Serializable
 data class RemoteTopicsModel(
     @SerializedName("id") val id: String? = "",
     @SerializedName("slug") val slug: String? = "",

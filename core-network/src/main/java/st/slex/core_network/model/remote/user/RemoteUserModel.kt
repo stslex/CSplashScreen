@@ -1,8 +1,10 @@
 package st.slex.core_network.model.remote.user
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 import st.slex.core_network.model.remote.image.RemoteImageModel
 
+@Serializable
 data class RemoteUserModel(
     @SerializedName("id")
     val id: String,
