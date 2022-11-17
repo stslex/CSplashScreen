@@ -15,7 +15,6 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import st.slex.feature_main.data.Constants.BASE_URL
 import st.slex.csplashscreen.di.scopes.OfflineInterceptor
 import st.slex.csplashscreen.di.scopes.OnlineInterceptor
 
@@ -94,5 +93,6 @@ class RetrofitModule {
         private const val HEADER_ONLINE_VALUE = "public, max-age=$MAX_AGE"
         private const val HEADER_PRAGMA = "Pragma"
         private const val CACHE_SIZE: Long = 10 * 1024 * 1024 * 8L
+        private const val BASE_URL = "https://api.unsplash.com/"
     }
 }

@@ -10,5 +10,5 @@ data class RemoteHistorical(
     @SerializedName("quality")
     val quality: String,
     @SerializedName("values")
-    val values: List<st.slex.core_network.model.remote.statistic.RemoteValue>
+    val values: List<RemoteValue>
 )

@@ -6,5 +6,5 @@ data class PreviewPhotosModel(
     val id: String,
     val created_at: String,
     val updated_at: String,
-    val urls: st.slex.core_network.model.ui.image.UrlsModel
+    val urls: UrlsModel
 )

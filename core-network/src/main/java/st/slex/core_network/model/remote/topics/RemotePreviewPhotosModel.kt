@@ -7,5 +7,5 @@ data class RemotePreviewPhotosModel(
     @SerializedName("id") val id: String? = "",
     @SerializedName("created_at") val created_at: String? = "",
     @SerializedName("updated_at") val updated_at: String? = "",
-    @SerializedName("urls") val urls: st.slex.core_network.model.remote.image.RemoteUrlsModel?
+    @SerializedName("urls") val urls: RemoteUrlsModel?
 )

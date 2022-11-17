@@ -17,9 +17,9 @@ data class RemoteTopicsModel(
     @SerializedName("only_submissions_after") val only_submissions_after: String? = "",
     @SerializedName("featured") val featured: String? = "",
     @SerializedName("total_photos") val total_photos: String? = "",
-    @SerializedName("links") val links: st.slex.core_network.model.remote.collection.RemoteLinksCollectionModel,
+    @SerializedName("links") val links: RemoteLinksCollectionModel,
     @SerializedName("status") val status: String? = "",
-    @SerializedName("owners") val owners: List<st.slex.core_network.model.remote.user.RemoteUserModel>?,
-    @SerializedName("cover_photo") val cover_photo: st.slex.core_network.model.remote.image.RemoteImageModel?,
-    @SerializedName("preview_photos") val preview_photos: List<st.slex.core_network.model.remote.topics.RemotePreviewPhotosModel>?
+    @SerializedName("owners") val owners: List<RemoteUserModel>?,
+    @SerializedName("cover_photo") val cover_photo: RemoteImageModel?,
+    @SerializedName("preview_photos") val preview_photos: List<RemotePreviewPhotosModel>?
 )

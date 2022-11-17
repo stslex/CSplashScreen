@@ -19,13 +19,13 @@ class RemoteImageModel(
     @SerializedName("liked_by_user") var liked_by_user: Boolean?,
     @SerializedName("description") val description: String?,
     @SerializedName("alt_description") val alt_description: String?,
-    @SerializedName("exif") val exif: st.slex.core_network.model.remote.image.RemoteExifModel?,
-    @SerializedName("location") val location: st.slex.core_network.model.remote.image.RemoteLocationModel?,
-    @SerializedName("tags") val tags: List<st.slex.core_network.model.remote.image.RemoteTagModel>?,
-    @SerializedName("current_user_collections") val current_user_collections: List<st.slex.core_network.model.remote.collection.RemoteCollectionModel>?,
-    @SerializedName("sponsorship") val sponsorship: st.slex.core_network.model.remote.image.RemoteSponsorship?,
-    @SerializedName("urls") val urls: st.slex.core_network.model.remote.image.RemoteUrlsModel,
-    @SerializedName("links") val links: st.slex.core_network.model.remote.image.RemoteLinksImageModel?,
-    @SerializedName("user") val user: st.slex.core_network.model.remote.user.RemoteUserModel?,
-    @SerializedName("statistics") val statistics: st.slex.core_network.model.remote.statistic.RemotePhotoStatistics?
+    @SerializedName("exif") val exif: RemoteExifModel?,
+    @SerializedName("location") val location: RemoteLocationModel?,
+    @SerializedName("tags") val tags: List<RemoteTagModel>?,
+    @SerializedName("current_user_collections") val current_user_collections: List<RemoteCollectionModel>?,
+    @SerializedName("sponsorship") val sponsorship: RemoteSponsorship?,
+    @SerializedName("urls") val urls: RemoteUrlsModel,
+    @SerializedName("links") val links: RemoteLinksImageModel?,
+    @SerializedName("user") val user: RemoteUserModel?,
+    @SerializedName("statistics") val statistics: RemotePhotoStatistics?
 )

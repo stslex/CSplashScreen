@@ -12,10 +12,12 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import st.slex.core_collection.ui.QueryCollectionsUseCase
 import st.slex.core_network.model.ui.collection.CollectionModel
 import st.slex.core_network.model.ui.image.ImageModel
-import st.slex.feature_main.data.QueryCollections
-import st.slex.feature_main.data.photos.QueryPhotos
+import st.slex.core_photos.data.QueryPhotos
+import st.slex.core_photos.ui.QueryPhotosUseCase
+import st.slex.core_collection.data.QueryCollections
 import javax.inject.Inject
 import javax.inject.Provider
 

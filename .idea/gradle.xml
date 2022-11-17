@@ -19,7 +19,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="Embedded JDK" />
+        <option name="gradleJvm" value="11" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -27,11 +27,19 @@
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/dependencies" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core-collection" />
             <option value="$PROJECT_DIR$/core-navigation" />
             <option value="$PROJECT_DIR$/core-network" />
+            <option value="$PROJECT_DIR$/core-photos" />
             <option value="$PROJECT_DIR$/core-test" />
             <option value="$PROJECT_DIR$/core-ui" />
+            <option value="$PROJECT_DIR$/feature-collection" />
             <option value="$PROJECT_DIR$/feature-home" />
+            <option value="$PROJECT_DIR$/feature-image-raw" />
+            <option value="$PROJECT_DIR$/feature-photo-detail" />
+            <option value="$PROJECT_DIR$/feature-search-photos" />
+            <option value="$PROJECT_DIR$/feature-topics" />
+            <option value="$PROJECT_DIR$/feature-user" />
           </set>
         </option>
       </GradleProjectSettings>

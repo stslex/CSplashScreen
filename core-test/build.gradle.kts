@@ -4,9 +4,9 @@ plugins {
 
 dependencies {
     libs.apply {
-        testApi(junit)
-        testApi(androidx.test.ext.junit)
-        androidTestApi(androidx.test.espresso.core)
+        api(junit)
+        api(androidx.test.ext.junit)
+        api(androidx.test.espresso.core)
     }
 }
 

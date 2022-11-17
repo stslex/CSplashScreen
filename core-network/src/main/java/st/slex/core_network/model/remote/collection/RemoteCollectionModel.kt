@@ -27,13 +27,13 @@ data class RemoteCollectionModel(
     @SerializedName("share_key")
     val share_key: String?,
     @SerializedName("tags")
-    val tags: List<st.slex.core_network.model.remote.image.RemoteTagModel>?,
+    val tags: List<RemoteTagModel>?,
     @SerializedName("cover_photo")
-    val cover_photo: st.slex.core_network.model.remote.image.RemoteImageModel?,
+    val cover_photo: RemoteImageModel?,
     @SerializedName("preview_photos")
-    val preview_photos: List<st.slex.core_network.model.remote.image.RemoteImageModel>?,
+    val preview_photos: List<RemoteImageModel>?,
     @SerializedName("user")
-    val user: st.slex.core_network.model.remote.user.RemoteUserModel?,
+    val user: RemoteUserModel?,
     @SerializedName("links")
-    val links: st.slex.core_network.model.remote.collection.RemoteLinksCollectionModel?
+    val links: RemoteLinksCollectionModel?
 )

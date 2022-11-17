@@ -4,9 +4,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import st.slex.csplashscreen.data.photo.DownloadDataMapper
-import st.slex.csplashscreen.data.photo.PhotoDataMapper
-import st.slex.csplashscreen.data.user.UserDataMapper
+import st.slex.feature_photo_detail.data.DownloadDataMapper
+import st.slex.feature_photo_detail.data.PhotoDataMapper
+import st.slex.feature_user.data.UserDataMapper
 
 @InstallIn(SingletonComponent::class)
 @Module
