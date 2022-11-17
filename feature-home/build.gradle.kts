@@ -12,6 +12,8 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-navigation"))
     implementation(project(":core-network"))
+    implementation(project(":core-photos"))
+    implementation(project(":core-collection"))
 
     libs.apply {
         implementation(hilt.android.core)

@@ -41,11 +41,11 @@ data class RemoteUserModel(
     @SerializedName("downloads")
     val downloads: Int?,
     @SerializedName("profile_image")
-    val profile_image: st.slex.core_network.model.remote.user.RemoteProfileImageModel?,
+    val profile_image: RemoteProfileImageModel?,
     @SerializedName("badge")
-    val badge: st.slex.core_network.model.remote.user.RemoteBadgeModel?,
+    val badge: RemoteBadgeModel?,
     @SerializedName("links")
-    val links: st.slex.core_network.model.remote.user.RemoteUserLinksModel?,
+    val links: RemoteUserLinksModel?,
     @SerializedName("photos")
-    val photos: List<st.slex.core_network.model.remote.image.RemoteImageModel>?
+    val photos: List<RemoteImageModel>?
 )

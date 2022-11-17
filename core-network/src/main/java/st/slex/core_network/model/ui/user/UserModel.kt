@@ -27,5 +27,5 @@ data class UserModel(
     val profile_image: ProfileImageModel,
     val badge: BadgeModel,
     val links: UserLinksModel,
-    val photos: List<st.slex.core_network.model.ui.image.ImageModel>
+    val photos: List<ImageModel>
 ) : Parcelable

@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class LocationModel(
     val city: String,
     val country: String,
-    val position: st.slex.core_network.model.ui.image.PositionModel
+    val position: PositionModel
 ) : Parcelable

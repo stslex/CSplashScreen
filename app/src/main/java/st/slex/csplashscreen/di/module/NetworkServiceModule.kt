@@ -5,12 +5,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import st.slex.feature_main.data.collections.CollectionService
-import st.slex.csplashscreen.data.photo.PhotoService
-import st.slex.feature_main.data.photos.PhotosService
-import st.slex.csplashscreen.data.search.SearchService
-import st.slex.csplashscreen.data.topics.TopicsService
-import st.slex.csplashscreen.data.user.UserService
+import st.slex.core_network.service.CollectionService
+import st.slex.core_network.service.PhotosService
+import st.slex.core_network.service.PhotoService
+import st.slex.core_network.service.SearchService
+import st.slex.core_network.service.TopicsService
+import st.slex.core_network.service.UserService
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -29,8 +29,9 @@ class NetworkServiceModule {
         retrofit.create(PhotoService::class.java)
 
     @Provides
-    fun providesPhotoSearchService(retrofit: Retrofit): SearchService =
-        retrofit.create(SearchService::class.java)
+    fun providesPhotoSearchService(retrofit: Retrofit): SearchService = retrofit.create(
+        SearchService::class.java
+    )
 
     @Provides
     fun providesUserService(retrofit: Retrofit): UserService =

@@ -16,7 +16,7 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import st.slex.core_ui.theme.AppTheme
-import st.slex.csplashscreen.ui.navigation.NavigationHost
+import st.slex.csplashscreen.navigation.NavigationHost
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

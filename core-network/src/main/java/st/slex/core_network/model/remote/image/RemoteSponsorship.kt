@@ -5,5 +5,5 @@ import st.slex.core_network.model.remote.user.RemoteUserModel
 
 data class RemoteSponsorship(
     @SerializedName("sponsor")
-    val sponsor: st.slex.core_network.model.remote.user.RemoteUserModel?
+    val sponsor: RemoteUserModel?
 )

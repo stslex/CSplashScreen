@@ -6,34 +6,34 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PhotoStatistics(
     val id: String,
-    val downloads: st.slex.core_network.model.ui.Downloads,
-    val views: st.slex.core_network.model.ui.Views,
-    val likes: st.slex.core_network.model.ui.Likes
+    val downloads: Downloads,
+    val views: Views,
+    val likes: Likes
 ) : Parcelable
 
 data class UserStatistics(
     val username: String,
-    val downloads: st.slex.core_network.model.ui.Downloads,
-    val views: st.slex.core_network.model.ui.Views,
-    val likes: st.slex.core_network.model.ui.Likes
+    val downloads: Downloads,
+    val views: Views,
+    val likes: Likes
 )
 
 @Parcelize
 data class Downloads(
     val total: Int,
-    val historical: st.slex.core_network.model.ui.Historical
+    val historical: Historical
 ) : Parcelable
 
 @Parcelize
 data class Views(
     val total: Int,
-    val historical: st.slex.core_network.model.ui.Historical
+    val historical: Historical
 ) : Parcelable
 
 @Parcelize
 data class Likes(
     val total: Int,
-    val historical: st.slex.core_network.model.ui.Historical
+    val historical: Historical
 ) : Parcelable
 
 @Parcelize
@@ -41,7 +41,7 @@ data class Historical(
     val change: Int,
     val resolution: String,
     val quality: String,
-    val values: List<st.slex.core_network.model.ui.Value>
+    val values: List<Value>
 ) : Parcelable
 
 @Parcelize

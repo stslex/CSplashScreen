@@ -5,11 +5,11 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import st.slex.feature_main.data.collections.CollectionsRepository
-import st.slex.csplashscreen.data.photo.PhotoRepository
-import st.slex.feature_main.data.photos.PhotosRepository
-import st.slex.csplashscreen.data.search.SearchRepository
-import st.slex.csplashscreen.data.user.UserRepository
+import st.slex.core_collection.data.CollectionsRepository
+import st.slex.core_photos.data.PhotosRepository
+import st.slex.feature_photo_detail.data.PhotoRepository
+import st.slex.feature_search_photos.data.SearchRepository
+import st.slex.feature_user.data.UserRepository
 
 @ExperimentalCoroutinesApi
 @InstallIn(SingletonComponent::class)

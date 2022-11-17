@@ -6,5 +6,5 @@ data class RemoteViews(
     @SerializedName("total")
     val total: Int,
     @SerializedName("historical")
-    val historical: st.slex.core_network.model.remote.statistic.RemoteHistorical
+    val historical: RemoteHistorical
 )

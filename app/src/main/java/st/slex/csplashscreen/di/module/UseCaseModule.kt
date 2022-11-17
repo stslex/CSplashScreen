@@ -6,16 +6,12 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import st.slex.core_network.model.ui.topics.TopicsModel
-import st.slex.csplashscreen.data.core.DataResponseConverter
-import st.slex.csplashscreen.data.topics.TopicsPagingSource
-import st.slex.csplashscreen.ui.screens.detail.DownloadImageUseCase
+import st.slex.feature_photo_detail.ui.DownloadImageUseCase
+import st.slex.feature_topics.data.TopicsPagingSource
 
 @InstallIn(SingletonComponent::class)
 @Module
 interface UseCaseModule {
-
-    @Binds
-    fun bindsDataResponseConverter(converter: DataResponseConverter.Base): DataResponseConverter
 
     @Binds
     fun bindsDownloadingImageConverter(converter: DownloadImageUseCase.Base): DownloadImageUseCase

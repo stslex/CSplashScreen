@@ -7,9 +7,9 @@ data class RemoteUserStatistics(
     @SerializedName("username")
     val username: String,
     @SerializedName("downloads")
-    val downloads: st.slex.core_network.model.remote.statistic.RemoteDownloads,
+    val downloads: RemoteDownloads,
     @SerializedName("views")
-    val views: st.slex.core_network.model.remote.statistic.RemoteViews,
+    val views: RemoteViews,
     @SerializedName("likes")
-    val likes: st.slex.core_network.model.remote.statistic.RemoteLikes
+    val likes: RemoteLikes
 )

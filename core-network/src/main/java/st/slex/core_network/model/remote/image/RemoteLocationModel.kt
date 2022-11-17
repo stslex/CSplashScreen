@@ -8,5 +8,5 @@ data class RemoteLocationModel(
     @SerializedName("country")
     val country: String?,
     @SerializedName("position")
-    val position: st.slex.core_network.model.remote.image.RemotePositionModel?
+    val position: RemotePositionModel?
 )
