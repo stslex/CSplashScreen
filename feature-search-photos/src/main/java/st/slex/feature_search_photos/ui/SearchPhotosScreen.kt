@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import org.koin.androidx.compose.koinViewModel
 import st.slex.core_ui.components.ListOfElements
 import st.slex.feature_search_photos.data.QuerySearch
 
@@ -28,7 +28,7 @@ import st.slex.feature_search_photos.data.QuerySearch
 @Composable
 fun SearchPhotosScreen(
     arguments: List<String>,
-    viewModel: SearchViewModel = hiltViewModel(),
+    viewModel: SearchViewModel = koinViewModel(),
     onProfileClick: (username: String) -> Unit,
     onImageClick: (url: String, imageId: String) -> Unit
 ) {

@@ -41,13 +41,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.Glide
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.Dispatchers
+import org.koin.androidx.compose.koinViewModel
 import st.slex.core.Resource
 import st.slex.core.UtilsExtensions.convertUrl
 import st.slex.core_network.model.ui.image.ImageModel
@@ -58,7 +58,7 @@ import st.slex.feature_photo_detail.R
 @Composable
 fun ImageDetailScreen(
     arguments: List<String>,
-    viewModel: DetailPhotoViewModel = hiltViewModel(),
+    viewModel: DetailPhotoViewModel = koinViewModel(),
     onImageClick: (url: String) -> Unit,
     onTagClick: (tag: String) -> Unit,
     onProfileClick: (username: String) -> Unit

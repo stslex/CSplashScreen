@@ -12,16 +12,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import org.koin.androidx.compose.koinViewModel
 import st.slex.core_ui.components.setScrollingColumnAnimation
 
 
 @Composable
 fun TopicsScreen(
     state: LazyListState = rememberLazyListState(),
-    viewModel: TopicsViewModel = hiltViewModel()
+    viewModel: TopicsViewModel = koinViewModel()
 ) {
     val lazyPagingItems = viewModel.topics.collectAsLazyPagingItems()
     LazyRow(

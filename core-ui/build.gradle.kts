@@ -31,6 +31,7 @@ dependencies {
         api(androidx.paging.compose)
 
         api(landscapist.glide)
+        api(koin.compose)
 
         androidTestApi(androidx.compose.ui.test.junit4)
         androidTestApi(androidx.compose.ui.tooling)

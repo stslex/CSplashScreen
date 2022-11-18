@@ -12,6 +12,7 @@ dependencies {
         api(androidx.lifecycle.viewmodel.compose)
         api(kotlinx.coroutines.core)
         api(kotlinx.coroutines.android)
+        api(koin.android)
     }
 }
 

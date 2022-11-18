@@ -48,7 +48,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -64,6 +63,7 @@ import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 import st.slex.core.Resource
 import st.slex.core_navigation.NavHostResource
 import st.slex.core_network.model.ui.collection.CollectionModel
@@ -79,7 +79,7 @@ import st.slex.core_ui.components.checkState
 fun UserScreen(
     navController: NavController,
     arguments: List<String>,
-    viewModel: UserViewModel = hiltViewModel()
+    viewModel: UserViewModel = koinViewModel()
 ) {
     val username: String = arguments.first()
 

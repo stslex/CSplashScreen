@@ -1,9 +1,7 @@
 plugins {
     id("csplashscreen.android.application")
     id("csplashscreen.android.application.compose")
-    id("kotlin-kapt")
     id("kotlin-parcelize")
-    id("dagger.hilt.android.plugin")
 }
 
 @Suppress("UnstableApiUsage")
@@ -49,8 +47,6 @@ dependencies {
     implementation(project(":feature-search-photos"))
 
     libs.apply {
-        implementation(hilt.android.core)
-        kapt(libs.hilt.android.compiler)
         implementation(androidx.paging.runtime)
     }
 }

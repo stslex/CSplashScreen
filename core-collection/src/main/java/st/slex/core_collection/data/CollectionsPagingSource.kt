@@ -2,17 +2,14 @@ package st.slex.core_collection.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import st.slex.core_network.model.map
 import st.slex.core_network.model.remote.collection.RemoteCollectionModel
 import st.slex.core_network.model.ui.collection.CollectionModel
 import st.slex.core_network.source.interf.CollectionNetworkSource
 
-class CollectionsPagingSource @AssistedInject constructor(
+class CollectionsPagingSource(
     private val source: CollectionNetworkSource,
-    @Assisted("query") private val query: QueryCollections
+    private val query: QueryCollections
 ) : PagingSource<Int, CollectionModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, CollectionModel>): Int? {
@@ -55,9 +52,11 @@ class CollectionsPagingSource @AssistedInject constructor(
         is QueryCollections.EmptyQuery -> throw Exception("QueryCollections.EmptyQuery")
     }
 
-    @AssistedFactory
-    interface Factory {
-        fun create(@Assisted("query") query: QueryCollections): CollectionsPagingSource
+    class Factory(
+        private val source: CollectionNetworkSource
+    ) {
+        fun create(query: QueryCollections): CollectionsPagingSource =
+            CollectionsPagingSource(source, query)
     }
 
     companion object {

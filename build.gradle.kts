@@ -11,7 +11,6 @@ plugins {
 
 buildscript {
     dependencies {
-        classpath(libs.hilt.android.gradle.plugin)
         classpath(libs.android.gradlePlugin)
         classpath(libs.kotlin.gradlePlugin)
         classpath(libs.kotlin.serialization)

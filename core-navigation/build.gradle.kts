@@ -7,7 +7,6 @@ dependencies {
     implementation(project(":core-test"))
     libs.apply {
         api(androidx.navigation.compose)
-        api(hilt.navigation.compose)
     }
 }
 

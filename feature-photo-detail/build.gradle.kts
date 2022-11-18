@@ -1,9 +1,7 @@
 plugins {
     id("csplashscreen.android.library")
     id("csplashscreen.android.library.compose")
-    id("kotlin-kapt")
     id("kotlin-parcelize")
-    id("dagger.hilt.android.plugin")
 }
 
 dependencies {
@@ -12,11 +10,6 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-navigation"))
     implementation(project(":core-network"))
-
-    libs.apply {
-        implementation(hilt.android.core)
-        kapt(libs.hilt.android.compiler)
-    }
 }
 
 android {

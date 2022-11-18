@@ -4,7 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,12 +13,9 @@ import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_photos.data.QueryPhotos
 import st.slex.core_photos.ui.QueryPhotosUseCase
 import st.slex.core_ui.base.BaseViewModel
-import javax.inject.Inject
-import javax.inject.Provider
 
-@HiltViewModel
-class SingleCollectionViewModel @Inject constructor(
-    private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>
+class SingleCollectionViewModel(
+    private val queryPhotosUseCaseProvider: QueryPhotosUseCase
 ) : BaseViewModel() {
 
     private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
@@ -37,8 +33,7 @@ class SingleCollectionViewModel @Inject constructor(
     private fun newPagerPhotos(query: QueryPhotos): Pager<Int, ImageModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingPhotosSource?.invalidate()
-            val queryPhotosUseCase = queryPhotosUseCaseProvider.get()
-            queryPhotosUseCase(query).also { newPagingPhotosSource = it }
+            queryPhotosUseCaseProvider(query).also { newPagingPhotosSource = it }
         }
     }
 }

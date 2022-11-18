@@ -4,9 +4,8 @@ import androidx.paging.PagingSource
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.feature_search_photos.data.QuerySearch
 import st.slex.feature_search_photos.data.SearchRepository
-import javax.inject.Inject
 
-class QuerySearchUseCase @Inject constructor(
+class QuerySearchUseCase(
     private val repository: SearchRepository
 ) {
 
