@@ -1,4 +1,4 @@
-package st.slex.core_network.source
+package st.slex.core_network.source.real
 
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -8,6 +8,7 @@ import st.slex.core_network.model.remote.download.RemoteDownloadModel
 import st.slex.core_network.model.remote.image.RemoteImageModel
 import st.slex.core_network.service.ServiceConstants.GET_DOWNLOAD
 import st.slex.core_network.service.ServiceConstants.GET_PHOTOS
+import st.slex.core_network.source.interf.PhotoNetworkSource
 import javax.inject.Inject
 
 class PhotoNetworkSourceImpl @Inject constructor(

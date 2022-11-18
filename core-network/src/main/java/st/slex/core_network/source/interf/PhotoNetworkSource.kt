@@ -1,4 +1,4 @@
-package st.slex.core_network.source
+package st.slex.core_network.source.interf
 
 import st.slex.core_network.model.remote.download.RemoteDownloadModel
 import st.slex.core_network.model.remote.image.RemoteImageModel

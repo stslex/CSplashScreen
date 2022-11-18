@@ -8,7 +8,6 @@ import retrofit2.Retrofit
 import st.slex.core_network.service.CollectionService
 import st.slex.core_network.service.PhotosService
 import st.slex.core_network.service.SearchService
-import st.slex.core_network.service.TopicsService
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -26,8 +25,4 @@ class NetworkServiceModule {
     fun providesPhotoSearchService(retrofit: Retrofit): SearchService = retrofit.create(
         SearchService::class.java
     )
-
-    @Provides
-    fun providesTopicsService(retrofit: Retrofit): TopicsService =
-        retrofit.create(TopicsService::class.java)
 }
