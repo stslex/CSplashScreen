@@ -1,4 +1,4 @@
-package st.slex.core_network.source
+package st.slex.core_network.source.real
 
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -6,6 +6,7 @@ import io.ktor.http.appendPathSegments
 import st.slex.core_network.client.NetworkClient
 import st.slex.core_network.model.remote.user.RemoteUserModel
 import st.slex.core_network.service.ServiceConstants
+import st.slex.core_network.source.interf.UserNetworkSource
 import javax.inject.Inject
 
 class UserNetworkSourceImpl @Inject constructor(
@@ -15,6 +16,6 @@ class UserNetworkSourceImpl @Inject constructor(
     override suspend fun getUser(
         username: String
     ): RemoteUserModel = client.unsplashClient.get {
-        url.appendPathSegments(ServiceConstants.GET_USERS, username)
+        url.appendPathSegments(ServiceConstants.PATH_USERS, username)
     }.body()
 }

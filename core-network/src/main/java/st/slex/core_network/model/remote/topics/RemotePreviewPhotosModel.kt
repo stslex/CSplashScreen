@@ -1,13 +1,13 @@
 package st.slex.core_network.model.remote.topics
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import st.slex.core_network.model.remote.image.RemoteUrlsModel
 
 @Serializable
 data class RemotePreviewPhotosModel(
-    @SerializedName("id") val id: String? = "",
-    @SerializedName("created_at") val created_at: String? = "",
-    @SerializedName("updated_at") val updated_at: String? = "",
-    @SerializedName("urls") val urls: RemoteUrlsModel?
+    @SerialName("id") val id: String? = "",
+    @SerialName("created_at") val createdAt: String? = "",
+    @SerialName("updated_at") val updatedAt: String? = "",
+    @SerialName("urls") val urls: RemoteUrlsModel?
 )

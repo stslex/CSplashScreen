@@ -114,7 +114,7 @@ private fun CheckReceivedData(
             Column {
                 UserDetailImageHead(
                     username = user.username,
-                    url = user.profile_image.medium,
+                    url = user.profileImageModel.medium,
                     onProfileClick = onProfileClick,
                     onDownloadClick = { getUrlAndDownloadImage(id) }
                 )

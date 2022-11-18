@@ -25,7 +25,7 @@ fun ImageItem(
         if (isUserVisible) {
             UserImageHeadWithUserName(
                 modifier = Modifier.fillMaxWidth(),
-                url = item?.user?.profile_image?.medium.toString(),
+                url = item?.user?.profileImageModel?.medium.toString(),
                 username = item?.user?.username.toString(),
                 onProfileClick = onProfileClick
             )

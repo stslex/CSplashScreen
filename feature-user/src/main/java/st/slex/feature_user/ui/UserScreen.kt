@@ -127,9 +127,9 @@ private fun checkResultAndBind(
 private fun UserViewModel.getListOfPagesResource(
     user: UserModel
 ): List<UserPagerTabResource<out Parcelable>> = mapOf(
-    UserPagerTabResource.Photos(photos.collectAsLazyPagingItems()) to user.total_photos,
-    UserPagerTabResource.Likes(likes.collectAsLazyPagingItems()) to user.total_likes,
-    UserPagerTabResource.Collections(collections.collectAsLazyPagingItems()) to user.total_collections
+    UserPagerTabResource.Photos(photos.collectAsLazyPagingItems()) to user.totalPhotos,
+    UserPagerTabResource.Likes(likes.collectAsLazyPagingItems()) to user.totalLikes,
+    UserPagerTabResource.Collections(collections.collectAsLazyPagingItems()) to user.totalCollections
 ).filterEmptyItems()
 
 private fun Map<UserPagerTabResource<out Parcelable>, Int>.filterEmptyItems() =
@@ -141,10 +141,10 @@ fun BindUserScreenMainHeader(
     user: UserModel
 ) {
     BindUserHeader(
-        total_photos = user.total_photos,
-        total_likes = user.total_likes,
-        total_collections = user.total_collections,
-        url = user.profile_image.large
+        total_photos = user.totalPhotos,
+        total_likes = user.totalLikes,
+        total_collections = user.totalCollections,
+        url = user.profileImageModel.large
     )
     Spacer(modifier = Modifier.size(16.dp))
     Divider(modifier = Modifier.padding(start = 8.dp, end = 8.dp))

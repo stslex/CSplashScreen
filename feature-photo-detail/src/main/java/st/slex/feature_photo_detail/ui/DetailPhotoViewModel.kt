@@ -29,5 +29,5 @@ class DetailPhotoViewModel @Inject constructor(
     }
 
     fun getPhotoById(id: String): StateFlow<Resource<ImageModel>> =
-        repository.getPhotoById(id).primaryFlow
+        repository.getPhotoById(id).primaryStateFlow()
 }

@@ -5,13 +5,12 @@ import androidx.paging.PagingState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import retrofit2.HttpException
 import st.slex.core_network.model.map
 import st.slex.core_network.model.ui.image.ImageModel
-import st.slex.core_network.service.PhotosService
+import st.slex.core_network.source.interf.PagingPhotosNetworkSource
 
 class PhotosPagingSource @AssistedInject constructor(
-    private val service: PhotosService,
+    private val source: PagingPhotosNetworkSource,
     @Assisted val query: QueryPhotos
 ) : PagingSource<Int, ImageModel>() {
 
@@ -25,44 +24,36 @@ class PhotosPagingSource @AssistedInject constructor(
         if (query is QueryPhotos.EmptyQuery) {
             return LoadResult.Page(emptyList(), prevKey = null, nextKey = null)
         }
-        try {
+        return try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val pageSize = params.loadSize
 
-            val response = when (query) {
+            val photos = when (query) {
                 is QueryPhotos.AllPhotos ->
-                    service.getPhotos(pageNumber, pageSize)
+                    source.getPhotos(pageNumber, pageSize)
 
                 is QueryPhotos.CollectionPhotos ->
-                    service.getPhotos(query.query, pageNumber, pageSize)
+                    source.getCollectionPhotos(query.query, pageNumber, pageSize)
 
                 is QueryPhotos.UserPhotos -> {
-                    service.getUserPhotos(query.username, pageNumber, pageSize)
+                    source.getUserPhotos(query.username, pageNumber, pageSize)
                 }
 
                 is QueryPhotos.UserLikes -> {
-                    service.getUserLikes(query.username, pageNumber, pageSize)
+                    source.getUserLikePhotos(query.username, pageNumber, pageSize)
                 }
 
                 is QueryPhotos.TopicPhotos -> {
-                    service.getTopicPhotos(query.id, pageNumber)
+                    source.getTopicPhotos(query.id, pageNumber, pageSize)
                 }
 
                 is QueryPhotos.EmptyQuery -> {
                     return LoadResult.Invalid()
                 }
-            }
-
-            return if (response.isSuccessful) {
-                val photos = response.body()!!.map { it.map() }
-                val nextPageNumber = if (photos.isEmpty()) null else pageNumber + 1
-                val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
-                LoadResult.Page(photos, prevPageNumber, nextPageNumber)
-            } else {
-                LoadResult.Error(HttpException(response))
-            }
-        } catch (e: HttpException) {
-            return LoadResult.Error(e)
+            }.map { it.map() }
+            val nextPageNumber = if (photos.isEmpty()) null else pageNumber + 1
+            val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
+            LoadResult.Page(photos, prevPageNumber, nextPageNumber)
         } catch (e: Exception) {
             return LoadResult.Error(e)
         }

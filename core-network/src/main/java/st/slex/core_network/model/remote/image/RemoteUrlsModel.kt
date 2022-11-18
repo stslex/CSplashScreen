@@ -1,13 +1,13 @@
 package st.slex.core_network.model.remote.image
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class RemoteUrlsModel(
-    @SerializedName("raw") val raw: String,
-    @SerializedName("full") val full: String,
-    @SerializedName("regular") val regular: String,
-    @SerializedName("small") val small: String,
-    @SerializedName("thumb") val thumb: String
+    @SerialName("raw") val raw: String,
+    @SerialName("full") val full: String,
+    @SerialName("regular") val regular: String,
+    @SerialName("small") val small: String,
+    @SerialName("thumb") val thumb: String
 )

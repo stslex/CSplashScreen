@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.flow
 import st.slex.core_network.model.map
 import st.slex.core_network.model.ui.DownloadModel
 import st.slex.core_network.model.ui.image.ImageModel
-import st.slex.core_network.source.PhotoNetworkSource
+import st.slex.core_network.source.interf.PhotoNetworkSource
 import javax.inject.Inject
 
 class PhotoRepositoryImpl @Inject constructor(

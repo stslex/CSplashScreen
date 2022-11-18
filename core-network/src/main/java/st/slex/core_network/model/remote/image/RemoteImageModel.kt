@@ -1,6 +1,6 @@
 package st.slex.core_network.model.remote.image
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import st.slex.core_network.model.remote.collection.RemoteCollectionModel
 import st.slex.core_network.model.remote.statistic.RemotePhotoStatistics
@@ -8,26 +8,26 @@ import st.slex.core_network.model.remote.user.RemoteUserModel
 
 @Serializable
 class RemoteImageModel(
-    @SerializedName("id") val id: String,
-    @SerializedName("created_at") val created_at: String?,
-    @SerializedName("updated_at") val updated_at: String?,
-    @SerializedName("width") val width: Int?,
-    @SerializedName("height") val height: Int?,
-    @SerializedName("color") val color: String? = "#E0E0E0",
-    @SerializedName("blur_hash") val blur_hash: String?,
-    @SerializedName("views") val views: Int?,
-    @SerializedName("downloads") val downloads: Int?,
-    @SerializedName("likes") val likes: Int?,
-    @SerializedName("liked_by_user") var liked_by_user: Boolean?,
-    @SerializedName("description") val description: String?,
-    @SerializedName("alt_description") val alt_description: String?,
-    @SerializedName("exif") val exif: RemoteExifModel?,
-    @SerializedName("location") val location: RemoteLocationModel?,
-    @SerializedName("tags") val tags: List<RemoteTagModel>?,
-    @SerializedName("current_user_collections") val current_user_collections: List<RemoteCollectionModel>?,
-    @SerializedName("sponsorship") val sponsorship: RemoteSponsorship?,
-    @SerializedName("urls") val urls: RemoteUrlsModel,
-    @SerializedName("links") val links: RemoteLinksImageModel?,
-    @SerializedName("user") val user: RemoteUserModel?,
-    @SerializedName("statistics") val statistics: RemotePhotoStatistics?
+    @SerialName("id") val id: String,
+    @SerialName("created_at") val createdAt: String?,
+    @SerialName("updated_at") val updatedAt: String?,
+    @SerialName("width") val width: Int?,
+    @SerialName("height") val height: Int?,
+    @SerialName("color") val color: String? = "#E0E0E0",
+    @SerialName("blur_hash") val blurHash: String?,
+    @SerialName("views") val views: Int?,
+    @SerialName("downloads") val downloads: Int?,
+    @SerialName("likes") val likes: Int?,
+    @SerialName("liked_by_user") var likedByUser: Boolean?,
+    @SerialName("description") val description: String?,
+    @SerialName("alt_description") val altDescription: String?,
+    @SerialName("exif") val exif: RemoteExifModel?,
+    @SerialName("location") val location: RemoteLocationModel?,
+    @SerialName("tags") val tags: List<RemoteTagModel>?,
+    @SerialName("current_user_collections") val currentUserCollections: List<RemoteCollectionModel>?,
+    @SerialName("sponsorship") val sponsorship: RemoteSponsorship?,
+    @SerialName("urls") val urls: RemoteUrlsModel,
+    @SerialName("links") val links: RemoteLinksImageModel?,
+    @SerialName("user") val user: RemoteUserModel?,
+    @SerialName("statistics") val statistics: RemotePhotoStatistics?
 )
