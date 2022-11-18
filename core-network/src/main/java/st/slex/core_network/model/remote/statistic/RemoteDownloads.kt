@@ -1,12 +1,10 @@
 package st.slex.core_network.model.remote.statistic
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class RemoteDownloads(
-    @SerializedName("total")
-    val total: Int,
-    @SerializedName("historical")
-    val historical: RemoteHistorical
+    @SerialName("total") val total: Int,
+    @SerialName("historical") val historical: RemoteHistorical
 )

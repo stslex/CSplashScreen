@@ -16,6 +16,6 @@ class UserNetworkSourceImpl @Inject constructor(
     override suspend fun getUser(
         username: String
     ): RemoteUserModel = client.unsplashClient.get {
-        url.appendPathSegments(ServiceConstants.GET_USERS, username)
+        url.appendPathSegments(ServiceConstants.PATH_USERS, username)
     }.body()
 }

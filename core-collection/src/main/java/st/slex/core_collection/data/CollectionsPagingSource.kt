@@ -5,15 +5,13 @@ import androidx.paging.PagingState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import retrofit2.HttpException
-import retrofit2.Response
+import st.slex.core_network.model.map
 import st.slex.core_network.model.remote.collection.RemoteCollectionModel
 import st.slex.core_network.model.ui.collection.CollectionModel
-import st.slex.core_network.model.map
-import st.slex.core_network.service.CollectionService
+import st.slex.core_network.source.interf.CollectionNetworkSource
 
 class CollectionsPagingSource @AssistedInject constructor(
-    private val service: CollectionService,
+    private val source: CollectionNetworkSource,
     @Assisted("query") private val query: QueryCollections
 ) : PagingSource<Int, CollectionModel>() {
 
@@ -24,50 +22,38 @@ class CollectionsPagingSource @AssistedInject constructor(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CollectionModel> {
-        if (query is QueryCollections.EmptyQuery) {
-            return LoadResult.Page(emptyList(), prevKey = null, nextKey = null)
-        }
         try {
+            if (query is QueryCollections.EmptyQuery) {
+                return LoadResult.Page(emptyList(), prevKey = null, nextKey = null)
+            }
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val pageSize = params.loadSize
-
-            val response = queryResponse(pageNumber, pageSize)
-
-            return if (response.isSuccessful) {
-                val photos = response.body()!!.map { it.map() }
-                val nextPageNumber = if (photos.isEmpty()) null else pageNumber + 1
-                val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
-                LoadResult.Page(photos, prevPageNumber, nextPageNumber)
-            } else {
-                LoadResult.Error(HttpException(response))
-            }
-        } catch (e: HttpException) {
-            return LoadResult.Error(e)
+            val photos = getCollectionPhotos(pageNumber, pageSize).map { it.map() }
+            val nextPageNumber = if (photos.isEmpty()) null else pageNumber + 1
+            val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
+            return LoadResult.Page(photos, prevPageNumber, nextPageNumber)
         } catch (e: Exception) {
             return LoadResult.Error(e)
         }
     }
 
-    private val queryResponse: suspend (
+    private suspend fun getCollectionPhotos(
         pageNumber: Int,
         pageSize: Int
-    ) -> Response<List<RemoteCollectionModel>>
-        get() = { pageNumber, pageSize ->
-            when (query) {
-                is QueryCollections.AllCollections -> service.getCollections(
-                    page = pageNumber,
-                    pageSize = pageSize,
-                )
+    ): List<RemoteCollectionModel> = when (query) {
+        is QueryCollections.AllCollections -> source.getCollections(
+            page = pageNumber,
+            pageSize = pageSize,
+        )
 
-                is QueryCollections.UserCollections -> service.getCollections(
-                    query = query.query,
-                    page = pageNumber,
-                    pageSize = pageSize,
-                )
+        is QueryCollections.UserCollections -> source.getUserCollections(
+            username = query.query,
+            page = pageNumber,
+            pageSize = pageSize,
+        )
 
-                is QueryCollections.EmptyQuery -> Response.success(emptyList())
-            }
-        }
+        is QueryCollections.EmptyQuery -> throw Exception("QueryCollections.EmptyQuery")
+    }
 
     @AssistedFactory
     interface Factory {

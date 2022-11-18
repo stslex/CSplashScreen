@@ -28,6 +28,7 @@ class NetworkClientImpl @Inject constructor() : NetworkClient {
                 logger = Logger.DEFAULT
                 level = LogLevel.ALL
             }
+
             install(ContentNegotiation) {
                 json(
                     Json {

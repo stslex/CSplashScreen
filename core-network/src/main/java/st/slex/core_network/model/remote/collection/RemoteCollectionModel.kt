@@ -1,6 +1,6 @@
 package st.slex.core_network.model.remote.collection
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import st.slex.core_network.model.remote.image.RemoteImageModel
 import st.slex.core_network.model.remote.image.RemoteTagModel
@@ -8,34 +8,19 @@ import st.slex.core_network.model.remote.user.RemoteUserModel
 
 @Serializable
 data class RemoteCollectionModel(
-    @SerializedName("id")
-    val id: String,
-    @SerializedName("title")
-    val title: String,
-    @SerializedName("description")
-    val description: String?,
-    @SerializedName("published_at")
-    val published_at: String?,
-    @SerializedName("updated_at")
-    val updated_at: String?,
-    @SerializedName("curated")
-    val curated: Boolean?,
-    @SerializedName("featured")
-    val featured: Boolean?,
-    @SerializedName("total_photos")
-    val total_photos: Int,
-    @SerializedName("private")
-    val private: Boolean?,
-    @SerializedName("share_key")
-    val share_key: String?,
-    @SerializedName("tags")
-    val tags: List<RemoteTagModel>?,
-    @SerializedName("cover_photo")
-    val cover_photo: RemoteImageModel?,
-    @SerializedName("preview_photos")
-    val preview_photos: List<RemoteImageModel>?,
-    @SerializedName("user")
-    val user: RemoteUserModel?,
-    @SerializedName("links")
-    val links: RemoteLinksCollectionModel?
+    @SerialName("id") val id: String,
+    @SerialName("title") val title: String,
+    @SerialName("description") val description: String?,
+    @SerialName("published_at") val publishedAt: String?,
+    @SerialName("updated_at") val updatedAt: String?,
+    @SerialName("curated") val curated: Boolean?,
+    @SerialName("featured") val featured: Boolean?,
+    @SerialName("total_photos") val totalPhotos: Int,
+    @SerialName("private") val private: Boolean?,
+    @SerialName("share_key") val shareKey: String?,
+    @SerialName("tags") val tags: List<RemoteTagModel>?,
+    @SerialName("cover_photo") val coverPhoto: RemoteImageModel?,
+    @SerialName("preview_photos") val previewPhotos: List<RemoteImageModel>?,
+    @SerialName("user") val user: RemoteUserModel?,
+    @SerialName("links") val links: RemoteLinksCollectionModel?
 )

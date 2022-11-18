@@ -1,6 +1,6 @@
 package st.slex.core_network.model.remote.topics
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import st.slex.core_network.model.remote.collection.RemoteLinksCollectionModel
 import st.slex.core_network.model.remote.image.RemoteImageModel
@@ -8,20 +8,20 @@ import st.slex.core_network.model.remote.user.RemoteUserModel
 
 @Serializable
 data class RemoteTopicsModel(
-    @SerializedName("id") val id: String? = "",
-    @SerializedName("slug") val slug: String? = "",
-    @SerializedName("title") val title: String? = "",
-    @SerializedName("description") val description: String? = "",
-    @SerializedName("published_at") val published_at: String? = "",
-    @SerializedName("updated_at") val updated_at: String? = "",
-    @SerializedName("starts_at") val starts_at: String? = "",
-    @SerializedName("ends_at") val ends_at: String? = "",
-    @SerializedName("only_submissions_after") val only_submissions_after: String? = "",
-    @SerializedName("featured") val featured: String? = "",
-    @SerializedName("total_photos") val total_photos: String? = "",
-    @SerializedName("links") val links: RemoteLinksCollectionModel,
-    @SerializedName("status") val status: String? = "",
-    @SerializedName("owners") val owners: List<RemoteUserModel>?,
-    @SerializedName("cover_photo") val cover_photo: RemoteImageModel?,
-    @SerializedName("preview_photos") val preview_photos: List<RemotePreviewPhotosModel>?
+    @SerialName("id") val id: String? = "",
+    @SerialName("slug") val slug: String? = "",
+    @SerialName("title") val title: String? = "",
+    @SerialName("description") val description: String? = "",
+    @SerialName("published_at") val publishedAt: String? = "",
+    @SerialName("updated_at") val updatedAt: String? = "",
+    @SerialName("starts_at") val startsAt: String? = "",
+    @SerialName("ends_at") val endsAt: String? = "",
+    @SerialName("only_submissions_after") val onlySubmissionsAfter: String? = "",
+    @SerialName("featured") val featured: String? = "",
+    @SerialName("total_photos") val totalPhotos: String? = "",
+    @SerialName("links") val links: RemoteLinksCollectionModel,
+    @SerialName("status") val status: String? = "",
+    @SerialName("owners") val owners: List<RemoteUserModel>?,
+    @SerialName("cover_photo") val coverPhoto: RemoteImageModel?,
+    @SerialName("preview_photos") val previewPhotos: List<RemotePreviewPhotosModel>?
 )

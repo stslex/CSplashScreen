@@ -33,7 +33,7 @@ fun CollectionItem(
         if (isUserVisible) {
             UserImageHeadWithUserName(
                 modifier = Modifier.fillMaxWidth(),
-                url = item.user.profile_image.medium,
+                url = item.user.profileImageModel.medium,
                 username = item.user.username,
                 onProfileClick = onUserHeadClick
             )
@@ -41,9 +41,9 @@ fun CollectionItem(
         Spacer(modifier = Modifier.padding(4.dp))
         BindCoverImageCard(
             item.id,
-            item.cover_photo.urls.regular,
+            item.coverPhoto.urls.regular,
             item.title,
-            item.total_photos,
+            item.totalPhotos,
             onCollectionClick = onCollectionClick
         )
     }

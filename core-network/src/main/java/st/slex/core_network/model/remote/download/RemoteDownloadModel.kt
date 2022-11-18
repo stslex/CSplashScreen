@@ -1,8 +1,9 @@
 package st.slex.core_network.model.remote.download
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RemoteDownloadModel(
-    @SerializedName("url")
-    val url: String
+    @SerialName("url") val url: String
 )

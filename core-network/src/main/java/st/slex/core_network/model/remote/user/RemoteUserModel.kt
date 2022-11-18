@@ -1,53 +1,31 @@
 package st.slex.core_network.model.remote.user
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import st.slex.core_network.model.remote.image.RemoteImageModel
 
 @Serializable
 data class RemoteUserModel(
-    @SerializedName("id")
-    val id: String,
-    @SerializedName("updated_at")
-    val updated_at: String?,
-    @SerializedName("username")
-    val username: String?,
-    @SerializedName("name")
-    val name: String?,
-    @SerializedName("first_name")
-    val first_name: String?,
-    @SerializedName("last_name")
-    val last_name: String?,
-    @SerializedName("instagram_username")
-    val instagram_username: String?,
-    @SerializedName("twitter_username")
-    val twitter_username: String?,
-    @SerializedName("portfolio_url")
-    val portfolio_url: String?,
-    @SerializedName("bio")
-    val bio: String?,
-    @SerializedName("location")
-    val location: String?,
-    @SerializedName("total_likes")
-    val total_likes: Int?,
-    @SerializedName("total_photos")
-    val total_photos: Int?,
-    @SerializedName("total_collections")
-    val total_collections: Int?,
-    @SerializedName("followed_by_user")
-    val followed_by_user: Boolean?,
-    @SerializedName("followers_count")
-    val followers_count: Int?,
-    @SerializedName("following_count")
-    val following_count: Int?,
-    @SerializedName("downloads")
-    val downloads: Int?,
-    @SerializedName("profile_image")
-    val profile_image: RemoteProfileImageModel?,
-    @SerializedName("badge")
-    val badge: RemoteBadgeModel?,
-    @SerializedName("links")
-    val links: RemoteUserLinksModel?,
-    @SerializedName("photos")
-    val photos: List<RemoteImageModel>?
+    @SerialName("id") val id: String,
+    @SerialName("updated_at") val updatedAt: String?,
+    @SerialName("username") val username: String?,
+    @SerialName("name") val name: String?,
+    @SerialName("first_name") val firstName: String?,
+    @SerialName("last_name") val lastName: String?,
+    @SerialName("instagram_username") val instagramUsername: String?,
+    @SerialName("twitter_username") val twitterUsername: String?,
+    @SerialName("portfolio_url") val portfolioUrl: String?,
+    @SerialName("bio") val bio: String?,
+    @SerialName("location") val location: String?,
+    @SerialName("total_likes") val totalLikes: Int?,
+    @SerialName("total_photos") val totalPhotos: Int?,
+    @SerialName("total_collections") val totalCollections: Int?,
+    @SerialName("followed_by_user") val followedByUser: Boolean?,
+    @SerialName("followers_count") val followersCount: Int?,
+    @SerialName("following_count") val followingCount: Int?,
+    @SerialName("downloads") val downloads: Int?,
+    @SerialName("profile_image") val profileImage: RemoteProfileImageModel?,
+    @SerialName("badge") val badge: RemoteBadgeModel?,
+    @SerialName("links") val links: RemoteUserLinksModel?,
+    @SerialName("photos") val photos: List<RemoteImageModel>?
 )

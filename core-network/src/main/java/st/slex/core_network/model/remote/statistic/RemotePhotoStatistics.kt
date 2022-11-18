@@ -1,16 +1,12 @@
 package st.slex.core_network.model.remote.statistic
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class RemotePhotoStatistics(
-    @SerializedName("id")
-    val id: String,
-    @SerializedName("downloads")
-    val downloads: RemoteDownloads,
-    @SerializedName("views")
-    val views: RemoteViews,
-    @SerializedName("likes")
-    val likes: RemoteLikes
+    @SerialName("id") val id: String,
+    @SerialName("downloads") val downloads: RemoteDownloads,
+    @SerialName("views") val views: RemoteViews,
+    @SerialName("likes") val likes: RemoteLikes
 )

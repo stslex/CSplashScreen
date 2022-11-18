@@ -1,12 +1,11 @@
 package st.slex.core_network.model.remote.image
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class RemoteImageSearchModel(
-    val total: Int?,
-    val total_pages: Int?,
-    @SerializedName("results")
-    val results: List<RemoteImageModel>
+    @SerialName("total") val total: Int?,
+    @SerialName("total_pages") val totalPages: Int?,
+    @SerialName("results") val results: List<RemoteImageModel>
 )

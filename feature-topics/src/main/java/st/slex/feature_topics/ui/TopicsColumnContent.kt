@@ -12,7 +12,7 @@ import st.slex.core_ui.components.ImageComponent
 fun topicsColumnContent(item: TopicsModel?): @Composable ColumnScope.() -> Unit = {
     TopicsTitle(title = item?.title.toString())
     ImageComponent(
-        item?.cover_photo?.urls?.regular.toString(),
+        item?.coverPhoto?.urls?.regular.toString(),
         Modifier
             .aspectRatio(1f)
             .padding(top = 32.dp)

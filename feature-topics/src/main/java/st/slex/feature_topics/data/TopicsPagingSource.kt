@@ -2,7 +2,6 @@ package st.slex.feature_topics.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import retrofit2.HttpException
 import st.slex.core_network.model.map
 import st.slex.core_network.model.ui.topics.TopicsModel
 import st.slex.core_network.source.interf.TopicsNetworkSource
@@ -26,8 +25,6 @@ class TopicsPagingSource @Inject constructor(
         val nextPageNumber = if (topics.isEmpty()) null else pageNumber + 1
         val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
         LoadResult.Page(topics, prevPageNumber, nextPageNumber)
-    } catch (e: HttpException) {
-        LoadResult.Error(e)
     } catch (e: Exception) {
         LoadResult.Error(e)
     }
