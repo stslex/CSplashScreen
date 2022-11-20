@@ -5,9 +5,8 @@ import androidx.paging.PagingState
 import st.slex.core_network.model.map
 import st.slex.core_network.model.ui.topics.TopicsModel
 import st.slex.core_network.source.interf.TopicsNetworkSource
-import javax.inject.Inject
 
-class TopicsPagingSource @Inject constructor(
+class TopicsPagingSource(
     private val topicsNetworkSource: TopicsNetworkSource
 ) : PagingSource<Int, TopicsModel>() {
 

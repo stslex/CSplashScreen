@@ -11,9 +11,10 @@ import kotlinx.coroutines.flow.map
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_search_photos.data.QuerySearch
+import st.slex.feature_search_photos.domain.SearchPhotosInteractor
 
 class SearchViewModel(
-    private val querySearchUseCaseProvider: QuerySearchUseCase,
+    private val interactor: SearchPhotosInteractor
 ) : BaseViewModel() {
 
     private val _querySearch = MutableStateFlow<QuerySearch>(QuerySearch.EmptyQuery)
@@ -26,7 +27,7 @@ class SearchViewModel(
     private fun newPagerPhotosSearch(query: QuerySearch): Pager<Int, ImageModel> {
         return Pager(PagingConfig(5, enablePlaceholders = false)) {
             newPagingPhotosSearchSource?.invalidate()
-            querySearchUseCaseProvider(query).also { newPagingPhotosSearchSource = it }
+            interactor.getSearchPhotosPaging(query).also { newPagingPhotosSearchSource = it }
         }
     }
 

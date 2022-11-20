@@ -13,20 +13,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import st.slex.core.Resource
 import st.slex.core_collection.data.QueryCollections
-import st.slex.core_collection.ui.QueryCollectionsUseCase
 import st.slex.core_network.model.ui.collection.CollectionModel
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_photos.data.QueryPhotos
-import st.slex.core_photos.ui.QueryPhotosUseCase
 import st.slex.core_ui.base.BaseViewModel
-import st.slex.feature_user.data.UserRepository
-import javax.inject.Inject
+import st.slex.feature_user.domain.UserInteractor
 
-class UserViewModel @Inject constructor(
-    private val repository: UserRepository,
-    private val queryPhotosUseCaseProvider: QueryPhotosUseCase,
-    private val queryCollectionsUseCaseProvider: QueryCollectionsUseCase
+class UserViewModel(
+    private val interactor: UserInteractor
 ) : BaseViewModel() {
 
     fun setAllQueries(username: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -36,7 +31,7 @@ class UserViewModel @Inject constructor(
     }
 
     fun getUser(username: String): StateFlow<Resource<UserModel>> =
-        repository.getUser(username).primaryStateFlow()
+        interactor.getUser(username).primaryStateFlow()
 
     private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()
@@ -65,21 +60,21 @@ class UserViewModel @Inject constructor(
     private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingCollectionsSource?.invalidate()
-            queryCollectionsUseCaseProvider(query).also { newPagingCollectionsSource = it }
+            interactor.getCollectionsPagingSource(query).also { newPagingCollectionsSource = it }
         }
     }
 
     private fun newPagerPhotos(query: QueryPhotos): Pager<Int, ImageModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingPhotosSource?.invalidate()
-            queryPhotosUseCaseProvider(query).also { newPagingPhotosSource = it }
+            interactor.getPhotosPagingSource(query).also { newPagingPhotosSource = it }
         }
     }
 
     private fun newPagerLikes(query: QueryPhotos): Pager<Int, ImageModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingLikesSource?.invalidate()
-            queryPhotosUseCaseProvider(query).also { newPagingLikesSource = it }
+            interactor.getPhotosPagingSource(query).also { newPagingLikesSource = it }
         }
     }
 }

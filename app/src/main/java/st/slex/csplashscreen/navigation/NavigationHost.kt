@@ -35,18 +35,7 @@ private fun builder(
     modifier: Modifier = Modifier
 ): NavGraphBuilder.() -> Unit = {
 
-    homeGraph(
-        modifier = modifier,
-        onProfileClick = { username ->
-            navController.navigate("${NavHostResource.UserScreen.destination}/$username")
-        },
-        onCollectionClick = { id ->
-            navController.navigate("${NavHostResource.CollectionScreen.destination}/$id")
-        },
-        onImageClick = { url, id ->
-            navController.navigate("${NavHostResource.ImageDetailScreen.destination}/$url/$id")
-        }
-    )
+    homeGraph(modifier = modifier)
 
     create(NavHostResource.ImageDetailScreen) { arguments ->
         ImageDetailScreen(
