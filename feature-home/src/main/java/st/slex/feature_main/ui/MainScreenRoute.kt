@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -18,7 +18,7 @@ fun MainScreenRoute(
     onImageClick: (url: String, imageId: String) -> Unit,
     onCollectionClick: (id: String) -> Unit,
     systemUiController: SystemUiController = rememberSystemUiController(),
-    viewModel: MainScreenViewModel = hiltViewModel(),
+    viewModel: MainScreenViewModel = koinViewModel(),
 ) {
     val useDarkIcons = MaterialTheme.colors.isLight
     SideEffect {

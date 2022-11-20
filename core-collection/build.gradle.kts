@@ -1,8 +1,6 @@
 plugins {
     id("csplashscreen.android.library")
-    id("kotlin-kapt")
     id("kotlin-parcelize")
-    id("dagger.hilt.android.plugin")
 }
 
 dependencies {
@@ -11,8 +9,6 @@ dependencies {
     implementation(project(":core-network"))
 
     libs.apply {
-        implementation(hilt.android.core)
-        kapt(libs.hilt.android.compiler)
         implementation(libs.androidx.paging.runtime)
     }
 }

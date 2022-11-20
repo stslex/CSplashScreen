@@ -9,9 +9,11 @@ import androidx.navigation.compose.composable
 import st.slex.core_navigation.AppDestinations
 import st.slex.core_navigation.NavHostResource
 import st.slex.feature_collection.ui.CollectionScreen
+import st.slex.feature_image_raw.RawImageScreen
 import st.slex.feature_main.navigation.homeGraph
 import st.slex.feature_photo_detail.ui.ImageDetailScreen
 import st.slex.feature_search_photos.ui.SearchPhotosScreen
+import st.slex.feature_topics.ui.TopicsScreen
 import st.slex.feature_user.ui.UserScreen
 
 @Composable
@@ -62,7 +64,7 @@ private fun builder(
     }
 
     create(NavHostResource.RawImageScreen) {
-        st.slex.feature_image_raw.RawImageScreen(
+        RawImageScreen(
             navController,
             it
         )
@@ -79,7 +81,7 @@ private fun builder(
         )
     }
     create(NavHostResource.UserScreen) { UserScreen(navController, it) }
-    create(NavHostResource.TopicsScreen) { st.slex.feature_topics.ui.TopicsScreen() }
+    create(NavHostResource.TopicsScreen) { TopicsScreen() }
     create(NavHostResource.CollectionScreen) { arguments ->
         CollectionScreen(
             onProfileClick = { username ->

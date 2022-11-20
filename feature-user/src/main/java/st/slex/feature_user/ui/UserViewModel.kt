@@ -5,7 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,13 +22,11 @@ import st.slex.core_photos.ui.QueryPhotosUseCase
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_user.data.UserRepository
 import javax.inject.Inject
-import javax.inject.Provider
 
-@HiltViewModel
 class UserViewModel @Inject constructor(
     private val repository: UserRepository,
-    private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
-    private val queryCollectionsUseCaseProvider: Provider<QueryCollectionsUseCase>
+    private val queryPhotosUseCaseProvider: QueryPhotosUseCase,
+    private val queryCollectionsUseCaseProvider: QueryCollectionsUseCase
 ) : BaseViewModel() {
 
     fun setAllQueries(username: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -68,24 +65,21 @@ class UserViewModel @Inject constructor(
     private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingCollectionsSource?.invalidate()
-            val queryCollectionsUseCase = queryCollectionsUseCaseProvider.get()
-            queryCollectionsUseCase(query).also { newPagingCollectionsSource = it }
+            queryCollectionsUseCaseProvider(query).also { newPagingCollectionsSource = it }
         }
     }
 
     private fun newPagerPhotos(query: QueryPhotos): Pager<Int, ImageModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingPhotosSource?.invalidate()
-            val queryPhotosUseCase = queryPhotosUseCaseProvider.get()
-            queryPhotosUseCase(query).also { newPagingPhotosSource = it }
+            queryPhotosUseCaseProvider(query).also { newPagingPhotosSource = it }
         }
     }
 
     private fun newPagerLikes(query: QueryPhotos): Pager<Int, ImageModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingLikesSource?.invalidate()
-            val queryPhotosUseCase = queryPhotosUseCaseProvider.get()
-            queryPhotosUseCase(query).also { newPagingLikesSource = it }
+            queryPhotosUseCaseProvider(query).also { newPagingLikesSource = it }
         }
     }
 }

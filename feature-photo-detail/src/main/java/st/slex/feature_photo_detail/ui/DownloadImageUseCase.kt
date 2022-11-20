@@ -1,14 +1,13 @@
 package st.slex.feature_photo_detail.ui
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.app.DownloadManager
 import android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
+import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
 import android.net.Uri
 import android.os.Environment.DIRECTORY_DOWNLOADS
 import st.slex.core.Resource
-import javax.inject.Inject
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
@@ -16,8 +15,8 @@ interface DownloadImageUseCase {
 
     suspend fun download(url: String, fileName: String = url): Resource<Nothing?>
 
-    class Base @Inject constructor(
-        private val application: Application
+    class Base(
+        private val context: Context
     ) : DownloadImageUseCase {
 
         @SuppressLint("Range")
@@ -25,7 +24,7 @@ interface DownloadImageUseCase {
             url: String,
             fileName: String
         ): Resource<Nothing?> = suspendCoroutine { continuation ->
-            val downloadManager = application.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+            val downloadManager = context.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
             val request = DownloadManager
                 .Request(Uri.parse(url))
                 .setTitle("Downloading")

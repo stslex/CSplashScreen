@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,9 +26,9 @@ open class BaseViewModel : ViewModel() {
         }.makeStateFlow(Resource.Loading)
 
     fun <T : Any> Flow<Pager<Int, T>>.pagingFlow(): StateFlow<PagingData<T>> =
-        flatMapLatest { pager ->
-            pager.flow
-        }.makeStateFlow(PagingData.empty())
+        flatMapLatest { pager -> pager.flow }
+            .cachedIn(viewModelScope)
+            .makeStateFlow(PagingData.empty())
 
     fun <T : Any> Flow<T>.makeStateFlow(initialValue: T): StateFlow<T> =
         flowOn(Dispatchers.IO).stateIn(

@@ -2,16 +2,13 @@ package st.slex.feature_search_photos.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import st.slex.core_network.model.map
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_network.source.interf.SearchPhotosNetworkSource
 
-class SearchPagingSource @AssistedInject constructor(
+class SearchPagingSource(
     private val source: SearchPhotosNetworkSource,
-    @Assisted val query: QuerySearch
+    private val query: QuerySearch
 ) : PagingSource<Int, ImageModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, ImageModel>): Int? {
@@ -40,9 +37,10 @@ class SearchPagingSource @AssistedInject constructor(
         LoadResult.Error(e)
     }
 
-    @AssistedFactory
-    interface Factory {
-        fun create(@Assisted query: QuerySearch): SearchPagingSource
+    class Factory(
+        private val source: SearchPhotosNetworkSource
+    ) {
+        fun create(query: QuerySearch): SearchPagingSource = SearchPagingSource(source, query)
     }
 
     companion object {
