@@ -8,7 +8,6 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
-import st.slex.core_navigation.AppDestinations
 import st.slex.core_navigation.NavHostResource
 
 

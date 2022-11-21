@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import st.slex.core_navigation.AppDestinations
 import st.slex.core_navigation.NavHostResource
 import st.slex.feature_collection.ui.CollectionScreen
 import st.slex.feature_image_raw.RawImageScreen
@@ -28,7 +27,6 @@ fun NavigationHost(
         builder = builder(navController, modifier)
     )
 }
-
 
 private fun builder(
     navController: NavHostController,

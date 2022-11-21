@@ -11,10 +11,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import st.slex.core_ui.theme.AppTheme
 import st.slex.csplashscreen.di.module.ActivityModule
@@ -22,15 +27,25 @@ import st.slex.csplashscreen.navigation.NavigationHost
 
 class MainActivity : ComponentActivity() {
 
+    private val viewModel: MainActivityViewModel by viewModel()
+    private var _navController: NavHostController? = null
+    private val navController: NavHostController
+        get() = requireNotNull(_navController) { "NavController not init" }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // TODO for insets
         // WindowCompat.setDecorFitsSystemWindows(window, false)
+        viewModel.navState.onEach { navigationScreen ->
+            navController.navigate(navigationScreen.screenRoute)
+        }.launchIn(lifecycleScope)
+
         setContent {
-            val navController = rememberNavController()
+            _navController = rememberNavController()
             val systemUiController: SystemUiController = rememberSystemUiController()
             val iconsDark = !isSystemInDarkTheme()
             setUpActivityDependencies(navController)
+
             AppTheme(dynamicColor = true) {
                 SideEffect {
                     systemUiController.setSystemBarsColor(
