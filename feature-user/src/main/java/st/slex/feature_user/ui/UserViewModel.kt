@@ -45,13 +45,13 @@ class UserViewModel(
         _queryLikes.asStateFlow()
 
     val collections: StateFlow<PagingData<CollectionModel>> =
-        queryCollections.map(::newPagerCollections).pagingFlow()
+        queryCollections.map(::newPagerCollections).pagingFlow
 
     val photos: StateFlow<PagingData<ImageModel>> =
-        queryPhotos.map(::newPagerPhotos).pagingFlow()
+        queryPhotos.map(::newPagerPhotos).pagingFlow
 
     val likes: StateFlow<PagingData<ImageModel>> =
-        queryLikes.map(::newPagerLikes).pagingFlow()
+        queryLikes.map(::newPagerLikes).pagingFlow
 
     private var newPagingCollectionsSource: PagingSource<*, *>? = null
     private var newPagingPhotosSource: PagingSource<*, *>? = null

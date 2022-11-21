@@ -1,10 +1,7 @@
 package st.slex.feature_main.navigation
 
-interface MainScreenRouter {
+import st.slex.core_navigation.routers.ImageRouter
 
-    fun navToProfile(username: String)
-
-    fun navToDetailImage(url: String, imageId: String)
-
+interface MainScreenRouter : ImageRouter {
     fun navToSingleCollection(id: String)
 }

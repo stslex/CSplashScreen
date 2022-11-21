@@ -28,9 +28,7 @@ import st.slex.feature_search_photos.data.QuerySearch
 @Composable
 fun SearchPhotosScreen(
     arguments: List<String>,
-    viewModel: SearchViewModel = koinViewModel(),
-    onProfileClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit
+    viewModel: SearchViewModel = koinViewModel()
 ) {
     val query: String = arguments[0]
     val checkedQuery = if (query == " ") "" else query
@@ -48,8 +46,8 @@ fun SearchPhotosScreen(
         ListOfElements(
             modifier = Modifier.padding(paddingValues),
             lazyPagingPhotosItems = lazyPagingPhotosItems,
-            onProfileClick = onProfileClick,
-            onImageClick = onImageClick
+            onProfileClick = viewModel::onProfileClick,
+            onImageClick = viewModel::onImageClick
         )
     }
 }

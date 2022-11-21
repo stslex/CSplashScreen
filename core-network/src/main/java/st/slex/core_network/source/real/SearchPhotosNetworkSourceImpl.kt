@@ -6,15 +6,14 @@ import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import st.slex.core_network.client.NetworkClient
 import st.slex.core_network.model.remote.image.RemoteImageSearchModel
-import st.slex.core_network.service.ServiceConstants.PATH_PHOTOS
-import st.slex.core_network.service.ServiceConstants.PATH_SEARCH
-import st.slex.core_network.service.ServiceConstants.PARAMETER_QUERY
-import st.slex.core_network.service.ServiceConstants.PARAMETER_PAGE
-import st.slex.core_network.service.ServiceConstants.PARAMETER_PAGE_SIZE
 import st.slex.core_network.source.interf.SearchPhotosNetworkSource
-import javax.inject.Inject
+import st.slex.core_network.utils.ServiceConstants.PARAMETER_PAGE
+import st.slex.core_network.utils.ServiceConstants.PARAMETER_PAGE_SIZE
+import st.slex.core_network.utils.ServiceConstants.PARAMETER_QUERY
+import st.slex.core_network.utils.ServiceConstants.PATH_PHOTOS
+import st.slex.core_network.utils.ServiceConstants.PATH_SEARCH
 
-class SearchPhotosNetworkSourceImpl @Inject constructor(
+class SearchPhotosNetworkSourceImpl(
     private val client: NetworkClient
 ) : SearchPhotosNetworkSource {
 

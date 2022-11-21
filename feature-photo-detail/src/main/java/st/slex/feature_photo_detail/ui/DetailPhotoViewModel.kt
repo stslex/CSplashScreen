@@ -9,10 +9,12 @@ import st.slex.core.Resource
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_photo_detail.data.PhotoRepository
+import st.slex.feature_photo_detail.navigation.ImageDetailRouter
 
 class DetailPhotoViewModel(
     private val repository: PhotoRepository,
     private val downloadImageUseCase: DownloadImageUseCase,
+    private val router: ImageDetailRouter
 ) : BaseViewModel() {
 
     fun getUrlAndDownloadImage(id: String) {
@@ -27,4 +29,10 @@ class DetailPhotoViewModel(
 
     fun getPhotoById(id: String): StateFlow<Resource<ImageModel>> =
         repository.getPhotoById(id).primaryStateFlow()
+
+    fun onImageClick(url: String) = router::navToRawImage
+
+    fun onTagClick(tag: String) = router::onTagClick
+
+    fun onProfileClick(username: String) = router::navToProfile
 }

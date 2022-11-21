@@ -34,54 +34,13 @@ private fun builder(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ): NavGraphBuilder.() -> Unit = {
-
     homeGraph(modifier = modifier)
-
-    create(NavHostResource.ImageDetailScreen) { arguments ->
-        ImageDetailScreen(
-            onProfileClick = { username ->
-                navController.navigate("${NavHostResource.UserScreen.destination}/$username")
-            },
-            onTagClick = { tag ->
-                navController.navigate("${NavHostResource.SearchPhotosScreen.destination}/$tag")
-            },
-            onImageClick = { url ->
-                navController.navigate("${NavHostResource.RawImageScreen.destination}/$url")
-            },
-            arguments = arguments
-        )
-    }
-
-    create(NavHostResource.RawImageScreen) {
-        RawImageScreen(
-            navController,
-            it
-        )
-    }
-    create(NavHostResource.SearchPhotosScreen) { arguments ->
-        SearchPhotosScreen(
-            onProfileClick = { username ->
-                navController.navigate("${NavHostResource.UserScreen.destination}/$username")
-            },
-            onImageClick = { url, id ->
-                navController.navigate("${NavHostResource.ImageDetailScreen.destination}/$url/$id")
-            },
-            arguments = arguments
-        )
-    }
-    create(NavHostResource.UserScreen) { UserScreen(navController, it) }
+    create(NavHostResource.ImageDetailScreen) { arguments -> ImageDetailScreen(arguments = arguments) }
+    create(NavHostResource.RawImageScreen) { arguments -> RawImageScreen(navController, arguments) }
+    create(NavHostResource.SearchPhotosScreen) { arguments -> SearchPhotosScreen(arguments = arguments) }
+    create(NavHostResource.UserScreen) { arguments -> UserScreen(navController, arguments) }
     create(NavHostResource.TopicsScreen) { TopicsScreen() }
-    create(NavHostResource.CollectionScreen) { arguments ->
-        CollectionScreen(
-            onProfileClick = { username ->
-                navController.navigate("${NavHostResource.UserScreen.destination}/$username")
-            },
-            onImageClick = { url, id ->
-                navController.navigate("${NavHostResource.ImageDetailScreen.destination}/$url/$id")
-            },
-            arguments = arguments
-        )
-    }
+    create(NavHostResource.CollectionScreen) { arguments -> CollectionScreen(arguments = arguments) }
 }
 
 private inline fun NavGraphBuilder.create(

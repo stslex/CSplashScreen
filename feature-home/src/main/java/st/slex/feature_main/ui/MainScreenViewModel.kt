@@ -36,11 +36,9 @@ class MainScreenViewModel(
         }
     }
 
-    val collections: StateFlow<PagingData<CollectionModel>> =
-        newPagerCollections.flow.makeStateFlow(PagingData.empty())
+    val collections: StateFlow<PagingData<CollectionModel>> = newPagerCollections.pagingFlow
 
-    val photos: StateFlow<PagingData<ImageModel>> =
-        newPagerPhotos.flow.makeStateFlow(PagingData.empty())
+    val photos: StateFlow<PagingData<ImageModel>> = newPagerPhotos.pagingFlow
 
     private var newPagingCollectionsSource: PagingSource<*, *>? = null
     private var newPagingPhotosSource: PagingSource<*, *>? = null

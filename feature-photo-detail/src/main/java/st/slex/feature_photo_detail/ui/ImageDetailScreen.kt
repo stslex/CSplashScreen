@@ -58,10 +58,7 @@ import st.slex.feature_photo_detail.R
 @Composable
 fun ImageDetailScreen(
     arguments: List<String>,
-    viewModel: DetailPhotoViewModel = koinViewModel(),
-    onImageClick: (url: String) -> Unit,
-    onTagClick: (tag: String) -> Unit,
-    onProfileClick: (username: String) -> Unit
+    viewModel: DetailPhotoViewModel = koinViewModel()
 ) {
     val url: String = arguments[0]
     val id: String = arguments[1]
@@ -80,14 +77,14 @@ fun ImageDetailScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        item { BindTopImageHead(url = url, onImageClick = onImageClick) }
+        item { BindTopImageHead(url = url, onImageClick = viewModel::onImageClick) }
         item { Spacer(Modifier.padding(4.dp)) }
         item {
             CheckReceivedData(
                 result,
                 viewModel::getUrlAndDownloadImage,
-                onTagClick,
-                onProfileClick
+                viewModel::onTagClick,
+                viewModel::onProfileClick
             )
         }
     }

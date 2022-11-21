@@ -1,4 +1,4 @@
-package st.slex.core_network.service
+package st.slex.core_network.utils
 
 internal object ServiceConstants {
     const val PATH_PHOTOS = "photos"

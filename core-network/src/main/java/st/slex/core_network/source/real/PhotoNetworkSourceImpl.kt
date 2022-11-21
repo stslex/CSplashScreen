@@ -6,12 +6,11 @@ import io.ktor.http.appendPathSegments
 import st.slex.core_network.client.NetworkClient
 import st.slex.core_network.model.remote.download.RemoteDownloadModel
 import st.slex.core_network.model.remote.image.RemoteImageModel
-import st.slex.core_network.service.ServiceConstants.PATH_DOWNLOAD
-import st.slex.core_network.service.ServiceConstants.PATH_PHOTOS
 import st.slex.core_network.source.interf.PhotoNetworkSource
-import javax.inject.Inject
+import st.slex.core_network.utils.ServiceConstants.PATH_DOWNLOAD
+import st.slex.core_network.utils.ServiceConstants.PATH_PHOTOS
 
-class PhotoNetworkSourceImpl @Inject constructor(
+class PhotoNetworkSourceImpl(
     private val client: NetworkClient
 ) : PhotoNetworkSource {
 

@@ -9,16 +9,14 @@ import st.slex.core_ui.components.ListOfElements
 @Composable
 fun CollectionScreen(
     arguments: List<String>,
-    viewModel: SingleCollectionViewModel = koinViewModel(),
-    onProfileClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit
+    viewModel: SingleCollectionViewModel = koinViewModel()
 ) {
     val id: String = arguments.first()
     viewModel.setQueryPhotos(QueryPhotos.CollectionPhotos(id))
     ListOfElements(
         lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
-        onProfileClick = onProfileClick,
-        onImageClick = onImageClick
+        onProfileClick = viewModel::onProfileClick,
+        onImageClick = viewModel::onImageClick
     )
 }
 

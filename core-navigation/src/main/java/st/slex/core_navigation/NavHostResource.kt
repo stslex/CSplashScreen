@@ -10,18 +10,19 @@ sealed interface NavHostResource {
     val destination: String
     val arguments: List<String>
         get() = emptyList()
+
     val args: List<NamedNavArgument>
         get() = emptyList()
 
     val NavBackStackEntry.convertArgs: List<String>
-        get() = this@NavHostResource.arguments.map { arguments?.getString(it).toString() }
+        get() = this@NavHostResource.arguments.map { arguments?.getString(it).orEmpty() }
 
     val convertRoute: String
         get() = "$destination${arguments.convertHostArgumentsRoute()}"
 
     private fun List<String>.convertHostArgumentsRoute() = if (!isNullOrEmpty()) {
         joinToString(separator = "}/{", prefix = "/{", postfix = "}")
-    } else ""
+    } else String()
 
     object ImageDetailScreen : NavHostResource {
         override val destination: String = "detail"

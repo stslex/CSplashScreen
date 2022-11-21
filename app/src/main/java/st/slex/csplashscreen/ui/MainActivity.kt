@@ -11,10 +11,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.koin.core.context.loadKoinModules
 import st.slex.core_ui.theme.AppTheme
+import st.slex.csplashscreen.di.module.ActivityModule
 import st.slex.csplashscreen.navigation.NavigationHost
 
 class MainActivity : ComponentActivity() {
@@ -27,6 +30,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             val systemUiController: SystemUiController = rememberSystemUiController()
             val iconsDark = !isSystemInDarkTheme()
+            setUpActivityDependencies(navController)
             AppTheme(dynamicColor = true) {
                 SideEffect {
                     systemUiController.setSystemBarsColor(
@@ -48,6 +52,13 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    private fun setUpActivityDependencies(
+        navController: NavController
+    ) {
+        val activityModule = ActivityModule().getActivityModule(navController)
+        loadKoinModules(activityModule)
     }
 }
 

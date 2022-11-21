@@ -14,9 +14,8 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import st.slex.core.BuildConfig
-import javax.inject.Inject
 
-class NetworkClientImpl @Inject constructor() : NetworkClient {
+class NetworkClientImpl : NetworkClient {
 
     @OptIn(ExperimentalSerializationApi::class)
     override val client: HttpClient

@@ -9,20 +9,21 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import st.slex.core_navigation.routers.ImageRouter
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_photos.data.QueryPhotos
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_collection.domain.SingleCollectionInteractor
 
 class SingleCollectionViewModel(
-    private val interactor: SingleCollectionInteractor
+    private val interactor: SingleCollectionInteractor, private val router: ImageRouter
 ) : BaseViewModel() {
 
     private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()
 
     @ExperimentalCoroutinesApi
-    val photos: StateFlow<PagingData<ImageModel>> = queryPhotos.map(::newPagerPhotos).pagingFlow()
+    val photos: StateFlow<PagingData<ImageModel>> = queryPhotos.map(::newPagerPhotos).pagingFlow
 
     private var newPagingPhotosSource: PagingSource<*, *>? = null
 
@@ -35,5 +36,13 @@ class SingleCollectionViewModel(
             newPagingPhotosSource?.invalidate()
             interactor.getPhotosPagingSource(query).also { newPagingPhotosSource = it }
         }
+    }
+
+    fun onProfileClick(username: String) {
+        router.navToProfile(username)
+    }
+
+    fun onImageClick(url: String, imageId: String) {
+        router.navToDetailImage(url, imageId)
     }
 }
