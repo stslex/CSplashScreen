@@ -16,7 +16,7 @@ import st.slex.feature_search_photos.ui.SearchViewModel
 
 class ModuleFeatureSearchPhotos : AppModule {
 
-    override val module: Module = module {
+    override fun invoke(): Module = module {
         singleOf(::SearchRepositoryImpl) { bind<SearchRepository>() }
         singleOf(SearchPagingSource::Factory)
         viewModelOf(::SearchViewModel)

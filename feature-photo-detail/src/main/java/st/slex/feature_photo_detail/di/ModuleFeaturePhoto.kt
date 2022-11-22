@@ -16,7 +16,7 @@ import st.slex.feature_photo_detail.ui.DownloadImageUseCase
 
 class ModuleFeaturePhoto : AppModule {
 
-    override val module: Module = module {
+    override fun invoke(): Module = module {
         singleOf(::PhotoRepositoryImpl) { bind<PhotoRepository>() }
         factoryOf(::ImageDetailRouterImpl) { bind<ImageDetailRouter>() }
         viewModelOf(::DetailPhotoViewModel)

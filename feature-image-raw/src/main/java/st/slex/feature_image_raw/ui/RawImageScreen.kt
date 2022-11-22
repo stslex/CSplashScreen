@@ -1,4 +1,4 @@
-package st.slex.feature_image_raw
+package st.slex.feature_image_raw.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,7 +12,6 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
@@ -20,23 +19,21 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun RawImageScreen(
-    navController: NavController,
-    arguments: List<String>
+    modifier: Modifier = Modifier,
+    viewModel: RawImageViewModel
 ) {
-    val url: String = arguments[0]
-
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Color.Black)
-            .clickable { navController.popBackStack() },
+            .clickable { viewModel.popBackStack() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         GlideImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .clipToBounds(),
-            imageModel = url,
+            imageModel = viewModel.url,
             contentScale = ContentScale.FillBounds,
             circularReveal = CircularReveal(duration = 1000),
             requestBuilder = {

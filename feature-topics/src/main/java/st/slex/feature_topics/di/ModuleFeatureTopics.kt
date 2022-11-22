@@ -13,7 +13,7 @@ import st.slex.feature_topics.ui.TopicsViewModel
 
 class ModuleFeatureTopics : AppModule {
 
-    override val module: Module = module {
+    override fun invoke(): Module = module {
         singleOf(::TopicsPagingSource) { bind<PagingSource<Int, TopicsModel>>() }
         viewModelOf(::TopicsViewModel)
     }

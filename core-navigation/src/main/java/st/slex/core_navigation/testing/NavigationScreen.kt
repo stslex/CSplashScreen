@@ -8,11 +8,18 @@ sealed class NavigationScreen {
     val screenRoute: String
         get() = "${screen.route}${appArgs.argumentsForRoute}"
 
-    object Home : NavigationScreen() {
+    open val isSingleTop: Boolean
+        get() = false
+
+    data class Home(
+        private val isLaunchSingle: Boolean = true
+    ) : NavigationScreen() {
         override val screen: AppDestination
             get() = AppDestination.HOME
         override val appArgs: AppArguments.Empty
             get() = AppArguments.Empty
+        override val isSingleTop: Boolean
+            get() = isLaunchSingle
     }
 
     data class ImageDetailScreen(
@@ -50,7 +57,8 @@ sealed class NavigationScreen {
     }
 
     data class SearchPhotosScreen(
-        private val query: String
+        private val query: String,
+        private val isLaunchSingle: Boolean = true
     ) : NavigationScreen() {
 
         override val screen: AppDestination
@@ -58,6 +66,9 @@ sealed class NavigationScreen {
 
         override val appArgs: AppArguments.SearchPhotosScreen
             get() = AppArguments.SearchPhotosScreen(query)
+
+        override val isSingleTop: Boolean
+            get() = isLaunchSingle
     }
 
     data class UserScreen(
@@ -71,12 +82,24 @@ sealed class NavigationScreen {
             get() = AppArguments.UserScreen(username)
     }
 
-    object TopicsScreen : NavigationScreen() {
+    data class TopicsScreen(
+        private val isLaunchSingle: Boolean = true
+    ) : NavigationScreen() {
 
         override val screen: AppDestination
             get() = AppDestination.TOPICS
 
         override val appArgs: AppArguments.Empty
             get() = AppArguments.Empty
+
+        override val isSingleTop: Boolean
+            get() = isLaunchSingle
+    }
+
+    object PopBackStack : NavigationScreen() {
+        override val screen: AppDestination
+            get() = throw Exception("PopBackStack")
+        override val appArgs: AppArguments
+            get() = throw Exception("PopBackStack")
     }
 }

@@ -14,7 +14,7 @@ import st.slex.feature_main.ui.MainScreenViewModel
 
 class ModuleFeatureHome : AppModule {
 
-    override val module: Module = module {
+    override fun invoke(): Module = module {
         viewModelOf(::MainScreenViewModel)
         factoryOf(::MainScreenRouterImpl) { bind<MainScreenRouter>() }
         factoryOf(::MainScreenInteractorImpl) { bind<MainScreenInteractor>() }

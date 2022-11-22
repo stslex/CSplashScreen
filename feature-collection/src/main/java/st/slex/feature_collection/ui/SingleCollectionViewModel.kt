@@ -10,16 +10,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import st.slex.core_navigation.routers.ImageRouter
+import st.slex.core_navigation.testing.AppArguments
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_photos.data.QueryPhotos
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_collection.domain.SingleCollectionInteractor
 
 class SingleCollectionViewModel(
-    private val interactor: SingleCollectionInteractor, private val router: ImageRouter
+    private val interactor: SingleCollectionInteractor,
+    private val router: ImageRouter,
+    private val args: AppArguments.CollectionScreen
 ) : BaseViewModel() {
 
-    private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.EmptyQuery)
+    private val _queryPhotos =
+        MutableStateFlow<QueryPhotos>(QueryPhotos.CollectionPhotos(args.collectionId))
     private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()
 
     @ExperimentalCoroutinesApi

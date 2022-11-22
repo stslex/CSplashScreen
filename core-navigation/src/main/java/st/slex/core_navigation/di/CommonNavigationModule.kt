@@ -8,10 +8,14 @@ import st.slex.core_navigation.routers.CommonRouter
 import st.slex.core_navigation.routers.CommonRouterImpl
 import st.slex.core_navigation.routers.ImageRouter
 import st.slex.core_navigation.routers.ImageRouterImpl
+import st.slex.core_navigation.testing.AppNavigator
+import st.slex.core_navigation.testing.AppNavigatorImpl
 
 class CommonNavigationModule : AppModule {
-    override val module = module {
+
+    override fun invoke() = module {
         singleOf(::CommonRouterImpl) { bind<CommonRouter>() }
         singleOf(::ImageRouterImpl) { bind<ImageRouter>() }
+        singleOf(::AppNavigatorImpl) { bind<AppNavigator>() }
     }
 }

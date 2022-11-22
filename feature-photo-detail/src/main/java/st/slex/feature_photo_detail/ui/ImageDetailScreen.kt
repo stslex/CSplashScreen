@@ -47,7 +47,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.Dispatchers
-import org.koin.androidx.compose.koinViewModel
 import st.slex.core.Resource
 import st.slex.core.UtilsExtensions.convertUrl
 import st.slex.core_network.model.ui.image.ImageModel
@@ -57,14 +56,12 @@ import st.slex.feature_photo_detail.R
 
 @Composable
 fun ImageDetailScreen(
-    arguments: List<String>,
-    viewModel: DetailPhotoViewModel = koinViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: DetailPhotoViewModel
 ) {
-    val url: String = arguments[0]
-    val id: String = arguments[1]
 
     val result: Resource<ImageModel> by remember(viewModel) {
-        viewModel.getPhotoById(id)
+        viewModel.photoById
     }.collectAsState(
         initial = Resource.Loading,
         context = Dispatchers.IO
@@ -73,11 +70,11 @@ fun ImageDetailScreen(
     SideEffect(sideEffect())
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        item { BindTopImageHead(url = url, onImageClick = viewModel::onImageClick) }
+        item { BindTopImageHead(url = viewModel.url, onImageClick = viewModel::onImageClick) }
         item { Spacer(Modifier.padding(4.dp)) }
         item {
             CheckReceivedData(

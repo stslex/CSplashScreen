@@ -1,6 +1,6 @@
 package st.slex.core_navigation.testing
 
-enum class AppDestination(private vararg val argsNames: String) {
+enum class AppDestination(vararg val argsNames: String) {
     HOME,
     IMAGE_DETAIL("url", "imageId"),
     COLLECTION("collection_id"),
@@ -10,10 +10,10 @@ enum class AppDestination(private vararg val argsNames: String) {
     TOPICS;
 
     val route: String
-        get() = "$name$TAG_ROUTE"
-
-    val destination: String
-        get() = "$name$TAG_DESTINATION"
+        get() = StringBuilder()
+            .append(name, SEPARATOR_ROUTE, TAG_ROUTE)
+            .toString()
+            .lowercase()
 
     val navigationRoute: String
         get() = "$route${argsNames.argumentsRoute}"
@@ -26,7 +26,7 @@ enum class AppDestination(private vararg val argsNames: String) {
         }
 
     companion object {
+        private const val SEPARATOR_ROUTE = "route"
         private const val TAG_ROUTE = "route"
-        private const val TAG_DESTINATION = "destination"
     }
 }

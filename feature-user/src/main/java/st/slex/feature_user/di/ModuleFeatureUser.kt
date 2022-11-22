@@ -11,13 +11,16 @@ import st.slex.feature_user.data.UserRepository
 import st.slex.feature_user.data.UserRepositoryImpl
 import st.slex.feature_user.domain.UserInteractor
 import st.slex.feature_user.domain.UserInteractorImpl
+import st.slex.feature_user.navigation.UserRouter
+import st.slex.feature_user.navigation.UserRouterImpl
 import st.slex.feature_user.ui.UserViewModel
 
 class ModuleFeatureUser : AppModule {
 
-    override val module: Module = module {
+    override fun invoke(): Module = module {
         singleOf(::UserRepositoryImpl) { bind<UserRepository>() }
         factoryOf(::UserInteractorImpl) { bind<UserInteractor>() }
         viewModelOf(::UserViewModel)
+        singleOf(::UserRouterImpl) { bind<UserRouter>() }
     }
 }

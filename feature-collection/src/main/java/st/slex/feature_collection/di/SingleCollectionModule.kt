@@ -10,7 +10,8 @@ import st.slex.feature_collection.domain.SingleCollectionInteractorImpl
 import st.slex.feature_collection.ui.SingleCollectionViewModel
 
 class SingleCollectionModule : AppModule {
-    override val module = module {
+
+    override fun invoke() = module {
         factoryOf(::SingleCollectionInteractorImpl) { bind<SingleCollectionInteractor>() }
         viewModelOf(::SingleCollectionViewModel)
     }

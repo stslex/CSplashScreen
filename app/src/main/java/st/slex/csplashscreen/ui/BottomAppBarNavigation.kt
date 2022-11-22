@@ -6,59 +6,36 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-
-private val listOfItems: List<BottomAppBarResource> = listOf(
-    BottomAppBarResource.TopicsScreen,
-    BottomAppBarResource.MainScreen,
-    BottomAppBarResource.SearchScreen
-)
+import androidx.compose.ui.res.stringResource
 
 @Composable
-fun mainBottomAppBar(navController: NavController): @Composable () -> Unit = {
+fun mainBottomAppBar(
+    onBottomAppBarClick: (BottomAppBarResource) -> Unit
+): @Composable () -> Unit = {
     val selectedItem = remember {
-        mutableStateOf(BottomAppBarResource.MainScreen.destination)
-    }
-    val isSelected = remember {
-        mutableStateOf(false)
+        mutableStateOf(BottomAppBarResource.HOME.route)
     }
     NavigationBar(
         modifier = Modifier.fillMaxWidth()
     ) {
-        listOfItems.forEach { item ->
-            isSelected.value = selectedItem.value == item.destination
+        BottomAppBarResource.values().forEach { item ->
+            val isSelected = selectedItem.value == item.route
             NavigationBarItem(
-                selected = isSelected.value,
-                onClick = onBottomAppBarClick(navController, item, selectedItem),
-                icon = {
-                    val icon = if (isSelected.value) item.selectedIcon else item.unselectedIcon
-                    Icon(icon, item.destination)
+                selected = isSelected,
+                onClick = {
+                    selectedItem.value = item.route
+                    onBottomAppBarClick(item)
                 },
-                label = { Text(text = item.title) },
+                icon = {
+                    val icon = if (isSelected) item.selectedIcon else item.unselectedIcon
+                    Icon(icon, item.route)
+                },
+                label = { Text(text = stringResource(id = item.titleResource)) },
                 alwaysShowLabel = false
             )
         }
-    }
-}
-
-private fun onBottomAppBarClick(
-    navController: NavController,
-    item: BottomAppBarResource,
-    selectedItem: MutableState<String>
-): () -> Unit = {
-    selectedItem.value = item.destination
-    navController.navigate(item.route) {
-        navController.graph.startDestinationRoute?.let { route ->
-            popUpTo(route) {
-                inclusive = true
-                saveState = true
-            }
-        }
-        launchSingleTop = true
-        restoreState = false
     }
 }

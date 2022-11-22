@@ -15,36 +15,39 @@ sealed class AppArguments {
     }
 
     data class ImageDetailScreen(
-        private val url: String,
-        private val imageId: String
+        val url: String,
+        val imageId: String
     ) : AppArguments() {
         override val arguments: List<String>
             get() = listOf(url, imageId)
     }
 
     data class CollectionScreen(
-        private val collectionId: String
+        val collectionId: String
     ) : AppArguments() {
         override val arguments: List<String>
             get() = listOf(collectionId)
     }
 
     data class RawImageScreen(
-        private val url: String
+        val url: String
     ) : AppArguments() {
         override val arguments: List<String>
             get() = listOf(url)
     }
 
     data class SearchPhotosScreen(
-        private val query: String
+        val query: String
     ) : AppArguments() {
         override val arguments: List<String>
             get() = listOf(query)
+
+        val checkedQuery: String
+            get() = query.ifBlank { String() }
     }
 
     data class UserScreen(
-        private val username: String
+        val username: String
     ) : AppArguments() {
         override val arguments: List<String>
             get() = listOf(username)

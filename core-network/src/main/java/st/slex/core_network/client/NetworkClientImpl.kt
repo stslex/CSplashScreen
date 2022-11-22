@@ -2,6 +2,7 @@ package st.slex.core_network.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.DEFAULT
@@ -38,6 +39,8 @@ class NetworkClientImpl : NetworkClient {
                     }
                 )
             }
+
+            install(HttpCache)
         }
 
     override val unsplashClient: HttpClient

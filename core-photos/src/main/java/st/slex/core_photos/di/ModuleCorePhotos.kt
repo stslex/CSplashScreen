@@ -11,7 +11,7 @@ import st.slex.core_photos.data.PhotosRepositoryImpl
 
 class ModuleCorePhotos : AppModule {
 
-    override val module: Module = module {
+    override fun invoke(): Module = module {
         singleOf(::PhotosRepositoryImpl) { bind<PhotosRepository>() }
         singleOf(PhotosPagingSource::Factory)
     }

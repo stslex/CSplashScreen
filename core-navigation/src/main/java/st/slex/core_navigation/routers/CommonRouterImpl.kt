@@ -1,13 +1,17 @@
 package st.slex.core_navigation.routers
 
-import androidx.navigation.NavController
-import st.slex.core_navigation.NavHostResource
+import st.slex.core_navigation.testing.AppNavigator
+import st.slex.core_navigation.testing.NavigationScreen
 
 open class CommonRouterImpl(
-    private val navController: NavController
+    private val navigator: AppNavigator
 ) : CommonRouter {
 
     override fun navToProfile(username: String) {
-        navController.navigate("${NavHostResource.UserScreen.destination}/$username")
+        navigator.navigate(NavigationScreen.UserScreen(username))
+    }
+
+    override fun popBackStack() {
+        navigator.navigate(NavigationScreen.PopBackStack)
     }
 }

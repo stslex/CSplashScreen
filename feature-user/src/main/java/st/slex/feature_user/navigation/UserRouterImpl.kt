@@ -1,14 +1,14 @@
-package st.slex.feature_main.navigation
+package st.slex.feature_user.navigation
 
 import st.slex.core_navigation.routers.ImageRouterImpl
 import st.slex.core_navigation.testing.AppNavigator
 import st.slex.core_navigation.testing.NavigationScreen
 
-class MainScreenRouterImpl(
+class UserRouterImpl(
     private val navigator: AppNavigator
-) : MainScreenRouter, ImageRouterImpl(navigator) {
+) : UserRouter, ImageRouterImpl(navigator) {
 
-    override fun navToSingleCollection(id: String) {
+    override fun navToCollection(id: String) {
         navigator.navigate(NavigationScreen.CollectionScreen(id))
     }
 }

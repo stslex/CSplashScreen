@@ -1,18 +1,18 @@
 package st.slex.feature_photo_detail.navigation
 
-import androidx.navigation.NavController
-import st.slex.core_navigation.NavHostResource
 import st.slex.core_navigation.routers.CommonRouterImpl
+import st.slex.core_navigation.testing.AppNavigator
+import st.slex.core_navigation.testing.NavigationScreen
 
 class ImageDetailRouterImpl(
-    private val navController: NavController
-) : ImageDetailRouter, CommonRouterImpl(navController) {
+    private val navigator: AppNavigator
+) : ImageDetailRouter, CommonRouterImpl(navigator) {
 
     override fun onTagClick(tag: String) {
-        navController.navigate("${NavHostResource.SearchPhotosScreen.destination}/$tag")
+        navigator.navigate(NavigationScreen.SearchPhotosScreen(tag))
     }
 
     override fun navToRawImage(url: String) {
-        navController.navigate("${NavHostResource.RawImageScreen.destination}/$url")
+        navigator.navigate(NavigationScreen.RawImageScreen(url))
     }
 }

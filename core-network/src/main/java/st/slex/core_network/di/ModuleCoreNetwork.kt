@@ -22,7 +22,7 @@ import st.slex.core_network.source.real.UserNetworkSourceImpl
 
 class ModuleCoreNetwork : AppModule {
 
-    override val module: Module = module {
+    override fun invoke(): Module = module {
         singleOf(::NetworkClientImpl) { bind<NetworkClient>() }
         singleOf(::PhotoNetworkSourceImpl) { bind<PhotoNetworkSource>() }
         singleOf(::UserNetworkSourceImpl) { bind<UserNetworkSource>() }

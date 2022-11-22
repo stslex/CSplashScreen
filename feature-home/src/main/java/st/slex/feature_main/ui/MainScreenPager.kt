@@ -82,7 +82,9 @@ private fun Parcelable.SetCurrentItem(
             modifier = modifier,
             item = this,
             onUserHeadClick = onUserHeadClick,
-            onCollectionClick = onCollectionClick
+            onCollectionClick = {
+                onCollectionClick(id)
+            }
         )
     }
 }

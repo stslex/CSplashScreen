@@ -9,7 +9,8 @@ import st.slex.core_collection.data.CollectionsRepository
 import st.slex.core_collection.data.CollectionsRepositoryImpl
 
 class ModuleCoreCollection : AppModule {
-    override val module = module {
+
+    override fun invoke() = module {
         singleOf(::CollectionsRepositoryImpl) { bind<CollectionsRepository>() }
         singleOf(CollectionsPagingSource::Factory)
     }
