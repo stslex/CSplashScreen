@@ -25,10 +25,14 @@ open class BaseViewModel : ViewModel() {
             emit(Resource.Failure(Exception(exception)))
         }.makeStateFlow(Resource.Loading)
 
-    fun <T : Any> Flow<Pager<Int, T>>.pagingFlow(): StateFlow<PagingData<T>> =
-        flatMapLatest { pager -> pager.flow }
-            .cachedIn(viewModelScope)
-            .makeStateFlow(PagingData.empty())
+    val <T : Any> Pager<Int, T>.pagingFlow: StateFlow<PagingData<T>>
+        get() = flow.primaryPagingFlow
+
+    val <T : Any> Flow<Pager<Int, T>>.pagingFlow: StateFlow<PagingData<T>>
+        get() = flatMapLatest { pager -> pager.flow }.primaryPagingFlow
+
+    private val <T : Any> Flow<PagingData<T>>.primaryPagingFlow: StateFlow<PagingData<T>>
+        get() = cachedIn(viewModelScope).makeStateFlow(PagingData.empty())
 
     fun <T : Any> Flow<T>.makeStateFlow(initialValue: T): StateFlow<T> =
         flowOn(Dispatchers.IO).stateIn(

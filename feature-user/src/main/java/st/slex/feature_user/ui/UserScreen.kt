@@ -48,7 +48,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.bumptech.glide.Glide
@@ -61,11 +60,8 @@ import com.google.accompanist.pager.rememberPagerState
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 import st.slex.core.Resource
-import st.slex.core_navigation.NavHostResource
 import st.slex.core_network.model.ui.collection.CollectionModel
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
@@ -77,24 +73,26 @@ import st.slex.core_ui.components.checkState
 
 @Composable
 fun UserScreen(
-    navController: NavController,
-    arguments: List<String>,
-    viewModel: UserViewModel = koinViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: UserViewModel
 ) {
-    val username: String = arguments.first()
-
-    viewModel.setAllQueries(username = username)
-
     val userResource: Resource<UserModel> by remember(viewModel) {
-        viewModel.getUser(username = username)
+        viewModel.user
     }.collectAsState(Resource.Loading)
 
     Scaffold(
-        topBar = bindUserTopAppBar(username, navController),
+        modifier = modifier,
+        topBar = bindUserTopAppBar(
+            username = viewModel.username,
+            popBackStack = viewModel::popBackStack
+        ),
         content = checkResultAndBind(
-            userResource,
-            navController
-        ) { viewModel.getListOfPagesResource(it) }
+            userResource = userResource,
+            getListOfPagesResource = { viewModel.getListOfPagesResource(it) },
+            onUserClick = viewModel::onUserClick,
+            onCollectionClick = viewModel::onCollectionClick,
+            onImageClick = viewModel::onImageClick,
+        )
     )
 }
 
@@ -102,8 +100,10 @@ fun UserScreen(
 @Composable
 private fun checkResultAndBind(
     userResource: Resource<UserModel>,
-    navController: NavController,
     getListOfPagesResource: @Composable (UserModel) -> List<UserPagerTabResource<out Parcelable>>,
+    onUserClick: (String) -> Unit,
+    onImageClick: (url: String, id: String) -> Unit,
+    onCollectionClick: (id: String) -> Unit
 ): @Composable (PaddingValues) -> Unit = {
     when (userResource) {
         is Resource.Success -> {
@@ -112,7 +112,9 @@ private fun checkResultAndBind(
                 BindUserScreenMainHeader(user = userResource.data)
                 BindPagerWithTabs(
                     listPagesResource = listPagesResource,
-                    navController = navController
+                    onImageClick = onImageClick,
+                    onUserClick = onUserClick,
+                    onCollectionClick = onCollectionClick
                 )
             }
         }
@@ -123,7 +125,6 @@ private fun checkResultAndBind(
 }
 
 @Composable
-@ExperimentalCoroutinesApi
 private fun UserViewModel.getListOfPagesResource(
     user: UserModel
 ): List<UserPagerTabResource<out Parcelable>> = mapOf(
@@ -161,7 +162,9 @@ fun BindUserScreenMainHeader(
 private fun BindPagerWithTabs(
     listPagesResource: List<UserPagerTabResource<out Parcelable>>,
     pagerState: PagerState = rememberPagerState(),
-    navController: NavController
+    onUserClick: (String) -> Unit,
+    onImageClick: (url: String, id: String) -> Unit,
+    onCollectionClick: (id: String) -> Unit
 ) {
     PagerLaunchedEffect(pagerState = pagerState)
 
@@ -178,9 +181,9 @@ private fun BindPagerWithTabs(
             val animateModifier: Modifier =
                 Modifier.animate(this@HorizontalPager, pageNumber, listState, id)
             SetCurrentItem(
-                navController = navController,
                 modifier = animateModifier,
-                isUserVisible = isUserVisible
+                isUserVisible = isUserVisible,
+                onUserClick, onImageClick, onCollectionClick
             )
         }
 
@@ -220,51 +223,31 @@ private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerSt
 
 @Composable
 private fun Parcelable.SetCurrentItem(
-    navController: NavController,
-    modifier: Modifier,
-    isUserVisible: Boolean
+    modifier: Modifier = Modifier,
+    isUserVisible: Boolean,
+    onUserClick: (String) -> Unit,
+    onImageClick: (url: String, id: String) -> Unit,
+    onCollectionClick: (id: String) -> Unit
 ) {
     when (this) {
         is ImageModel -> ImageItem(
             item = this,
             modifier = modifier,
             isUserVisible = isUserVisible,
-            onProfileClick = onUserHeadClick(navController),
-            onImageClick = onImageClick(navController)
+            onProfileClick = onUserClick,
+            onImageClick = onImageClick
         )
 
         is CollectionModel -> CollectionItem(
             item = this,
             modifier = modifier,
             isUserVisible = isUserVisible,
-            onUserHeadClick = onUserHeadClick(navController),
-            onCollectionClick = onCollectionClick(navController)
+            onUserHeadClick = onUserClick,
+            onCollectionClick = {
+                onCollectionClick(id)
+            }
         )
     }
-}
-
-private fun onUserHeadClick(
-    navController: NavController
-): (username: String) -> Unit = { username ->
-    val destination = NavHostResource.UserScreen.destination
-    val route = "$destination/$username"
-    navController.navigate(route = route)
-}
-
-private fun onImageClick(
-    navController: NavController
-): (url: String, id: String) -> Unit = { url, id ->
-    val destination = NavHostResource.ImageDetailScreen.destination
-    val route = "$destination/$url/$id"
-    navController.navigate(route)
-}
-
-private fun onCollectionClick(
-    navController: NavController
-): (id: String) -> Unit = { id ->
-    val destination = NavHostResource.CollectionScreen.destination
-    val route = "$destination/$id"
-    navController.navigate(route)
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -388,17 +371,13 @@ fun BindUserHeader(
 @Composable
 fun bindUserTopAppBar(
     username: String,
-    navController: NavController
+    popBackStack: () -> Unit
 ): @Composable () -> Unit = {
     TopAppBar(
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(
-                onClick = {
-                    navController.popBackStack()
-                }
-            ) {
+            IconButton(onClick = popBackStack) {
                 Icon(
                     painter = rememberVectorPainter(Icons.Filled.ArrowBack),
                     contentDescription = "return"

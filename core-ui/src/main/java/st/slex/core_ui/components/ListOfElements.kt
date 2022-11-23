@@ -25,7 +25,7 @@ fun CollectionItem(
     modifier: Modifier,
     isUserVisible: Boolean = true,
     onUserHeadClick: (username: String) -> Unit,
-    onCollectionClick: (id: String) -> Unit
+    onCollectionClick: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -40,7 +40,6 @@ fun CollectionItem(
         }
         Spacer(modifier = Modifier.padding(4.dp))
         BindCoverImageCard(
-            item.id,
             item.coverPhoto.urls.regular,
             item.title,
             item.totalPhotos,
@@ -51,24 +50,17 @@ fun CollectionItem(
 
 @Composable
 fun BindCoverImageCard(
-    id: String,
     url: String,
     title: String,
     totalPhotos: Int,
-    onCollectionClick: (id: String) -> Unit
+    onCollectionClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(300.dp)
             .shadow(elevation = 0.dp)
-            .clickable {
-                //            val destination = NavHostResource.CollectionScreen.destination
-//            val route = "$destination/$id"
-//            navController.navigate(route)
-//            TODO
-                onCollectionClick(id)
-            },
+            .clickable(onClick = onCollectionClick),
         elevation = CardDefaults.cardElevation(0.dp),
     ) {
         CoverPhotoItem(url = url)

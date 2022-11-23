@@ -1,6 +1,5 @@
 package st.slex.feature_search_photos.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,20 +26,14 @@ import st.slex.feature_search_photos.data.QuerySearch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchPhotosScreen(
-    arguments: List<String>,
-    viewModel: SearchViewModel = koinViewModel(),
-    onProfileClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit
+    modifier: Modifier = Modifier,
+    viewModel: SearchViewModel = koinViewModel()
 ) {
-    val query: String = arguments[0]
-    val checkedQuery = if (query == " ") "" else query
-    viewModel.setQueryPhotosSearch(QuerySearch.SearchPhotos(checkedQuery))
     val lazyPagingPhotosItems = viewModel.photosSearch.collectAsLazyPagingItems()
-
     Scaffold(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        modifier = modifier,
         topBar = {
-            TopAppBarSearch(querySearch = checkedQuery) {
+            TopAppBarSearch(querySearch = viewModel.rowQuery) {
                 viewModel.setQueryPhotosSearch(it)
             }
         }
@@ -48,8 +41,8 @@ fun SearchPhotosScreen(
         ListOfElements(
             modifier = Modifier.padding(paddingValues),
             lazyPagingPhotosItems = lazyPagingPhotosItems,
-            onProfileClick = onProfileClick,
-            onImageClick = onImageClick
+            onProfileClick = viewModel::onProfileClick,
+            onImageClick = viewModel::onImageClick
         )
     }
 }

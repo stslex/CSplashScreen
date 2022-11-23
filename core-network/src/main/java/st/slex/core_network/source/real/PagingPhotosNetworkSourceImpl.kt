@@ -6,17 +6,16 @@ import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import st.slex.core_network.client.NetworkClient
 import st.slex.core_network.model.remote.image.RemoteImageModel
-import st.slex.core_network.service.ServiceConstants.PATH_COLLECTIONS
-import st.slex.core_network.service.ServiceConstants.PATH_LIKES
-import st.slex.core_network.service.ServiceConstants.PATH_PHOTOS
-import st.slex.core_network.service.ServiceConstants.PATH_TOPICS
-import st.slex.core_network.service.ServiceConstants.PATH_USERS
-import st.slex.core_network.service.ServiceConstants.PARAMETER_PAGE
-import st.slex.core_network.service.ServiceConstants.PARAMETER_PAGE_SIZE
 import st.slex.core_network.source.interf.PagingPhotosNetworkSource
-import javax.inject.Inject
+import st.slex.core_network.utils.ServiceConstants.PARAMETER_PAGE
+import st.slex.core_network.utils.ServiceConstants.PARAMETER_PAGE_SIZE
+import st.slex.core_network.utils.ServiceConstants.PATH_COLLECTIONS
+import st.slex.core_network.utils.ServiceConstants.PATH_LIKES
+import st.slex.core_network.utils.ServiceConstants.PATH_PHOTOS
+import st.slex.core_network.utils.ServiceConstants.PATH_TOPICS
+import st.slex.core_network.utils.ServiceConstants.PATH_USERS
 
-class PagingPhotosNetworkSourceImpl @Inject constructor(
+class PagingPhotosNetworkSourceImpl(
     private val client: NetworkClient
 ) : PagingPhotosNetworkSource {
 

@@ -1,24 +1,20 @@
 package st.slex.feature_collection.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
-import org.koin.androidx.compose.koinViewModel
-import st.slex.core_photos.data.QueryPhotos
 import st.slex.core_ui.components.ListOfElements
 
 @Composable
 fun CollectionScreen(
-    arguments: List<String>,
-    viewModel: SingleCollectionViewModel = koinViewModel(),
-    onProfileClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit
+    modifier: Modifier = Modifier,
+    viewModel: SingleCollectionViewModel
 ) {
-    val id: String = arguments.first()
-    viewModel.setQueryPhotos(QueryPhotos.CollectionPhotos(id))
     ListOfElements(
+        modifier = modifier,
         lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
-        onProfileClick = onProfileClick,
-        onImageClick = onImageClick
+        onProfileClick = viewModel::onProfileClick,
+        onImageClick = viewModel::onImageClick
     )
 }
 

@@ -20,5 +20,5 @@ class TopicsViewModel(
         Pager(pagingConfig) { pagingSource }
     }
 
-    val topics: StateFlow<PagingData<TopicsModel>> = newPager.flow.makeStateFlow(PagingData.empty())
+    val topics: StateFlow<PagingData<TopicsModel>> = newPager.pagingFlow
 }

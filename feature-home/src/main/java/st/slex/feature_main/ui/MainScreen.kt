@@ -18,9 +18,6 @@ import com.google.accompanist.pager.rememberPagerState
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    onProfileClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit,
-    onCollectionClick: (id: String) -> Unit,
     viewModel: MainScreenViewModel,
     pagerState: PagerState = rememberPagerState()
 ) {
@@ -38,9 +35,7 @@ fun MainScreen(
         MainScreenPager(
             pagesResource = pagesResource,
             pagerState = pagerState,
-            onProfileClick = onProfileClick,
-            onImageClick = onImageClick,
-            onCollectionClick = onCollectionClick
+            viewModel = viewModel
         )
     }
 }

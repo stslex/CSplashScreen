@@ -14,9 +14,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainScreenRoute(
     modifier: Modifier = Modifier,
-    onProfileClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit,
-    onCollectionClick: (id: String) -> Unit,
     systemUiController: SystemUiController = rememberSystemUiController(),
     viewModel: MainScreenViewModel = koinViewModel(),
 ) {
@@ -29,9 +26,6 @@ fun MainScreenRoute(
     }
     MainScreen(
         modifier = modifier,
-        onProfileClick = onProfileClick,
-        onImageClick = onImageClick,
-        onCollectionClick = onCollectionClick,
         viewModel = viewModel
     )
 }

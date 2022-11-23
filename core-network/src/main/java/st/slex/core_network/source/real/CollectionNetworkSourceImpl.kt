@@ -6,14 +6,13 @@ import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import st.slex.core_network.client.NetworkClient
 import st.slex.core_network.model.remote.collection.RemoteCollectionModel
-import st.slex.core_network.service.ServiceConstants.PATH_COLLECTIONS
-import st.slex.core_network.service.ServiceConstants.PATH_USERS
-import st.slex.core_network.service.ServiceConstants.PARAMETER_PAGE
-import st.slex.core_network.service.ServiceConstants.PARAMETER_PAGE_SIZE
 import st.slex.core_network.source.interf.CollectionNetworkSource
-import javax.inject.Inject
+import st.slex.core_network.utils.ServiceConstants.PARAMETER_PAGE
+import st.slex.core_network.utils.ServiceConstants.PARAMETER_PAGE_SIZE
+import st.slex.core_network.utils.ServiceConstants.PATH_COLLECTIONS
+import st.slex.core_network.utils.ServiceConstants.PATH_USERS
 
-class CollectionNetworkSourceImpl @Inject constructor(
+class CollectionNetworkSourceImpl(
     private val client: NetworkClient
 ) : CollectionNetworkSource {
 

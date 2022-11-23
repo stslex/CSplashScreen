@@ -22,9 +22,7 @@ import st.slex.core_ui.components.checkState
 fun MainScreenPager(
     pagesResource: List<MainPagerTabResource<out Parcelable>>,
     pagerState: PagerState,
-    onProfileClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit,
-    onCollectionClick: (id: String) -> Unit
+    viewModel: MainScreenViewModel
 ) {
     HorizontalPager(
         count = pagesResource.size,
@@ -40,9 +38,9 @@ fun MainScreenPager(
             )
             SetCurrentItem(
                 modifier = animateModifier,
-                onUserHeadClick = onProfileClick,
-                onImageClick = onImageClick,
-                onCollectionClick = onCollectionClick
+                onUserHeadClick = viewModel::onProfileClick,
+                onImageClick = viewModel::onImageClick,
+                onCollectionClick = viewModel::onCollectionClick
             )
         }
 
@@ -84,7 +82,9 @@ private fun Parcelable.SetCurrentItem(
             modifier = modifier,
             item = this,
             onUserHeadClick = onUserHeadClick,
-            onCollectionClick = onCollectionClick
+            onCollectionClick = {
+                onCollectionClick(id)
+            }
         )
     }
 }

@@ -8,25 +8,31 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import st.slex.core_navigation.routers.ImageRouter
+import st.slex.core_navigation.testing.AppArguments
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_search_photos.data.QuerySearch
+import st.slex.feature_search_photos.domain.SearchPhotosInteractor
 
 class SearchViewModel(
-    private val querySearchUseCaseProvider: QuerySearchUseCase,
+    private val interactor: SearchPhotosInteractor,
+    private val router: ImageRouter,
+    private val args: AppArguments.SearchPhotosScreen
 ) : BaseViewModel() {
 
-    private val _querySearch = MutableStateFlow<QuerySearch>(QuerySearch.EmptyQuery)
+    val rowQuery = args.checkedQuery.ifBlank { String() }
+    private val _querySearch = MutableStateFlow<QuerySearch>(QuerySearch.SearchPhotos(rowQuery))
     private val querySearch: StateFlow<QuerySearch> = _querySearch.asStateFlow()
 
     val photosSearch: StateFlow<PagingData<ImageModel>> = querySearch
         .map(::newPagerPhotosSearch)
-        .pagingFlow()
+        .pagingFlow
 
     private fun newPagerPhotosSearch(query: QuerySearch): Pager<Int, ImageModel> {
         return Pager(PagingConfig(5, enablePlaceholders = false)) {
             newPagingPhotosSearchSource?.invalidate()
-            querySearchUseCaseProvider(query).also { newPagingPhotosSearchSource = it }
+            interactor.getSearchPhotosPaging(query).also { newPagingPhotosSearchSource = it }
         }
     }
 
@@ -35,4 +41,12 @@ class SearchViewModel(
     }
 
     private var newPagingPhotosSearchSource: PagingSource<*, *>? = null
+
+    fun onProfileClick(username: String) {
+        router.navToProfile(username)
+    }
+
+    fun onImageClick(url: String, imageId: String) {
+        router.navToDetailImage(url, imageId)
+    }
 }
