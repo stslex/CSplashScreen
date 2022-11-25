@@ -12,7 +12,8 @@ import st.slex.feature_photo_detail.data.PhotoRepositoryImpl
 import st.slex.feature_photo_detail.navigation.ImageDetailRouter
 import st.slex.feature_photo_detail.navigation.ImageDetailRouterImpl
 import st.slex.feature_photo_detail.ui.DetailPhotoViewModel
-import st.slex.feature_photo_detail.ui.DownloadImageUseCase
+import st.slex.feature_photo_detail.ui.download.DownloadImageUseCase
+import st.slex.feature_photo_detail.ui.download.DownloadImageUseCaseImpl
 
 class ModuleFeaturePhoto : AppModule {
 
@@ -20,6 +21,6 @@ class ModuleFeaturePhoto : AppModule {
         singleOf(::PhotoRepositoryImpl) { bind<PhotoRepository>() }
         factoryOf(::ImageDetailRouterImpl) { bind<ImageDetailRouter>() }
         viewModelOf(::DetailPhotoViewModel)
-        singleOf(DownloadImageUseCase::Base) { bind<DownloadImageUseCase>() }
+        singleOf(::DownloadImageUseCaseImpl) { bind<DownloadImageUseCase>() }
     }
 }
