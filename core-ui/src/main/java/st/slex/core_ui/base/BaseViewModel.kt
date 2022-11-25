@@ -1,10 +1,12 @@
 package st.slex.core_ui.base
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,9 +16,14 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import org.koin.core.component.getScopeName
 import st.slex.core.Resource
 
 open class BaseViewModel : ViewModel() {
+
+    val coroutineHandler = CoroutineExceptionHandler { context, throwable ->
+        onError(throwable, context.getScopeName().value)
+    }
 
     fun <T> Flow<T>.primaryStateFlow(): StateFlow<Resource<T>> =
         mapLatest<T, Resource<T>> { data ->
@@ -34,10 +41,14 @@ open class BaseViewModel : ViewModel() {
     private val <T : Any> Flow<PagingData<T>>.primaryPagingFlow: StateFlow<PagingData<T>>
         get() = cachedIn(viewModelScope).makeStateFlow(PagingData.empty())
 
-    fun <T : Any> Flow<T>.makeStateFlow(initialValue: T): StateFlow<T> =
+    private fun <T : Any> Flow<T>.makeStateFlow(initialValue: T): StateFlow<T> =
         flowOn(Dispatchers.IO).stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
             initialValue = initialValue
         )
+
+    fun onError(throwable: Throwable, localisation: String) {
+        Log.e(localisation, throwable.message, throwable.cause)
+    }
 }

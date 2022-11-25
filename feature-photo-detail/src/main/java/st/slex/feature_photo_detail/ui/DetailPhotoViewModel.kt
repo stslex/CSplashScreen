@@ -1,16 +1,16 @@
 package st.slex.feature_photo_detail.ui
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import st.slex.core.Resource
 import st.slex.core_navigation.testing.AppArguments
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_photo_detail.data.PhotoRepository
 import st.slex.feature_photo_detail.navigation.ImageDetailRouter
+import st.slex.feature_photo_detail.ui.download.DownloadImageUseCase
 
 class DetailPhotoViewModel(
     private val repository: PhotoRepository,
@@ -19,20 +19,16 @@ class DetailPhotoViewModel(
     private val args: AppArguments.ImageDetailScreen
 ) : BaseViewModel() {
 
-    val url: String
+    val imageUrl: String
         get() = args.url
 
     val photoById: StateFlow<Resource<ImageModel>>
         get() = repository.getPhotoById(args.imageId).primaryStateFlow()
 
-    fun getUrlAndDownloadImage(id: String) {
-        repository.getDownloadedUrl(id)
-            .onEach { downloadModel ->
-                downloadImageUseCase.download(downloadModel.url, id)
-            }
-            .catch {
-                it.printStackTrace()
-            }.launchIn(viewModelScope)
+    fun onDownloadImageClick(url: String) {
+        viewModelScope.launch(Dispatchers.IO + coroutineHandler) {
+            downloadImageUseCase(url, args.imageId)
+        }
     }
 
     fun onImageClick(url: String) {

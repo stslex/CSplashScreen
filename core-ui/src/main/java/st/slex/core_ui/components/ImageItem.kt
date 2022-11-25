@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import st.slex.core.UtilsExtensions.convertUrl
+import st.slex.core.UtilsExtensions.convertedUrl
 import st.slex.core_network.model.ui.image.ImageModel
 
 
@@ -34,7 +34,7 @@ fun ImageItem(
         Surface(
             modifier = Modifier.clickable {
                 val id = item?.id ?: return@clickable
-                val encodedUrl = item.urls.regular.convertUrl()
+                val encodedUrl = item.urls.regular.convertedUrl
                 onImageClick(encodedUrl, id)
             },
             content = { CoverPhotoItem(url = item?.urls?.regular.toString()) }

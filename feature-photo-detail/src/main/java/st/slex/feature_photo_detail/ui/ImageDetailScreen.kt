@@ -9,35 +9,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -48,18 +38,17 @@ import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.Dispatchers
 import st.slex.core.Resource
-import st.slex.core.UtilsExtensions.convertUrl
+import st.slex.core.UtilsExtensions.convertedUrl
 import st.slex.core_network.model.ui.image.ImageModel
-import st.slex.core_network.model.ui.image.TagModel
 import st.slex.core_ui.components.UserImageHeadWithUserName
-import st.slex.feature_photo_detail.R
+import st.slex.feature_photo_detail.ui.components.DetailImageBodyTags
+import st.slex.feature_photo_detail.ui.components.DownloadButton
 
 @Composable
 fun ImageDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: DetailPhotoViewModel
 ) {
-
     val result: Resource<ImageModel> by remember(viewModel) {
         viewModel.photoById
     }.collectAsState(
@@ -74,16 +63,13 @@ fun ImageDetailScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        item { BindTopImageHead(url = viewModel.url, onImageClick = viewModel::onImageClick) }
-        item { Spacer(Modifier.padding(4.dp)) }
         item {
-            CheckReceivedData(
-                result,
-                viewModel::getUrlAndDownloadImage,
-                viewModel::onTagClick,
-                viewModel::onProfileClick
-            )
+            BindTopImageHead(url = viewModel.imageUrl, onImageClick = viewModel::onImageClick)
         }
+        item {
+            Spacer(Modifier.padding(4.dp))
+        }
+        item(content = result.checkLoadedState(viewModel = viewModel))
     }
 }
 
@@ -95,26 +81,16 @@ private fun sideEffect(
     systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
 }
 
-@Composable
-private fun CheckReceivedData(
-    result: Resource<ImageModel>,
-    getUrlAndDownloadImage: (String) -> Unit,
-    tagClickListener: (tag: String) -> Unit,
-    onProfileClick: (username: String) -> Unit
-) {
-    when (result) {
-        is Resource.Success -> with(result.data) {
-            this.id
-            Column {
-                UserDetailImageHead(
-                    username = user.username,
-                    url = user.profileImageModel.medium,
-                    onProfileClick = onProfileClick,
-                    onDownloadClick = { getUrlAndDownloadImage(id) }
-                )
-                BindDetailScreenBody(tags = tags, tagClickListener = tagClickListener)
-            }
-        }
+private fun Resource<ImageModel>.checkLoadedState(
+    viewModel: DetailPhotoViewModel
+): @Composable LazyItemScope.() -> Unit = {
+    when (this@checkLoadedState) {
+        is Resource.Success -> BindSuccessLoaded(
+            imageModel = data,
+            onDownloadImageClick = viewModel::onDownloadImageClick,
+            onTagClick = viewModel::onTagClick,
+            onProfileClick = viewModel::onProfileClick
+        )
 
         is Resource.Loading -> BindDetailImageLoading(Modifier)
         is Resource.Failure -> BindDetailImageFailure()
@@ -122,32 +98,25 @@ private fun CheckReceivedData(
 }
 
 @Composable
-private fun BindDetailScreenBody(
-    tags: List<TagModel>,
-    tagClickListener: (tag: String) -> Unit
+private fun BindSuccessLoaded(
+    imageModel: ImageModel,
+    onProfileClick: (String) -> Unit,
+    onDownloadImageClick: (String) -> Unit,
+    onTagClick: (String) -> Unit
 ) {
-    Spacer(modifier = Modifier.size(16.dp))
-    Divider()
-    Spacer(modifier = Modifier.size(16.dp))
-    if (tags.isNotEmpty()) BindTags(tags = tags, tagClickListener = tagClickListener)
-    BindImageInformation()
-    Spacer(modifier = Modifier.size(16.dp))
-}
-
-@Composable
-private fun BindTags(
-    tags: List<TagModel>,
-    tagClickListener: (tag: String) -> Unit
-) {
-    BindDetailImageBodyTags(tags) { tag ->
-        tagClickListener(tag)
-//        val destination = NavHostResource.SearchPhotosScreen.destination
-//        val route = "$destination/$tag"
-//        navController.navigate(route)
+    Column {
+        UserDetailImageHead(
+            imageModel = imageModel,
+            onProfileClick = onProfileClick,
+            onDownloadImageClick = onDownloadImageClick
+        )
+        Divider(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp))
+        if (imageModel.tags.isNotEmpty()) {
+            DetailImageBodyTags(tags = imageModel.tags, onClick = onTagClick)
+            Divider(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp))
+        }
+        BindImageInformation()
     }
-    Spacer(modifier = Modifier.size(16.dp))
-    Divider()
-    Spacer(modifier = Modifier.size(16.dp))
 }
 
 @Composable
@@ -155,7 +124,7 @@ private fun BindImageInformation() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp),
+            .padding(16.dp),
         shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
         elevation = CardDefaults.cardElevation(16.dp)
     ) {
@@ -166,12 +135,10 @@ private fun BindImageInformation() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserDetailImageHead(
-    url: String,
-    username: String,
-    onDownloadClick: () -> Unit,
+    imageModel: ImageModel,
+    onDownloadImageClick: (url: String) -> Unit,
     onProfileClick: (username: String) -> Unit
 ) {
     ConstraintLayout(
@@ -180,44 +147,27 @@ private fun UserDetailImageHead(
             .padding(start = 8.dp, end = 8.dp)
     ) {
         val (userSurface, download) = createRefs()
-
         UserImageHeadWithUserName(
             modifier = Modifier.constrainAs(userSurface) {
                 width = Dimension.fillToConstraints
                 start.linkTo(parent.start)
                 end.linkTo(download.start)
             },
-            url = url,
-            username = username,
+            url = imageModel.user.profileImageModel.medium,
+            username = imageModel.user.username,
             onProfileClick = onProfileClick
         )
-
-        Surface(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.surface)
-                .wrapContentSize()
-                .padding(start = 8.dp, end = 8.dp)
-                .shadow(elevation = 16.dp, shape = CircleShape)
-                .constrainAs(download) {
-                    height = Dimension.fillToConstraints
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                },
-            shape = CircleShape,
-            onClick = {
-                onDownloadClick()
+        DownloadButton(
+            modifier = Modifier.constrainAs(download) {
+                height = Dimension.fillToConstraints
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+            },
+            onDownloadImageClick = {
+                onDownloadImageClick(imageModel.urls.raw)
             }
-        ) {
-            Icon(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clip(CircleShape),
-                painter = painterResource(id = R.drawable.ic_baseline_arrow_download),
-                contentDescription = "Download",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-        }
+        )
     }
 }
 
@@ -232,11 +182,7 @@ private fun BindTopImageHead(
             .height(300.dp)
             .clipToBounds()
             .clickable {
-                val encodedUrl = url.convertUrl()
-                onImageClick(encodedUrl)
-//                val destination = NavHostResource.RawImageScreen.destination
-//                val route = "$destination/$encodedUrl"
-//                navController.navigate(route)
+                onImageClick(url.convertedUrl)
             },
         imageModel = url,
         contentScale = ContentScale.FillBounds,
@@ -245,34 +191,6 @@ private fun BindTopImageHead(
             Glide.with(LocalContext.current.applicationContext).asDrawable()
         }
     )
-}
-
-@Composable
-private inline fun BindDetailImageBodyTags(
-    tags: List<TagModel>,
-    crossinline onClick: (String) -> Unit
-) {
-    LazyRow(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        items(count = tags.size) { key ->
-            Card(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clickable {
-                        onClick(tags[key].title)
-                    },
-                shape = RoundedCornerShape(8.dp),
-                elevation = CardDefaults.cardElevation(16.dp)
-            ) {
-                Text(
-                    modifier = Modifier.padding(8.dp),
-                    text = tags[key].title,
-                    maxLines = 1
-                )
-            }
-        }
-    }
 }
 
 @Composable

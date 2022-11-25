@@ -5,5 +5,6 @@ import java.nio.charset.StandardCharsets
 
 object UtilsExtensions {
 
-    fun String.convertUrl() = URLEncoder.encode(this, StandardCharsets.UTF_8.displayName())
+    val String.convertedUrl: String
+        get() = URLEncoder.encode(this, StandardCharsets.UTF_8.displayName())
 }
