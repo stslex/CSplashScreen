@@ -19,7 +19,7 @@ fun NavGraphBuilder.userGraph(
         arguments = AppDestination.USER.composableArguments
     ) { navBackStackEntry ->
         val arguments = AppDestination.USER.parseArguments(navBackStackEntry).let { args ->
-            AppArguments.SearchPhotosScreen(args[0])
+            AppArguments.UserScreen(args.first())
         }
         UserScreen(
             modifier = modifier,

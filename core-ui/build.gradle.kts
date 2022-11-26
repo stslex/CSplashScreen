@@ -15,6 +15,7 @@ dependencies {
         api(androidx.compose.ui.core)
         api(androidx.compose.material3)
         api(androidx.compose.ui.tooling.preview)
+        api(androidx.compose.ui.tooling)
 
         api(androidx.constraintlayout.compose)
 

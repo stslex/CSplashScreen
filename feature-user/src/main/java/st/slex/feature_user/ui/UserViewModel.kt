@@ -21,8 +21,8 @@ import st.slex.feature_user.navigation.UserRouter
 
 class UserViewModel(
     private val interactor: UserInteractor,
-    private val args: AppArguments.UserScreen,
-    private val router: UserRouter
+    private val router: UserRouter,
+    private val args: AppArguments.UserScreen
 ) : BaseViewModel() {
 
     val username: String

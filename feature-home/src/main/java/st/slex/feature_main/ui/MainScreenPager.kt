@@ -9,8 +9,6 @@ import androidx.paging.compose.items
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
-import st.slex.core_network.model.ui.collection.CollectionModel
-import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_ui.components.CollectionItem
 import st.slex.core_ui.components.ImageItem
 import st.slex.core_ui.components.animatePager
@@ -31,60 +29,39 @@ fun MainScreenPager(
         val listState = rememberLazyListState()
         val pagingResource = pagesResource[pageNumber]
 
-        @Composable
-        fun Parcelable.SetItemDependsOfType(id: String) {
-            val animateModifier: Modifier = Modifier.animatePager(
-                this@HorizontalPager, pageNumber, listState, id
-            )
-            SetCurrentItem(
-                modifier = animateModifier,
-                onUserHeadClick = viewModel::onProfileClick,
-                onImageClick = viewModel::onImageClick,
-                onCollectionClick = viewModel::onCollectionClick
-            )
-        }
-
         LazyColumn(state = listState) {
             when (pagingResource) {
                 is MainPagerTabResource.Photos -> {
                     items(pagingResource.pagingItems, key = { it.id }) { item ->
-                        item?.SetItemDependsOfType(id = item.id)
+                        val image = item ?: return@items
+                        ImageItem(
+                            modifier = Modifier.animatePager(
+                                this@HorizontalPager, pageNumber, listState, item.id
+                            ),
+                            item = image,
+                            onImageClick = viewModel::onImageClick,
+                            onProfileClick = viewModel::onProfileClick
+                        )
                     }
                 }
 
                 is MainPagerTabResource.Collections -> {
                     items(pagingResource.pagingItems, key = { it.id }) { item ->
-                        item?.SetItemDependsOfType(id = item.id)
+                        val collection = item ?: return@items
+                        CollectionItem(
+                            modifier = Modifier.animatePager(
+                                this@HorizontalPager, pageNumber, listState, collection.id
+                            ),
+                            item = collection,
+                            onUserHeadClick = viewModel::onProfileClick,
+                            onCollectionClick = {
+                                viewModel.onCollectionClick(collection.id)
+                            }
+                        )
                     }
                 }
             }
             pagingResource.pagingItems.checkState(this)
         }
-    }
-}
-
-@Composable
-private fun Parcelable.SetCurrentItem(
-    modifier: Modifier = Modifier,
-    onUserHeadClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit,
-    onCollectionClick: (id: String) -> Unit
-) {
-    if (this is ImageModel) {
-        ImageItem(
-            modifier = modifier,
-            item = this,
-            onImageClick = onImageClick,
-            onProfileClick = onUserHeadClick
-        )
-    } else if (this is CollectionModel) {
-        CollectionItem(
-            modifier = modifier,
-            item = this,
-            onUserHeadClick = onUserHeadClick,
-            onCollectionClick = {
-                onCollectionClick(id)
-            }
-        )
     }
 }

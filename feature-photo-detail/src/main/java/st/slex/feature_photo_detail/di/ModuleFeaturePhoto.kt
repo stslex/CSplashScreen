@@ -12,8 +12,11 @@ import st.slex.feature_photo_detail.data.PhotoRepositoryImpl
 import st.slex.feature_photo_detail.navigation.ImageDetailRouter
 import st.slex.feature_photo_detail.navigation.ImageDetailRouterImpl
 import st.slex.feature_photo_detail.ui.DetailPhotoViewModel
-import st.slex.feature_photo_detail.ui.download.DownloadImageUseCase
-import st.slex.feature_photo_detail.ui.download.DownloadImageUseCaseImpl
+import st.slex.feature_photo_detail.ui.utils.DownloadImageUseCase
+import st.slex.feature_photo_detail.ui.utils.DownloadImageUseCaseImpl
+import st.slex.feature_photo_detail.ui.utils.WallpaperCustomTarget
+import st.slex.feature_photo_detail.ui.utils.WallpaperSetUseCase
+import st.slex.feature_photo_detail.ui.utils.WallpaperSetUseCaseImpl
 
 class ModuleFeaturePhoto : AppModule {
 
@@ -21,6 +24,12 @@ class ModuleFeaturePhoto : AppModule {
         singleOf(::PhotoRepositoryImpl) { bind<PhotoRepository>() }
         factoryOf(::ImageDetailRouterImpl) { bind<ImageDetailRouter>() }
         viewModelOf(::DetailPhotoViewModel)
-        singleOf(::DownloadImageUseCaseImpl) { bind<DownloadImageUseCase>() }
+        factoryOf(::DownloadImageUseCaseImpl) { bind<DownloadImageUseCase>() }
+        factory<WallpaperSetUseCase> {
+            WallpaperSetUseCaseImpl(
+                context = get(),
+                target = WallpaperCustomTarget(get())
+            )
+        }
     }
 }
