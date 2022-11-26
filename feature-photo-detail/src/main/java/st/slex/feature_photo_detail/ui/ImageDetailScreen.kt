@@ -42,7 +42,8 @@ import st.slex.core.UtilsExtensions.convertedUrl
 import st.slex.core_network.model.ui.image.ImageModel
 import st.slex.core_ui.components.UserImageHeadWithUserName
 import st.slex.feature_photo_detail.ui.components.DetailImageBodyTags
-import st.slex.feature_photo_detail.ui.components.DownloadButton
+import st.slex.feature_photo_detail.ui.components.DownloadImageButton
+import st.slex.feature_photo_detail.ui.components.WallPaperButton
 
 @Composable
 fun ImageDetailScreen(
@@ -89,7 +90,8 @@ private fun Resource<ImageModel>.checkLoadedState(
             imageModel = data,
             onDownloadImageClick = viewModel::onDownloadImageClick,
             onTagClick = viewModel::onTagClick,
-            onProfileClick = viewModel::onProfileClick
+            onProfileClick = viewModel::onProfileClick,
+            onSetWallpaperClick = viewModel::onWallpaperSetClick
         )
 
         is Resource.Loading -> BindDetailImageLoading(Modifier)
@@ -102,13 +104,15 @@ private fun BindSuccessLoaded(
     imageModel: ImageModel,
     onProfileClick: (String) -> Unit,
     onDownloadImageClick: (String) -> Unit,
-    onTagClick: (String) -> Unit
+    onTagClick: (String) -> Unit,
+    onSetWallpaperClick: (url: String) -> Unit
 ) {
     Column {
         UserDetailImageHead(
             imageModel = imageModel,
             onProfileClick = onProfileClick,
-            onDownloadImageClick = onDownloadImageClick
+            onDownloadImageClick = onDownloadImageClick,
+            onSetWallpaperClick = onSetWallpaperClick
         )
         Divider(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp))
         if (imageModel.tags.isNotEmpty()) {
@@ -139,25 +143,26 @@ private fun BindImageInformation() {
 private fun UserDetailImageHead(
     imageModel: ImageModel,
     onDownloadImageClick: (url: String) -> Unit,
-    onProfileClick: (username: String) -> Unit
+    onProfileClick: (username: String) -> Unit,
+    onSetWallpaperClick: (url: String) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp)
     ) {
-        val (userSurface, download) = createRefs()
+        val (userSurface, wallpaper, download) = createRefs()
         UserImageHeadWithUserName(
             modifier = Modifier.constrainAs(userSurface) {
                 width = Dimension.fillToConstraints
                 start.linkTo(parent.start)
-                end.linkTo(download.start)
+                end.linkTo(wallpaper.start)
             },
             url = imageModel.user.profileImageModel.medium,
             username = imageModel.user.username,
             onProfileClick = onProfileClick
         )
-        DownloadButton(
+        DownloadImageButton(
             modifier = Modifier.constrainAs(download) {
                 height = Dimension.fillToConstraints
                 end.linkTo(parent.end)
@@ -166,6 +171,17 @@ private fun UserDetailImageHead(
             },
             onDownloadImageClick = {
                 onDownloadImageClick(imageModel.urls.raw)
+            }
+        )
+        WallPaperButton(
+            modifier = Modifier.constrainAs(wallpaper) {
+                height = Dimension.fillToConstraints
+                end.linkTo(download.start)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+            },
+            onSetWallpaperClick = {
+                onSetWallpaperClick(imageModel.urls.raw)
             }
         )
     }

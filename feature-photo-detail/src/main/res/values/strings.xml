@@ -2,4 +2,6 @@
 <resources>
     <string name="download_title">Downloading</string>
     <string name="download_description">image downloading…</string>
+    <string name="button_title_download">Download</string>
+    <string name="button_title_wallpaper">Set wallpaper</string>
 </resources>

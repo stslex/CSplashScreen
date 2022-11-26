@@ -1,6 +1,5 @@
 plugins {
     id("csplashscreen.android.library")
-    id("kotlin-parcelize")
     kotlin("plugin.serialization")
 }
 

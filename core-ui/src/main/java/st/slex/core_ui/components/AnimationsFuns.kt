@@ -37,15 +37,6 @@ fun Modifier.animatePager(scope: PagerScope, page: Int): Modifier = this.graphic
     )
 }
 
-fun LazyListState.normalizedPosition(key: String?): Float = with(layoutInfo) {
-    visibleItemsInfo.firstOrNull {
-        it.key == key
-    }?.let {
-        val center = (viewportEndOffset + viewportStartOffset - it.size) / 2F
-        (it.offset.toFloat() - center) / center
-    } ?: 0F
-}
-
 fun Modifier.setScrollingColumnAnimation(
     lazyListState: LazyListState,
     id: String?
@@ -54,4 +45,13 @@ fun Modifier.setScrollingColumnAnimation(
     alpha = value
     scaleX = value
     scaleY = value
+}
+
+fun LazyListState.normalizedPosition(key: String?): Float = with(layoutInfo) {
+    visibleItemsInfo.firstOrNull {
+        it.key == key
+    }?.let {
+        val center = (viewportEndOffset + viewportStartOffset - it.size) / 2F
+        (it.offset.toFloat() - center) / center
+    } ?: 0F
 }
