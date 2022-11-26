@@ -3,68 +3,60 @@ package st.slex.csplashscreen.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.Modifier
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavHostController
+import androidx.core.view.WindowCompat
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import st.slex.core_navigation.testing.NavigationScreen
 import st.slex.core_ui.theme.AppTheme
-import st.slex.csplashscreen.navigation.NavigationHost
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainActivityViewModel by viewModel()
-    private var _navController: NavHostController? = null
-    private val navController: NavHostController
-        get() = requireNotNull(_navController) { "NavController not init" }
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO for insets
-        // WindowCompat.setDecorFitsSystemWindows(window, false)
-        viewModel.navState.onEach(::navigationObserver).launchIn(lifecycleScope)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            _navController = rememberNavController()
-            val systemUiController: SystemUiController = rememberSystemUiController()
-            val iconsDark = !isSystemInDarkTheme()
+            val navController = rememberNavController()
+            viewModel.navState.collectAsState(initial = null).navigationObserver(navController)
+
             AppTheme(dynamicColor = true) {
-                SideEffect {
-                    systemUiController.setSystemBarsColor(
+                val systemUiController = rememberSystemUiController()
+                val isDarkTheme = isSystemInDarkTheme()
+
+                DisposableEffect(systemUiController, isDarkTheme) {
+                    systemUiController.setStatusBarColor(
                         color = Color.Transparent,
-                        darkIcons = iconsDark
+                        darkIcons = isDarkTheme.not()
                     )
+                    onDispose {}
                 }
-                Scaffold(
-                    modifier = Modifier.background(MaterialTheme.colorScheme.background),
-                    bottomBar = mainBottomAppBar(onBottomAppBarClick = ::onBottomAppBarClick),
-                    content = { paddingValues ->
-                        NavigationHost(
-                            modifier = Modifier.padding(paddingValues),
-                            navController = navController
-                        )
-                    }
+
+                InitialApp(
+                    windowsSizeClass = calculateWindowSizeClass(activity = this),
+                    navController = navController,
+                    onBottomAppbarClick = ::onBottomAppBarClick
                 )
             }
         }
     }
 
-    private fun navigationObserver(
-        navigationScreen: NavigationScreen
+    private fun State<NavigationScreen?>.navigationObserver(
+        navController: NavController
     ) {
-        when (navigationScreen) {
+        when (val navigationScreen = value ?: return) {
             is NavigationScreen.PopBackStack -> navController.popBackStack()
             else -> {
                 navController.navigate(navigationScreen.screenRoute) {

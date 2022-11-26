@@ -1,6 +1,5 @@
 package st.slex.feature_main.ui
 
-import android.os.Parcelable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -18,7 +17,7 @@ import st.slex.core_ui.components.checkState
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MainScreenPager(
-    pagesResource: List<MainPagerTabResource<out Parcelable>>,
+    pagesResource: List<MainPagerTabResource<out Any>>,
     pagerState: PagerState,
     viewModel: MainScreenViewModel
 ) {

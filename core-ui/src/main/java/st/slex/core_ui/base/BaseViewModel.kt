@@ -38,7 +38,7 @@ open class BaseViewModel : ViewModel() {
     val <T : Any> Flow<Pager<Int, T>>.pagingFlow: StateFlow<PagingData<T>>
         get() = flatMapLatest { pager -> pager.flow }.primaryPagingFlow
 
-    private val <T : Any> Flow<PagingData<T>>.primaryPagingFlow: StateFlow<PagingData<T>>
+    val <T : Any> Flow<PagingData<T>>.primaryPagingFlow: StateFlow<PagingData<T>>
         get() = cachedIn(viewModelScope).makeStateFlow(PagingData.empty())
 
     private fun <T : Any> Flow<T>.makeStateFlow(initialValue: T): StateFlow<T> =

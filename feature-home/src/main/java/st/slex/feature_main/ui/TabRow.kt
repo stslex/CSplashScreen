@@ -1,6 +1,5 @@
 package st.slex.feature_main.ui
 
-import android.os.Parcelable
 import androidx.compose.material.Tab
 import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
@@ -10,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -20,14 +20,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun TabRow(
     pagerState: PagerState,
-    listPagesResource: List<MainPagerTabResource<out Parcelable>>
+    listPagesResource: List<MainPagerTabResource<out Any>>
 ) {
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         indicator = tabIndicator(pagerState = pagerState),
         tabs = tabsContent(listPagesResource, pagerState),
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface
+        backgroundColor = Color.Transparent,
+        contentColor = MaterialTheme.colorScheme.onBackground
     )
 }
 
@@ -43,7 +43,7 @@ private fun tabIndicator(
 @Composable
 @ExperimentalPagerApi
 private fun tabsContent(
-    listPagesResource: List<MainPagerTabResource<out Parcelable>>,
+    listPagesResource: List<MainPagerTabResource<out Any>>,
     pagerState: PagerState,
     scope: CoroutineScope = rememberCoroutineScope()
 ): @Composable () -> Unit = {
@@ -59,7 +59,7 @@ private fun tabsContent(
 }
 
 @Composable
-private fun MainPagerTabResource<out Parcelable>.tabTitle(): @Composable () -> Unit = {
+private fun MainPagerTabResource<out Any>.tabTitle(): @Composable () -> Unit = {
     Text(
         text = title,
         style = MaterialTheme.typography.titleMedium,

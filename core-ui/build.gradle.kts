@@ -28,6 +28,7 @@ dependencies {
         api(accompanist.navigation.animation)
         api(accompanist.insets)
         api(accompanist.insets.ui)
+        api(androidx.compose.material3.windowsizeclass)
 
         api(androidx.paging.compose)
 

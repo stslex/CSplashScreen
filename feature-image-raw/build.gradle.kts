@@ -1,7 +1,6 @@
 plugins {
     id("csplashscreen.android.library")
     id("csplashscreen.android.library.compose")
-    id("kotlin-parcelize")
 }
 
 dependencies {
