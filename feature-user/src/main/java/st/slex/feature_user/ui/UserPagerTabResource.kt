@@ -8,18 +8,21 @@ sealed class UserPagerTabResource<T : Any>(val pagingItems: LazyPagingItems<T>) 
 
     abstract val title: String
 
-    data class Photos(val items: LazyPagingItems<ImageModel>) :
-        UserPagerTabResource<ImageModel>(items) {
+    data class Photos(
+        private val items: LazyPagingItems<ImageModel>
+    ) : UserPagerTabResource<ImageModel>(items) {
         override val title: String = "Photos"
     }
 
-    data class Likes(val items: LazyPagingItems<ImageModel>) :
-        UserPagerTabResource<ImageModel>(items) {
+    data class Likes(
+        private val items: LazyPagingItems<ImageModel>
+    ) : UserPagerTabResource<ImageModel>(items) {
         override val title: String = "Likes"
     }
 
-    data class Collections(val items: LazyPagingItems<CollectionModel>) :
-        UserPagerTabResource<CollectionModel>(items) {
+    data class Collections(
+        private val items: LazyPagingItems<CollectionModel>
+    ) : UserPagerTabResource<CollectionModel>(items) {
         override val title: String = "Collections"
     }
 }

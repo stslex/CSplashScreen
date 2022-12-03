@@ -24,6 +24,7 @@ fun NavigationHost(
         startDestination = startDestination
     ) {
         homeGraph(modifier = modifier)
+        userGraph(modifier = modifier)
         imageDetailGraph(modifier = modifier)
         rawImageGraph(modifier = modifier)
         searchPhotosGraph(modifier = modifier)

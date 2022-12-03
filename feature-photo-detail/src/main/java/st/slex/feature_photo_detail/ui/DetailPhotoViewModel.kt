@@ -10,12 +10,14 @@ import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_photo_detail.data.PhotoRepository
 import st.slex.feature_photo_detail.navigation.ImageDetailRouter
-import st.slex.feature_photo_detail.ui.download.DownloadImageUseCase
+import st.slex.feature_photo_detail.ui.utils.DownloadImageUseCase
+import st.slex.feature_photo_detail.ui.utils.WallpaperSetUseCase
 
 class DetailPhotoViewModel(
     private val repository: PhotoRepository,
     private val downloadImageUseCase: DownloadImageUseCase,
     private val router: ImageDetailRouter,
+    private val wallpaperSetUseCase: WallpaperSetUseCase,
     private val args: AppArguments.ImageDetailScreen
 ) : BaseViewModel() {
 
@@ -28,6 +30,12 @@ class DetailPhotoViewModel(
     fun onDownloadImageClick(url: String) {
         viewModelScope.launch(Dispatchers.IO + coroutineHandler) {
             downloadImageUseCase(url, args.imageId)
+        }
+    }
+
+    fun onWallpaperSetClick(url: String) {
+        viewModelScope.launch(Dispatchers.IO + coroutineHandler) {
+            wallpaperSetUseCase(url)
         }
     }
 

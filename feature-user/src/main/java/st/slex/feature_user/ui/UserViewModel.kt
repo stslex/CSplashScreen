@@ -7,6 +7,7 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import st.slex.core.Resource
 import st.slex.core_collection.data.QueryCollections
@@ -21,8 +22,8 @@ import st.slex.feature_user.navigation.UserRouter
 
 class UserViewModel(
     private val interactor: UserInteractor,
-    private val args: AppArguments.UserScreen,
-    private val router: UserRouter
+    private val router: UserRouter,
+    private val args: AppArguments.UserScreen
 ) : BaseViewModel() {
 
     val username: String
@@ -49,7 +50,9 @@ class UserViewModel(
         queryPhotos.map(::newPagerPhotos).pagingFlow
 
     val likes: StateFlow<PagingData<ImageModel>> =
-        queryLikes.map(::newPagerLikes).pagingFlow
+        queryLikes.map(::newPagerLikes).flatMapLatest { pager ->
+            pager.flow
+        }.primaryPagingFlow
 
     private var newPagingCollectionsSource: PagingSource<*, *>? = null
     private var newPagingPhotosSource: PagingSource<*, *>? = null

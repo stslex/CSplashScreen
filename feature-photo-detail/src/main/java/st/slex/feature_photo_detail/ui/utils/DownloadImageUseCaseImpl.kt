@@ -1,4 +1,4 @@
-package st.slex.feature_photo_detail.ui.download
+package st.slex.feature_photo_detail.ui.utils
 
 import android.app.DownloadManager
 import android.content.Context

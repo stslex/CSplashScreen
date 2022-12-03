@@ -26,7 +26,7 @@ enum class AppDestination(vararg val argsNames: String) {
         }
 
     companion object {
-        private const val SEPARATOR_ROUTE = "route"
+        private const val SEPARATOR_ROUTE = "_"
         private const val TAG_ROUTE = "route"
     }
 }

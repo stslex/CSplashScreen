@@ -29,6 +29,10 @@ androidx-compose-ui-core = { module = "androidx.compose.ui:ui", version.ref = "c
 androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3Compose" }
+androidx-compose-material3-windowsizeclass = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3Compose" }
+androidx-constraintlayout-compose = "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha04"
+androidx-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha01"
+androidx-activity-compose = "androidx.activity:activity-compose:1.7.0-alpha02"
 androidx-compose-constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha04"
 androidx-compose-activity = "androidx.activity:activity-compose:1.7.0-alpha02"
 androidx-compose-paging = "androidx.paging:paging-compose:1.0.0-alpha17"
@@ -103,6 +107,7 @@ compose = [
     "androidx-compose-constraintlayout",
     "androidx-compose-activity",
     "androidx-compose-paging",
+    "androidx-compose-material3-windowsizeclass"
 ]
 
 lifecycle = [

@@ -4,19 +4,23 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Surface
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import androidx.core.graphics.toColorInt
 import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_ui.theme.lighten
 
 
 @Composable
@@ -39,52 +43,89 @@ fun CollectionItem(
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
-        BindCoverImageCard(
-            item.coverPhoto.urls.regular,
-            item.title,
-            item.totalPhotos,
+
+        CollectionItemComponent(
+            url = item.coverPhoto.urls.regular,
+            title = item.title,
+            totalPhotos = item.totalPhotos,
             item.id,
-            onCollectionClick = onCollectionClick
+            onCollectionClick = onCollectionClick,
+            color = item.coverPhoto.color
         )
     }
 }
 
 @Composable
-fun BindCoverImageCard(
+fun CollectionItemComponent(
+    modifier: Modifier = Modifier,
     url: String,
     title: String,
     totalPhotos: Int,
     id: String,
-    onCollectionClick: (id: String) -> Unit
+    onCollectionClick: (id: String) -> Unit,
+    color: String
 ) {
-    Card(
-        modifier = Modifier
+    val textColor = Color(color.toColorInt())
+    ConstraintLayout(
+        modifier = modifier
             .fillMaxWidth()
             .height(300.dp)
             .shadow(elevation = 0.dp)
             .clickable(onClick = {
                 onCollectionClick(id)
-            }),
-        elevation = CardDefaults.cardElevation(0.dp),
+            })
     ) {
-        CoverPhotoItem(url = url)
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.surface
-        ) {}
+        val (coverImage, titles, blur) = createRefs()
+        CoverPhotoItem(
+            modifier = Modifier.constrainAs(coverImage) {
+                width = Dimension.matchParent
+                height = Dimension.matchParent
+            },
+            url = url
+        )
+        CoverBlurItem(
+            modifier = Modifier
+                .constrainAs(blur) {
+                    width = Dimension.fillToConstraints
+                    start.linkTo(coverImage.start)
+                    end.linkTo(coverImage.end)
+                    bottom.linkTo(coverImage.bottom)
+                }
+                .fillMaxWidth()
+                .height(100.dp)
+                .blur(50.dp),
+            url = url
+        )
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 16.dp, bottom = 16.dp),
+                .constrainAs(titles) {
+                    width = Dimension.fillToConstraints
+                    start.linkTo(blur.start)
+                    end.linkTo(blur.end)
+                    bottom.linkTo(blur.bottom)
+                    top.linkTo(blur.top)
+                }
+                .padding(start = 16.dp),
             verticalArrangement = Arrangement.Bottom
+
         ) {
-            CollectionTextCard(text = title, MaterialTheme.typography.titleMedium)
+            Text(
+                text = title,
+                textAlign = TextAlign.Start,
+                color = textColor.lighten(0.4f),
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1
+            )
             Spacer(modifier = Modifier.padding(4.dp))
-            CollectionTextCard(
+
+            Text(
                 text = "$totalPhotos Photos",
-                style = MaterialTheme.typography.titleMedium
+                textAlign = TextAlign.Start,
+                color = textColor.lighten(0.4f),
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1
             )
         }
     }
-}
 
+}

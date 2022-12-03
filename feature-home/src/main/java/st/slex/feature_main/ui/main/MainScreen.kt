@@ -2,7 +2,6 @@ package st.slex.feature_main.ui.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -24,7 +23,7 @@ fun MainScreen(
 ) {
     val pagesResource = viewModel.listOfPagesResource()
     Column(
-        modifier = modifier.background(MaterialTheme.colorScheme.background)
+        modifier = modifier
     ) {
         MainScreenTabRow(
             modifier = Modifier,
