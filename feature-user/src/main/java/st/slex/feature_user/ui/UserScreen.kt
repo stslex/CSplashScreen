@@ -2,10 +2,6 @@ package st.slex.feature_user.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -87,11 +83,10 @@ fun UserScreen(
         content = { paddingValues ->
             userResource.CheckResults(
                 onSuccess = { userModel: UserModel ->
-                    val listPagesResource = viewModel.getListOfPagesResource(userModel)
                     UserContentSuccessComponent(
                         modifier = Modifier.padding(paddingValues),
                         userModel = userModel,
-                        listPagesResource = listPagesResource,
+                        listPagesResource = viewModel.listOfPagesResource(userModel),
                         onImageClick = viewModel::onImageClick,
                         onUserClick = viewModel::onUserClick,
                         onCollectionClick = viewModel::onCollectionClick
@@ -140,7 +135,7 @@ fun BindUserScreenMainHeader(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun BindPagerWithTabs(
+fun BindPagerWithTabs(
     listPagesResource: List<UserPagerTabResource<out UIItemTypes>>,
     pagerState: PagerState = rememberPagerState(),
     onUserClick: (String) -> Unit,
@@ -217,7 +212,6 @@ private fun SetCurrentItem(
 @Composable
 private fun TabRow(
     pagerState: PagerState,
-    listPagesResource: List<UserPagerTabResource<out Any>>,
     listPagesResource: List<UserPagerTabResource<out UIItemTypes>>,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {

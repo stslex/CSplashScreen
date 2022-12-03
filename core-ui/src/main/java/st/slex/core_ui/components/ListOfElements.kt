@@ -48,7 +48,7 @@ fun CollectionItem(
             url = item.coverPhoto.urls.regular,
             title = item.title,
             totalPhotos = item.totalPhotos,
-            item.id,
+            id = item.id,
             onCollectionClick = onCollectionClick,
             color = item.coverPhoto.color
         )

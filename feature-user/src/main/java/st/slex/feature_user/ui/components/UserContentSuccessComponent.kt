@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.google.accompanist.pager.ExperimentalPagerApi
+import st.slex.core_network.model.ui.UIItemTypes
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.feature_user.ui.BindPagerWithTabs
 import st.slex.feature_user.ui.BindUserScreenMainHeader
@@ -14,7 +15,7 @@ import st.slex.feature_user.ui.UserPagerTabResource
 fun UserContentSuccessComponent(
     modifier: Modifier = Modifier,
     userModel: UserModel,
-    listPagesResource: List<UserPagerTabResource<out Any>>,
+    listPagesResource: List<UserPagerTabResource<out UIItemTypes>>,
     onImageClick: (String, String) -> Unit,
     onUserClick: (String) -> Unit,
     onCollectionClick: (String) -> Unit
