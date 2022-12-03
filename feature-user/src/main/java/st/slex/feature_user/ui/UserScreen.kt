@@ -1,7 +1,6 @@
 package st.slex.feature_user.ui
 
 import android.annotation.SuppressLint
-import android.os.Parcelable
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
@@ -32,13 +31,11 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,8 +59,9 @@ import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import st.slex.core.Resource
-import st.slex.core_network.model.ui.collection.CollectionModel
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.ImageModel
+import st.slex.core_network.model.ui.UIItemTypes
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_ui.components.CollectionItem
 import st.slex.core_ui.components.ImageItem
@@ -88,7 +86,7 @@ fun UserScreen(
         ),
         content = checkResultAndBind(
             userResource = userResource,
-            getListOfPagesResource = { viewModel.getListOfPagesResource(it) },
+            getListOfPagesResource = viewModel.listOfPagesResource,
             onUserClick = viewModel::onUserClick,
             onCollectionClick = viewModel::onCollectionClick,
             onImageClick = viewModel::onImageClick,
@@ -100,7 +98,7 @@ fun UserScreen(
 @Composable
 private fun checkResultAndBind(
     userResource: Resource<UserModel>,
-    getListOfPagesResource: @Composable (UserModel) -> List<UserPagerTabResource<out Parcelable>>,
+    getListOfPagesResource: @Composable (UserModel) -> List<UserPagerTabResource<out UIItemTypes>>,
     onUserClick: (String) -> Unit,
     onImageClick: (url: String, id: String) -> Unit,
     onCollectionClick: (id: String) -> Unit
@@ -124,18 +122,14 @@ private fun checkResultAndBind(
     }
 }
 
-@Composable
-private fun UserViewModel.getListOfPagesResource(
-    user: UserModel
-): List<UserPagerTabResource<out Parcelable>> = mapOf(
-    UserPagerTabResource.Photos(photos.collectAsLazyPagingItems()) to user.totalPhotos,
-    UserPagerTabResource.Likes(likes.collectAsLazyPagingItems()) to user.totalLikes,
-    UserPagerTabResource.Collections(collections.collectAsLazyPagingItems()) to user.totalCollections
-).filterEmptyItems()
-
-private fun Map<UserPagerTabResource<out Parcelable>, Int>.filterEmptyItems() =
-    this.filter { map -> map.value != 0 }.keys.toList()
-
+private val UserViewModel.listOfPagesResource: @Composable (UserModel) -> List<UserPagerTabResource<out UIItemTypes>>
+    get() = { user ->
+        mapOf(
+            UserPagerTabResource.Photos(photos.collectAsLazyPagingItems()) to user.totalPhotos,
+            UserPagerTabResource.Likes(likes.collectAsLazyPagingItems()) to user.totalLikes,
+            UserPagerTabResource.Collections(collections.collectAsLazyPagingItems()) to user.totalCollections
+        ).filterValues { value -> value != 0 }.keys.toList()
+    }
 
 @Composable
 fun BindUserScreenMainHeader(
@@ -160,78 +154,62 @@ fun BindUserScreenMainHeader(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun BindPagerWithTabs(
-    listPagesResource: List<UserPagerTabResource<out Parcelable>>,
+    listPagesResource: List<UserPagerTabResource<out UIItemTypes>>,
     pagerState: PagerState = rememberPagerState(),
     onUserClick: (String) -> Unit,
     onImageClick: (url: String, id: String) -> Unit,
-    onCollectionClick: (id: String) -> Unit
+    onCollectionClick: (id: String) -> Unit,
 ) {
-    PagerLaunchedEffect(pagerState = pagerState)
-
-    TabRow(pagerState = pagerState, listPagesResource = listPagesResource)
-
+    TabRow(
+        pagerState = pagerState,
+        listPagesResource = listPagesResource
+    )
     HorizontalPager(
         count = listPagesResource.size,
         state = pagerState
     ) { pageNumber ->
-        val listState = rememberLazyListState()
-
-        @Composable
-        fun Parcelable.SetItemDependsOfType(id: String, isUserVisible: Boolean) {
-            val animateModifier: Modifier =
-                Modifier.animate(this@HorizontalPager, pageNumber, listState, id)
-            SetCurrentItem(
-                modifier = animateModifier,
-                isUserVisible = isUserVisible,
-                onUserClick, onImageClick, onCollectionClick
-            )
-        }
+        val listState: LazyListState = rememberLazyListState()
 
         LazyColumn(state = listState) {
             val pagingResource = listPagesResource[pageNumber]
-            when (pagingResource) {
-                is UserPagerTabResource.Photos -> {
-                    items(pagingResource.pagingItems, key = { it.id }) { item ->
-                        item?.SetItemDependsOfType(id = item.id, isUserVisible = false)
-                    }
-                }
-
-                is UserPagerTabResource.Likes -> {
-                    items(pagingResource.pagingItems, key = { it.id }) { item ->
-                        item?.SetItemDependsOfType(id = item.id, isUserVisible = true)
-                    }
-                }
-
-                is UserPagerTabResource.Collections -> {
-                    items(pagingResource.pagingItems, key = { it.id }) { item ->
-                        item?.SetItemDependsOfType(id = item.id, isUserVisible = false)
-                    }
-                }
+            items(
+                items = pagingResource.pagingItems,
+                key = { it.itemId }
+            ) { lazyItem ->
+                val item = lazyItem ?: return@items
+                val animateModifier: Modifier =
+                    Modifier.animate(
+                        scope = this@HorizontalPager,
+                        page = pageNumber,
+                        lazyListState = listState,
+                        id = item.itemId
+                    )
+                SetCurrentItem(
+                    modifier = animateModifier,
+                    item = item,
+                    isUserVisible = pagingResource is UserPagerTabResource.Likes,
+                    onUserClick = onUserClick,
+                    onImageClick = onImageClick,
+                    onCollectionClick = onCollectionClick
+                )
             }
             pagingResource.pagingItems.checkState(this)
         }
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun PagerLaunchedEffect(pagerState: PagerState) = LaunchedEffect(pagerState) {
-    snapshotFlow { pagerState.currentPage }.collect { page ->
-        //AnalyticsService.sendPageSelectedEvent(page)
-    }
-}
-
-@Composable
-private fun Parcelable.SetCurrentItem(
+private fun SetCurrentItem(
     modifier: Modifier = Modifier,
-    isUserVisible: Boolean,
+    item: UIItemTypes,
+    isUserVisible: Boolean = true,
     onUserClick: (String) -> Unit,
     onImageClick: (url: String, id: String) -> Unit,
     onCollectionClick: (id: String) -> Unit
 ) {
-    when (this) {
+    when (item) {
         is ImageModel -> ImageItem(
-            item = this,
+            item = item,
             modifier = modifier,
             isUserVisible = isUserVisible,
             onProfileClick = onUserClick,
@@ -239,13 +217,11 @@ private fun Parcelable.SetCurrentItem(
         )
 
         is CollectionModel -> CollectionItem(
-            item = this,
+            item = item,
             modifier = modifier,
             isUserVisible = isUserVisible,
             onUserHeadClick = onUserClick,
-            onCollectionClick = {
-                onCollectionClick(id)
-            }
+            onCollectionClick = onCollectionClick
         )
     }
 }
@@ -254,7 +230,7 @@ private fun Parcelable.SetCurrentItem(
 @Composable
 private fun TabRow(
     pagerState: PagerState,
-    listPagesResource: List<UserPagerTabResource<out Parcelable>>,
+    listPagesResource: List<UserPagerTabResource<out UIItemTypes>>,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
     TabRow(

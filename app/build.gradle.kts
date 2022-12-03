@@ -1,7 +1,6 @@
 plugins {
     id("csplashscreen.android.application")
     id("csplashscreen.android.application.compose")
-    id("kotlin-parcelize")
 }
 
 @Suppress("UnstableApiUsage")

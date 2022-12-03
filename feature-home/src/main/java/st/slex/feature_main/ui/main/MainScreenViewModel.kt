@@ -1,4 +1,4 @@
-package st.slex.feature_main.ui
+package st.slex.feature_main.ui.main
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -6,8 +6,8 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.StateFlow
 import st.slex.core_collection.data.QueryCollections
-import st.slex.core_network.model.ui.collection.CollectionModel
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_photos.data.QueryPhotos
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_main.domain.MainScreenInteractor

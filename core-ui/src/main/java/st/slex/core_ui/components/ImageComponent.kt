@@ -13,13 +13,30 @@ import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun CoverPhotoItem(url: String) {
+fun CoverPhotoItem(
+    modifier: Modifier = Modifier,
+    url: String
+) {
     ImageComponent(
         url = url,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(300.dp)
             .clipToBounds()
+    )
+}
+
+@Composable
+fun CoverUserPhotoItemBlur(
+    modifier: Modifier = Modifier,
+    url: String
+) {
+    GlideImage(
+        modifier = modifier
+            .fillMaxWidth()
+            .clipToBounds(),
+        imageModel = url,
+        contentScale = ContentScale.None
     )
 }
 

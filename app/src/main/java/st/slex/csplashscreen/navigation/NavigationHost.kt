@@ -11,6 +11,7 @@ import st.slex.feature_main.navigation.homeGraph
 import st.slex.feature_photo_detail.navigation.imageDetailGraph
 import st.slex.feature_search_photos.navigation.searchPhotosGraph
 import st.slex.feature_topics.navigation.topicsGraph
+import st.slex.feature_user.navigation.userGraph
 
 @Composable
 fun NavigationHost(
@@ -28,5 +29,6 @@ fun NavigationHost(
         searchPhotosGraph(modifier = modifier)
         topicsGraph(modifier = modifier)
         singleCollectionGraph(modifier = modifier)
+        userGraph(modifier = modifier)
     }
 }

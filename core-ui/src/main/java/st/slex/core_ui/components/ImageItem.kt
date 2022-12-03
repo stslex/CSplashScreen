@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import st.slex.core.UtilsExtensions.convertedUrl
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 
 
 @Composable
@@ -21,15 +21,9 @@ fun ImageItem(
     onProfileClick: (username: String) -> Unit,
     onImageClick: (url: String, imageId: String) -> Unit
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        if (isUserVisible) {
-            UserImageHeadWithUserName(
-                modifier = Modifier.fillMaxWidth(),
-                url = item?.user?.profileImageModel?.medium.toString(),
-                username = item?.user?.username.toString(),
-                onProfileClick = onProfileClick
-            )
-        }
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
         Spacer(modifier = Modifier.padding(4.dp))
         Surface(
             modifier = Modifier.clickable {
@@ -37,7 +31,19 @@ fun ImageItem(
                 val encodedUrl = item.urls.regular.convertedUrl
                 onImageClick(encodedUrl, id)
             },
-            content = { CoverPhotoItem(url = item?.urls?.regular.toString()) }
+            content = {
+                CoverPhotoItem(
+                    url = item?.urls?.regular.toString()
+                )
+                if (isUserVisible) {
+                    UserImageHeadWithUserName(
+                        modifier = Modifier.fillMaxWidth(),
+                        url = item?.user?.profileImageModel?.medium.toString(),
+                        username = item?.user?.username.toString(),
+                        onProfileClick = onProfileClick
+                    )
+                }
+            }
         )
     }
 }

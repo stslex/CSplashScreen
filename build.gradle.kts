@@ -1,20 +1,12 @@
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
 
 plugins {
-    id("com.android.application") version "7.3.0" apply false
-    id("com.android.library") version "7.3.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.7.10" apply false
-    kotlin("plugin.serialization") version "1.7.10"
-    id("com.github.ben-manes.versions") version "0.44.0"
-    id("nl.littlerobots.version-catalog-update") version "0.7.0"
-}
-
-buildscript {
-    dependencies {
-        classpath(libs.android.gradlePlugin)
-        classpath(libs.kotlin.gradlePlugin)
-        classpath(libs.kotlin.serialization)
-    }
+    alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.application) apply false
+    alias(libs.plugins.library) apply false
+    alias(libs.plugins.serialization)
+    alias(libs.plugins.versions)
+    alias(libs.plugins.vcu)
 }
 
 tasks.register(name = "type", type = Delete::class) {

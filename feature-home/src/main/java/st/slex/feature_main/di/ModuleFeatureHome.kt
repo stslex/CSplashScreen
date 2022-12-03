@@ -10,7 +10,7 @@ import st.slex.feature_main.domain.MainScreenInteractor
 import st.slex.feature_main.domain.MainScreenInteractorImpl
 import st.slex.feature_main.navigation.MainScreenRouter
 import st.slex.feature_main.navigation.MainScreenRouterImpl
-import st.slex.feature_main.ui.MainScreenViewModel
+import st.slex.feature_main.ui.main.MainScreenViewModel
 
 class ModuleFeatureHome : AppModule {
 

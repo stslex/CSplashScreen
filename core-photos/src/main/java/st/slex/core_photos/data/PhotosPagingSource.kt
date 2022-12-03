@@ -3,7 +3,7 @@ package st.slex.core_photos.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import st.slex.core_network.model.map
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.source.interf.PagingPhotosNetworkSource
 
 class PhotosPagingSource(

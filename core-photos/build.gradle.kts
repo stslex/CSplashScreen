@@ -1,6 +1,5 @@
 plugins {
     id("csplashscreen.android.library")
-    id("kotlin-parcelize")
 }
 
 dependencies {
@@ -8,9 +7,7 @@ dependencies {
     implementation(project(":core-test"))
     implementation(project(":core-network"))
 
-    libs.apply {
-        implementation(libs.androidx.paging.runtime)
-    }
+    implementation(libs.androidx.paging.runtime)
 }
 
 android {

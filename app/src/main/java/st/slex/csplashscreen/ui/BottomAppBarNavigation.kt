@@ -10,10 +10,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import st.slex.core_navigation.testing.NavigationScreen
 
 @Composable
 fun mainBottomAppBar(
-    onBottomAppBarClick: (BottomAppBarResource) -> Unit
+    onBottomAppBarClick: (NavigationScreen) -> Unit
 ): @Composable () -> Unit = {
     val selectedItem = remember {
         mutableStateOf(BottomAppBarResource.HOME.route)
@@ -27,10 +28,14 @@ fun mainBottomAppBar(
                 selected = isSelected,
                 onClick = {
                     selectedItem.value = item.route
-                    onBottomAppBarClick(item)
+                    onBottomAppBarClick(item.screen)
                 },
                 icon = {
-                    val icon = if (isSelected) item.selectedIcon else item.unselectedIcon
+                    val icon = if (isSelected) {
+                        item.selectedIcon
+                    } else {
+                        item.unselectedIcon
+                    }
                     Icon(icon, item.route)
                 },
                 label = { Text(text = stringResource(id = item.titleResource)) },

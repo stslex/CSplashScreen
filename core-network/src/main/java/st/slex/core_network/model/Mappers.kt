@@ -30,10 +30,10 @@ import st.slex.core_network.model.ui.Likes
 import st.slex.core_network.model.ui.PhotoStatistics
 import st.slex.core_network.model.ui.Value
 import st.slex.core_network.model.ui.Views
-import st.slex.core_network.model.ui.collection.CollectionModel
+import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.collection.LinksCollectionModel
 import st.slex.core_network.model.ui.image.ExifModel
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.image.LinksImageModel
 import st.slex.core_network.model.ui.image.LocationModel
 import st.slex.core_network.model.ui.image.PositionModel

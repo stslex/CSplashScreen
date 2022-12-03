@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
-import st.slex.core_network.model.ui.collection.CollectionModel
+import st.slex.core_network.model.ui.CollectionModel
 
 
 @Composable
@@ -25,7 +25,7 @@ fun CollectionItem(
     modifier: Modifier,
     isUserVisible: Boolean = true,
     onUserHeadClick: (username: String) -> Unit,
-    onCollectionClick: () -> Unit
+    onCollectionClick: (id: String) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -35,7 +35,7 @@ fun CollectionItem(
                 modifier = Modifier.fillMaxWidth(),
                 url = item.user.profileImageModel.medium,
                 username = item.user.username,
-                onProfileClick = onUserHeadClick
+                onProfileClick = onUserHeadClick,
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
@@ -43,6 +43,7 @@ fun CollectionItem(
             item.coverPhoto.urls.regular,
             item.title,
             item.totalPhotos,
+            item.id,
             onCollectionClick = onCollectionClick
         )
     }
@@ -53,14 +54,17 @@ fun BindCoverImageCard(
     url: String,
     title: String,
     totalPhotos: Int,
-    onCollectionClick: () -> Unit
+    id: String,
+    onCollectionClick: (id: String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(300.dp)
             .shadow(elevation = 0.dp)
-            .clickable(onClick = onCollectionClick),
+            .clickable(onClick = {
+                onCollectionClick(id)
+            }),
         elevation = CardDefaults.cardElevation(0.dp),
     ) {
         CoverPhotoItem(url = url)

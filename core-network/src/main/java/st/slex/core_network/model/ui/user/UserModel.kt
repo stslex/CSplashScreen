@@ -1,10 +1,7 @@
 package st.slex.core_network.model.ui.user
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 
-@Parcelize
 data class UserModel(
     val id: String,
     val updatedAt: String,
@@ -28,4 +25,4 @@ data class UserModel(
     val badge: BadgeModel,
     val links: UserLinksModel,
     val photos: List<ImageModel>
-) : Parcelable
+)

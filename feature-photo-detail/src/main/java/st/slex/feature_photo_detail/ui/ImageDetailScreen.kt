@@ -39,7 +39,7 @@ import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.Dispatchers
 import st.slex.core.Resource
 import st.slex.core.UtilsExtensions.convertedUrl
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_ui.components.UserImageHeadWithUserName
 import st.slex.feature_photo_detail.ui.components.DetailImageBodyTags
 import st.slex.feature_photo_detail.ui.components.DownloadButton
@@ -155,7 +155,7 @@ private fun UserDetailImageHead(
             },
             url = imageModel.user.profileImageModel.medium,
             username = imageModel.user.username,
-            onProfileClick = onProfileClick
+            onProfileClick = onProfileClick,
         )
         DownloadButton(
             modifier = Modifier.constrainAs(download) {

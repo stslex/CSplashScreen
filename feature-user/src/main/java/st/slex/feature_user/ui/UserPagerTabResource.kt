@@ -1,8 +1,8 @@
 package st.slex.feature_user.ui
 
 import androidx.paging.compose.LazyPagingItems
-import st.slex.core_network.model.ui.collection.CollectionModel
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.ImageModel
 
 sealed class UserPagerTabResource<T : Any>(val pagingItems: LazyPagingItems<T>) {
 

@@ -1,12 +1,13 @@
-package st.slex.core_network.model.ui.image
+package st.slex.core_network.model.ui
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-import st.slex.core_network.model.ui.PhotoStatistics
-import st.slex.core_network.model.ui.collection.CollectionModel
+import st.slex.core_network.model.ui.image.ExifModel
+import st.slex.core_network.model.ui.image.LinksImageModel
+import st.slex.core_network.model.ui.image.LocationModel
+import st.slex.core_network.model.ui.image.Sponsorship
+import st.slex.core_network.model.ui.image.TagModel
+import st.slex.core_network.model.ui.image.UrlsModel
 import st.slex.core_network.model.ui.user.UserModel
 
-@Parcelize
 data class ImageModel(
     val id: String,
     val createdAt: String,
@@ -30,5 +31,5 @@ data class ImageModel(
     val links: LinksImageModel,
     val user: UserModel,
     val statistics: PhotoStatistics
-) : Parcelable
+) : UIItemTypes(id)
 

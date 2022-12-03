@@ -1,7 +1,7 @@
 package st.slex.core_network.model.ui.topics
 
 import st.slex.core_network.model.ui.collection.LinksCollectionModel
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 
 data class TopicsModel(
