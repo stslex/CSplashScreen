@@ -4,7 +4,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import st.slex.core_navigation.testing.AppDestination
-import st.slex.feature_main.ui.MainScreenRoute
+import st.slex.feature_main.ui.main.MainScreenRoute
 
 fun NavGraphBuilder.homeGraph(modifier: Modifier = Modifier) {
     composable(route = AppDestination.HOME.navigationRoute) {

@@ -75,6 +75,20 @@ fun CoverPhotoItem(
 }
 
 @Composable
+fun CoverUserPhotoItemBlur(
+    modifier: Modifier = Modifier,
+    url: String
+) {
+    GlideImage(
+        modifier = modifier
+            .fillMaxWidth()
+            .clipToBounds(),
+        imageModel = url,
+        contentScale = ContentScale.None
+    )
+}
+
+@Composable
 fun ImageComponent(url: String, modifier: Modifier) {
     GlideImage(
         modifier = modifier,

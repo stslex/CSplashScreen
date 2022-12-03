@@ -8,12 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
+import st.slex.core_network.model.ui.ImageModel
 
 
 @Composable
 fun ListOfElements(
     modifier: Modifier = Modifier,
-    lazyPagingPhotosItems: LazyPagingItems<st.slex.core_network.model.ui.image.ImageModel>,
+    lazyPagingPhotosItems: LazyPagingItems<ImageModel>,
     onProfileClick: (username: String) -> Unit,
     onImageClick: (url: String, imageId: String) -> Unit
 ) {
@@ -22,7 +23,8 @@ fun ListOfElements(
         modifier = modifier,
         state = lazyListState
     ) {
-        items(lazyPagingPhotosItems, key = { it.id }) { item ->
+        items(lazyPagingPhotosItems, key = { it.id }) { lazyItem ->
+            val item = lazyItem ?: return@items
             ImageItem(
                 item = item,
                 onProfileClick = onProfileClick,

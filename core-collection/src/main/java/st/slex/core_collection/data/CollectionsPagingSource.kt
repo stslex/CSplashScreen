@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import st.slex.core_network.model.map
 import st.slex.core_network.model.remote.collection.RemoteCollectionModel
-import st.slex.core_network.model.ui.collection.CollectionModel
+import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.source.interf.CollectionNetworkSource
 
 class CollectionsPagingSource(

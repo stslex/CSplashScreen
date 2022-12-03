@@ -30,5 +30,6 @@ fun NavigationHost(
         searchPhotosGraph(modifier = modifier)
         topicsGraph(modifier = modifier)
         singleCollectionGraph(modifier = modifier)
+        userGraph(modifier = modifier)
     }
 }

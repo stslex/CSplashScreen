@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import st.slex.core_network.model.map
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_network.source.interf.UserNetworkSource
 import st.slex.core_photos.data.PhotosPagingSource

@@ -7,11 +7,8 @@ dependencies {
     libs.apply {
         api(androidx.core.ktx)
         api(kotlin.reflect)
-        api(androidx.lifecycle.runtime.ktx)
-        api(androidx.lifecycle.viewmodel.ktx)
-        api(androidx.lifecycle.viewmodel.compose)
-        api(kotlinx.coroutines.core)
-        api(kotlinx.coroutines.android)
+        api(bundles.lifecycle)
+        api(bundles.coroutines)
         api(koin.android)
     }
 }

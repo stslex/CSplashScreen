@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.graphics.toColorInt
-import st.slex.core_network.model.ui.collection.CollectionModel
+import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_ui.theme.lighten
 
 
@@ -29,7 +29,7 @@ fun CollectionItem(
     modifier: Modifier,
     isUserVisible: Boolean = true,
     onUserHeadClick: (username: String) -> Unit,
-    onCollectionClick: () -> Unit
+    onCollectionClick: (id: String) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -39,7 +39,7 @@ fun CollectionItem(
                 modifier = Modifier.fillMaxWidth(),
                 url = item.user.profileImageModel.medium,
                 username = item.user.username,
-                onProfileClick = onUserHeadClick
+                onProfileClick = onUserHeadClick,
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
@@ -48,6 +48,7 @@ fun CollectionItem(
             url = item.coverPhoto.urls.regular,
             title = item.title,
             totalPhotos = item.totalPhotos,
+            id = item.id,
             onCollectionClick = onCollectionClick,
             color = item.coverPhoto.color
         )
@@ -60,7 +61,8 @@ fun CollectionItemComponent(
     url: String,
     title: String,
     totalPhotos: Int,
-    onCollectionClick: () -> Unit,
+    id: String,
+    onCollectionClick: (id: String) -> Unit,
     color: String
 ) {
     val textColor = Color(color.toColorInt())
@@ -69,7 +71,9 @@ fun CollectionItemComponent(
             .fillMaxWidth()
             .height(300.dp)
             .shadow(elevation = 0.dp)
-            .clickable(onClick = onCollectionClick)
+            .clickable(onClick = {
+                onCollectionClick(id)
+            })
     ) {
         val (coverImage, titles, blur) = createRefs()
         CoverPhotoItem(

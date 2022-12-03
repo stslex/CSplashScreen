@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import st.slex.core.Resource
 import st.slex.core_navigation.testing.AppArguments
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_photo_detail.data.PhotoRepository
 import st.slex.feature_photo_detail.navigation.ImageDetailRouter

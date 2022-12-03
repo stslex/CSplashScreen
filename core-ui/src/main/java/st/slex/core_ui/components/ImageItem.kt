@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import st.slex.core.UtilsExtensions.convertedUrl
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 
 
 @Composable

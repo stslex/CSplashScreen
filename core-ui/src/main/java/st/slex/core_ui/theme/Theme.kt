@@ -130,7 +130,7 @@ private val DarkAndroidColorScheme = darkColorScheme(
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false,
+    dynamicColor: Boolean = true,
     androidTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {

@@ -1,6 +1,6 @@
-package st.slex.core_network.model.ui.collection
+package st.slex.core_network.model.ui
 
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.collection.LinksCollectionModel
 import st.slex.core_network.model.ui.image.TagModel
 import st.slex.core_network.model.ui.user.UserModel
 
@@ -20,4 +20,4 @@ data class CollectionModel(
     val previewPhotos: List<ImageModel>,
     val user: UserModel,
     val links: LinksCollectionModel
-)
+) : UIItemTypes(id)

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import st.slex.core_navigation.routers.ImageRouter
 import st.slex.core_navigation.testing.AppArguments
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_photos.data.QueryPhotos
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_collection.domain.SingleCollectionInteractor

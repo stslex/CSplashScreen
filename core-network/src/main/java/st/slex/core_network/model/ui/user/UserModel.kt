@@ -1,6 +1,6 @@
 package st.slex.core_network.model.ui.user
 
-import st.slex.core_network.model.ui.image.ImageModel
+import st.slex.core_network.model.ui.ImageModel
 
 data class UserModel(
     val id: String,
