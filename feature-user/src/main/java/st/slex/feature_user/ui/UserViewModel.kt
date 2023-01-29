@@ -11,19 +11,19 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import st.slex.core.Resource
 import st.slex.core_collection.data.QueryCollections
-import st.slex.core_navigation.testing.AppArguments
+import st.slex.core_navigation.AppArguments
+import st.slex.core_navigation.NavigationScreen
 import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_photos.data.QueryPhotos
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_user.domain.UserInteractor
-import st.slex.feature_user.navigation.UserRouter
 
 class UserViewModel(
     private val interactor: UserInteractor,
-    private val router: UserRouter,
-    private val args: AppArguments.UserScreen
+    private val args: AppArguments.UserScreen,
+    private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
     val username: String
@@ -80,18 +80,18 @@ class UserViewModel(
     }
 
     fun popBackStack() {
-        router.popBackStack()
+        navigate(NavigationScreen.PopBackStack)
     }
 
     fun onUserClick(username: String) {
-        router.navToProfile(username)
+        navigate(NavigationScreen.UserScreen(username))
     }
 
     fun onImageClick(url: String, id: String) {
-        router.navToDetailImage(url, id)
+        navigate(NavigationScreen.ImageDetailScreen(url, id))
     }
 
     fun onCollectionClick(id: String) {
-        router.navToCollection(id)
+        navigate(NavigationScreen.CollectionScreen(id))
     }
 }

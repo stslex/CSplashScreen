@@ -4,16 +4,19 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import org.koin.androidx.compose.koinViewModel
-import st.slex.core_navigation.testing.AppDestination
+import org.koin.core.parameter.parametersOf
+import st.slex.core_navigation.AppDestination
+import st.slex.core_navigation.NavigationScreen
 import st.slex.feature_topics.ui.TopicsScreen
 
 fun NavGraphBuilder.topicsGraph(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigate: (NavigationScreen) -> Unit
 ) {
     composable(route = AppDestination.TOPICS.navigationRoute) {
         TopicsScreen(
             modifier = modifier,
-            viewModel = koinViewModel()
+            viewModel = koinViewModel(parameters = { parametersOf(navigate) })
         )
     }
 }

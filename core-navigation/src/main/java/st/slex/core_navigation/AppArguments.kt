@@ -1,4 +1,4 @@
-package st.slex.core_navigation.testing
+package st.slex.core_navigation
 
 sealed class AppArguments {
 

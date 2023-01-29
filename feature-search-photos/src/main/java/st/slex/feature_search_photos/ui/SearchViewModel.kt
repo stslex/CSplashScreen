@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
-import st.slex.core_navigation.routers.ImageRouter
-import st.slex.core_navigation.testing.AppArguments
+import st.slex.core_navigation.AppArguments
+import st.slex.core_navigation.NavigationScreen
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_search_photos.data.QuerySearch
@@ -17,8 +17,8 @@ import st.slex.feature_search_photos.domain.SearchPhotosInteractor
 
 class SearchViewModel(
     private val interactor: SearchPhotosInteractor,
-    private val router: ImageRouter,
-    private val args: AppArguments.SearchPhotosScreen
+    args: AppArguments.SearchPhotosScreen,
+    private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
     val rowQuery = args.checkedQuery.ifBlank { String() }
@@ -43,10 +43,10 @@ class SearchViewModel(
     private var newPagingPhotosSearchSource: PagingSource<*, *>? = null
 
     fun onProfileClick(username: String) {
-        router.navToProfile(username)
+        navigate(NavigationScreen.UserScreen(username))
     }
 
     fun onImageClick(url: String, imageId: String) {
-        router.navToDetailImage(url, imageId)
+        navigate(NavigationScreen.ImageDetailScreen(url, imageId))
     }
 }

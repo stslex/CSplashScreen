@@ -1,4 +1,4 @@
-package st.slex.core_navigation.testing
+package st.slex.core_navigation
 
 enum class AppDestination(vararg val argsNames: String) {
     HOME,
