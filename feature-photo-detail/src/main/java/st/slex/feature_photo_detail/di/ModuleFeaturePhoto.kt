@@ -9,8 +9,6 @@ import org.koin.dsl.module
 import st.slex.core.AppModule
 import st.slex.feature_photo_detail.data.PhotoRepository
 import st.slex.feature_photo_detail.data.PhotoRepositoryImpl
-import st.slex.feature_photo_detail.navigation.ImageDetailRouter
-import st.slex.feature_photo_detail.navigation.ImageDetailRouterImpl
 import st.slex.feature_photo_detail.ui.DetailPhotoViewModel
 import st.slex.feature_photo_detail.ui.utils.DownloadImageUseCase
 import st.slex.feature_photo_detail.ui.utils.DownloadImageUseCaseImpl
@@ -22,7 +20,6 @@ class ModuleFeaturePhoto : AppModule {
 
     override fun invoke(): Module = module {
         singleOf(::PhotoRepositoryImpl) { bind<PhotoRepository>() }
-        factoryOf(::ImageDetailRouterImpl) { bind<ImageDetailRouter>() }
         viewModelOf(::DetailPhotoViewModel)
         factoryOf(::DownloadImageUseCaseImpl) { bind<DownloadImageUseCase>() }
         factory<WallpaperSetUseCase> {

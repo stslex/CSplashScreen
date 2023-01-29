@@ -11,8 +11,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
-import st.slex.core_navigation.testing.AppDestination
-import st.slex.core_navigation.testing.NavigationScreen
+import st.slex.core_navigation.AppDestination
+import st.slex.core_navigation.NavigationScreen
 import st.slex.csplashscreen.R
 
 enum class BottomAppBarResource(

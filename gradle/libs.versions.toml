@@ -107,7 +107,7 @@ compose = [
     "androidx-compose-constraintlayout",
     "androidx-compose-activity",
     "androidx-compose-paging",
-    "androidx-compose-material3-windowsizeclass"
+    "androidx-compose-material3-windowsizeclass",
 ]
 
 lifecycle = [

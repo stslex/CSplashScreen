@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import st.slex.core_navigation.testing.NavigationScreen
 import st.slex.csplashscreen.navigation.NavigationHost
+import st.slex.csplashscreen.navigation.navigateScreen
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +24,6 @@ fun InitialApp(
     modifier: Modifier = Modifier,
     windowsSizeClass: WindowSizeClass, //TODO NEED FOR DETAIL IMAGE SCREEN
     navController: NavHostController,
-    onBottomAppbarClick: (NavigationScreen) -> Unit,
     systemUiController: SystemUiController = rememberSystemUiController(),
     isDarkTheme: Boolean = isSystemInDarkTheme()
 ) {
@@ -39,7 +38,7 @@ fun InitialApp(
         modifier = Modifier,
         contentColor = MaterialTheme.colorScheme.onBackground,
         containerColor = Color.Transparent,
-        bottomBar = mainBottomAppBar(onBottomAppBarClick = onBottomAppbarClick),
+        bottomBar = mainBottomAppBar(navController::navigateScreen),
         content = { paddingValues ->
             NavigationHost(
                 modifier = modifier

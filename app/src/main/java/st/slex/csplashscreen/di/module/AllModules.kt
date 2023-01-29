@@ -1,7 +1,6 @@
 package st.slex.csplashscreen.di.module
 
 import st.slex.core_collection.di.ModuleCoreCollection
-import st.slex.core_navigation.di.CommonNavigationModule
 import st.slex.core_network.di.ModuleCoreNetwork
 import st.slex.core_photos.di.ModuleCorePhotos
 import st.slex.feature_collection.di.SingleCollectionModule
@@ -15,8 +14,6 @@ import st.slex.feature_user.di.ModuleFeatureUser
 class AllModules {
 
     val allModules = listOf(
-        ModuleActivity(),
-        CommonNavigationModule(),
         SingleCollectionModule(),
         ModuleCoreCollection(),
         ModuleCorePhotos(),
@@ -31,3 +28,4 @@ class AllModules {
         appModule()
     }
 }
+

@@ -5,11 +5,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.StateFlow
+import st.slex.core_navigation.NavigationScreen
 import st.slex.core_network.model.ui.topics.TopicsModel
 import st.slex.core_ui.base.BaseViewModel
 
 class TopicsViewModel(
     private val pagingSource: PagingSource<Int, TopicsModel>,
+    private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
     private val pagingConfig: PagingConfig by lazy {

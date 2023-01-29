@@ -25,7 +25,7 @@ fun TopicsScreen(
 ) {
     val lazyPagingItems = viewModel.topics.collectAsLazyPagingItems()
     LazyRow(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        modifier = modifier.background(MaterialTheme.colorScheme.background),
         state = state
     ) {
         items(

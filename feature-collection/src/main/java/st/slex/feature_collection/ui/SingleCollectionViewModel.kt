@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
-import st.slex.core_navigation.routers.ImageRouter
-import st.slex.core_navigation.testing.AppArguments
+import st.slex.core_navigation.AppArguments
+import st.slex.core_navigation.NavigationScreen
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_photos.data.QueryPhotos
 import st.slex.core_ui.base.BaseViewModel
@@ -18,8 +18,8 @@ import st.slex.feature_collection.domain.SingleCollectionInteractor
 
 class SingleCollectionViewModel(
     private val interactor: SingleCollectionInteractor,
-    private val router: ImageRouter,
-    private val args: AppArguments.CollectionScreen
+    args: AppArguments.CollectionScreen,
+    private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
     private val _queryPhotos =
@@ -43,10 +43,10 @@ class SingleCollectionViewModel(
     }
 
     fun onProfileClick(username: String) {
-        router.navToProfile(username)
+        navigate(NavigationScreen.UserScreen(username))
     }
 
     fun onImageClick(url: String, imageId: String) {
-        router.navToDetailImage(url, imageId)
+        navigate(NavigationScreen.ImageDetailScreen(url, imageId))
     }
 }
