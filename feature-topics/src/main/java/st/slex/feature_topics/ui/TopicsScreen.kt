@@ -1,47 +1,95 @@
 package st.slex.feature_topics.ui
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemsIndexed
+import kotlinx.coroutines.launch
 import st.slex.core_ui.components.setScrollingColumnAnimation
+import st.slex.feature_topics.domain.model.TopicsUIModel
+import st.slex.feature_topics.ui.components.TopicBox
+import st.slex.feature_topics.ui.components.TopicsTitle
 
 
 @Composable
 fun TopicsScreen(
     modifier: Modifier = Modifier,
     viewModel: TopicsViewModel,
-    state: LazyListState = rememberLazyListState(),
 ) {
-    val lazyPagingItems = viewModel.topics.collectAsLazyPagingItems()
+    val lazyListState = rememberLazyListState()
+    val lazyPagingItems = remember(viewModel) {
+        viewModel.topics
+    }.collectAsLazyPagingItems()
     LazyRow(
-        modifier = modifier.background(MaterialTheme.colorScheme.background),
-        state = state
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background),
+        state = lazyListState,
+        horizontalArrangement = Arrangement.Center
     ) {
-        items(
+        itemsIndexed(
             items = lazyPagingItems,
-            key = { it.id },
-        ) { item ->
-            Column(
-                modifier = Modifier
-                    .setScrollingColumnAnimation(state, item?.id.toString())
-                    .width(250.dp)
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center,
-                content = topicsColumnContent(item)
+            key = { index, topic -> topic.id + index },
+        ) { index, item ->
+            TopicsContent(
+                item = item,
+                index = index,
+                lazyListState = lazyListState
             )
         }
     }
 }
 
+@Composable
+fun TopicsContent(
+    item: TopicsUIModel?,
+    index: Int = 0,
+    modifier: Modifier = Modifier,
+    lazyListState: LazyListState = rememberLazyListState(),
+) {
+    var isClicked by remember { mutableStateOf(false) }
+    val widthState by animateDpAsState(targetValue = if (isClicked) 350.dp else 250.dp)
+    val scope = rememberCoroutineScope()
 
+    fun onItemClicked() {
+        isClicked = isClicked.not()
+        scope.launch {
+            lazyListState.animateScrollToItem(index)
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+            .setScrollingColumnAnimation(lazyListState, item?.id.plus(index))
+            .width(widthState)
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Center
+    ) {
+        TopicsTitle(
+            title = item?.title.orEmpty(),
+            isClicked = isClicked
+        )
+        TopicBox(
+            item = item,
+            onBoxClicked = ::onItemClicked,
+            isClicked = isClicked
+        )
+    }
+}

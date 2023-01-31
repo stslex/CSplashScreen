@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import st.slex.core_navigation.AppDestination
 import st.slex.csplashscreen.navigation.NavigationHost
 import st.slex.csplashscreen.navigation.navigateScreen
 
@@ -25,7 +26,8 @@ fun InitialApp(
     windowsSizeClass: WindowSizeClass, //TODO NEED FOR DETAIL IMAGE SCREEN
     navController: NavHostController,
     systemUiController: SystemUiController = rememberSystemUiController(),
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    startDestination: String = AppDestination.HOME.route
 ) {
     DisposableEffect(systemUiController, isDarkTheme) {
         systemUiController.setStatusBarColor(
@@ -38,13 +40,17 @@ fun InitialApp(
         modifier = Modifier,
         contentColor = MaterialTheme.colorScheme.onBackground,
         containerColor = Color.Transparent,
-        bottomBar = mainBottomAppBar(navController::navigateScreen),
+        bottomBar = mainBottomAppBar(
+            onBottomAppBarClick = navController::navigateScreen,
+            startDestination = startDestination
+        ),
         content = { paddingValues ->
             NavigationHost(
                 modifier = modifier
                     .padding(paddingValues)
                     .consumedWindowInsets(paddingValues),
-                navController = navController
+                navController = navController,
+                startDestination = startDestination
             )
         }
     )

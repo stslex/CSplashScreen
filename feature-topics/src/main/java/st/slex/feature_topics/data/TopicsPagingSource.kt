@@ -2,9 +2,9 @@ package st.slex.feature_topics.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import st.slex.core_network.model.map
-import st.slex.core_network.model.ui.topics.TopicsModel
 import st.slex.core_network.source.interf.TopicsNetworkSource
+import st.slex.feature_topics.data.model.TopicsModel
+import st.slex.feature_topics.data.model.toTopicsModel
 
 class TopicsPagingSource(
     private val topicsNetworkSource: TopicsNetworkSource
@@ -13,16 +13,17 @@ class TopicsPagingSource(
     override fun getRefreshKey(state: PagingState<Int, TopicsModel>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
         val anchorPage = state.closestPageToPosition(anchorPosition) ?: return null
-        return anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
+        return anchorPage.prevKey?.inc() ?: anchorPage.nextKey?.dec()
     }
 
     override suspend fun load(
         params: LoadParams<Int>
     ): LoadResult<Int, TopicsModel> = try {
         val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
-        val topics = topicsNetworkSource.getTopics(pageNumber).map { it.map() }
-        val nextPageNumber = if (topics.isEmpty()) null else pageNumber + 1
-        val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
+        val topics = topicsNetworkSource.getTopics(pageNumber)
+            .map { topic -> topic.toTopicsModel() }
+        val nextPageNumber = if (topics.isEmpty()) null else pageNumber.inc()
+        val prevPageNumber = if (pageNumber > 1) pageNumber.dec() else null
         LoadResult.Page(topics, prevPageNumber, nextPageNumber)
     } catch (e: Exception) {
         LoadResult.Error(e)

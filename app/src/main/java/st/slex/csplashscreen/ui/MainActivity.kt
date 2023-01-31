@@ -7,6 +7,7 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
+import st.slex.core_navigation.AppDestination
 import st.slex.core_ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
                 InitialApp(
                     windowsSizeClass = calculateWindowSizeClass(activity = this),
                     navController = navController,
+                    startDestination = AppDestination.TOPICS.route
                 )
             }
         }

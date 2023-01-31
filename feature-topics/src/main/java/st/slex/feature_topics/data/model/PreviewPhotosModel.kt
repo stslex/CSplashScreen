@@ -1,4 +1,4 @@
-package st.slex.core_network.model.ui.topics
+package st.slex.feature_topics.data.model
 
 import st.slex.core_network.model.ui.image.UrlsModel
 

@@ -9,9 +9,9 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-navigation"))
     implementation(project(":core-network"))
-    implementation(project(":core-photos"))
-    implementation(project(":core-collection"))
     implementation(libs.androidx.paging.runtime)
+
+    implementation("io.coil-kt:coil-compose:2.2.2")
 }
 
 android {

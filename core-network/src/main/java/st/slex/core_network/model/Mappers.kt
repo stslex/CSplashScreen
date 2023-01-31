@@ -17,31 +17,27 @@ import st.slex.core_network.model.remote.statistic.RemoteLikes
 import st.slex.core_network.model.remote.statistic.RemotePhotoStatistics
 import st.slex.core_network.model.remote.statistic.RemoteValue
 import st.slex.core_network.model.remote.statistic.RemoteViews
-import st.slex.core_network.model.remote.topics.RemotePreviewPhotosModel
-import st.slex.core_network.model.remote.topics.RemoteTopicsModel
 import st.slex.core_network.model.remote.user.RemoteBadgeModel
 import st.slex.core_network.model.remote.user.RemoteProfileImageModel
 import st.slex.core_network.model.remote.user.RemoteUserLinksModel
 import st.slex.core_network.model.remote.user.RemoteUserModel
+import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.DownloadModel
 import st.slex.core_network.model.ui.Downloads
 import st.slex.core_network.model.ui.Historical
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.Likes
 import st.slex.core_network.model.ui.PhotoStatistics
 import st.slex.core_network.model.ui.Value
 import st.slex.core_network.model.ui.Views
-import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.collection.LinksCollectionModel
 import st.slex.core_network.model.ui.image.ExifModel
-import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.image.LinksImageModel
 import st.slex.core_network.model.ui.image.LocationModel
 import st.slex.core_network.model.ui.image.PositionModel
 import st.slex.core_network.model.ui.image.Sponsorship
 import st.slex.core_network.model.ui.image.TagModel
 import st.slex.core_network.model.ui.image.UrlsModel
-import st.slex.core_network.model.ui.topics.PreviewPhotosModel
-import st.slex.core_network.model.ui.topics.TopicsModel
 import st.slex.core_network.model.ui.user.BadgeModel
 import st.slex.core_network.model.ui.user.ProfileImageModel
 import st.slex.core_network.model.ui.user.UserLinksModel
@@ -222,29 +218,3 @@ fun RemoteValue?.map(): Value = Value(
 )
 
 fun RemoteDownloadModel?.map(): DownloadModel = DownloadModel(url = this?.url.orEmpty())
-
-fun RemoteTopicsModel?.map(): TopicsModel = TopicsModel(
-    id = this?.id.orEmpty(),
-    slug = this?.slug.orEmpty(),
-    title = this?.title.orEmpty(),
-    description = this?.description.orEmpty(),
-    publishedAt = this?.publishedAt.orEmpty(),
-    updatedAt = this?.updatedAt.orEmpty(),
-    startsAt = this?.startsAt.orEmpty(),
-    endsAt = this?.endsAt.orEmpty(),
-    onlySubmissionsAfter = this?.onlySubmissionsAfter.orEmpty(),
-    featured = this?.featured.orEmpty(),
-    totalPhotos = this?.totalPhotos.orEmpty(),
-    links = this?.links.map(),
-    status = this?.status.orEmpty(),
-    owners = this?.owners?.map { it.map() }.orEmpty(),
-    coverPhoto = this?.coverPhoto.map(),
-    previewPhotos = this?.previewPhotos?.map { it.toPreviewPhotosModel() }.orEmpty()
-)
-
-fun RemotePreviewPhotosModel?.toPreviewPhotosModel() = PreviewPhotosModel(
-    id = this?.id.orEmpty(),
-    createdAt = this?.createdAt.orEmpty(),
-    updatedAt = this?.updatedAt.orEmpty(),
-    urls = this?.urls.map()
-)

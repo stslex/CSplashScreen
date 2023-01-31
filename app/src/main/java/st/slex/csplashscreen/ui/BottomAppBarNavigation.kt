@@ -10,15 +10,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import st.slex.core_navigation.AppDestination
 import st.slex.core_navigation.NavigationScreen
 
 @Composable
 fun mainBottomAppBar(
-    onBottomAppBarClick: (NavigationScreen) -> Unit
+    onBottomAppBarClick: (NavigationScreen) -> Unit,
+    startDestination: String = AppDestination.HOME.route
 ): @Composable () -> Unit = {
-    val selectedItem = remember {
-        mutableStateOf(BottomAppBarResource.HOME.route)
-    }
+    val selectedItem = remember { mutableStateOf(startDestination) }
     NavigationBar(
         modifier = Modifier.fillMaxWidth()
     ) {
