@@ -1,26 +1,17 @@
 package st.slex.feature_topics.ui
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.StateFlow
 import st.slex.core_navigation.NavigationScreen
-import st.slex.core_network.model.ui.topics.TopicsModel
 import st.slex.core_ui.base.BaseViewModel
+import st.slex.feature_topics.domain.TopicsInteractor
+import st.slex.feature_topics.domain.model.TopicsUIModel
 
 class TopicsViewModel(
-    private val pagingSource: PagingSource<Int, TopicsModel>,
+    private val interactor: TopicsInteractor,
     private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
-    private val pagingConfig: PagingConfig by lazy {
-        PagingConfig(pageSize = 10, enablePlaceholders = false)
-    }
-
-    private val newPager by lazy {
-        Pager(pagingConfig) { pagingSource }
-    }
-
-    val topics: StateFlow<PagingData<TopicsModel>> = newPager.pagingFlow
+    val topics: StateFlow<PagingData<TopicsUIModel>>
+        get() = interactor.topics.primaryPagingFlow
 }
