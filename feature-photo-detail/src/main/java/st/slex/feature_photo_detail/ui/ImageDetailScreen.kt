@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.bumptech.glide.Glide
-import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
@@ -56,8 +55,15 @@ fun ImageDetailScreen(
         initial = Resource.Loading,
         context = Dispatchers.IO
     )
+    val systemUiController = rememberSystemUiController()
+    val darkIcons = isSystemInDarkTheme().not()
 
-    SideEffect(sideEffect())
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = darkIcons
+        )
+    }
 
     LazyColumn(
         modifier = modifier
@@ -72,14 +78,6 @@ fun ImageDetailScreen(
         }
         item(content = result.checkLoadedState(viewModel = viewModel))
     }
-}
-
-@Composable
-private fun sideEffect(
-    systemUiController: SystemUiController = rememberSystemUiController(),
-    darkIcons: Boolean = !isSystemInDarkTheme()
-): () -> Unit = {
-    systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
 }
 
 private fun Resource<ImageModel>.checkLoadedState(
@@ -105,9 +103,12 @@ private fun BindSuccessLoaded(
     onProfileClick: (String) -> Unit,
     onDownloadImageClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
-    onSetWallpaperClick: (url: String) -> Unit
+    onSetWallpaperClick: (url: String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         UserDetailImageHead(
             imageModel = imageModel,
             onProfileClick = onProfileClick,
