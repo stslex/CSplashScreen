@@ -5,11 +5,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import st.slex.core_navigation.AppArguments
-import st.slex.core_navigation.AppDestination
-import st.slex.core_navigation.NavigationScreen
-import st.slex.core_navigation.NavExt.composableArguments
-import st.slex.core_navigation.NavExt.parseArguments
+import com.stslex.csplashscreen.core.navigation.AppArguments
+import com.stslex.csplashscreen.core.navigation.AppDestination
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.NavExt.composableArguments
+import com.stslex.csplashscreen.core.navigation.NavExt.parseArguments
 import st.slex.feature_user.ui.UserScreen
 
 fun NavGraphBuilder.userGraph(

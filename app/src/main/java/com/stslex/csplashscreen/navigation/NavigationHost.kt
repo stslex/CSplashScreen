@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import st.slex.core_navigation.AppDestination
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.AppDestination
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.feature.collection.navigation.singleCollectionGraph
 import st.slex.feature_image_raw.navigation.rawImageGraph
 import st.slex.feature_main.navigation.homeGraph

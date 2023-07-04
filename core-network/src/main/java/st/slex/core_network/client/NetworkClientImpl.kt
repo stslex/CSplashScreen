@@ -1,6 +1,5 @@
 package st.slex.core_network.client
 
-import com.stslex.csplashscreen.core.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.cache.HttpCache
@@ -15,6 +14,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import st.slex.core_network.BuildConfig
 
 class NetworkClientImpl : NetworkClient {
 

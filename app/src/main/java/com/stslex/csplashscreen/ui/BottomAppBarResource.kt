@@ -7,14 +7,12 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
-import st.slex.core_navigation.AppDestination
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.AppDestination
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.R
 
+@Suppress("UNUSED")
 enum class BottomAppBarResource(
     val unselectedIcon: ImageVector,
     val selectedIcon: ImageVector,
@@ -42,12 +40,5 @@ enum class BottomAppBarResource(
         route = AppDestination.SEARCH_PHOTOS.route,
         titleResource = R.string.nav_title_search,
         screen = NavigationScreen.SearchPhotosScreen(query = " ", isLaunchSingle = true)
-    );
-
-    private val _isSelected: MutableState<Boolean> = mutableStateOf(false)
-    val isSelected: State<Boolean> = _isSelected
-
-    fun selectItem(isSelect: Boolean) {
-        _isSelected.value = isSelect
-    }
+    )
 }

@@ -1,8 +1,8 @@
 package st.slex.feature_image_raw.ui
 
 import androidx.lifecycle.ViewModel
-import st.slex.core_navigation.AppArguments
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.AppArguments
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 
 class RawImageViewModel(
     private val args: AppArguments.RawImageScreen,

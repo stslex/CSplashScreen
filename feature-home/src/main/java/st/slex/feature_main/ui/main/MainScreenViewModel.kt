@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.StateFlow
 import com.stslex.csplashscreen.core.collection.data.QueryCollections
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_photos.data.QueryPhotos

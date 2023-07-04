@@ -6,9 +6,9 @@ plugins {
 dependencies {
     implementation(project(":core:core"))
     implementation(project(":core:ui"))
-    implementation(project(":core-navigation"))
+    implementation(project(":core:navigation"))
     implementation(project(":core-network"))
     implementation(project(":core-photos"))
 }
 
-android.namespace = "com.stslex.feature.collection"
+android.namespace = "com.stslex.csplashscreen.feature.collection"

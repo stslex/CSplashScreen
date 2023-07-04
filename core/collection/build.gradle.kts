@@ -9,4 +9,4 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
 }
 
-android.namespace = "st.slex.core_collection"
+android.namespace = "com.stslex.csplashscreen.core.collection"

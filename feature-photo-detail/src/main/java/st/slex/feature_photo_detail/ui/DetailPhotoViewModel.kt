@@ -5,8 +5,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.stslex.csplashscreen.core.core.Resource
-import st.slex.core_navigation.AppArguments
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.AppArguments
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.core_network.model.ui.ImageModel
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.feature_photo_detail.data.PhotoRepository

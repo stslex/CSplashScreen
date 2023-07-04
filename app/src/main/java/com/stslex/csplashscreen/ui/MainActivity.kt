@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import st.slex.core_navigation.AppDestination
+import com.stslex.csplashscreen.core.navigation.AppDestination
 import com.stslex.csplashscreen.core.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {

@@ -3,8 +3,8 @@ package st.slex.feature_main.navigation
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import st.slex.core_navigation.AppDestination
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.AppDestination
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.feature_main.ui.main.MainScreenRoute
 
 fun NavGraphBuilder.homeGraph(

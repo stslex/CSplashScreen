@@ -20,13 +20,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
-import kotlinx.coroutines.launch
+import androidx.paging.compose.itemKey
 import com.stslex.csplashscreen.core.ui.components.setScrollingColumnAnimation
+import kotlinx.coroutines.launch
 import st.slex.feature_topics.domain.model.TopicsUIModel
 import st.slex.feature_topics.ui.components.TopicBox
 import st.slex.feature_topics.ui.components.TopicsTitle
-
 
 @Composable
 fun TopicsScreen(
@@ -43,12 +42,14 @@ fun TopicsScreen(
         state = lazyListState,
         horizontalArrangement = Arrangement.Center
     ) {
-        itemsIndexed(
-            items = lazyPagingItems,
-            key = { index, topic -> topic.id + index },
-        ) { index, item ->
+        items(
+            count = lazyPagingItems.itemCount,
+            key = lazyPagingItems.itemKey { item ->
+                item.id
+            },
+        ) { index ->
             TopicsContent(
-                item = item,
+                item = lazyPagingItems[index],
                 index = index,
                 lazyListState = lazyListState
             )
@@ -64,7 +65,14 @@ fun TopicsContent(
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
     var isClicked by remember { mutableStateOf(false) }
-    val widthState by animateDpAsState(targetValue = if (isClicked) 350.dp else 250.dp)
+    val widthState by animateDpAsState(
+        targetValue = if (isClicked) {
+            350.dp
+        } else {
+            250.dp
+        },
+        label = "widthState"
+    )
     val scope = rememberCoroutineScope()
 
     fun onItemClicked() {
