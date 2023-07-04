@@ -1,13 +1,10 @@
 package st.slex.csplashscreen.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
@@ -19,11 +16,9 @@ import st.slex.core_navigation.AppDestination
 import st.slex.csplashscreen.navigation.NavigationHost
 import st.slex.csplashscreen.navigation.navigateScreen
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun InitialApp(
     modifier: Modifier = Modifier,
-    windowsSizeClass: WindowSizeClass, //TODO NEED FOR DETAIL IMAGE SCREEN
     navController: NavHostController,
     systemUiController: SystemUiController = rememberSystemUiController(),
     isDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -37,7 +32,8 @@ fun InitialApp(
         onDispose {}
     }
     Scaffold(
-        modifier = Modifier,
+        modifier = Modifier
+            .systemBarsPadding(),
         contentColor = MaterialTheme.colorScheme.onBackground,
         containerColor = Color.Transparent,
         bottomBar = mainBottomAppBar(
@@ -47,8 +43,7 @@ fun InitialApp(
         content = { paddingValues ->
             NavigationHost(
                 modifier = modifier
-                    .padding(paddingValues)
-                    .consumedWindowInsets(paddingValues),
+                    .padding(paddingValues),
                 navController = navController,
                 startDestination = startDestination
             )

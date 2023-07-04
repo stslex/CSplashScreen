@@ -4,28 +4,24 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerScope
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.android.material.animation.AnimationUtils
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalPagerApi::class)
 fun Modifier.animatePager(
-    scope: PagerScope,
-    page: Int,
+    currentPageOffset: Float,
     lazyListState: LazyListState,
     id: String
-): Modifier = animatePager(scope, page).setScrollingColumnAnimation(lazyListState, id)
+): Modifier = animatePager(currentPageOffset)
+    .setScrollingColumnAnimation(lazyListState, id)
 
 @SuppressLint("RestrictedApi")
-@OptIn(ExperimentalPagerApi::class)
-fun Modifier.animatePager(scope: PagerScope, page: Int): Modifier = this.graphicsLayer {
-    val pageOffset = scope.calculateCurrentOffsetForPage(page).absoluteValue
+fun Modifier.animatePager(
+    currentPageOffset: Float
+): Modifier = this.graphicsLayer {
     AnimationUtils.lerp(
         0.85f,
         1f,
-        1f - pageOffset.coerceIn(0f, 1f)
+        1f - currentPageOffset.coerceIn(0f, 1f)
     ).also { scale ->
         scaleX = scale
         scaleY = scale
@@ -33,7 +29,7 @@ fun Modifier.animatePager(scope: PagerScope, page: Int): Modifier = this.graphic
     alpha = AnimationUtils.lerp(
         0.5f,
         1f,
-        1f - pageOffset.coerceIn(0f, 1f)
+        1f - currentPageOffset.coerceIn(0f, 1f)
     )
 }
 

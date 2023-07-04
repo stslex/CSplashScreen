@@ -1,20 +1,20 @@
 package st.slex.feature_main.ui.components.tabs
 
-import androidx.compose.material.Tab
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import st.slex.core_network.model.ui.UIItemTypes
 import st.slex.feature_main.ui.MainPagerTabResource
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreenTabContent(
     modifier: Modifier = Modifier,

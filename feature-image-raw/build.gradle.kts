@@ -5,12 +5,9 @@ plugins {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":core-test"))
     implementation(project(":core-ui"))
     implementation(project(":core-navigation"))
     implementation(project(":core-network"))
 }
 
-android {
-    namespace = "st.slex.feature_image_raw"
-}
+android.namespace = "st.slex.feature_image_raw"

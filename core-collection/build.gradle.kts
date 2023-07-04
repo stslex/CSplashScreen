@@ -4,12 +4,9 @@ plugins {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":core-test"))
     implementation(project(":core-network"))
 
     implementation(libs.androidx.paging.runtime)
 }
 
-android {
-    namespace = "st.slex.core_collection"
-}
+android.namespace = "st.slex.core_collection"

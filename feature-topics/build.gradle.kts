@@ -5,15 +5,12 @@ plugins {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":core-test"))
     implementation(project(":core-ui"))
     implementation(project(":core-navigation"))
     implementation(project(":core-network"))
+
     implementation(libs.androidx.paging.runtime)
-
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation(libs.coil.compose)
 }
 
-android {
-    namespace = "st.slex.feature_topics"
-}
+android.namespace = "st.slex.feature_topics"
