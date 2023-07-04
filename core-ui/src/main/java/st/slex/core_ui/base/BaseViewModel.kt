@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import org.koin.core.component.getScopeName
-import st.slex.core.Resource
+import com.stslex.csplashscreen.core.core.Resource
 
 open class BaseViewModel : ViewModel() {
 

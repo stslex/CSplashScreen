@@ -1,27 +1,25 @@
 package st.slex.feature_main.ui.main
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
 import st.slex.core_network.model.ui.UIItemTypes
 import st.slex.feature_main.ui.MainPagerTabResource
 import st.slex.feature_main.ui.MainScreenPager
 import st.slex.feature_main.ui.components.tabs.MainScreenTabRow
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainScreenViewModel,
-    pagerState: PagerState = rememberPagerState()
 ) {
     val pagesResource = viewModel.listOfPagesResource()
+    val pagerState = rememberPagerState { pagesResource.size }
     Column(
         modifier = modifier
     ) {

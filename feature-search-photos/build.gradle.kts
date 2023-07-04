@@ -4,8 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":core-test"))
+    implementation(project(":core:core"))
     implementation(project(":core-ui"))
     implementation(project(":core-navigation"))
     implementation(project(":core-network"))
@@ -13,6 +12,4 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
 }
 
-android {
-    namespace = "st.slex.feature_search_photos"
-}
+android.namespace = "st.slex.feature_search_photos"

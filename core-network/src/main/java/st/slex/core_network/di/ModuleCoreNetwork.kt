@@ -4,7 +4,7 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import st.slex.core.AppModule
+import com.stslex.csplashscreen.core.core.AppModule
 import st.slex.core_network.client.NetworkClient
 import st.slex.core_network.client.NetworkClientImpl
 import st.slex.core_network.source.interf.CollectionNetworkSource

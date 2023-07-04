@@ -1,14 +1,15 @@
 package st.slex.feature_main.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.paging.compose.items
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.UIItemTypes
@@ -18,7 +19,7 @@ import st.slex.core_ui.components.animatePager
 import st.slex.core_ui.components.checkState
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreenPager(
     pagesResource: List<MainPagerTabResource<out UIItemTypes>>,
@@ -28,21 +29,27 @@ fun MainScreenPager(
     onCollectionClick: (id: String) -> Unit,
 ) {
     HorizontalPager(
-        count = pagesResource.size,
-        state = pagerState
+        state = pagerState,
+        key = null
     ) { pageNumber ->
         val listState: LazyListState = rememberLazyListState()
 
         val pagingResource = pagesResource[pageNumber]
         LazyColumn(state = listState) {
+
             items(
-                items = pagingResource.pagingItems,
-                key = { it.itemId }
-            ) { lazyItem ->
-                val item = lazyItem ?: return@items
+                count = pagingResource.pagingItems.itemCount,
+                key = pagingResource.pagingItems.itemKey { item ->
+                    item.itemId
+                },
+                contentType = pagingResource.pagingItems.itemContentType {
+                    "image"
+                }
+            ) { index ->
+                val item = pagingResource.pagingItems[index] ?: return@items
+
                 val animateModifier: Modifier = Modifier.animatePager(
-                    scope = this@HorizontalPager,
-                    page = pageNumber,
+                    currentPageOffset = pagerState.currentPageOffsetFraction,
                     lazyListState = listState,
                     id = item.itemId
                 )

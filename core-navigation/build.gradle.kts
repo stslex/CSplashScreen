@@ -3,12 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":core-test"))
-
-    api(libs.androidx.navigation.compose)
+    implementation(project(":core:core"))
+    api(libs.androidx.compose.navigation)
 }
 
-android {
-    namespace = "st.slex.core_navigation"
-}
+android.namespace = "st.slex.core_navigation"

@@ -1,6 +1,6 @@
 package st.slex.feature_user.ui
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Divider
-import androidx.compose.material.Tab
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
@@ -30,15 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerScope
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
+import androidx.paging.compose.itemKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import st.slex.core.Resource
+import com.stslex.csplashscreen.core.core.Resource
 import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.UIItemTypes
@@ -133,21 +131,24 @@ fun BindUserScreenMainHeader(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BindPagerWithTabs(
     listPagesResource: List<UserPagerTabResource<out UIItemTypes>>,
-    pagerState: PagerState = rememberPagerState(),
     onUserClick: (String) -> Unit,
     onImageClick: (url: String, id: String) -> Unit,
     onCollectionClick: (id: String) -> Unit
 ) {
+    val pagerState = rememberPagerState {
+        listPagesResource.size
+    }
+
     TabRow(
         pagerState = pagerState,
         listPagesResource = listPagesResource
     )
+
     HorizontalPager(
-        count = listPagesResource.size,
         state = pagerState
     ) { pageNumber ->
         val listState = rememberLazyListState()
@@ -155,17 +156,26 @@ fun BindPagerWithTabs(
         LazyColumn(state = listState) {
             val pagingResource = listPagesResource[pageNumber]
             items(
-                items = pagingResource.pagingItems,
-                key = { it.itemId }
-            ) { lazyItem ->
-                val item = lazyItem ?: return@items
-                val animateModifier: Modifier =
-                    Modifier.animate(
-                        scope = this@HorizontalPager,
-                        page = pageNumber,
-                        lazyListState = listState,
-                        id = item.itemId
-                    )
+                count = pagingResource.pagingItems.itemCount,
+                key = pagingResource.pagingItems.itemKey { item ->
+                    item.itemId
+                },
+                contentType = { index ->
+                    when (pagingResource.pagingItems[index]) {
+                        is ImageModel -> "userImage"
+                        is CollectionModel -> "collectionImage"
+                        else -> "undefined"
+                    }
+
+                }
+            ) { index ->
+                val item = pagingResource.pagingItems[index] ?: return@items
+
+                val animateModifier: Modifier = Modifier.animate(
+                    currentPageOffset = pagerState.currentPageOffsetFraction,
+                    lazyListState = listState,
+                    id = item.itemId
+                )
                 SetCurrentItem(
                     modifier = animateModifier,
                     item = item,
@@ -208,7 +218,7 @@ private fun SetCurrentItem(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TabRow(
     pagerState: PagerState,
@@ -241,17 +251,14 @@ private fun TabRow(
     )
 }
 
-@OptIn(ExperimentalPagerApi::class)
-@SuppressLint("RestrictedApi")
 private fun Modifier.animate(
-    scope: PagerScope,
-    page: Int,
+    currentPageOffset: Float,
     lazyListState: LazyListState,
     id: String
 ): Modifier = this
     .size(250.dp, 250.dp)
     .padding(top = 32.dp, bottom = 32.dp)
-    .animatePager(scope, page, lazyListState, id)
+    .animatePager(currentPageOffset, lazyListState, id)
 
 @Composable
 fun TextHeaderColumn(title: String, contentTitle: String) {

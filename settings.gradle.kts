@@ -1,7 +1,4 @@
-enableFeaturePreview("VERSION_CATALOGS")
-
 pluginManagement {
-    @Suppress("UnstableApiUsage")
     includeBuild("build-logic")
     repositories {
         gradlePluginPortal()
@@ -20,16 +17,18 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "CSplashScreen"
+
 include(":app")
-include(":core")
-include(":core-test")
+
+include(":core:core")
 include(":core-ui")
 include(":core-navigation")
 include(":core-network")
-include(":feature-home")
-include(":feature-collection")
 include(":core-photos")
 include(":core-collection")
+
+include(":feature-home")
+include(":feature-collection")
 include(":feature-user")
 include(":feature-photo-detail")
 include(":feature-image-raw")
