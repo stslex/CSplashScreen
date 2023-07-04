@@ -10,25 +10,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import st.slex.core_network.model.ui.CollectionModel
-import st.slex.core_network.model.ui.ImageModel
-import st.slex.core_network.model.ui.UIItemTypes
 import com.stslex.csplashscreen.core.ui.components.CollectionItem
 import com.stslex.csplashscreen.core.ui.components.ImageItem
 import com.stslex.csplashscreen.core.ui.components.animatePager
 import com.stslex.csplashscreen.core.ui.components.checkState
+import kotlinx.collections.immutable.ImmutableList
+import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.ImageModel
+import st.slex.core_network.model.ui.UIItemTypes
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreenPager(
-    pagesResource: List<MainPagerTabResource<out UIItemTypes>>,
+    pagesResource: ImmutableList<MainPagerTabResource<out UIItemTypes>>,
     pagerState: PagerState,
     onProfileClick: (username: String) -> Unit,
     onImageClick: (url: String, imageId: String) -> Unit,
     onCollectionClick: (id: String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     HorizontalPager(
+        modifier = modifier,
         state = pagerState,
         key = null
     ) { pageNumber ->

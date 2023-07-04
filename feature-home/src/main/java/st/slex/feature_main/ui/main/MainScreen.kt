@@ -4,8 +4,10 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
+import kotlinx.collections.immutable.toImmutableList
 import st.slex.core_network.model.ui.UIItemTypes
 import st.slex.feature_main.ui.MainPagerTabResource
 import st.slex.feature_main.ui.MainScreenPager
@@ -18,8 +20,10 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainScreenViewModel,
 ) {
-    val pagesResource = viewModel.listOfPagesResource()
-    val pagerState = rememberPagerState { pagesResource.size }
+    val pagesResource = viewModel.rememberPagesResource()
+    val pagerState = rememberPagerState {
+        pagesResource.size
+    }
     Column(
         modifier = modifier
     ) {
@@ -29,7 +33,7 @@ fun MainScreen(
             listPagesResource = pagesResource
         )
         MainScreenPager(
-            pagesResource = pagesResource,
+            pagesResource = pagesResource.toImmutableList(),
             pagerState = pagerState,
             onProfileClick = viewModel::onProfileClick,
             onImageClick = viewModel::onImageClick,
@@ -38,10 +42,17 @@ fun MainScreen(
     }
 }
 
-private val MainScreenViewModel.listOfPagesResource: @Composable () -> List<MainPagerTabResource<out UIItemTypes>>
-    get() = {
-        listOf(
-            MainPagerTabResource.Photos(photos.collectAsLazyPagingItems()),
-            MainPagerTabResource.Collections(collections.collectAsLazyPagingItems())
-        )
-    }
+@Composable
+private fun MainScreenViewModel.rememberPagesResource(
+): List<MainPagerTabResource<out UIItemTypes>> = listOf(
+    MainPagerTabResource.Photos(
+        items = remember {
+            photos
+        }.collectAsLazyPagingItems()
+    ),
+    MainPagerTabResource.Collections(
+        items = remember {
+            collections
+        }.collectAsLazyPagingItems()
+    )
+)

@@ -12,32 +12,34 @@ import androidx.compose.ui.unit.dp
 import com.stslex.csplashscreen.core.core.UtilsExtensions.convertedUrl
 import st.slex.core_network.model.ui.ImageModel
 
-
 @Composable
 fun ImageItem(
     modifier: Modifier = Modifier,
-    item: ImageModel?,
+    item: ImageModel,
     isUserVisible: Boolean = true,
     onProfileClick: (username: String) -> Unit,
     onImageClick: (url: String, imageId: String) -> Unit
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
         if (isUserVisible) {
             UserImageHeadWithUserName(
                 modifier = Modifier.fillMaxWidth(),
-                url = item?.user?.profileImageModel?.medium.toString(),
-                username = item?.user?.username.toString(),
+                url = item.user.profileImageModel.medium,
+                username = item.user.username,
                 onProfileClick = onProfileClick
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
         Surface(
             modifier = Modifier.clickable {
-                val id = item?.id ?: return@clickable
                 val encodedUrl = item.urls.regular.convertedUrl
-                onImageClick(encodedUrl, id)
+                onImageClick(encodedUrl, item.id)
             },
-            content = { CoverPhotoItem(url = item?.urls?.regular.toString()) }
+            content = {
+                CoverPhotoItem(url = item.urls.regular)
+            }
         )
     }
 }

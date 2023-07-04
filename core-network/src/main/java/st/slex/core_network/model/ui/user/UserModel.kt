@@ -1,7 +1,9 @@
 package st.slex.core_network.model.ui.user
 
+import androidx.compose.runtime.Stable
 import st.slex.core_network.model.ui.ImageModel
 
+@Stable
 data class UserModel(
     val id: String,
     val updatedAt: String,
