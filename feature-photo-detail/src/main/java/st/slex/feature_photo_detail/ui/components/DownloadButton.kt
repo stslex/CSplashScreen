@@ -3,10 +3,9 @@ package st.slex.feature_photo_detail.ui.components
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import st.slex.core_ui.theme.AppTheme
+import com.stslex.csplashscreen.core.ui.theme.AppTheme
 import st.slex.feature_photo_detail.R
 
 @Composable

@@ -19,11 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import st.slex.core_ui.theme.AppTheme
-
-enum class DynamicButtonState {
-    DEFAULT, EXPAND;
-}
+import com.stslex.csplashscreen.core.ui.theme.AppTheme
 
 @Composable
 fun DynamicButton(

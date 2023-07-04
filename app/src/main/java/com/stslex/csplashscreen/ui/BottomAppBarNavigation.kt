@@ -10,8 +10,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import st.slex.core_navigation.AppDestination
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.AppDestination
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 
 @Composable
 fun mainBottomAppBar(

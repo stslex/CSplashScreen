@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import st.slex.core_navigation.AppDestination
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.AppDestination
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.feature_topics.ui.TopicsScreen
 
 fun NavGraphBuilder.topicsGraph(

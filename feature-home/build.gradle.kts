@@ -5,11 +5,11 @@ plugins {
 
 dependencies {
     implementation(project(":core:core"))
-    implementation(project(":core-ui"))
-    implementation(project(":core-navigation"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:collection"))
+    implementation(project(":core:navigation"))
     implementation(project(":core-network"))
     implementation(project(":core-photos"))
-    implementation(project(":core-collection"))
 }
 
 android.namespace = "st.slex.feature_home"

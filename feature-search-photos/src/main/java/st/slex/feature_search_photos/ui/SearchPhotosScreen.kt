@@ -19,7 +19,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import st.slex.core_ui.components.ListOfElements
+import com.stslex.csplashscreen.core.ui.components.ListOfElements
 import st.slex.feature_search_photos.data.QuerySearch
 
 @OptIn(ExperimentalMaterial3Api::class)

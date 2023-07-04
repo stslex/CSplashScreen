@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import st.slex.core_navigation.AppDestination
+import com.stslex.csplashscreen.core.navigation.AppDestination
 import com.stslex.csplashscreen.navigation.NavigationHost
 import com.stslex.csplashscreen.navigation.navigateScreen
 

@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
-import st.slex.core_navigation.AppArguments
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.AppArguments
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.core_network.model.ui.ImageModel
-import st.slex.core_ui.base.BaseViewModel
+import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.feature_search_photos.data.QuerySearch
 import st.slex.feature_search_photos.domain.SearchPhotosInteractor
 

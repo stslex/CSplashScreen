@@ -4,20 +4,21 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
+import com.stslex.csplashscreen.core.collection.data.QueryCollections
+import com.stslex.csplashscreen.core.core.Resource
+import com.stslex.csplashscreen.core.ui.base.BaseViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import com.stslex.csplashscreen.core.core.Resource
-import st.slex.core_collection.data.QueryCollections
-import st.slex.core_navigation.AppArguments
-import st.slex.core_navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.AppArguments
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_photos.data.QueryPhotos
-import st.slex.core_ui.base.BaseViewModel
 import st.slex.feature_user.domain.UserInteractor
 
 class UserViewModel(
@@ -49,10 +50,13 @@ class UserViewModel(
     val photos: StateFlow<PagingData<ImageModel>> =
         queryPhotos.map(::newPagerPhotos).pagingFlow
 
-    val likes: StateFlow<PagingData<ImageModel>> =
-        queryLikes.map(::newPagerLikes).flatMapLatest { pager ->
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val likes: StateFlow<PagingData<ImageModel>> = queryLikes
+        .map(::newPagerLikes)
+        .flatMapLatest { pager ->
             pager.flow
-        }.primaryPagingFlow
+        }
+        .primaryPagingFlow
 
     private var newPagingCollectionsSource: PagingSource<*, *>? = null
     private var newPagingPhotosSource: PagingSource<*, *>? = null
