@@ -26,12 +26,15 @@ open class BaseViewModel : ViewModel() {
         onError(throwable, context.getScopeName().value)
     }
 
-    fun <T> Flow<T>.primaryStateFlow(): StateFlow<Resource<T>> =
-        mapLatest<T, Resource<T>> { data ->
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun <T> Flow<T>.primaryStateFlow(): StateFlow<Resource<T>> = this
+        .mapLatest<T, Resource<T>> { data ->
             Resource.Success(data)
-        }.catch { exception ->
+        }
+        .catch { exception ->
             emit(Resource.Failure(Exception(exception)))
-        }.makeStateFlow(Resource.Loading)
+        }
+        .makeStateFlow(Resource.Loading)
 
     val <T : Any> Pager<Int, T>.pagingFlow: StateFlow<PagingData<T>>
         get() = flow.primaryPagingFlow

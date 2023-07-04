@@ -22,10 +22,10 @@ include(":app")
 
 include(":core:core")
 include(":core:ui")
+include(":core:collection")
 include(":core-navigation")
 include(":core-network")
 include(":core-photos")
-include(":core-collection")
 
 include(":feature-home")
 include(":feature-collection")

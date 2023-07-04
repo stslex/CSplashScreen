@@ -1,4 +1,4 @@
-package st.slex.core_collection.data
+package com.stslex.csplashscreen.core.collection.data
 
 sealed class QueryCollections {
     class UserCollections(val query: String) : QueryCollections()

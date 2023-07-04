@@ -1,4 +1,4 @@
-package st.slex.core_collection.data
+package com.stslex.csplashscreen.core.collection.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

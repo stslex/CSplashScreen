@@ -1,6 +1,6 @@
 package com.stslex.csplashscreen.di.module
 
-import st.slex.core_collection.di.ModuleCoreCollection
+import com.stslex.csplashscreen.core.collection.di.ModuleCoreCollection
 import st.slex.core_network.di.ModuleCoreNetwork
 import st.slex.core_photos.di.ModuleCorePhotos
 import st.slex.feature_collection.di.SingleCollectionModule
