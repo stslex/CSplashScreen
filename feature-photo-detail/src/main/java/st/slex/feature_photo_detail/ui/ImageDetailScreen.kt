@@ -39,7 +39,7 @@ import kotlinx.coroutines.Dispatchers
 import com.stslex.csplashscreen.core.core.Resource
 import com.stslex.csplashscreen.core.core.UtilsExtensions.convertedUrl
 import st.slex.core_network.model.ui.ImageModel
-import st.slex.core_ui.components.UserImageHeadWithUserName
+import com.stslex.csplashscreen.core.ui.components.UserImageHeadWithUserName
 import st.slex.feature_photo_detail.ui.components.DetailImageBodyTags
 import st.slex.feature_photo_detail.ui.components.DownloadImageButton
 import st.slex.feature_photo_detail.ui.components.WallPaperButton

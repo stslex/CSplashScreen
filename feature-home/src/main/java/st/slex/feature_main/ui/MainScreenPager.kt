@@ -13,10 +13,10 @@ import androidx.paging.compose.itemKey
 import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.UIItemTypes
-import st.slex.core_ui.components.CollectionItem
-import st.slex.core_ui.components.ImageItem
-import st.slex.core_ui.components.animatePager
-import st.slex.core_ui.components.checkState
+import com.stslex.csplashscreen.core.ui.components.CollectionItem
+import com.stslex.csplashscreen.core.ui.components.ImageItem
+import com.stslex.csplashscreen.core.ui.components.animatePager
+import com.stslex.csplashscreen.core.ui.components.checkState
 
 
 @OptIn(ExperimentalFoundationApi::class)

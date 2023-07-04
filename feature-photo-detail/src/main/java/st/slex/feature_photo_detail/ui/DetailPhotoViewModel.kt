@@ -8,7 +8,7 @@ import com.stslex.csplashscreen.core.core.Resource
 import st.slex.core_navigation.AppArguments
 import st.slex.core_navigation.NavigationScreen
 import st.slex.core_network.model.ui.ImageModel
-import st.slex.core_ui.base.BaseViewModel
+import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.feature_photo_detail.data.PhotoRepository
 import st.slex.feature_photo_detail.ui.utils.DownloadImageUseCase
 import st.slex.feature_photo_detail.ui.utils.WallpaperSetUseCase

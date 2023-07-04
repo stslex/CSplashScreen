@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import kotlinx.coroutines.launch
-import st.slex.core_ui.components.setScrollingColumnAnimation
+import com.stslex.csplashscreen.core.ui.components.setScrollingColumnAnimation
 import st.slex.feature_topics.domain.model.TopicsUIModel
 import st.slex.feature_topics.ui.components.TopicBox
 import st.slex.feature_topics.ui.components.TopicsTitle

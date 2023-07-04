@@ -17,7 +17,7 @@ import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_photos.data.QueryPhotos
-import st.slex.core_ui.base.BaseViewModel
+import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.feature_user.domain.UserInteractor
 
 class UserViewModel(
