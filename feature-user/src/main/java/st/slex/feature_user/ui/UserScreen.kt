@@ -36,7 +36,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import st.slex.core.Resource
+import com.stslex.csplashscreen.core.Resource
 import st.slex.core_network.model.ui.CollectionModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.UIItemTypes

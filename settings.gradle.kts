@@ -20,7 +20,7 @@ rootProject.name = "CSplashScreen"
 
 include(":app")
 
-include(":core")
+include(":core:core")
 include(":core-ui")
 include(":core-navigation")
 include(":core-network")

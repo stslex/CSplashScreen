@@ -2,4 +2,4 @@ plugins {
     id("csplashscreen.android.library")
 }
 
-android.namespace = "st.slex.core"
+android.namespace = "com.stslex.csplashscreen.core"

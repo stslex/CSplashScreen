@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":core:core"))
     implementation(project(":core-ui"))
     implementation(project(":core-navigation"))
     implementation(project(":core-network"))

@@ -1,4 +1,4 @@
-package st.slex.core
+package com.stslex.csplashscreen.core
 
 import org.koin.core.module.Module
 

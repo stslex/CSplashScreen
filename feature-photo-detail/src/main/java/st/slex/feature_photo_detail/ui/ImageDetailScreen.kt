@@ -36,8 +36,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.Dispatchers
-import st.slex.core.Resource
-import st.slex.core.UtilsExtensions.convertedUrl
+import com.stslex.csplashscreen.core.Resource
+import com.stslex.csplashscreen.core.UtilsExtensions.convertedUrl
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_ui.components.UserImageHeadWithUserName
 import st.slex.feature_photo_detail.ui.components.DetailImageBodyTags

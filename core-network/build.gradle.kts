@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":core:core"))
 
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.okhttp)

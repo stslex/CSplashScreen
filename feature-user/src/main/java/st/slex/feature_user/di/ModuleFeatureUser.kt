@@ -6,7 +6,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import st.slex.core.AppModule
+import com.stslex.csplashscreen.core.AppModule
 import st.slex.feature_user.data.UserRepository
 import st.slex.feature_user.data.UserRepositoryImpl
 import st.slex.feature_user.domain.UserInteractor

@@ -4,8 +4,9 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":core:core"))
     implementation(project(":core-network"))
+
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.compose.constraintlayout)
 }
