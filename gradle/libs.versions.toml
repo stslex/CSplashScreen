@@ -1,17 +1,18 @@
 [versions]
 androidDesugarJdkLibs = "2.0.3"
-coilCompose = "2.2.2"
 kotlin = "1.8.22"
 androidGradlePlugin = "8.0.2"
 
 ktx = "1.10.1"
 material = "1.9.0"
 appcompat = "1.6.1"
+immutableCollection = "0.3.5"
 
 composeCompiler = "1.4.8"
 composeBom = "2023.06.01"
 composeNavigation = "2.6.0"
 accompanist = "0.30.0"
+coilCompose = "2.2.2"
 
 ktor = "2.2.4"
 ktorAndroid = "2.2.4"
@@ -27,9 +28,10 @@ espresso = "3.5.1"
 [libraries]
 android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+
+kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "immutableCollection" }
 
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -49,6 +51,8 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
 androidx-compose-constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha10"
+
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 
 androidx-compose-paging = "androidx.paging:paging-compose:1.0.0-alpha20"
 androidx-paging-runtime = "androidx.paging:paging-runtime-ktx:3.1.1"
@@ -102,7 +106,8 @@ compose = [
     "androidx-compose-tooling-preview",
     "androidx-compose-foundation",
     "landscapist-glide",
-    "androidx-compose-paging"
+    "androidx-compose-paging",
+    "coil-compose"
 ]
 
 ktor = [

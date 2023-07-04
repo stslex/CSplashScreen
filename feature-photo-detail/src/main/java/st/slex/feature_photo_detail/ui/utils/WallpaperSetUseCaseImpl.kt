@@ -1,23 +1,32 @@
 package st.slex.feature_photo_detail.ui.utils
 
+import android.app.WallpaperManager
 import android.content.Context
-import android.graphics.Bitmap
-import android.net.Uri
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.target.CustomTarget
+import androidx.core.graphics.drawable.toBitmap
+import coil.ImageLoader
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 
 class WallpaperSetUseCaseImpl(
     private val context: Context,
-    private val target: CustomTarget<Bitmap>
 ) : WallpaperSetUseCase {
 
     override operator fun invoke(url: String) {
-        Glide.with(context)
-            .asBitmap()
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .load(Uri.parse(url))
-            .into(target)
+        val imageLoader = ImageLoader(context)
+        val imageRequest = ImageRequest.Builder(context)
+            .data(url)
+            .diskCacheKey(url)
+            .memoryCacheKey(url)
+            .placeholderMemoryCacheKey(url)
+            .diskCachePolicy(CachePolicy.READ_ONLY)
+            .diskCachePolicy(CachePolicy.READ_ONLY)
+            .diskCachePolicy(CachePolicy.READ_ONLY)
+            .listener { _, result ->
+                WallpaperManager
+                    .getInstance(context)
+                    .setBitmap(result.drawable.toBitmap())
+            }
+            .build()
+        imageLoader.enqueue(imageRequest)
     }
 }

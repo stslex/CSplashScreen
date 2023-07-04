@@ -55,6 +55,9 @@ internal fun Project.configureKotlinAndroid(
         val androidTest = libs.findBundle("android-test").get()
         add("androidTestImplementation", androidTest)
 
+        val immutableCollection = libs.findLibrary("kotlinx-collections-immutable").get()
+        add("implementation", immutableCollection)
+
         // TODO вынести
         val koin = libs.findBundle("koin").get()
         add("implementation", koin)

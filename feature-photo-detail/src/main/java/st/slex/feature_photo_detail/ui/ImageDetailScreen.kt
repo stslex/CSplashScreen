@@ -1,5 +1,10 @@
 package st.slex.feature_photo_detail.ui
 
+import android.app.Activity
+import android.app.WallpaperManager.ACTION_CROP_AND_SET_WALLPAPER
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -35,11 +40,11 @@ import com.bumptech.glide.Glide
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
-import kotlinx.coroutines.Dispatchers
 import com.stslex.csplashscreen.core.core.Resource
 import com.stslex.csplashscreen.core.core.UtilsExtensions.convertedUrl
-import st.slex.core_network.model.ui.ImageModel
 import com.stslex.csplashscreen.core.ui.components.UserImageHeadWithUserName
+import kotlinx.coroutines.Dispatchers
+import st.slex.core_network.model.ui.ImageModel
 import st.slex.feature_photo_detail.ui.components.DetailImageBodyTags
 import st.slex.feature_photo_detail.ui.components.DownloadImageButton
 import st.slex.feature_photo_detail.ui.components.WallPaperButton
@@ -83,13 +88,30 @@ fun ImageDetailScreen(
 private fun Resource<ImageModel>.checkLoadedState(
     viewModel: DetailPhotoViewModel
 ): @Composable LazyItemScope.() -> Unit = {
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Log.i("WALLPAPER_SET", "Wallpaper set success")
+            } else {
+                Log.e(
+                    "WALLPAPER_SET",
+                    "$ACTION_CROP_AND_SET_WALLPAPER ${result.resultCode} resultCode"
+                )
+            }
+        }
+    )
+
+    val context = LocalContext.current
+
     when (this@checkLoadedState) {
         is Resource.Success -> BindSuccessLoaded(
             imageModel = data,
             onDownloadImageClick = viewModel::onDownloadImageClick,
             onTagClick = viewModel::onTagClick,
             onProfileClick = viewModel::onProfileClick,
-            onSetWallpaperClick = viewModel::onWallpaperSetClick
+            onSetWallpaperClick = (viewModel::onWallpaperSetClick)
         )
 
         is Resource.Loading -> BindDetailImageLoading(Modifier)

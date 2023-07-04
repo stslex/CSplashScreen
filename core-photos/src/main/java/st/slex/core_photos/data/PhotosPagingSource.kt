@@ -3,6 +3,7 @@ package st.slex.core_photos.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import st.slex.core_network.model.map
+import st.slex.core_network.model.remote.image.RemoteImageModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.source.interf.PagingPhotosNetworkSource
 
@@ -25,41 +26,63 @@ class PhotosPagingSource(
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val pageSize = params.loadSize
 
-            val photos = when (query) {
-                is QueryPhotos.AllPhotos ->
-                    source.getPhotos(pageNumber, pageSize)
-
-                is QueryPhotos.CollectionPhotos ->
-                    source.getCollectionPhotos(query.query, pageNumber, pageSize)
-
-                is QueryPhotos.UserPhotos -> {
-                    source.getUserPhotos(query.username, pageNumber, pageSize)
-                }
-
-                is QueryPhotos.UserLikes -> {
-                    source.getUserLikePhotos(query.username, pageNumber, pageSize)
-                }
-
-                is QueryPhotos.TopicPhotos -> {
-                    source.getTopicPhotos(query.id, pageNumber, pageSize)
-                }
-
-                is QueryPhotos.EmptyQuery -> {
-                    return LoadResult.Invalid()
-                }
-            }.map { it.map() }
-            val nextPageNumber = if (photos.isEmpty()) null else pageNumber + 1
-            val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
-            LoadResult.Page(photos, prevPageNumber, nextPageNumber)
+            val photos = getPhotos(pageNumber = pageNumber, pageSize = pageSize).map { imageModel ->
+                imageModel.map()
+            }
+            val prevKey = pageNumber.takeIf { it > INITIAL_PAGE_NUMBER }?.dec()
+            val nextKey = pageNumber.takeIf { photos.isNotEmpty() }?.inc()
+            LoadResult.Page(
+                data = photos,
+                prevKey = prevKey,
+                nextKey = nextKey
+            )
         } catch (e: Exception) {
             return LoadResult.Error(e)
         }
     }
 
+    private suspend fun getPhotos(
+        pageNumber: Int,
+        pageSize: Int,
+    ): List<RemoteImageModel> = when (query) {
+        is QueryPhotos.AllPhotos -> source.getPhotos(
+            page = pageNumber,
+            pageSize = pageSize
+        )
+
+        is QueryPhotos.CollectionPhotos -> source.getCollectionPhotos(
+            query = query.query,
+            page = pageNumber,
+            pageSize = pageSize
+        )
+
+        is QueryPhotos.UserPhotos -> source.getUserPhotos(
+            username = query.username,
+            page = pageNumber,
+            pageSize = pageSize
+        )
+
+        is QueryPhotos.UserLikes -> source.getUserLikePhotos(
+            username = query.username,
+            page = pageNumber,
+            pageSize = pageSize
+        )
+
+        is QueryPhotos.TopicPhotos -> source.getTopicPhotos(
+            topicId = query.id,
+            page = pageNumber,
+            pageSize = pageSize
+        )
+
+        is QueryPhotos.EmptyQuery -> throw IllegalStateException("query couldn't be empty")
+    }
+
     class Factory(
         private val source: PagingPhotosNetworkSource
     ) {
-        fun create(query: QueryPhotos): PhotosPagingSource = PhotosPagingSource(source, query)
+        fun create(
+            query: QueryPhotos
+        ): PhotosPagingSource = PhotosPagingSource(source, query)
     }
 
     companion object {

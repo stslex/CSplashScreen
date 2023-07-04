@@ -1,5 +1,6 @@
 package st.slex.core_network.model
 
+import kotlinx.collections.immutable.toImmutableList
 import st.slex.core_network.model.remote.collection.RemoteCollectionModel
 import st.slex.core_network.model.remote.collection.RemoteLinksCollectionModel
 import st.slex.core_network.model.remote.download.RemoteDownloadModel
@@ -59,8 +60,9 @@ fun RemoteImageModel?.map(): ImageModel = ImageModel(
     altDescription = this?.altDescription.orEmpty(),
     exif = this?.exif.map(),
     location = this?.location.map(),
-    tags = this?.tags?.map { it.map() }.orEmpty(),
-    currentUserCollections = this?.currentUserCollections?.map { it.map() }.orEmpty(),
+    tags = this?.tags?.map { it.map() }.orEmpty().toImmutableList(),
+    currentUserCollections = this?.currentUserCollections?.map { it.map() }.orEmpty()
+        .toImmutableList(),
     sponsorship = this?.sponsorship.map(),
     urls = this?.urls.map(),
     links = this?.links.map(),
@@ -99,9 +101,9 @@ fun RemoteCollectionModel?.map(): CollectionModel = CollectionModel(
     totalPhotos = this?.totalPhotos ?: 0,
     private = this?.private ?: false,
     shareKey = this?.shareKey.orEmpty(),
-    tags = this?.tags?.map { it.map() }.orEmpty(),
+    tags = this?.tags?.map { it.map() }.orEmpty().toImmutableList(),
     coverPhoto = this?.coverPhoto.map(),
-    previewPhotos = this?.previewPhotos?.map { it.map() }.orEmpty(),
+    previewPhotos = this?.previewPhotos?.map { it.map() }.orEmpty().toImmutableList(),
     user = this?.user.map(),
     links = this?.links.map()
 )
