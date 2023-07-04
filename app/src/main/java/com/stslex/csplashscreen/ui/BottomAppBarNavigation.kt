@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui
+package com.stslex.csplashscreen.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon

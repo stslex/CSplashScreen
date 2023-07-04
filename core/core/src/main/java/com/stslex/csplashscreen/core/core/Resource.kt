@@ -1,4 +1,4 @@
-package com.stslex.csplashscreen.core
+package com.stslex.csplashscreen.core.core
 
 sealed interface Resource<out T> {
 

@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.navigation
+package com.stslex.csplashscreen.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

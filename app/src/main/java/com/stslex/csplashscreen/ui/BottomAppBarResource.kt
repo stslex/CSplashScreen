@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui
+package com.stslex.csplashscreen.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

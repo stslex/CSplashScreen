@@ -1,4 +1,4 @@
-package com.stslex.csplashscreen.core
+package com.stslex.csplashscreen.core.core
 
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets

@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.di.module
+package com.stslex.csplashscreen.di.module
 
 import st.slex.core_collection.di.ModuleCoreCollection
 import st.slex.core_network.di.ModuleCoreNetwork

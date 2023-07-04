@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.stslex.csplashscreen.core.Resource
+import com.stslex.csplashscreen.core.core.Resource
 import st.slex.core_navigation.AppArguments
 import st.slex.core_navigation.NavigationScreen
 import st.slex.core_network.model.ui.ImageModel

@@ -6,7 +6,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import com.stslex.csplashscreen.core.AppModule
+import com.stslex.csplashscreen.core.core.AppModule
 import st.slex.feature_photo_detail.data.PhotoRepository
 import st.slex.feature_photo_detail.data.PhotoRepositoryImpl
 import st.slex.feature_photo_detail.ui.DetailPhotoViewModel

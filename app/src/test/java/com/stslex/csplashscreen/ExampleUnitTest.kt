@@ -1,4 +1,4 @@
-package st.slex.csplashscreen
+package com.stslex.csplashscreen
 
 import org.junit.Test
 

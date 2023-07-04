@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.stslex.csplashscreen.core.UtilsExtensions.convertedUrl
+import com.stslex.csplashscreen.core.core.UtilsExtensions.convertedUrl
 import st.slex.core_network.model.ui.ImageModel
 
 

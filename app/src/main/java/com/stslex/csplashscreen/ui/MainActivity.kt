@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui
+package com.stslex.csplashscreen.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -1,10 +1,10 @@
-package st.slex.csplashscreen
+package com.stslex.csplashscreen
 
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import st.slex.csplashscreen.di.module.AllModules
+import com.stslex.csplashscreen.di.module.AllModules
 
 class SplashApplication : Application() {
 

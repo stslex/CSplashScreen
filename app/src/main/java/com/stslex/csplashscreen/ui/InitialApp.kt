@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.ui
+package com.stslex.csplashscreen.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
@@ -13,8 +13,8 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import st.slex.core_navigation.AppDestination
-import st.slex.csplashscreen.navigation.NavigationHost
-import st.slex.csplashscreen.navigation.navigateScreen
+import com.stslex.csplashscreen.navigation.NavigationHost
+import com.stslex.csplashscreen.navigation.navigateScreen
 
 @Composable
 fun InitialApp(

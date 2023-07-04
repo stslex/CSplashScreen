@@ -6,7 +6,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import com.stslex.csplashscreen.core.AppModule
+import com.stslex.csplashscreen.core.core.AppModule
 import st.slex.feature_search_photos.data.SearchPagingSource
 import st.slex.feature_search_photos.data.SearchRepository
 import st.slex.feature_search_photos.data.SearchRepositoryImpl
