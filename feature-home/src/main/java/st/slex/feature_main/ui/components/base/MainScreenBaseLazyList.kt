@@ -16,12 +16,11 @@ import com.stslex.csplashscreen.core.ui.components.animateItemTop
 fun MainScreenBaseLazyList(
     count: Int,
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
     key: ((index: Int) -> Any),
     contentType: (index: Int) -> Any,
     content: @Composable BoxScope.(index: Int) -> Unit
 ) {
-    val listState: LazyListState = rememberLazyListState()
-
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         state = listState,

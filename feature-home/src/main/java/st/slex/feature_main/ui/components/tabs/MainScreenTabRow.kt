@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun MainScreenTabRow(
     pagerState: PagerState,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TabRow(
@@ -29,7 +30,10 @@ fun MainScreenTabRow(
                 }
         },
         tabs = {
-            MainScreenTabContent(pagerState)
+            MainScreenTabContent(
+                pagerState = pagerState,
+                onClick = onClick,
+            )
         },
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground

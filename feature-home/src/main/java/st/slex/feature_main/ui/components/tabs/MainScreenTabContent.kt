@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreenTabContent(
     pagerState: PagerState,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -34,7 +35,11 @@ fun MainScreenTabContent(
             onClick = remember {
                 {
                     scope.launch {
-                        pagerState.animateScrollToPage(index)
+                        if (pagerState.currentPage == index) {
+                            onClick(index)
+                        } else {
+                            pagerState.animateScrollToPage(index)
+                        }
                     }
                 }
             }

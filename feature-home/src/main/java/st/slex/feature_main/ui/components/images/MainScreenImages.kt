@@ -1,8 +1,9 @@
 package st.slex.feature_main.ui.components.images
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -17,13 +18,13 @@ import st.slex.feature_main.ui.components.base.MainUserAvatar
 import st.slex.feature_main.ui.components.base.MainUsername
 import st.slex.feature_main.ui.components.tabs.MainScreenTabs
 
-@SuppressLint("RestrictedApi")
 @Composable
 fun MainScreenImages(
     items: LazyPagingItems<PhotoModel>,
     onUserClick: (username: String) -> Unit,
     onImageClick: (url: String, imageId: String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
 ) {
     MainScreenBaseLazyList(
         modifier = modifier,
@@ -33,7 +34,8 @@ fun MainScreenImages(
         },
         contentType = {
             MainScreenTabs.PHOTOS
-        }
+        },
+        listState = listState
     ) { index ->
         items[index]?.let { item ->
             MainScreenImageItem(
