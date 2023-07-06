@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.stslex.csplashscreen.core.core.Resource
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import org.koin.core.component.getScopeName
@@ -35,6 +37,17 @@ open class BaseViewModel : ViewModel() {
             emit(Resource.Failure(Exception(exception)))
         }
         .makeStateFlow(Resource.Loading)
+
+    inline fun <T : Any, R : Any> Pager<Int, T>.mapState(
+        crossinline transform: suspend (T) -> R
+    ): StateFlow<PagingData<R>> = this
+        .flow
+        .map { pagingData ->
+            pagingData.map { item ->
+                transform(item)
+            }
+        }
+        .primaryPagingFlow
 
     val <T : Any> Pager<Int, T>.pagingFlow: StateFlow<PagingData<T>>
         get() = flow.primaryPagingFlow

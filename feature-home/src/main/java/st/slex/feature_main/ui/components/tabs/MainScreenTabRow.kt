@@ -9,31 +9,27 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import st.slex.core_network.model.ui.UIItemTypes
-import st.slex.feature_main.ui.MainPagerTabResource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreenTabRow(
-    modifier: Modifier = Modifier,
     pagerState: PagerState,
-    listPagesResource: List<MainPagerTabResource<out UIItemTypes>>
+    modifier: Modifier = Modifier,
 ) {
     TabRow(
         modifier = modifier,
         selectedTabIndex = pagerState.currentPage,
         indicator = { listTabPosition ->
-            val currentTab = listTabPosition[pagerState.currentPage]
-            TabRowDefaults.Indicator(
-                modifier = Modifier.tabIndicatorOffset(currentTab)
-            )
+            listTabPosition
+                .getOrNull(pagerState.currentPage)
+                ?.let { position ->
+                    TabRowDefaults.Indicator(
+                        modifier = Modifier.tabIndicatorOffset(position)
+                    )
+                }
         },
         tabs = {
-            MainScreenTabContent(
-                modifier = Modifier,
-                pagerState = pagerState,
-                listPagesResource = listPagesResource
-            )
+            MainScreenTabContent(pagerState)
         },
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground

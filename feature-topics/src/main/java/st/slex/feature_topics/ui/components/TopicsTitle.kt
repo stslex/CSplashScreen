@@ -20,7 +20,8 @@ fun TopicsTitle(
     val previousTextStyle = MaterialTheme.typography.titleLarge
     val nextTextStyle = MaterialTheme.typography.displayMedium
     val fraction by animateFloatAsState(
-        targetValue = if (isClicked) 1f else 0f
+        targetValue = if (isClicked) 1f else 0f,
+        label = "fraction"
     )
 
     val textStyleState = remember {

@@ -18,7 +18,7 @@ import st.slex.feature_user.navigation.userGraph
 fun NavigationHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = AppDestination.HOME.route
+    startDestination: AppDestination = AppDestination.HOME
 ) {
     val navigator: (NavigationScreen) -> Unit = { screen ->
         when (screen) {
@@ -28,7 +28,7 @@ fun NavigationHost(
     }
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination.route
     ) {
         homeGraph(modifier = modifier, navigate = navigator)
         userGraph(modifier = modifier, navigate = navigator)

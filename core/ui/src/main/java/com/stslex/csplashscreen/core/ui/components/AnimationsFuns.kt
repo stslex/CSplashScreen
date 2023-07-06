@@ -51,3 +51,24 @@ fun LazyListState.normalizedPosition(key: String?): Float = with(layoutInfo) {
         (it.offset.toFloat() - center) / center
     } ?: 0F
 }
+
+fun Modifier.animateItemTop(
+    listState: LazyListState,
+    key: Any?
+): Modifier = graphicsLayer {
+    val position = listState.normalizedPositionTop(key)
+    val value = 1 - (position.absoluteValue * 0.05f)
+    alpha = value
+    scaleX = value
+    scaleY = value
+}
+
+fun LazyListState.normalizedPositionTop(
+    key: Any?
+): Float = with(layoutInfo) {
+    visibleItemsInfo.firstOrNull {
+        it.key == key
+    }?.let {
+        1 - (it.size - it.offset.toFloat()) / it.size
+    } ?: 0F
+}

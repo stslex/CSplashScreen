@@ -16,7 +16,7 @@ coilCompose = "2.2.2"
 
 ktor = "2.2.4"
 ktorAndroid = "2.2.4"
-okhttp3 = "4.10.0"
+okhttp3 = "4.11.0"
 
 koin = "3.3.0"
 koinAndroid = "3.3.1"

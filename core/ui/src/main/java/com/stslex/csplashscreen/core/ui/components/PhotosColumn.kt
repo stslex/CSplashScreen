@@ -40,7 +40,7 @@ fun ListOfElements(
                 onImageClick = onImageClick,
                 modifier = Modifier
                     .padding(start = 8.dp, end = 8.dp, top = 32.dp, bottom = 32.dp)
-                    .setScrollingColumnAnimation(lazyListState, item.id)
+                    .setScrollingColumnAnimation(lazyListState, item.uuid)
             )
         }
         lazyPagingPhotosItems.checkState(this)

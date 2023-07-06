@@ -22,7 +22,7 @@ import st.slex.core_network.model.remote.user.RemoteBadgeModel
 import st.slex.core_network.model.remote.user.RemoteProfileImageModel
 import st.slex.core_network.model.remote.user.RemoteUserLinksModel
 import st.slex.core_network.model.remote.user.RemoteUserModel
-import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.CollectionDomainModel
 import st.slex.core_network.model.ui.DownloadModel
 import st.slex.core_network.model.ui.Downloads
 import st.slex.core_network.model.ui.Historical
@@ -45,7 +45,7 @@ import st.slex.core_network.model.ui.user.UserLinksModel
 import st.slex.core_network.model.ui.user.UserModel
 
 fun RemoteImageModel?.map(): ImageModel = ImageModel(
-    id = this?.id.orEmpty(),
+    uuid = this?.id.orEmpty(),
     createdAt = this?.createdAt.orEmpty(),
     updatedAt = this?.updatedAt.orEmpty(),
     width = this?.width ?: 0,
@@ -90,8 +90,8 @@ fun RemoteTagModel?.map(): TagModel = TagModel(
     title = this?.title.orEmpty()
 )
 
-fun RemoteCollectionModel?.map(): CollectionModel = CollectionModel(
-    id = this?.id.orEmpty(),
+fun RemoteCollectionModel?.map(): CollectionDomainModel = CollectionDomainModel(
+    uuid = this?.id.orEmpty(),
     title = this?.title.orEmpty(),
     description = this?.description.orEmpty(),
     publishedAt = this?.publishedAt.orEmpty(),

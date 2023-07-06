@@ -37,7 +37,7 @@ import androidx.paging.compose.itemKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import com.stslex.csplashscreen.core.core.Resource
-import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.CollectionDomainModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.UIItemTypes
 import st.slex.core_network.model.ui.user.UserModel
@@ -163,7 +163,7 @@ fun BindPagerWithTabs(
                 contentType = { index ->
                     when (pagingResource.pagingItems[index]) {
                         is ImageModel -> "userImage"
-                        is CollectionModel -> "collectionImage"
+                        is CollectionDomainModel -> "collectionImage"
                         else -> "undefined"
                     }
 
@@ -208,7 +208,7 @@ private fun SetCurrentItem(
             onImageClick = onImageClick
         )
 
-        is CollectionModel -> CollectionItem(
+        is CollectionDomainModel -> CollectionItem(
             item = item,
             modifier = modifier,
             isUserVisible = isUserVisible,

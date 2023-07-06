@@ -23,10 +23,12 @@ fun TopicsImage(
     modifier: Modifier = Modifier
 ) {
     val blurSize by animateDpAsState(
-        targetValue = if (isSelectedState) 16.dp else 0.dp
+        targetValue = if (isSelectedState) 16.dp else 0.dp,
+        label = "blurSize"
     )
     val colorFilter by animateFloatAsState(
-        targetValue = if (isSelectedState) 0.5f else 1f
+        targetValue = if (isSelectedState) 0.5f else 1f,
+        label = "colorFilter"
     )
 
     AsyncImage(

@@ -19,13 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.graphics.toColorInt
-import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.CollectionDomainModel
 import com.stslex.csplashscreen.core.ui.theme.lighten
 
 
 @Composable
 fun CollectionItem(
-    item: CollectionModel,
+    item: CollectionDomainModel,
     modifier: Modifier,
     isUserVisible: Boolean = true,
     onUserHeadClick: (username: String) -> Unit,
@@ -48,7 +48,7 @@ fun CollectionItem(
             url = item.coverPhoto.urls.regular,
             title = item.title,
             totalPhotos = item.totalPhotos,
-            id = item.id,
+            id = item.uuid,
             onCollectionClick = onCollectionClick,
             color = item.coverPhoto.color
         )

@@ -12,7 +12,7 @@ import st.slex.core_network.model.ui.user.UserModel
 
 @Stable
 data class ImageModel(
-    val id: String,
+    val uuid: String,
     val createdAt: String,
     val updatedAt: String,
     val width: Int,
@@ -28,11 +28,11 @@ data class ImageModel(
     val exif: ExifModel,
     val location: LocationModel,
     val tags: ImmutableList<TagModel>,
-    val currentUserCollections: ImmutableList<CollectionModel>,
+    val currentUserCollections: ImmutableList<CollectionDomainModel>,
     val sponsorship: Sponsorship,
     val urls: UrlsModel,
     val links: LinksImageModel,
     val user: UserModel,
     val statistics: PhotoStatistics
-) : UIItemTypes(id)
+) : UIItemTypes(uuid)
 

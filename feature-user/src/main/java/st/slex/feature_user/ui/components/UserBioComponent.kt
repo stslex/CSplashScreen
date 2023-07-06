@@ -38,7 +38,8 @@ fun BindUserBio(
             .padding(horizontal = 8.dp)
     ) {
         AnimatedContent(
-            targetState = userBioState.value
+            targetState = userBioState.value,
+            label = "userBioState"
         ) { target ->
             Text(
                 modifier = Modifier

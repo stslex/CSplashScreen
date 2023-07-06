@@ -1,7 +1,7 @@
 package st.slex.feature_user.ui
 
 import androidx.paging.compose.LazyPagingItems
-import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.CollectionDomainModel
 import st.slex.core_network.model.ui.ImageModel
 
 sealed class UserPagerTabResource<T : Any>(val pagingItems: LazyPagingItems<T>) {
@@ -21,8 +21,8 @@ sealed class UserPagerTabResource<T : Any>(val pagingItems: LazyPagingItems<T>) 
     }
 
     data class Collections(
-        private val items: LazyPagingItems<CollectionModel>
-    ) : UserPagerTabResource<CollectionModel>(items) {
+        private val items: LazyPagingItems<CollectionDomainModel>
+    ) : UserPagerTabResource<CollectionDomainModel>(items) {
         override val title: String = "Collections"
     }
 }
