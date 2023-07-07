@@ -4,21 +4,21 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import st.slex.core_network.model.map
 import st.slex.core_network.model.remote.collection.RemoteCollectionModel
-import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.CollectionDomainModel
 import st.slex.core_network.source.interf.CollectionNetworkSource
 
 class CollectionsPagingSource(
     private val source: CollectionNetworkSource,
     private val query: QueryCollections
-) : PagingSource<Int, CollectionModel>() {
+) : PagingSource<Int, CollectionDomainModel>() {
 
-    override fun getRefreshKey(state: PagingState<Int, CollectionModel>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, CollectionDomainModel>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
         val anchorPage = state.closestPageToPosition(anchorPosition) ?: return null
         return anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CollectionModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CollectionDomainModel> {
         try {
             if (query is QueryCollections.EmptyQuery) {
                 return LoadResult.Page(emptyList(), prevKey = null, nextKey = null)

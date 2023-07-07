@@ -60,8 +60,8 @@ fun TopicsScreen(
 @Composable
 fun TopicsContent(
     item: TopicsUIModel?,
-    index: Int = 0,
     modifier: Modifier = Modifier,
+    index: Int = 0,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
     var isClicked by remember { mutableStateOf(false) }

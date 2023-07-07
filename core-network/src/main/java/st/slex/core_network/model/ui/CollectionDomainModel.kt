@@ -7,8 +7,8 @@ import st.slex.core_network.model.ui.image.TagModel
 import st.slex.core_network.model.ui.user.UserModel
 
 @Stable
-data class CollectionModel(
-    val id: String,
+data class CollectionDomainModel(
+    val uuid: String,
     val title: String,
     val description: String,
     val publishedAt: String,
@@ -23,4 +23,4 @@ data class CollectionModel(
     val previewPhotos: ImmutableList<ImageModel>,
     val user: UserModel,
     val links: LinksCollectionModel
-) : UIItemTypes(id)
+) : UIItemTypes(uuid)

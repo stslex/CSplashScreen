@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
-import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.CollectionDomainModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_photos.data.QueryPhotos
@@ -44,7 +44,7 @@ class UserViewModel(
     private val queryLikes: StateFlow<QueryPhotos> =
         _queryLikes.asStateFlow()
 
-    val collections: StateFlow<PagingData<CollectionModel>> =
+    val collections: StateFlow<PagingData<CollectionDomainModel>> =
         queryCollections.map(::newPagerCollections).pagingFlow
 
     val photos: StateFlow<PagingData<ImageModel>> =
@@ -62,7 +62,7 @@ class UserViewModel(
     private var newPagingPhotosSource: PagingSource<*, *>? = null
     private var newPagingLikesSource: PagingSource<*, *>? = null
 
-    private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionModel> {
+    private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionDomainModel> {
         return Pager(PagingConfig(10, enablePlaceholders = false)) {
             newPagingCollectionsSource?.invalidate()
             interactor.getCollectionsPagingSource(query).also { newPagingCollectionsSource = it }

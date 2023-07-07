@@ -35,7 +35,7 @@ fun ImageItem(
         Surface(
             modifier = Modifier.clickable {
                 val encodedUrl = item.urls.regular.convertedUrl
-                onImageClick(encodedUrl, item.id)
+                onImageClick(encodedUrl, item.uuid)
             },
             content = {
                 CoverPhotoItem(url = item.urls.regular)

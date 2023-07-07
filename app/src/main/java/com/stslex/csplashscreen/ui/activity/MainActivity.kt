@@ -1,12 +1,11 @@
-package com.stslex.csplashscreen.ui
+package com.stslex.csplashscreen.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
-import androidx.navigation.compose.rememberNavController
-import com.stslex.csplashscreen.core.navigation.AppDestination
 import com.stslex.csplashscreen.core.ui.theme.AppTheme
+import com.stslex.csplashscreen.ui.components.InitialApp
 
 class MainActivity : ComponentActivity() {
 
@@ -17,11 +16,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                val navController = rememberNavController()
-                InitialApp(
-                    navController = navController,
-                    startDestination = AppDestination.TOPICS.route
-                )
+                InitialApp()
             }
         }
     }

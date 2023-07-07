@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import com.stslex.csplashscreen.core.collection.data.CollectionsRepository
 import com.stslex.csplashscreen.core.collection.data.QueryCollections
-import st.slex.core_network.model.ui.CollectionModel
+import st.slex.core_network.model.ui.CollectionDomainModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_photos.data.PhotosRepository
@@ -23,7 +23,7 @@ class UserInteractorImpl(
 
     override fun getCollectionsPagingSource(
         query: QueryCollections
-    ): PagingSource<Int, CollectionModel> = collectionsRepository.queryAll(query)
+    ): PagingSource<Int, CollectionDomainModel> = collectionsRepository.queryAll(query)
 
     override fun getUser(username: String): Flow<UserModel> = userRepository.getUser(username)
 }

@@ -1,4 +1,4 @@
-package com.stslex.csplashscreen.ui
+package com.stslex.csplashscreen.ui.components.bottom_appbar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -16,28 +16,28 @@ import st.slex.csplashscreen.R
 enum class BottomAppBarResource(
     val unselectedIcon: ImageVector,
     val selectedIcon: ImageVector,
-    val route: String,
+    val appDestination: AppDestination,
     val titleResource: Int,
     val screen: NavigationScreen
 ) {
     TOPICS(
         unselectedIcon = Icons.Outlined.Star,
         selectedIcon = Icons.Filled.Star,
-        route = AppDestination.TOPICS.route,
+        appDestination = AppDestination.TOPICS,
         titleResource = R.string.nav_title_topics,
         screen = NavigationScreen.TopicsScreen(isLaunchSingle = true)
     ),
     HOME(
         unselectedIcon = Icons.Outlined.Home,
         selectedIcon = Icons.Filled.Home,
-        route = AppDestination.HOME.route,
+        appDestination = AppDestination.HOME,
         titleResource = R.string.nav_title_home,
         screen = NavigationScreen.Home(isLaunchSingle = true)
     ),
     SEARCH(
         unselectedIcon = Icons.Outlined.Search,
         selectedIcon = Icons.Filled.Search,
-        route = AppDestination.SEARCH_PHOTOS.route,
+        appDestination = AppDestination.SEARCH_PHOTOS,
         titleResource = R.string.nav_title_search,
         screen = NavigationScreen.SearchPhotosScreen(query = " ", isLaunchSingle = true)
     )
