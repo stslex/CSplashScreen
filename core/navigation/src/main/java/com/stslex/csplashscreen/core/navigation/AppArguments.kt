@@ -37,13 +37,14 @@ sealed class AppArguments {
     }
 
     data class SearchPhotosScreen(
-        val query: String
+        private val query: String
     ) : AppArguments() {
+
         override val arguments: List<String>
             get() = listOf(query)
 
         val checkedQuery: String
-            get() = query.ifBlank { String() }
+            get() = query.trimEnd()
     }
 
     data class UserScreen(

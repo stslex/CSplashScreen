@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
-import st.slex.core_photos.data.QueryPhotos
+import com.stslex.csplashscreen.core.photos.data.QueryPhotos
 
 interface UserRepository {
 

@@ -7,8 +7,8 @@ import com.stslex.csplashscreen.core.collection.data.QueryCollections
 import st.slex.core_network.model.ui.CollectionDomainModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
-import st.slex.core_photos.data.PhotosRepository
-import st.slex.core_photos.data.QueryPhotos
+import com.stslex.csplashscreen.core.photos.data.PhotosRepository
+import com.stslex.csplashscreen.core.photos.data.QueryPhotos
 import st.slex.feature_user.data.UserRepository
 
 class UserInteractorImpl(
