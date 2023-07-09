@@ -9,7 +9,7 @@ dependencies {
     implementation(project(":core:collection"))
     implementation(project(":core:navigation"))
     implementation(project(":core-network"))
-    implementation(project(":core-photos"))
+    implementation(project(":core:photos"))
 }
 
 android.namespace = "st.slex.feature_user"

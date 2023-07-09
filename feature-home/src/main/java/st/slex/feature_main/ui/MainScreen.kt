@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
 import com.stslex.csplashscreen.core.collection.ui.CollectionModel
 import kotlinx.coroutines.launch
-import st.slex.core_photos.ui.PhotoModel
+import com.stslex.csplashscreen.core.photos.ui.PhotoModel
 import st.slex.feature_main.ui.components.collections.MainScreenCollections
 import st.slex.feature_main.ui.components.images.MainScreenImages
 import st.slex.feature_main.ui.components.tabs.MainScreenTabRow

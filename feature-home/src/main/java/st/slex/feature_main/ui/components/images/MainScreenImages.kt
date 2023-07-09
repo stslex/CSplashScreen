@@ -11,7 +11,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
 import com.stslex.csplashscreen.core.core.UtilsExtensions.convertedUrl
 import com.stslex.csplashscreen.core.ui.theme.Dimen
-import st.slex.core_photos.ui.PhotoModel
+import com.stslex.csplashscreen.core.photos.ui.PhotoModel
 import st.slex.feature_main.ui.components.base.MainScreenBaseItem
 import st.slex.feature_main.ui.components.base.MainScreenBaseLazyList
 import st.slex.feature_main.ui.components.base.MainUserAvatar

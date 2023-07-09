@@ -7,8 +7,8 @@ import st.slex.core_network.model.map
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
 import st.slex.core_network.source.interf.UserNetworkSource
-import st.slex.core_photos.data.PhotosPagingSource
-import st.slex.core_photos.data.QueryPhotos
+import com.stslex.csplashscreen.core.photos.data.PhotosPagingSource
+import com.stslex.csplashscreen.core.photos.data.QueryPhotos
 
 class UserRepositoryImpl(
     private val photosPagingSourceFactory: PhotosPagingSource.Factory,

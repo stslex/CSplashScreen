@@ -18,7 +18,7 @@ import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.core_network.model.ui.CollectionDomainModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
-import st.slex.core_photos.data.QueryPhotos
+import com.stslex.csplashscreen.core.photos.data.QueryPhotos
 import st.slex.feature_user.domain.UserInteractor
 
 class UserViewModel(

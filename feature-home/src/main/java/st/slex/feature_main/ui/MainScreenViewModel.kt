@@ -8,9 +8,9 @@ import com.stslex.csplashscreen.core.collection.ui.CollectionModel
 import com.stslex.csplashscreen.core.collection.ui.toPresentation
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.StateFlow
-import st.slex.core_photos.data.QueryPhotos.AllPhotos
-import st.slex.core_photos.ui.PhotoModel
-import st.slex.core_photos.ui.toPresentation
+import com.stslex.csplashscreen.core.photos.data.QueryPhotos.AllPhotos
+import com.stslex.csplashscreen.core.photos.ui.PhotoModel
+import com.stslex.csplashscreen.core.photos.ui.toPresentation
 import st.slex.feature_main.domain.MainScreenInteractor
 
 class MainScreenViewModel(

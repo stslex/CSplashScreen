@@ -1,17 +1,20 @@
 package st.slex.feature_search_photos.ui
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
+import com.stslex.csplashscreen.core.navigation.AppArguments
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
+import com.stslex.csplashscreen.core.ui.base.BaseViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
-import com.stslex.csplashscreen.core.navigation.AppArguments
-import com.stslex.csplashscreen.core.navigation.NavigationScreen
+import kotlinx.coroutines.launch
 import st.slex.core_network.model.ui.ImageModel
-import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.feature_search_photos.data.QuerySearch
 import st.slex.feature_search_photos.domain.SearchPhotosInteractor
 
@@ -21,26 +24,28 @@ class SearchViewModel(
     private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
-    val rowQuery = args.checkedQuery.ifBlank { String() }
+    val rowQuery = args.checkedQuery.trimEnd()
     private val _querySearch = MutableStateFlow<QuerySearch>(QuerySearch.SearchPhotos(rowQuery))
     private val querySearch: StateFlow<QuerySearch> = _querySearch.asStateFlow()
+    private var queryJob: Job? = null
 
     val photosSearch: StateFlow<PagingData<ImageModel>> = querySearch
         .map(::newPagerPhotosSearch)
         .pagingFlow
 
-    private fun newPagerPhotosSearch(query: QuerySearch): Pager<Int, ImageModel> {
-        return Pager(PagingConfig(5, enablePlaceholders = false)) {
-            newPagingPhotosSearchSource?.invalidate()
-            interactor.getSearchPhotosPaging(query).also { newPagingPhotosSearchSource = it }
-        }
+    private fun newPagerPhotosSearch(
+        query: QuerySearch
+    ): Pager<Int, ImageModel> = Pager(config) {
+        interactor.getSearchPhotosPaging(query)
     }
 
     fun setQueryPhotosSearch(query: QuerySearch) {
-        _querySearch.tryEmit(query)
+        queryJob?.cancel()
+        queryJob = viewModelScope.launch {
+            delay(600)
+            _querySearch.emit(query)
+        }
     }
-
-    private var newPagingPhotosSearchSource: PagingSource<*, *>? = null
 
     fun onProfileClick(username: String) {
         navigate(NavigationScreen.UserScreen(username))
@@ -48,5 +53,9 @@ class SearchViewModel(
 
     fun onImageClick(url: String, imageId: String) {
         navigate(NavigationScreen.ImageDetailScreen(url, imageId))
+    }
+
+    companion object {
+        private val config = PagingConfig(5, enablePlaceholders = false)
     }
 }

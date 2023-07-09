@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.core_network.model.ui.ImageModel
-import st.slex.core_photos.data.QueryPhotos
+import com.stslex.csplashscreen.core.photos.data.QueryPhotos
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import com.stslex.csplashscreen.feature.collection.domain.SingleCollectionInteractor
 

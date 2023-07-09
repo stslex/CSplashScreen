@@ -7,7 +7,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import st.slex.core_network.di.moduleCoreNetwork
-import st.slex.core_photos.di.moduleCorePhotos
+import com.stslex.csplashscreen.core.photos.di.moduleCorePhotos
 import st.slex.feature_image_raw.di.moduleRawImage
 import st.slex.feature_main.di.moduleFeatureHome
 import st.slex.feature_photo_detail.di.moduleFeaturePhoto
