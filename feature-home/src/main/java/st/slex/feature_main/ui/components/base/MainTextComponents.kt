@@ -1,7 +1,7 @@
 package st.slex.feature_main.ui.components.base
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,16 +12,29 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.stslex.csplashscreen.core.ui.components.ImageComponent
 
-
 @Composable
-fun MainUsername(
+fun MediumText(
     text: String,
     modifier: Modifier = Modifier,
 ) {
     Text(
         modifier = modifier,
         text = text,
-        style = MaterialTheme.typography.titleLarge,
+        style = MaterialTheme.typography.titleMedium,
+        maxLines = 1,
+        lineHeight = TextUnit.Unspecified
+    )
+}
+
+@Composable
+fun SmallText(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MaterialTheme.typography.titleSmall,
         maxLines = 1,
         lineHeight = TextUnit.Unspecified
     )
@@ -34,8 +47,8 @@ fun MainUserAvatar(
 ) {
     ImageComponent(
         modifier = modifier
-            .size(60.dp)
-            .clip(CircleShape),
+            .size(30.dp)
+            .clip(RoundedCornerShape(8.dp)),
         url = url,
         contentScale = ContentScale.Crop,
     )

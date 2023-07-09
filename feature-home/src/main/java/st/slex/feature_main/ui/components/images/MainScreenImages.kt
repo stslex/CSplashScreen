@@ -7,15 +7,15 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
 import com.stslex.csplashscreen.core.core.UtilsExtensions.convertedUrl
+import com.stslex.csplashscreen.core.ui.theme.Dimen
 import st.slex.core_photos.ui.PhotoModel
 import st.slex.feature_main.ui.components.base.MainScreenBaseItem
 import st.slex.feature_main.ui.components.base.MainScreenBaseLazyList
 import st.slex.feature_main.ui.components.base.MainUserAvatar
-import st.slex.feature_main.ui.components.base.MainUsername
+import st.slex.feature_main.ui.components.base.MediumText
 import st.slex.feature_main.ui.components.tabs.MainScreenTabs
 
 @Composable
@@ -64,9 +64,10 @@ fun MainScreenImageItem(
             { onUserClick(item.username) }
         },
         url = item.url,
-    ) {
-        MainUserAvatar(item.userUrl)
-        Spacer(modifier = Modifier.width(16.dp))
-        MainUsername(item.username)
-    }
+        headerContent = {
+            MainUserAvatar(item.userUrl)
+            Spacer(modifier = Modifier.width(Dimen.medium))
+            MediumText(item.username)
+        }
+    )
 }

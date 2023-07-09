@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,11 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.stslex.csplashscreen.core.ui.components.ImageComponent
+import com.stslex.csplashscreen.core.ui.theme.Dimen
 
 @Composable
 fun MainScreenBaseItem(
@@ -29,14 +32,19 @@ fun MainScreenBaseItem(
     onHeaderClick: () -> Unit,
     url: String,
     modifier: Modifier = Modifier,
-    headerContent: @Composable () -> Unit,
+    headerContent: @Composable RowScope.() -> Unit,
+    content: @Composable BoxScope.() -> Unit = {},
 ) {
+    val configuration = LocalConfiguration.current
+    val itemHeight = remember {
+        configuration.screenHeightDp.dp / 3
+    }
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(400.dp)
-            .padding(bottom = 16.dp)
-            .clip(RoundedCornerShape(30.dp))
+            .height(itemHeight)
+            .padding(bottom = Dimen.medium)
+            .clip(RoundedCornerShape(Dimen.medium))
             .clickable(
                 onClick = onContainerClick,
                 role = Role.Button,
@@ -64,11 +72,11 @@ fun MainScreenBaseItem(
                         alpha = 0.7f
                     )
                 )
-                .padding(16.dp)
-                .shadow(elevation = 32.dp),
+                .padding(Dimen.small),
             verticalAlignment = Alignment.CenterVertically
         ) {
             headerContent()
         }
+        content()
     }
 }

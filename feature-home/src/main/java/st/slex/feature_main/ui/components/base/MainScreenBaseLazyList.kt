@@ -9,8 +9,8 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.stslex.csplashscreen.core.ui.components.animateItemTop
+import com.stslex.csplashscreen.core.ui.theme.Dimen
 
 @Composable
 fun MainScreenBaseLazyList(
@@ -25,11 +25,10 @@ fun MainScreenBaseLazyList(
         modifier = modifier.fillMaxSize(),
         state = listState,
         contentPadding = PaddingValues(
-            horizontal = 16.dp,
-            vertical = 32.dp
+            horizontal = Dimen.medium,
+            vertical = Dimen.large
         )
     ) {
-
         items(
             count = count,
             key = key,
