@@ -8,9 +8,9 @@ import com.stslex.csplashscreen.core.navigation.AppDestination
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.feature.collection.navigation.singleCollectionGraph
 import st.slex.feature_image_raw.navigation.rawImageGraph
-import st.slex.feature_main.navigation.homeGraph
+import com.stslex.csplashscreen.feature.home.navigation.homeGraph
 import st.slex.feature_photo_detail.navigation.imageDetailGraph
-import st.slex.feature_search_photos.navigation.searchPhotosGraph
+import com.stslex.csplashscreen.feature.search.navigation.searchPhotosGraph
 import st.slex.feature_topics.navigation.topicsGraph
 import st.slex.feature_user.navigation.userGraph
 

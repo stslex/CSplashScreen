@@ -5,12 +5,12 @@ plugins {
 
 dependencies {
     implementation(project(":core:core"))
-    implementation(project(":core-network"))
     implementation(project(":core:ui"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core-network"))
+    implementation(project(":core:photos"))
 
     implementation(libs.androidx.paging.runtime)
 }
 
-android {
-    namespace = "com.stslex.csplashscreen.core.photos"
-}
+android.namespace = "com.stslex.csplashscreen.feature.search"

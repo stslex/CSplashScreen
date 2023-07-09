@@ -9,9 +9,9 @@ import org.koin.core.context.startKoin
 import st.slex.core_network.di.moduleCoreNetwork
 import com.stslex.csplashscreen.core.photos.di.moduleCorePhotos
 import st.slex.feature_image_raw.di.moduleRawImage
-import st.slex.feature_main.di.moduleFeatureHome
+import com.stslex.csplashscreen.feature.home.di.moduleFeatureHome
 import st.slex.feature_photo_detail.di.moduleFeaturePhoto
-import st.slex.feature_search_photos.di.moduleFeatureSearchPhotos
+import com.stslex.csplashscreen.feature.search.di.moduleFeatureSearchPhotos
 import st.slex.feature_topics.di.moduleFeatureTopics
 import st.slex.feature_user.di.moduleFeatureUser
 

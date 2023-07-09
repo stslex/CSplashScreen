@@ -49,22 +49,38 @@ open class BaseViewModel : ViewModel() {
         }
         .primaryPagingFlow
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    inline fun <T : Any, R : Any> Flow<Pager<Int, T>>.mapState(
+        crossinline transform: suspend (T) -> R
+    ): StateFlow<PagingData<R>> = this
+        .flatMapLatest { pager ->
+            pager.flow.map { pagingData ->
+                pagingData.map { item ->
+                    transform(item)
+                }
+            }
+        }
+        .primaryPagingFlow
+
     val <T : Any> Pager<Int, T>.pagingFlow: StateFlow<PagingData<T>>
         get() = flow.primaryPagingFlow
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val <T : Any> Flow<Pager<Int, T>>.pagingFlow: StateFlow<PagingData<T>>
-        get() = flatMapLatest { pager -> pager.flow }.primaryPagingFlow
+        get() = flatMapLatest { pager -> pager.flow }
+            .primaryPagingFlow
 
     val <T : Any> Flow<PagingData<T>>.primaryPagingFlow: StateFlow<PagingData<T>>
-        get() = cachedIn(viewModelScope).makeStateFlow(PagingData.empty())
+        get() = cachedIn(viewModelScope)
+            .makeStateFlow(PagingData.empty())
 
     private fun <T : Any> Flow<T>.makeStateFlow(initialValue: T): StateFlow<T> =
-        flowOn(Dispatchers.IO).stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = initialValue
-        )
+        flowOn(Dispatchers.IO)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.Lazily,
+                initialValue = initialValue
+            )
 
     fun onError(throwable: Throwable, localisation: String) {
         Log.e(localisation, throwable.message, throwable.cause)
