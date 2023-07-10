@@ -48,7 +48,6 @@ fun SearchPhotosScreen(
             items = photos,
             onUserClick = onUserClick,
             onImageClick = onImageClick,
-            key = null // TODO - key sometimes causes Out of Bound Exception after PagingSource change multiple times
         )
     }
 }

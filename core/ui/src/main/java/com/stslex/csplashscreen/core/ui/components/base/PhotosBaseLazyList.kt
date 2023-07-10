@@ -9,17 +9,20 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.stslex.csplashscreen.core.ui.components.animateItemTop
 import com.stslex.csplashscreen.core.ui.theme.Dimen
 
 @Composable
-fun PhotosBaseLazyList(
-    count: Int,
+fun <T : Any> PhotosBaseLazyList(
+    items: LazyPagingItems<T>,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    key: ((index: Int) -> Any)? = null,
-    contentType: (index: Int) -> Any? = { null },
-    content: @Composable BoxScope.(index: Int) -> Unit
+    key: (T) -> Any,
+    contentType: (T) -> Any,
+    content: @Composable BoxScope.(item: T) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -31,24 +34,20 @@ fun PhotosBaseLazyList(
     ) {
 
         items(
-            count = count,
-            key = key?.let { notNullKey ->
-                { index ->
-                    notNullKey(index)
-                }
-            },
-            contentType = contentType,
+            count = items.itemCount,
+            key = items.itemKey(key),
+            contentType = items.itemContentType(contentType),
         ) { index ->
-            Box(
-                modifier = Modifier
-                    .animateItemTop(
-                        listState = listState,
-                        key = key?.let { notNullKey ->
-                            notNullKey(index)
-                        }
-                    )
-            ) {
-                content(index)
+            items[index]?.let { item ->
+                Box(
+                    modifier = Modifier
+                        .animateItemTop(
+                            listState = listState,
+                            key = key(item)
+                        )
+                ) {
+                    content(item)
+                }
             }
         }
     }

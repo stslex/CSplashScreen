@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemKey
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import com.stslex.csplashscreen.core.ui.components.base.PhotosBaseLazyList
 
@@ -16,24 +15,19 @@ fun LazyListPhotos(
     onImageClick: (url: String, imageId: String) -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    contentType: (index: Int) -> Any? = { null },
-    key: ((index: Int) -> Any)? = items.itemKey { item ->
-        item.uuid
-    }
+    contentType: Any? = null,
 ) {
     PhotosBaseLazyList(
         modifier = modifier,
-        count = items.itemCount,
-        key = key,
-        contentType = contentType,
+        items = items,
+        key = { it.uuid },
+        contentType = { contentType ?: "PhotoModel" },
         listState = listState
-    ) { index ->
-        items[index]?.let { item ->
-            LazyListPhotoItem(
-                item = item,
-                onImageClick = onImageClick,
-                onUserClick = onUserClick,
-            )
-        }
+    ) { item ->
+        LazyListPhotoItem(
+            item = item,
+            onImageClick = onImageClick,
+            onUserClick = onUserClick,
+        )
     }
 }

@@ -14,14 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemKey
 import com.stslex.csplashscreen.core.collection.ui.CollectionModel
-import com.stslex.csplashscreen.core.ui.theme.Dimen
-import com.stslex.csplashscreen.core.ui.components.base.PhotosBaseItem
-import com.stslex.csplashscreen.core.ui.components.base.PhotosBaseLazyList
 import com.stslex.csplashscreen.core.ui.components.base.MainUserAvatar
 import com.stslex.csplashscreen.core.ui.components.base.MediumText
+import com.stslex.csplashscreen.core.ui.components.base.PhotosBaseItem
+import com.stslex.csplashscreen.core.ui.components.base.PhotosBaseLazyList
 import com.stslex.csplashscreen.core.ui.components.base.SmallText
+import com.stslex.csplashscreen.core.ui.theme.Dimen
 import com.stslex.csplashscreen.feature.home.ui.components.tabs.MainScreenTabs
 
 @Composable
@@ -33,21 +32,19 @@ fun MainScreenCollections(
 ) {
     PhotosBaseLazyList(
         modifier = modifier,
-        count = items.itemCount,
-        key = items.itemKey { item ->
+        items = items,
+        key = { item ->
             item.uuid
         },
         contentType = {
             MainScreenTabs.COLLECTIONS
         },
-    ) { index ->
-        items[index]?.let { item ->
-            MainScreenCollectionItem(
-                item = item,
-                onCollectionClick = onCollectionClick,
-                onProfileClick = onProfileClick,
-            )
-        }
+    ) { item ->
+        MainScreenCollectionItem(
+            item = item,
+            onCollectionClick = onCollectionClick,
+            onProfileClick = onProfileClick,
+        )
     }
 }
 
