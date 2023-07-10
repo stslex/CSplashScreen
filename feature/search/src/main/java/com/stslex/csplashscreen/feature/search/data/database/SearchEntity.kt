@@ -8,5 +8,7 @@ import androidx.room.PrimaryKey
 data class SearchEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "query")
-    val query: String
+    val query: String,
+    @ColumnInfo(name = "timestamp")
+    val timestamp: Long
 )

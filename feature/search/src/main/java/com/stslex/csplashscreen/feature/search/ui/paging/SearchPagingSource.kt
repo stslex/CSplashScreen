@@ -1,4 +1,4 @@
-package com.stslex.csplashscreen.feature.search.ui
+package com.stslex.csplashscreen.feature.search.ui.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

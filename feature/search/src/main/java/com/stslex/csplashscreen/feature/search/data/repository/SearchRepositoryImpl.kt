@@ -44,6 +44,12 @@ class SearchRepositoryImpl(
         }
     }
 
+    override suspend fun clearHistory() {
+        withContext(Dispatchers.IO) {
+            dao.clear()
+        }
+    }
+
     companion object {
         private val pagerConfig = PagingConfig(
             pageSize = 30,

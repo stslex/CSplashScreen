@@ -14,4 +14,6 @@ interface SearchPhotosInteractor {
         page: Int,
         pageSize: Int
     ): List<ImageModel>
+
+    suspend fun clearHistory()
 }

@@ -45,10 +45,17 @@ class SearchPhotosInteractorImpl(
                     pageSize = pageSize
                 )
             repository.addSearchItem(
-                SearchEntity(query)
+                SearchEntity(
+                    query = query,
+                    timestamp = System.currentTimeMillis()
+                )
             )
             remoteImages.map()
         }
         queryJob?.await() ?: emptyList()
+    }
+
+    override suspend fun clearHistory() {
+        repository.clearHistory()
     }
 }

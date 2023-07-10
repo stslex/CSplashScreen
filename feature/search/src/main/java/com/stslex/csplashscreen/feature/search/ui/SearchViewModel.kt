@@ -1,5 +1,6 @@
 package com.stslex.csplashscreen.feature.search.ui
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -10,10 +11,12 @@ import com.stslex.csplashscreen.core.photos.ui.model.toPresentation
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import com.stslex.csplashscreen.feature.search.domain.interactor.SearchPhotosInteractor
 import com.stslex.csplashscreen.feature.search.ui.model.SearchItem
+import com.stslex.csplashscreen.feature.search.ui.paging.SearchPagingSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import st.slex.core_network.model.ui.ImageModel
 
 class SearchViewModel(
@@ -39,7 +42,11 @@ class SearchViewModel(
         query: String
     ): Pager<Int, ImageModel> = Pager(config) {
         SearchPagingSource { page, pageSize ->
-            interactor.getPhotos(query, page, pageSize)
+            if (query.isBlank()) {
+                emptyList()
+            } else {
+                interactor.getPhotos(query, page, pageSize)
+            }
         }
     }
 
@@ -53,6 +60,12 @@ class SearchViewModel(
 
     fun onImageClick(url: String, imageId: String) {
         navigate(NavigationScreen.ImageDetailScreen(url, imageId))
+    }
+
+    fun clearHistory() {
+        viewModelScope.launch {
+            interactor.clearHistory()
+        }
     }
 
     companion object {
