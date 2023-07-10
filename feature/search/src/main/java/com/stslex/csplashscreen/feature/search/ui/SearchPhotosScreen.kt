@@ -1,12 +1,15 @@
 package com.stslex.csplashscreen.feature.search.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -16,10 +19,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,6 +41,7 @@ import com.stslex.csplashscreen.core.photos.ui.component.LazyListPhotos
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import com.stslex.csplashscreen.core.ui.components.animateItemTop
 import com.stslex.csplashscreen.core.ui.components.base.MediumText
+import com.stslex.csplashscreen.core.ui.components.base.SmallText
 import com.stslex.csplashscreen.feature.search.ui.model.SearchElement
 import kotlinx.coroutines.flow.StateFlow
 
@@ -63,12 +69,10 @@ fun SearchPhotosScreen(
 
         if (photos.loadState.isNotLoading) {
             if (photos.itemCount == 0) {
-                LazyListSearch(
+                SearchHistoryColumn(
                     modifier = Modifier.weight(1f),
                     items = searchHistory,
-                    onSearchClick = remember {
-                        onQuery
-                    }
+                    onSearchClick = remember { onQuery }
                 )
             } else {
                 LazyListPhotos(
@@ -82,7 +86,39 @@ fun SearchPhotosScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchHistoryColumn(
+    items: LazyPagingItems<SearchElement>,
+    onSearchClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            MediumText(
+                modifier = Modifier.weight(1f),
+                text = "Search history"
+            )
+
+            TextButton(onClick = { /*TODO*/ }) {
+                SmallText(text = "Clear")
+            }
+        }
+        LazyListSearch(
+            items = items,
+            onSearchClick = onSearchClick
+        )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LazyListSearch(
     items: LazyPagingItems<SearchElement>,
@@ -90,10 +126,33 @@ fun LazyListSearch(
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
+
+    val currentItem by remember {
+        derivedStateOf { listState.layoutInfo.visibleItemsInfo.firstOrNull() }
+    }
+
+
+
     LazyColumn(
         modifier = modifier,
         state = listState
     ) {
+
+        currentItem
+            ?.index
+            ?.let(items::get)
+            ?.let { item ->
+                stickyHeader(
+                    contentType = "header"
+                ) {
+                    SearchHistoryHeader(
+                        text = item.textDateTime,
+                        key = item.date,
+                        listState = listState
+                    )
+                }
+            }
+
         items(
             count = items.itemCount,
             key = items.itemKey { item ->
@@ -109,58 +168,85 @@ fun LazyListSearch(
                 }
             }
         ) { index ->
+
             items[index]?.let { searchItem ->
                 when (searchItem) {
-                    is SearchElement.Separator -> {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .padding(vertical = 4.dp)
-                                .background(
-                                    MaterialTheme.colorScheme.surfaceVariant.copy(
-                                        alpha = 0.5f
-                                    )
-                                )
-                        ) {
-                            MediumText(
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .animateItemTop(
-                                        listState = listState,
-                                        key = searchItem.dateTime
-                                    ),
-                                text = searchItem.textDateTime
-                            )
-                        }
-                    }
+                    is SearchElement.Separator -> SearchHistoryHeader(
+                        text = searchItem.textDateTime,
+                        key = searchItem.dateTime,
+                        listState = listState
+                    )
 
-                    is SearchElement.Item -> {
-                        Card(
-                            modifier = Modifier
-                                .animateItemTop(
-                                    listState = listState,
-                                    key = searchItem.query,
-                                    valueKf = 0.05f
-                                )
-                                .padding(16.dp)
-                                .wrapContentHeight()
-                                .fillMaxWidth(),
-                            onClick = remember(searchItem) {
-                                { onSearchClick(searchItem.query) }
-                            },
-                        ) {
-                            MediumText(
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .align(Alignment.CenterHorizontally),
-                                text = searchItem.query
-                            )
-                        }
-                    }
+                    is SearchElement.Item -> SearchHistoryItem(
+                        item = searchItem,
+                        listState = listState,
+                        onSearchClick = onSearchClick
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SearchHistoryHeader(
+    text: String,
+    key: Any?,
+    listState: LazyListState,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(vertical = 4.dp)
+            .background(
+                MaterialTheme.colorScheme.surfaceVariant.copy(
+                    alpha = 0.5f
+                )
+            )
+    ) {
+        MediumText(
+            modifier = Modifier
+                .padding(8.dp)
+                .animateItemTop(
+                    listState = listState,
+                    key = key,
+                    valueKf = 0.02f
+                ),
+            text = text
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchHistoryItem(
+    item: SearchElement.Item,
+    listState: LazyListState,
+    onSearchClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .animateItemTop(
+                listState = listState,
+                key = item.query,
+                valueKf = 0.05f
+            )
+            .padding(16.dp)
+            .wrapContentHeight()
+            .fillMaxWidth(),
+        onClick = remember(item) {
+            { onSearchClick(item.query) }
+        },
+    ) {
+        MediumText(
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.CenterHorizontally),
+            text = item.query
+        )
     }
 }
 
@@ -177,8 +263,10 @@ private fun TopAppBarSearch(
     val focusRequester = remember {
         FocusRequester()
     }
-    LaunchedEffect(querySearch) {
-        focusRequester.requestFocus()
+    LaunchedEffect(Unit) {
+        if (querySearch.isBlank()) {
+            focusRequester.requestFocus()
+        }
     }
     TextField(
         modifier = Modifier

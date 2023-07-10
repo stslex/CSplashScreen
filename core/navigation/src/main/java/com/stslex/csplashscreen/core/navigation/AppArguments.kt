@@ -44,7 +44,7 @@ sealed class AppArguments {
             get() = listOf(query)
 
         val checkedQuery: String
-            get() = query.trimEnd()
+            get() = arguments.firstOrNull().orEmpty().trimEnd()
     }
 
     data class UserScreen(
