@@ -5,7 +5,7 @@ import androidx.paging.map
 import com.stslex.csplashscreen.feature.search.data.database.SearchEntity
 import com.stslex.csplashscreen.feature.search.data.repository.SearchRepository
 import com.stslex.csplashscreen.feature.search.domain.model.SearchMapper.toPresentation
-import com.stslex.csplashscreen.feature.search.ui.model.SearchElement
+import com.stslex.csplashscreen.feature.search.ui.model.SearchItem
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -22,7 +22,7 @@ class SearchPhotosInteractorImpl(
 
     private var queryJob: Deferred<List<ImageModel>>? = null
 
-    override val searchHistory: Flow<PagingData<SearchElement.Item>>
+    override val searchHistory: Flow<PagingData<SearchItem>>
         get() = repository.searchHistory
             .map { pagingData ->
                 pagingData.map {
