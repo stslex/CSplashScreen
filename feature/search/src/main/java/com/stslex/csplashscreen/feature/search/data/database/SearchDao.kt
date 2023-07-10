@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface SearchDao {
 
-    @Query("SELECT * FROM search_table")
+    @Query("SELECT * FROM search_table ORDER BY timestamp DESC")
     fun getAllSearch(): PagingSource<Int, SearchEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
