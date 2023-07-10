@@ -20,6 +20,7 @@ import com.stslex.csplashscreen.core.ui.components.base.SmallText
 @Composable
 fun SearchHistoryHeader(
     text: String,
+    clearHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -50,7 +51,7 @@ fun SearchHistoryHeader(
             )
 
             OutlinedButton(
-                onClick = { /*TODO*/ }
+                onClick = clearHistory
             ) {
                 SmallText(text = "Clear history")
             }

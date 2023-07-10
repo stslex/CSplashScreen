@@ -16,4 +16,6 @@ interface SearchRepository {
     ): List<RemoteImageModel>
 
     suspend fun addSearchItem(entity: SearchEntity)
+
+    suspend fun clearHistory()
 }

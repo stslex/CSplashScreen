@@ -18,6 +18,7 @@ import com.stslex.csplashscreen.feature.search.ui.model.SearchItem
 fun LazyListHistorySearch(
     items: LazyPagingItems<SearchItem>,
     onSearchClick: (String) -> Unit,
+    clearHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
@@ -43,7 +44,8 @@ fun LazyListHistorySearch(
             key = "StickyHeader"
         ) {
             SearchHistoryHeader(
-                text = currentItem?.textDateTime.orEmpty()
+                text = currentItem?.textDateTime.orEmpty(),
+                clearHistory = clearHistory
             )
         }
 

@@ -54,4 +54,8 @@ class SearchPhotosInteractorImpl(
         }
         queryJob?.await() ?: emptyList()
     }
+
+    override suspend fun clearHistory() {
+        repository.clearHistory()
+    }
 }

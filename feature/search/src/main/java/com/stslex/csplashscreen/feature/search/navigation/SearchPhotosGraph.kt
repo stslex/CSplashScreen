@@ -27,7 +27,9 @@ fun NavGraphBuilder.searchPhotosGraph(
             AppArguments.SearchPhotosScreen(args[0])
         }
 
-        val viewModel: SearchViewModel = koinViewModel { parametersOf(arguments, navigate) }
+        val viewModel: SearchViewModel = koinViewModel(
+            key = arguments.checkedQuery
+        ) { parametersOf(arguments, navigate) }
 
         val photos = remember {
             viewModel.photosSearch
@@ -47,6 +49,7 @@ fun NavGraphBuilder.searchPhotosGraph(
             onQuery = viewModel::setQueryPhotosSearch,
             onUserClick = viewModel::onProfileClick,
             onImageClick = viewModel::onImageClick,
+            clearHistory = viewModel::clearHistory
         )
     }
 }

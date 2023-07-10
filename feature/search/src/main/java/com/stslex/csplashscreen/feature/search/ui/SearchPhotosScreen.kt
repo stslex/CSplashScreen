@@ -24,6 +24,7 @@ fun SearchPhotosScreen(
     onQuery: (String) -> Unit,
     onUserClick: (String) -> Unit,
     onImageClick: (String, String) -> Unit,
+    clearHistory: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val query by remember {
@@ -43,7 +44,8 @@ fun SearchPhotosScreen(
                 LazyListHistorySearch(
                     modifier = Modifier.weight(1f),
                     items = searchHistory,
-                    onSearchClick = remember { onQuery }
+                    onSearchClick = remember { onQuery },
+                    clearHistory = clearHistory
                 )
             } else {
                 LazyListPhotos(
