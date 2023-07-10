@@ -33,9 +33,14 @@ fun NavGraphBuilder.searchPhotosGraph(
             viewModel.photosSearch
         }.collectAsLazyPagingItems()
 
+        val searchHistory = remember {
+            viewModel.searchHistory
+        }.collectAsLazyPagingItems()
+
         SearchPhotosScreen(
             modifier = modifier,
             photos = photos,
+            searchHistory = searchHistory,
             querySearch = remember {
                 { viewModel.querySearch }
             },

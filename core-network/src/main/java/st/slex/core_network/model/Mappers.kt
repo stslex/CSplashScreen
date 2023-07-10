@@ -44,6 +44,10 @@ import st.slex.core_network.model.ui.user.ProfileImageModel
 import st.slex.core_network.model.ui.user.UserLinksModel
 import st.slex.core_network.model.ui.user.UserModel
 
+fun List<RemoteImageModel?>.map(): List<ImageModel> = map {
+    it.map()
+}
+
 fun RemoteImageModel?.map(): ImageModel = ImageModel(
     uuid = this?.id.orEmpty(),
     createdAt = this?.createdAt.orEmpty(),

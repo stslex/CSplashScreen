@@ -8,7 +8,8 @@ import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import com.stslex.csplashscreen.core.photos.ui.model.toPresentation
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
-import com.stslex.csplashscreen.feature.search.domain.SearchPhotosInteractor
+import com.stslex.csplashscreen.feature.search.domain.interactor.SearchPhotosInteractor
+import com.stslex.csplashscreen.feature.search.ui.model.SearchItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,6 +25,10 @@ class SearchViewModel(
     private val _querySearch = MutableStateFlow(args.checkedQuery)
     val querySearch: StateFlow<String>
         get() = _querySearch.asStateFlow()
+
+    val searchHistory: StateFlow<PagingData<SearchItem>>
+        get() = interactor.searchHistory
+            .primaryPagingFlow
 
     val photosSearch: StateFlow<PagingData<PhotoModel>>
         get() = querySearch

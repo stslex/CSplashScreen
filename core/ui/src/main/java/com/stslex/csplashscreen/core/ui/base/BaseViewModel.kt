@@ -77,10 +77,15 @@ open class BaseViewModel : ViewModel() {
     private fun <T : Any> Flow<T>.makeStateFlow(initialValue: T): StateFlow<T> =
         flowOn(Dispatchers.IO)
             .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.Lazily,
                 initialValue = initialValue
             )
+
+    fun <T : Any> Flow<T>.stateIn(initialValue: T): StateFlow<T> =
+        stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = initialValue
+        )
 
     fun onError(throwable: Throwable, localisation: String) {
         Log.e(localisation, throwable.message, throwable.cause)
