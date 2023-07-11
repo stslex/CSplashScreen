@@ -3,18 +3,14 @@ package com.stslex.csplashscreen.feature.collection.ui
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
-import st.slex.core_network.model.ui.ImageModel
-import com.stslex.csplashscreen.core.photos.data.QueryPhotos
+import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
+import com.stslex.csplashscreen.core.photos.ui.model.toPresentation
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
+import com.stslex.csplashscreen.core.ui.paging.PagingSource
 import com.stslex.csplashscreen.feature.collection.domain.SingleCollectionInteractor
+import kotlinx.coroutines.flow.StateFlow
 
 class SingleCollectionViewModel(
     private val interactor: SingleCollectionInteractor,
@@ -22,25 +18,18 @@ class SingleCollectionViewModel(
     private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
-    private val _queryPhotos =
-        MutableStateFlow<QueryPhotos>(QueryPhotos.CollectionPhotos(args.collectionId))
-    private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()
-
-    @ExperimentalCoroutinesApi
-    val photos: StateFlow<PagingData<ImageModel>> = queryPhotos.map(::newPagerPhotos).pagingFlow
-
-    private var newPagingPhotosSource: PagingSource<*, *>? = null
-
-    fun setQueryPhotos(query: QueryPhotos) {
-        _queryPhotos.tryEmit(query)
-    }
-
-    private fun newPagerPhotos(query: QueryPhotos): Pager<Int, ImageModel> {
-        return Pager(PagingConfig(10, enablePlaceholders = false)) {
-            newPagingPhotosSource?.invalidate()
-            interactor.getPhotosPagingSource(query).also { newPagingPhotosSource = it }
+    val photos: StateFlow<PagingData<PhotoModel>> = Pager(pagingConfig) {
+        PagingSource { page, pageSize ->
+            interactor.getPhotos(
+                collectionId = args.collectionId,
+                page = page,
+                pageSize = pageSize
+            )
         }
     }
+        .mapState { image ->
+            image.toPresentation()
+        }
 
     fun onProfileClick(username: String) {
         navigate(NavigationScreen.UserScreen(username))
@@ -48,5 +37,12 @@ class SingleCollectionViewModel(
 
     fun onImageClick(url: String, imageId: String) {
         navigate(NavigationScreen.ImageDetailScreen(url, imageId))
+    }
+
+    companion object {
+        private val pagingConfig = PagingConfig(
+            pageSize = 2,
+            enablePlaceholders = false
+        )
     }
 }

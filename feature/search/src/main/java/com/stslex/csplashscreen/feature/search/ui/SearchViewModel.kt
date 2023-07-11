@@ -9,9 +9,9 @@ import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import com.stslex.csplashscreen.core.photos.ui.model.toPresentation
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
+import com.stslex.csplashscreen.core.ui.paging.PagingSource
 import com.stslex.csplashscreen.feature.search.domain.interactor.SearchPhotosInteractor
 import com.stslex.csplashscreen.feature.search.ui.model.SearchItem
-import com.stslex.csplashscreen.feature.search.ui.paging.SearchPagingSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,7 +41,7 @@ class SearchViewModel(
     private fun newPagerPhotosSearch(
         query: String
     ): Pager<Int, ImageModel> = Pager(config) {
-        SearchPagingSource { page, pageSize ->
+        PagingSource { page, pageSize ->
             if (query.isBlank()) {
                 emptyList()
             } else {
@@ -70,7 +70,7 @@ class SearchViewModel(
 
     companion object {
         private val config = PagingConfig(
-            pageSize = 10,
+            pageSize = 3,
             enablePlaceholders = false
         )
     }
