@@ -1,12 +1,10 @@
 package com.stslex.csplashscreen.feature.search.ui.components.history
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -23,29 +21,31 @@ fun LazyListHistorySearch(
 ) {
     val listState = rememberLazyListState()
 
-    val currentItem by remember {
-        derivedStateOf {
-            listState.layoutInfo
-                .visibleItemsInfo
-                .firstOrNull()
-                ?.index
-                ?.takeIf { items.itemCount > 0 }
-                ?.let(items::get)
-        }
-    }
-
     LazyColumn(
         modifier = modifier,
         state = listState
     ) {
 
         stickyHeader(
-            contentType = "header",
-            key = "StickyHeader"
+            contentType = "HeaderType",
+            key = "HeaderKey"
         ) {
             SearchHistoryHeader(
-                text = currentItem?.textDateTime.orEmpty(),
                 clearHistory = clearHistory
+            )
+        }
+
+        stickyHeader(
+            contentType = "HeaderDateTimeKey",
+            key = "HeaderDateTimeKey"
+        ) {
+            SearchHistoryDateTime(
+                text = listState
+                    .firstVisibleItemIndex
+                    .takeIf { items.itemCount > 0 }
+                    ?.let(items::get)
+                    ?.textDateTime
+                    .orEmpty(),
             )
         }
 
@@ -60,11 +60,13 @@ fun LazyListHistorySearch(
         ) { index ->
 
             items[index]?.let { searchItem ->
-                SearchHistoryItem(
-                    item = searchItem,
-                    listState = listState,
-                    onSearchClick = onSearchClick
-                )
+                Column {
+                    SearchHistoryItem(
+                        item = searchItem,
+                        listState = listState,
+                        onSearchClick = onSearchClick
+                    )
+                }
             }
         }
     }

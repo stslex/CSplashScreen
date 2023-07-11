@@ -19,20 +19,13 @@ import com.stslex.csplashscreen.core.ui.components.base.SmallText
 
 @Composable
 fun SearchHistoryHeader(
-    text: String,
     clearHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .wrapContentHeight()
-            .clip(
-                RoundedCornerShape(
-                    bottomStart = 16.dp,
-                    bottomEnd = 16.dp
-                )
-            ),
+            .wrapContentHeight(),
     ) {
         Row(
             modifier = Modifier
@@ -56,20 +49,33 @@ fun SearchHistoryHeader(
                 SmallText(text = "Clear history")
             }
         }
-        MediumText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    MaterialTheme.colorScheme.surfaceVariant.copy(
-                        alpha = 0.7f
-                    )
-                )
-                .padding(
-                    vertical = 8.dp,
-                    horizontal = 16.dp
-                ),
-            text = text
-        )
     }
+}
+
+@Composable
+fun SearchHistoryDateTime(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    MediumText(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .clip(
+                RoundedCornerShape(
+                    bottomStart = 16.dp,
+                    bottomEnd = 16.dp
+                )
+            )
+            .background(
+                MaterialTheme.colorScheme.surfaceVariant.copy(
+                    alpha = 0.7f
+                )
+            )
+            .padding(
+                vertical = 8.dp,
+                horizontal = 16.dp
+            ),
+        text = text
+    )
 }

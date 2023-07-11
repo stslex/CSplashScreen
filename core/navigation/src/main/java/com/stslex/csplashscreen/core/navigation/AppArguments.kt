@@ -25,6 +25,7 @@ sealed class AppArguments {
     data class CollectionScreen(
         val collectionId: String
     ) : AppArguments() {
+
         override val arguments: List<String>
             get() = listOf(collectionId)
     }

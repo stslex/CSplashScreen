@@ -2,21 +2,21 @@ package com.stslex.csplashscreen.feature.collection.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.stslex.csplashscreen.core.ui.components.ListOfElements
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import androidx.paging.compose.LazyPagingItems
+import com.stslex.csplashscreen.core.photos.ui.component.LazyListPhotos
+import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun CollectionScreen(
+    photos: LazyPagingItems<PhotoModel>,
+    onProfileClick: (username: String) -> Unit,
+    onImageClick: (url: String, imageId: String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SingleCollectionViewModel
 ) {
-    ListOfElements(
+    LazyListPhotos(
         modifier = modifier,
-        lazyPagingPhotosItems = viewModel::photos.get().collectAsLazyPagingItems(),
-        onProfileClick = viewModel::onProfileClick,
-        onImageClick = viewModel::onImageClick
+        items = photos,
+        onImageClick = onImageClick,
+        onUserClick = onProfileClick
     )
 }
-
