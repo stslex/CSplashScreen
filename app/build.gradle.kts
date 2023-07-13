@@ -13,7 +13,7 @@ dependencies {
 
     implementation(project(":feature:home"))
     implementation(project(":feature:collection"))
-    implementation(project(":feature-user"))
+    implementation(project(":feature:user"))
     implementation(project(":feature-photo-detail"))
     implementation(project(":feature-image-raw"))
     implementation(project(":feature-topics"))

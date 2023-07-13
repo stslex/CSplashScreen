@@ -29,7 +29,7 @@ include(":core:collection")
 
 include(":feature:home")
 include(":feature:collection")
-include(":feature-user")
+include(":feature:user")
 include(":feature-photo-detail")
 include(":feature-image-raw")
 include(":feature-topics")
