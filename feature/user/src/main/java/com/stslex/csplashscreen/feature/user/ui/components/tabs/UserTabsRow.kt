@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import com.stslex.csplashscreen.core.ui.pagerTabIndicatorOffset
+import com.stslex.csplashscreen.core.ui.utils.pagerTabIndicatorOffset
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

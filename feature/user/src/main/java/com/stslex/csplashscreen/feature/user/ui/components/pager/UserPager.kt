@@ -2,6 +2,7 @@ package com.stslex.csplashscreen.feature.user.ui.components.pager
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ fun UserContent(
     onUserClick: (String) -> Unit,
     onImageClick: (url: String, id: String) -> Unit,
     onCollectionClick: (id: String) -> Unit,
+    lazyListState: LazyListState,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState {
@@ -42,7 +44,8 @@ fun UserContent(
                     LazyListPhotos(
                         items = photos,
                         onUserClick = onUserClick,
-                        onImageClick = onImageClick
+                        onImageClick = onImageClick,
+                        listState = lazyListState
                     )
                 }
 
@@ -50,7 +53,8 @@ fun UserContent(
                     LazyListPhotos(
                         items = likes,
                         onUserClick = onUserClick,
-                        onImageClick = onImageClick
+                        onImageClick = onImageClick,
+                        listState = lazyListState
                     )
                 }
 
@@ -58,7 +62,8 @@ fun UserContent(
                     LazyListCollection(
                         items = collections,
                         onProfileClick = onUserClick,
-                        onCollectionClick = onCollectionClick
+                        onCollectionClick = onCollectionClick,
+                        listState = lazyListState
                     )
                 }
             }
