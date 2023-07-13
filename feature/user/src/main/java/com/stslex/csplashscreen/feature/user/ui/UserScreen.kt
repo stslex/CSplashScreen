@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import com.stslex.csplashscreen.core.collection.ui.CollectionModel
+import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import kotlinx.coroutines.flow.StateFlow
 import st.slex.core_network.model.ui.user.UserModel

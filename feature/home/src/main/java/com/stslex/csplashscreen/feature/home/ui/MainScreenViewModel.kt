@@ -3,8 +3,8 @@ package com.stslex.csplashscreen.feature.home.ui
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.stslex.csplashscreen.core.collection.ui.CollectionModel
-import com.stslex.csplashscreen.core.collection.ui.toPresentation
+import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
+import com.stslex.csplashscreen.core.collection.ui.model.toPresentation
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import com.stslex.csplashscreen.core.photos.ui.model.toPresentation
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel

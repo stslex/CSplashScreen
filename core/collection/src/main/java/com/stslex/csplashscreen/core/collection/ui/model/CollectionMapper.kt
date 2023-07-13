@@ -1,4 +1,4 @@
-package com.stslex.csplashscreen.core.collection.ui
+package com.stslex.csplashscreen.core.collection.ui.model
 
 import st.slex.core_network.model.ui.CollectionDomainModel
 
