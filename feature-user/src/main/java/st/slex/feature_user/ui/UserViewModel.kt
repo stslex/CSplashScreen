@@ -1,87 +1,72 @@
 package st.slex.feature_user.ui
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
-import com.stslex.csplashscreen.core.collection.data.QueryCollections
-import com.stslex.csplashscreen.core.core.Resource
-import com.stslex.csplashscreen.core.ui.base.BaseViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
+import com.stslex.csplashscreen.core.collection.ui.CollectionModel
+import com.stslex.csplashscreen.core.collection.ui.toPresentation
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
-import st.slex.core_network.model.ui.CollectionDomainModel
-import st.slex.core_network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
+import com.stslex.csplashscreen.core.photos.ui.model.toPresentation
+import com.stslex.csplashscreen.core.ui.base.BaseViewModel
+import com.stslex.csplashscreen.core.ui.paging.PagingSource
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import st.slex.core_network.model.ui.user.UserModel
-import com.stslex.csplashscreen.core.photos.data.QueryPhotos
 import st.slex.feature_user.domain.UserInteractor
 
 class UserViewModel(
     private val interactor: UserInteractor,
-    private val args: AppArguments.UserScreen,
-    private val navigate: (NavigationScreen) -> Unit
+    private val navigate: (NavigationScreen) -> Unit,
+    args: AppArguments.UserScreen,
 ) : BaseViewModel() {
 
-    val username: String
-        get() = args.username
+    private val username: String = args.username
 
-    val user: StateFlow<Resource<UserModel>>
-        get() = interactor.getUser(username).primaryStateFlow()
+    val user: StateFlow<UserModel?>
+        get() = interactor
+            .getUser(username)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.Lazily,
+                initialValue = null
+            )
 
-    private val _queryPhotos = MutableStateFlow<QueryPhotos>(QueryPhotos.UserPhotos(username))
-    private val queryPhotos: StateFlow<QueryPhotos> = _queryPhotos.asStateFlow()
+    val photos: StateFlow<PagingData<PhotoModel>>
+        get() = Pager(pagingConfig) {
+            PagingSource { page, pageSize ->
+                interactor.getUserPhotos(
+                    username = username,
+                    page = page,
+                    pageSize = pageSize
+                )
+            }
+        }.mapState { image -> image.toPresentation() }
 
-    private val _queryCollections =
-        MutableStateFlow<QueryCollections>(QueryCollections.UserCollections(username))
-    private val queryCollections: StateFlow<QueryCollections> = _queryCollections.asStateFlow()
+    val likes: StateFlow<PagingData<PhotoModel>>
+        get() = Pager(pagingConfig) {
+            PagingSource { page, pageSize ->
+                interactor.getUserLikePhotos(
+                    username = username,
+                    page = page,
+                    pageSize = pageSize
+                )
+            }
+        }.mapState { image -> image.toPresentation() }
 
-    private val _queryLikes = MutableStateFlow<QueryPhotos>(QueryPhotos.UserLikes(username))
-    private val queryLikes: StateFlow<QueryPhotos> =
-        _queryLikes.asStateFlow()
-
-    val collections: StateFlow<PagingData<CollectionDomainModel>> =
-        queryCollections.map(::newPagerCollections).pagingFlow
-
-    val photos: StateFlow<PagingData<ImageModel>> =
-        queryPhotos.map(::newPagerPhotos).pagingFlow
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val likes: StateFlow<PagingData<ImageModel>> = queryLikes
-        .map(::newPagerLikes)
-        .flatMapLatest { pager ->
-            pager.flow
-        }
-        .primaryPagingFlow
-
-    private var newPagingCollectionsSource: PagingSource<*, *>? = null
-    private var newPagingPhotosSource: PagingSource<*, *>? = null
-    private var newPagingLikesSource: PagingSource<*, *>? = null
-
-    private fun newPagerCollections(query: QueryCollections): Pager<Int, CollectionDomainModel> {
-        return Pager(PagingConfig(10, enablePlaceholders = false)) {
-            newPagingCollectionsSource?.invalidate()
-            interactor.getCollectionsPagingSource(query).also { newPagingCollectionsSource = it }
-        }
-    }
-
-    private fun newPagerPhotos(query: QueryPhotos): Pager<Int, ImageModel> {
-        return Pager(PagingConfig(10, enablePlaceholders = false)) {
-            newPagingPhotosSource?.invalidate()
-            interactor.getPhotosPagingSource(query).also { newPagingPhotosSource = it }
-        }
-    }
-
-    private fun newPagerLikes(query: QueryPhotos): Pager<Int, ImageModel> {
-        return Pager(PagingConfig(10, enablePlaceholders = false)) {
-            newPagingLikesSource?.invalidate()
-            interactor.getPhotosPagingSource(query).also { newPagingLikesSource = it }
-        }
-    }
+    val collections: StateFlow<PagingData<CollectionModel>>
+        get() = Pager(pagingConfig) {
+            PagingSource { page, pageSize ->
+                interactor.getUserCollections(
+                    username = username,
+                    page = page,
+                    pageSize = pageSize
+                )
+            }
+        }.mapState { collection -> collection.toPresentation() }
 
     fun popBackStack() {
         navigate(NavigationScreen.PopBackStack)
@@ -97,5 +82,13 @@ class UserViewModel(
 
     fun onCollectionClick(id: String) {
         navigate(NavigationScreen.CollectionScreen(id))
+    }
+
+    companion object {
+
+        private val pagingConfig = PagingConfig(
+            pageSize = 3,
+            enablePlaceholders = false
+        )
     }
 }

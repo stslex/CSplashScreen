@@ -21,7 +21,7 @@ class SingleCollectionViewModel(
     val photos: StateFlow<PagingData<PhotoModel>> = Pager(pagingConfig) {
         PagingSource { page, pageSize ->
             interactor.getPhotos(
-                collectionId = args.collectionId,
+                uuid = args.collectionId,
                 page = page,
                 pageSize = pageSize
             )

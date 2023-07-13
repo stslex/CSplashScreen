@@ -16,10 +16,6 @@ class CollectionNetworkSourceImpl(
     private val client: NetworkClient
 ) : CollectionNetworkSource {
 
-    companion object {
-        private const val PRIVATE_COLLECTION = "Unsplash+"
-    }
-
     override suspend fun getCollections(
         page: Int,
         pageSize: Int
@@ -31,9 +27,6 @@ class CollectionNetworkSourceImpl(
             parameter(PARAMETER_PAGE_SIZE, pageSize)
         }
         .body<List<RemoteCollectionModel>>()
-        .filterNot { collection ->
-            collection.user?.firstName?.lowercase() == PRIVATE_COLLECTION.lowercase()
-        }
 
     override suspend fun getUserCollections(
         username: String,

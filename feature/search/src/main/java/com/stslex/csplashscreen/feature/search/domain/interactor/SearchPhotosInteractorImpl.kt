@@ -13,7 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import st.slex.core_network.model.map
+import st.slex.core_network.model.toDomain
 import st.slex.core_network.model.ui.ImageModel
 
 class SearchPhotosInteractorImpl(
@@ -50,7 +50,7 @@ class SearchPhotosInteractorImpl(
                     timestamp = System.currentTimeMillis()
                 )
             )
-            remoteImages.map()
+            remoteImages.toDomain()
         }
         queryJob?.await() ?: emptyList()
     }

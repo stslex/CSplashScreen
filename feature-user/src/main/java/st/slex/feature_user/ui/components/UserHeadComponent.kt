@@ -1,13 +1,16 @@
 package st.slex.feature_user.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.Glide
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
-import st.slex.feature_user.ui.TextHeaderColumn
 
 @Composable
 fun UserHeadComponent(
@@ -61,5 +63,19 @@ fun UserHeadComponent(
             }
         }
     }
+}
 
+@Composable
+fun TextHeaderColumn(title: String, contentTitle: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Text(
+            text = contentTitle,
+            style = MaterialTheme.typography.titleMedium
+        )
+    }
 }

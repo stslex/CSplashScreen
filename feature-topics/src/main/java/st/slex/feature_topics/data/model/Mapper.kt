@@ -1,6 +1,6 @@
 package st.slex.feature_topics.data.model
 
-import st.slex.core_network.model.map
+import st.slex.core_network.model.toDomain
 import st.slex.core_network.model.remote.topics.RemotePreviewPhotosModel
 import st.slex.core_network.model.remote.topics.RemoteTopicsModel
 
@@ -16,10 +16,10 @@ fun RemoteTopicsModel.toTopicsModel(): TopicsModel = TopicsModel(
     onlySubmissionsAfter = onlySubmissionsAfter.orEmpty(),
     featured = featured.orEmpty(),
     totalPhotos = totalPhotos.orEmpty(),
-    links = links.map(),
+    links = links.toDomain(),
     status = status.orEmpty(),
-    owners = owners?.map { it.map() }.orEmpty(),
-    coverPhoto = coverPhoto.map(),
+    owners = owners?.map { it.toDomain() }.orEmpty(),
+    coverPhoto = coverPhoto.toDomain(),
     previewPhotos = previewPhotos?.map { it.toPreviewPhotosModel() }.orEmpty()
 )
 
@@ -27,5 +27,5 @@ fun RemotePreviewPhotosModel.toPreviewPhotosModel() = PreviewPhotosModel(
     id = id.orEmpty(),
     createdAt = createdAt.orEmpty(),
     updatedAt = updatedAt.orEmpty(),
-    urls = urls.map()
+    urls = urls.toDomain()
 )

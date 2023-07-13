@@ -1,14 +1,14 @@
 package st.slex.feature_user.domain
 
-import androidx.paging.PagingSource
-import kotlinx.coroutines.flow.Flow
 import com.stslex.csplashscreen.core.collection.data.CollectionsRepository
-import com.stslex.csplashscreen.core.collection.data.QueryCollections
+import com.stslex.csplashscreen.core.photos.data.PhotosRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import st.slex.core_network.model.mapToDomain
+import st.slex.core_network.model.toDomain
 import st.slex.core_network.model.ui.CollectionDomainModel
 import st.slex.core_network.model.ui.ImageModel
 import st.slex.core_network.model.ui.user.UserModel
-import com.stslex.csplashscreen.core.photos.data.PhotosRepository
-import com.stslex.csplashscreen.core.photos.data.QueryPhotos
 import st.slex.feature_user.data.UserRepository
 
 class UserInteractorImpl(
@@ -17,13 +17,49 @@ class UserInteractorImpl(
     private val userRepository: UserRepository
 ) : UserInteractor {
 
-    override fun getPhotosPagingSource(
-        query: QueryPhotos
-    ): PagingSource<Int, ImageModel> = photosRepository.queryAll(query)
+    override suspend fun getUserCollections(
+        username: String,
+        page: Int,
+        pageSize: Int
+    ): List<CollectionDomainModel> = collectionsRepository
+        .getUserCollections(
+            username = username,
+            page = page,
+            pageSize = pageSize
+        )
+        .mapToDomain()
 
-    override fun getCollectionsPagingSource(
-        query: QueryCollections
-    ): PagingSource<Int, CollectionDomainModel> = collectionsRepository.queryAll(query)
+    override suspend fun getUserLikePhotos(
+        username: String,
+        page: Int,
+        pageSize: Int
+    ): List<ImageModel> = photosRepository
+        .getUserLikePhotos(
+            username = username,
+            page = page,
+            pageSize = pageSize
+        )
+        .toDomain()
 
-    override fun getUser(username: String): Flow<UserModel> = userRepository.getUser(username)
+    override suspend fun getUserPhotos(
+        username: String,
+        page: Int,
+        pageSize: Int
+    ): List<ImageModel> = photosRepository
+        .getUserPhotos(
+            username = username,
+            page = page,
+            pageSize = pageSize
+        )
+        .toDomain()
+
+    override fun getUser(
+        username: String
+    ): Flow<UserModel> = userRepository
+        .getUser(
+            username = username
+        )
+        .map { user ->
+            user.toDomain()
+        }
 }

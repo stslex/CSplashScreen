@@ -44,11 +44,15 @@ import st.slex.core_network.model.ui.user.ProfileImageModel
 import st.slex.core_network.model.ui.user.UserLinksModel
 import st.slex.core_network.model.ui.user.UserModel
 
-fun List<RemoteImageModel?>.map(): List<ImageModel> = map {
-    it.map()
+fun List<RemoteImageModel?>.toDomain(): List<ImageModel> = map {
+    it.toDomain()
 }
 
-fun RemoteImageModel?.map(): ImageModel = ImageModel(
+fun List<RemoteCollectionModel?>.mapToDomain(): List<CollectionDomainModel> = map {
+    it.toDomain()
+}
+
+fun RemoteImageModel?.toDomain(): ImageModel = ImageModel(
     uuid = this?.id.orEmpty(),
     createdAt = this?.createdAt.orEmpty(),
     updatedAt = this?.updatedAt.orEmpty(),
@@ -62,19 +66,19 @@ fun RemoteImageModel?.map(): ImageModel = ImageModel(
     likedByUser = this?.likedByUser ?: false,
     description = this?.description.orEmpty(),
     altDescription = this?.altDescription.orEmpty(),
-    exif = this?.exif.map(),
-    location = this?.location.map(),
-    tags = this?.tags?.map { it.map() }.orEmpty().toImmutableList(),
-    currentUserCollections = this?.currentUserCollections?.map { it.map() }.orEmpty()
+    exif = this?.exif.toDomain(),
+    location = this?.location.toDomain(),
+    tags = this?.tags?.map { it.toDomain() }.orEmpty().toImmutableList(),
+    currentUserCollections = this?.currentUserCollections?.map { it.toDomain() }.orEmpty()
         .toImmutableList(),
-    sponsorship = this?.sponsorship.map(),
-    urls = this?.urls.map(),
-    links = this?.links.map(),
-    user = this?.user.map(),
-    statistics = this?.statistics.map()
+    sponsorship = this?.sponsorship.toDomain(),
+    urls = this?.urls.toDomain(),
+    links = this?.links.toDomain(),
+    user = this?.user.toDomain(),
+    statistics = this?.statistics.toDomain()
 )
 
-fun RemoteExifModel?.map(): ExifModel = ExifModel(
+fun RemoteExifModel?.toDomain(): ExifModel = ExifModel(
     make = this?.make.orEmpty(),
     model = this?.model.orEmpty(),
     exposureTime = this?.exposureTime.orEmpty(),
@@ -83,18 +87,18 @@ fun RemoteExifModel?.map(): ExifModel = ExifModel(
     iso = this?.iso ?: 0
 )
 
-fun RemoteLocationModel?.map(): LocationModel = LocationModel(
+fun RemoteLocationModel?.toDomain(): LocationModel = LocationModel(
     city = this?.city.orEmpty(),
     country = this?.country.orEmpty(),
-    position = this?.position.map()
+    position = this?.position.toDomain()
 )
 
-fun RemoteTagModel?.map(): TagModel = TagModel(
+fun RemoteTagModel?.toDomain(): TagModel = TagModel(
     type = this?.type.orEmpty(),
     title = this?.title.orEmpty()
 )
 
-fun RemoteCollectionModel?.map(): CollectionDomainModel = CollectionDomainModel(
+fun RemoteCollectionModel?.toDomain(): CollectionDomainModel = CollectionDomainModel(
     uuid = this?.id.orEmpty(),
     title = this?.title.orEmpty(),
     description = this?.description.orEmpty(),
@@ -105,16 +109,16 @@ fun RemoteCollectionModel?.map(): CollectionDomainModel = CollectionDomainModel(
     totalPhotos = this?.totalPhotos ?: 0,
     private = this?.private ?: false,
     shareKey = this?.shareKey.orEmpty(),
-    tags = this?.tags?.map { it.map() }.orEmpty().toImmutableList(),
-    coverPhoto = this?.coverPhoto.map(),
-    previewPhotos = this?.previewPhotos?.map { it.map() }.orEmpty().toImmutableList(),
-    user = this?.user.map(),
-    links = this?.links.map()
+    tags = this?.tags?.map { it.toDomain() }.orEmpty().toImmutableList(),
+    coverPhoto = this?.coverPhoto.toDomain(),
+    previewPhotos = this?.previewPhotos?.map { it.toDomain() }.orEmpty().toImmutableList(),
+    user = this?.user.toDomain(),
+    links = this?.links.toDomain()
 )
 
-fun RemoteSponsorship?.map(): Sponsorship = Sponsorship(sponsor = this?.sponsor.map())
+fun RemoteSponsorship?.toDomain(): Sponsorship = Sponsorship(sponsor = this?.sponsor.toDomain())
 
-fun RemoteUrlsModel?.map(): UrlsModel = UrlsModel(
+fun RemoteUrlsModel?.toDomain(): UrlsModel = UrlsModel(
     raw = this?.raw.orEmpty(),
     full = this?.full.orEmpty(),
     regular = this?.regular.orEmpty(),
@@ -122,14 +126,14 @@ fun RemoteUrlsModel?.map(): UrlsModel = UrlsModel(
     thumb = this?.thumb.orEmpty()
 )
 
-fun RemoteLinksImageModel?.map(): LinksImageModel = LinksImageModel(
+fun RemoteLinksImageModel?.toDomain(): LinksImageModel = LinksImageModel(
     self = this?.self.orEmpty(),
     html = this?.html.orEmpty(),
     download = this?.download.orEmpty(),
     downloadLocation = this?.downloadLocation.orEmpty()
 )
 
-fun RemoteUserModel?.map(): UserModel =
+fun RemoteUserModel?.toDomain(): UserModel =
     UserModel(
         id = this?.id.orEmpty(),
         updatedAt = this?.updatedAt.orEmpty(),
@@ -149,44 +153,44 @@ fun RemoteUserModel?.map(): UserModel =
         followersCount = this?.followersCount ?: 0,
         followingCount = this?.followingCount ?: 0,
         downloads = this?.downloads ?: 0,
-        profileImageModel = this?.profileImage.map(),
-        badge = this?.badge.map(),
-        links = this?.links.map(),
-        photos = this?.photos?.map { it.map() }.orEmpty()
+        profileImageModel = this?.profileImage.toDomain(),
+        badge = this?.badge.toDomain(),
+        links = this?.links.toDomain(),
+        photos = this?.photos?.map { it.toDomain() }.orEmpty()
     )
 
-fun RemotePhotoStatistics?.map(): PhotoStatistics = PhotoStatistics(
+fun RemotePhotoStatistics?.toDomain(): PhotoStatistics = PhotoStatistics(
     id = this?.id.orEmpty(),
-    downloads = this?.downloads.map(),
-    views = this?.views.map(),
-    likes = this?.likes.map()
+    downloads = this?.downloads.toDomain(),
+    views = this?.views.toDomain(),
+    likes = this?.likes.toDomain()
 )
 
-fun RemotePositionModel?.map(): PositionModel = PositionModel(
+fun RemotePositionModel?.toDomain(): PositionModel = PositionModel(
     latitude = this?.latitude ?: 0.0,
     longitude = this?.longitude ?: 0.0
 )
 
-fun RemoteLinksCollectionModel?.map(): LinksCollectionModel = LinksCollectionModel(
+fun RemoteLinksCollectionModel?.toDomain(): LinksCollectionModel = LinksCollectionModel(
     self = this?.self.orEmpty(),
     html = this?.html.orEmpty(),
     photos = this?.photos.orEmpty()
 )
 
-fun RemoteProfileImageModel?.map(): ProfileImageModel = ProfileImageModel(
+fun RemoteProfileImageModel?.toDomain(): ProfileImageModel = ProfileImageModel(
     small = this?.small.orEmpty(),
     medium = this?.medium.orEmpty(),
     large = this?.large.orEmpty()
 )
 
-fun RemoteBadgeModel?.map(): BadgeModel = BadgeModel(
+fun RemoteBadgeModel?.toDomain(): BadgeModel = BadgeModel(
     title = this?.title.orEmpty(),
     primary = this?.primary ?: false,
     slug = this?.slug.orEmpty(),
     link = this?.link.orEmpty()
 )
 
-fun RemoteUserLinksModel?.map(): UserLinksModel = UserLinksModel(
+fun RemoteUserLinksModel?.toDomain(): UserLinksModel = UserLinksModel(
     self = this?.self.orEmpty(),
     html = this?.html.orEmpty(),
     photos = this?.photos.orEmpty(),
@@ -196,31 +200,31 @@ fun RemoteUserLinksModel?.map(): UserLinksModel = UserLinksModel(
     followers = this?.followers.orEmpty()
 )
 
-fun RemoteDownloads?.map(): Downloads = Downloads(
+fun RemoteDownloads?.toDomain(): Downloads = Downloads(
     total = this?.total ?: 0,
-    historical = this?.historical.map()
+    historical = this?.historical.toDomain()
 )
 
-fun RemoteViews?.map(): Views = Views(
+fun RemoteViews?.toDomain(): Views = Views(
     total = this?.total ?: 0,
-    historical = this?.historical.map()
+    historical = this?.historical.toDomain()
 )
 
-fun RemoteLikes?.map(): Likes = Likes(
+fun RemoteLikes?.toDomain(): Likes = Likes(
     total = this?.total ?: 0,
-    historical = this?.historical.map()
+    historical = this?.historical.toDomain()
 )
 
-fun RemoteHistorical?.map(): Historical = Historical(
+fun RemoteHistorical?.toDomain(): Historical = Historical(
     change = this?.change ?: 0,
     resolution = this?.resolution.orEmpty(),
     quality = this?.quality.orEmpty(),
-    values = this?.values?.map { it.map() }.orEmpty()
+    values = this?.values?.map { it.toDomain() }.orEmpty()
 )
 
-fun RemoteValue?.map(): Value = Value(
+fun RemoteValue?.toDomain(): Value = Value(
     date = this?.date.orEmpty(),
     value = this?.value ?: 0
 )
 
-fun RemoteDownloadModel?.map(): DownloadModel = DownloadModel(url = this?.url.orEmpty())
+fun RemoteDownloadModel?.toDomain(): DownloadModel = DownloadModel(url = this?.url.orEmpty())
