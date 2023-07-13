@@ -12,7 +12,7 @@ import com.stslex.csplashscreen.feature.home.navigation.homeGraph
 import st.slex.feature_photo_detail.navigation.imageDetailGraph
 import com.stslex.csplashscreen.feature.search.navigation.searchPhotosGraph
 import st.slex.feature_topics.navigation.topicsGraph
-import st.slex.feature_user.navigation.userGraph
+import com.stslex.csplashscreen.feature.user.navigation.userGraph
 
 @Composable
 fun NavigationHost(
