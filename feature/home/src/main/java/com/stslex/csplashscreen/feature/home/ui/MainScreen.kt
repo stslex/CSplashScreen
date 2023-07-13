@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
-import com.stslex.csplashscreen.core.collection.ui.CollectionModel
+import com.stslex.csplashscreen.core.collection.ui.component.LazyListCollection
+import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
 import com.stslex.csplashscreen.core.photos.ui.component.LazyListPhotos
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
-import com.stslex.csplashscreen.feature.home.ui.components.collections.MainScreenCollections
 import com.stslex.csplashscreen.feature.home.ui.components.tabs.MainScreenTabRow
 import com.stslex.csplashscreen.feature.home.ui.components.tabs.MainScreenTabs
 import kotlinx.coroutines.launch
@@ -32,6 +32,7 @@ fun MainScreen(
     )
     val coroutineScope = rememberCoroutineScope()
     val photosListState = rememberLazyListState()
+    val collectionListState = rememberLazyListState()
 
     Column(
         modifier = modifier
@@ -41,7 +42,9 @@ fun MainScreen(
             pagerState = pagerState,
             onClick = { pageNumber ->
                 when (pageNumber) {
-                    MainScreenTabs.COLLECTIONS.pageNum -> Unit // TODO
+                    MainScreenTabs.COLLECTIONS.pageNum -> coroutineScope.launch {
+                        collectionListState.animateScrollToItem(0)
+                    }
 
                     MainScreenTabs.PHOTOS.pageNum -> coroutineScope.launch {
                         photosListState.animateScrollToItem(0)
@@ -59,10 +62,12 @@ fun MainScreen(
             when (pageNumber) {
 
                 MainScreenTabs.COLLECTIONS.pageNum -> {
-                    MainScreenCollections(
+                    LazyListCollection(
                         items = collections,
                         onProfileClick = navToProfile,
-                        onCollectionClick = navToCollection
+                        onCollectionClick = navToCollection,
+                        listState = collectionListState,
+                        contentType = { MainScreenTabs.COLLECTIONS }
                     )
                 }
 

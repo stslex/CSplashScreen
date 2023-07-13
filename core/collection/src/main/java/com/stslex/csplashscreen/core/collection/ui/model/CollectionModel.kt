@@ -1,4 +1,4 @@
-package com.stslex.csplashscreen.core.collection.ui
+package com.stslex.csplashscreen.core.collection.ui.model
 
 import androidx.compose.runtime.Stable
 

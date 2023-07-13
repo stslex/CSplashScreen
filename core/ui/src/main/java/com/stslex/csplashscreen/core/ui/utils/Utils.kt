@@ -1,4 +1,4 @@
-package com.stslex.csplashscreen.core.ui
+package com.stslex.csplashscreen.core.ui.utils
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState

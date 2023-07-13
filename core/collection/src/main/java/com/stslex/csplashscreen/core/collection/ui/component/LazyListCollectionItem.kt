@@ -1,4 +1,4 @@
-package com.stslex.csplashscreen.feature.home.ui.components.collections
+package com.stslex.csplashscreen.core.collection.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -13,48 +13,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.paging.compose.LazyPagingItems
-import com.stslex.csplashscreen.core.collection.ui.CollectionModel
+import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
 import com.stslex.csplashscreen.core.ui.components.base.MainUserAvatar
 import com.stslex.csplashscreen.core.ui.components.base.MediumText
 import com.stslex.csplashscreen.core.ui.components.base.PhotosBaseItem
-import com.stslex.csplashscreen.core.ui.components.base.PhotosBaseLazyList
 import com.stslex.csplashscreen.core.ui.components.base.SmallText
 import com.stslex.csplashscreen.core.ui.theme.Dimen
-import com.stslex.csplashscreen.feature.home.ui.components.tabs.MainScreenTabs
 
 @Composable
-fun MainScreenCollections(
-    items: LazyPagingItems<CollectionModel>,
-    onProfileClick: (username: String) -> Unit,
-    onCollectionClick: (id: String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    PhotosBaseLazyList(
-        modifier = modifier,
-        items = items,
-        key = { item ->
-            item.uuid
-        },
-        contentType = {
-            MainScreenTabs.COLLECTIONS
-        },
-    ) { item ->
-        MainScreenCollectionItem(
-            item = item,
-            onCollectionClick = onCollectionClick,
-            onProfileClick = onProfileClick,
-        )
-    }
-}
-
-@Composable
-fun MainScreenCollectionItem(
+fun LazyListCollectionItem(
     item: CollectionModel,
     onProfileClick: (username: String) -> Unit,
     onCollectionClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
     PhotosBaseItem(
         modifier = modifier,
         onContainerClick = remember(item.uuid) {

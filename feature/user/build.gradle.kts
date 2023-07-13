@@ -10,6 +10,8 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core-network"))
     implementation(project(":core:photos"))
+
+    implementation("androidx.compose.material:material:1.4.3")
 }
 
 android.namespace = "com.stslex.csplashscreen.feature.user"

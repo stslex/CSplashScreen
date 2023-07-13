@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.stslex.csplashscreen.core.collection.ui.CollectionModel
-import com.stslex.csplashscreen.core.collection.ui.toPresentation
+import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
+import com.stslex.csplashscreen.core.collection.ui.model.toPresentation
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
