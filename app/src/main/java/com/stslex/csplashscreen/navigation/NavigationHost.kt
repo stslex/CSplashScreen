@@ -11,7 +11,7 @@ import st.slex.feature_image_raw.navigation.rawImageGraph
 import com.stslex.csplashscreen.feature.home.navigation.homeGraph
 import st.slex.feature_photo_detail.navigation.imageDetailGraph
 import com.stslex.csplashscreen.feature.search.navigation.searchPhotosGraph
-import st.slex.feature_topics.navigation.topicsGraph
+import com.stslex.csplashscreen.feature.topics.navigation.topicsGraph
 import com.stslex.csplashscreen.feature.user.navigation.userGraph
 
 @Composable

@@ -16,7 +16,7 @@ dependencies {
     implementation(project(":feature:user"))
     implementation(project(":feature-photo-detail"))
     implementation(project(":feature-image-raw"))
-    implementation(project(":feature-topics"))
+    implementation(project(":feature:topics"))
     implementation(project(":feature:search"))
 
     implementation(libs.androidx.paging.runtime)

@@ -12,7 +12,7 @@ import st.slex.feature_image_raw.di.moduleRawImage
 import com.stslex.csplashscreen.feature.home.di.moduleFeatureHome
 import st.slex.feature_photo_detail.di.moduleFeaturePhoto
 import com.stslex.csplashscreen.feature.search.di.moduleFeatureSearchPhotos
-import st.slex.feature_topics.di.moduleFeatureTopics
+import com.stslex.csplashscreen.feature.topics.di.moduleFeatureTopics
 import com.stslex.csplashscreen.feature.user.di.moduleFeatureUser
 
 class SplashApplication : Application() {
