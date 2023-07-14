@@ -18,9 +18,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun UserTabsRow(
     pagerState: PagerState,
-    scope: CoroutineScope = rememberCoroutineScope()
+    userTabs: Set<UserTab>,
+    modifier: Modifier = Modifier,
+    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
     TabRow(
+        modifier = modifier,
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
@@ -28,7 +31,7 @@ fun UserTabsRow(
             )
         },
         tabs = {
-            UserTabs.values().forEachIndexed { index, model ->
+            userTabs.forEachIndexed { index, model ->
                 Tab(
                     text = {
                         Text(
@@ -39,7 +42,7 @@ fun UserTabsRow(
                     selected = pagerState.currentPage == index,
                     onClick = {
                         scope.launch { pagerState.animateScrollToPage(index) }
-                    }
+                    },
                 )
             }
         }

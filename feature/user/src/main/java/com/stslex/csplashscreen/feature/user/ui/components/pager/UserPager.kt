@@ -2,70 +2,66 @@ package com.stslex.csplashscreen.feature.user.ui.components.pager
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.paging.compose.LazyPagingItems
 import com.stslex.csplashscreen.core.collection.ui.component.LazyListCollection
-import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
 import com.stslex.csplashscreen.core.photos.ui.component.LazyListPhotos
-import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
-import com.stslex.csplashscreen.feature.user.ui.components.tabs.UserTabs
+import com.stslex.csplashscreen.feature.user.ui.components.tabs.UserTab
 import com.stslex.csplashscreen.feature.user.ui.components.tabs.UserTabsRow
+import com.stslex.csplashscreen.feature.user.ui.state.UserPagerState
+import com.stslex.csplashscreen.feature.user.ui.state.UserScreenNavigation
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun UserContent(
-    photos: LazyPagingItems<PhotoModel>,
-    likes: LazyPagingItems<PhotoModel>,
-    collections: LazyPagingItems<CollectionModel>,
-    onUserClick: (String) -> Unit,
-    onImageClick: (url: String, id: String) -> Unit,
-    onCollectionClick: (id: String) -> Unit,
-    lazyListState: LazyListState,
+fun UserPager(
+    userPagerState: UserPagerState,
+    navigation: UserScreenNavigation,
     modifier: Modifier = Modifier
 ) {
-    val pagerState = rememberPagerState {
-        UserTabs.values().size
-    }
-
     Column(
         modifier = modifier
     ) {
-        UserTabsRow(pagerState)
+        UserTabsRow(
+            pagerState = userPagerState.pagerState,
+            userTabs = userPagerState.userTabs
+        )
 
         HorizontalPager(
-            state = pagerState
+            state = userPagerState.pagerState
         ) { pageNumber ->
-            when (UserTabs.getByIndex(pageNumber)) {
-                UserTabs.PHOTOS -> {
+            when (userPagerState.getTab(pageNumber)) {
+                UserTab.PHOTOS -> {
                     LazyListPhotos(
-                        items = photos,
-                        onUserClick = onUserClick,
-                        onImageClick = onImageClick,
-                        listState = lazyListState
+                        items = userPagerState.photos,
+                        onUserClick = navigation.onUserClick,
+                        onImageClick = navigation.onImageClick,
+                        listState = userPagerState.photosListState,
+                        contentType = { UserTab.PHOTOS }
                     )
                 }
 
-                UserTabs.LIKE -> {
+                UserTab.LIKE -> {
                     LazyListPhotos(
-                        items = likes,
-                        onUserClick = onUserClick,
-                        onImageClick = onImageClick,
-                        listState = lazyListState
+                        items = userPagerState.likes,
+                        onUserClick = navigation.onUserClick,
+                        onImageClick = navigation.onImageClick,
+                        listState = userPagerState.likesListState,
+                        contentType = { UserTab.LIKE }
                     )
                 }
 
-                UserTabs.COLLECTION -> {
+                UserTab.COLLECTION -> {
                     LazyListCollection(
-                        items = collections,
-                        onProfileClick = onUserClick,
-                        onCollectionClick = onCollectionClick,
-                        listState = lazyListState
+                        items = userPagerState.collections,
+                        onProfileClick = navigation.onUserClick,
+                        onCollectionClick = navigation.onCollectionClick,
+                        listState = userPagerState.collectionsListState,
+                        contentType = { UserTab.COLLECTION }
                     )
                 }
+
+                null -> Unit
             }
         }
     }

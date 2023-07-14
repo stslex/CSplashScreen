@@ -55,7 +55,6 @@ fun MainScreen(
             }
         )
         HorizontalPager(
-            modifier = modifier,
             state = pagerState,
             key = null
         ) { pageNumber ->
