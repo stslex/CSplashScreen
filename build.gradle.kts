@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.library) apply false
     alias(libs.plugins.serialization)
+    alias(libs.plugins.ksp) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block
 

@@ -4,11 +4,11 @@ import com.stslex.csplashscreen.core.collection.data.CollectionsRepository
 import com.stslex.csplashscreen.core.photos.data.PhotosRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import st.slex.core_network.model.mapToDomain
-import st.slex.core_network.model.toDomain
-import st.slex.core_network.model.ui.CollectionDomainModel
-import st.slex.core_network.model.ui.ImageModel
-import st.slex.core_network.model.ui.user.UserModel
+import com.stslex.csplashscreen.core.network.model.mapToDomain
+import com.stslex.csplashscreen.core.network.model.toDomain
+import com.stslex.csplashscreen.core.network.model.ui.CollectionDomainModel
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.ui.user.UserModel
 import com.stslex.csplashscreen.feature.user.data.UserRepository
 
 class UserInteractorImpl(

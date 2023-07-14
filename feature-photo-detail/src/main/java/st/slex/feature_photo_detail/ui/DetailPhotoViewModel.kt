@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import com.stslex.csplashscreen.core.core.Resource
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
-import st.slex.core_network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.feature_photo_detail.data.PhotoRepository
 import st.slex.feature_photo_detail.ui.utils.DownloadImageUseCase

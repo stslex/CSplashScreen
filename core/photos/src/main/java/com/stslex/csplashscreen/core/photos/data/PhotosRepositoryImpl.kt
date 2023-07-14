@@ -2,8 +2,8 @@ package com.stslex.csplashscreen.core.photos.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import st.slex.core_network.model.remote.image.RemoteImageModel
-import st.slex.core_network.source.interf.PagingPhotosNetworkSource
+import com.stslex.csplashscreen.core.network.model.remote.image.RemoteImageModel
+import com.stslex.csplashscreen.core.network.source.interf.PagingPhotosNetworkSource
 
 class PhotosRepositoryImpl(
     private val networkSource: PagingPhotosNetworkSource

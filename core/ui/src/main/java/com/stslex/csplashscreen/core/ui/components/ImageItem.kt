@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.stslex.csplashscreen.core.core.UtilsExtensions.convertedUrl
-import st.slex.core_network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
 
 @Composable
 fun ImageItem(

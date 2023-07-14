@@ -2,7 +2,7 @@ package st.slex.feature_topics.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import st.slex.core_network.source.interf.TopicsNetworkSource
+import com.stslex.csplashscreen.core.network.source.interf.TopicsNetworkSource
 import st.slex.feature_topics.data.model.TopicsModel
 import st.slex.feature_topics.data.model.toTopicsModel
 

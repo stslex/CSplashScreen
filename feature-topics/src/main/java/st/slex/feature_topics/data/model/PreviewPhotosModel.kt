@@ -1,6 +1,6 @@
 package st.slex.feature_topics.data.model
 
-import st.slex.core_network.model.ui.image.UrlsModel
+import com.stslex.csplashscreen.core.network.model.ui.image.UrlsModel
 
 data class PreviewPhotosModel(
     val id: String,

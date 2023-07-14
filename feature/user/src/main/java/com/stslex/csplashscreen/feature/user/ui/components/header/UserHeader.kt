@@ -8,7 +8,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import st.slex.core_network.model.ui.user.UserModel
+import com.stslex.csplashscreen.core.network.model.ui.user.UserModel
 
 @Composable
 fun UserHeader(

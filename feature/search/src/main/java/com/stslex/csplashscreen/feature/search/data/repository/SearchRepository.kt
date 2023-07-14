@@ -3,7 +3,7 @@ package com.stslex.csplashscreen.feature.search.data.repository
 import androidx.paging.PagingData
 import com.stslex.csplashscreen.feature.search.data.database.SearchEntity
 import kotlinx.coroutines.flow.Flow
-import st.slex.core_network.model.remote.image.RemoteImageModel
+import com.stslex.csplashscreen.core.network.model.remote.image.RemoteImageModel
 
 interface SearchRepository {
 

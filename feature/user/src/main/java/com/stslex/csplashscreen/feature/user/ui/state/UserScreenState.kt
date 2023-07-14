@@ -10,7 +10,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import kotlinx.coroutines.flow.StateFlow
-import st.slex.core_network.model.ui.user.UserModel
+import com.stslex.csplashscreen.core.network.model.ui.user.UserModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Stable

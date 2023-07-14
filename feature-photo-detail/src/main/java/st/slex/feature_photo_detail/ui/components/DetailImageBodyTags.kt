@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import st.slex.core_network.model.ui.image.TagModel
+import com.stslex.csplashscreen.core.network.model.ui.image.TagModel
 
 @Composable
 fun DetailImageBodyTags(

@@ -2,10 +2,10 @@ package com.stslex.csplashscreen.feature.home.domain
 
 import com.stslex.csplashscreen.core.collection.data.CollectionsRepository
 import com.stslex.csplashscreen.core.photos.data.PhotosRepository
-import st.slex.core_network.model.mapToDomain
-import st.slex.core_network.model.toDomain
-import st.slex.core_network.model.ui.CollectionDomainModel
-import st.slex.core_network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.mapToDomain
+import com.stslex.csplashscreen.core.network.model.toDomain
+import com.stslex.csplashscreen.core.network.model.ui.CollectionDomainModel
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
 
 class MainScreenInteractorImpl(
     private val photosRepository: PhotosRepository,

@@ -6,7 +6,7 @@ import com.stslex.csplashscreen.feature.collection.di.singleCollectionModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import st.slex.core_network.di.moduleCoreNetwork
+import com.stslex.csplashscreen.core.network.di.moduleCoreNetwork
 import com.stslex.csplashscreen.core.photos.di.moduleCorePhotos
 import st.slex.feature_image_raw.di.moduleRawImage
 import com.stslex.csplashscreen.feature.home.di.moduleFeatureHome

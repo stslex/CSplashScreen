@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation(project(":core:core"))
-    implementation(project(":core-network"))
+    implementation(project(":core:network"))
     implementation(project(":core:ui"))
 
     implementation(libs.androidx.paging.runtime)

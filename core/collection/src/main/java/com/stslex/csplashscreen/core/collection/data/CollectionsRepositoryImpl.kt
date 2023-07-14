@@ -2,8 +2,8 @@ package com.stslex.csplashscreen.core.collection.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import st.slex.core_network.model.remote.collection.RemoteCollectionModel
-import st.slex.core_network.source.interf.CollectionNetworkSource
+import com.stslex.csplashscreen.core.network.model.remote.collection.RemoteCollectionModel
+import com.stslex.csplashscreen.core.network.source.interf.CollectionNetworkSource
 
 class CollectionsRepositoryImpl(
     private val networkSource: CollectionNetworkSource
