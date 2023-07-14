@@ -44,12 +44,15 @@ fun Modifier.setScrollingColumnAnimation(
 }
 
 fun LazyListState.normalizedPosition(key: String?): Float = with(layoutInfo) {
-    visibleItemsInfo.firstOrNull {
-        it.key == key
-    }?.let {
-        val center = (viewportEndOffset + viewportStartOffset - it.size) / 2F
-        (it.offset.toFloat() - center) / center
-    } ?: 0F
+    visibleItemsInfo
+        .firstOrNull {
+            it.key == key
+        }
+        ?.let { itemInfo ->
+            val center = (viewportEndOffset + viewportStartOffset - itemInfo.size) / 2F
+            (itemInfo.offset.toFloat() - center) / center
+        }
+        ?: 0F
 }
 
 fun Modifier.animateItemTop(

@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import com.stslex.csplashscreen.core.ui.utils.pagerTabIndicatorOffset
+import com.stslex.csplashscreen.core.ui.utils.tabIndicatorOffset
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -26,9 +26,15 @@ fun UserTabsRow(
         modifier = modifier,
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-            )
+            tabPositions
+                .getOrNull(pagerState.currentPage)
+                ?.let { tabPosition ->
+                    TabRowDefaults.Indicator(
+                        Modifier.tabIndicatorOffset(
+                            currentTabPosition = tabPosition,
+                        )
+                    )
+                }
         },
         tabs = {
             userTabs.forEachIndexed { index, model ->
