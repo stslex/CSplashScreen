@@ -2,6 +2,7 @@ plugins {
     id("csplashscreen.android.library")
     id("csplashscreen.android.library.compose")
     kotlin("kapt")
+    alias(libs.plugins.ksp)
 }
 
 dependencies {
@@ -13,7 +14,7 @@ dependencies {
 
     implementation(libs.bundles.room)
     annotationProcessor(libs.androidx.room.compiler)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.paging.runtime)
 }
 

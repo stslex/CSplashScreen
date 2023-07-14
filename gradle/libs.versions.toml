@@ -26,6 +26,7 @@ androidxJunit = "1.1.5"
 espresso = "3.5.1"
 
 room = "2.5.2"
+ksp = "1.8.22-1.0.11"
 
 [libraries]
 android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
@@ -98,6 +99,7 @@ kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [bundles]
 
