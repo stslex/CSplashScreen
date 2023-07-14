@@ -1,70 +1,52 @@
 package com.stslex.csplashscreen.core.ui.utils
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.pager.PagerState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.TabPosition
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.unit.Constraints
-import androidx.compose.ui.unit.lerp
-import com.stslex.csplashscreen.core.core.Resource
+import androidx.compose.ui.composed
+import androidx.compose.ui.platform.debugInspectorInfo
 
-@Composable
-fun <T> Resource<T>.CheckResults(
-    onSuccess: @Composable (T) -> Unit = {},
-    onError: @Composable (Throwable) -> Unit = {},
-    onLoading: @Composable () -> Unit = {}
+fun Modifier.tabIndicatorOffset(
+    currentTabPosition: TabPosition,
+): Modifier = composed(
+    inspectorInfo = debugInspectorInfo {
+        name = "tabIndicatorOffset"
+        value = currentTabPosition
+    }
 ) {
-    when (this) {
-        is Resource.Success -> onSuccess(data)
-        is Resource.Failure -> onError(exception)
-        is Resource.Loading -> onLoading()
-    }
-}
+    val tabWidth = currentTabPosition.width / 2
+    val leftOffset = (currentTabPosition.width - tabWidth) / 2
 
-@OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerTabIndicatorOffset(
-    pagerState: PagerState,
-    tabPositions: List<TabPosition>,
-    pageIndexMapping: (Int) -> Int = { it },
-): Modifier = layout { measurable, constraints ->
-    if (tabPositions.isEmpty()) {
-        // If there are no pages, nothing to show
-        layout(constraints.maxWidth, 0) {}
-    } else {
-        val currentPage = minOf(tabPositions.lastIndex, pageIndexMapping(pagerState.currentPage))
-        val currentTab = tabPositions[currentPage]
-        val previousTab = tabPositions.getOrNull(currentPage - 1)
-        val nextTab = tabPositions.getOrNull(currentPage + 1)
-        val fraction = pagerState.currentPageOffsetFraction
-        val indicatorWidth = if (fraction > 0 && nextTab != null) {
-            lerp(currentTab.width, nextTab.width, fraction).roundToPx()
-        } else if (fraction < 0 && previousTab != null) {
-            lerp(currentTab.width, previousTab.width, -fraction).roundToPx()
-        } else {
-            currentTab.width.roundToPx()
-        }
-        val indicatorOffset = if (fraction > 0 && nextTab != null) {
-            lerp(currentTab.left, nextTab.left, fraction).roundToPx()
-        } else if (fraction < 0 && previousTab != null) {
-            lerp(currentTab.left, previousTab.left, -fraction).roundToPx()
-        } else {
-            currentTab.left.roundToPx()
-        }
-        val placeable = measurable.measure(
-            Constraints(
-                minWidth = indicatorWidth,
-                maxWidth = indicatorWidth,
-                minHeight = 0,
-                maxHeight = constraints.maxHeight
-            )
+    val currentTabWidth by animateDpAsState(
+        targetValue = currentTabPosition.left,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessMedium
+        ),
+        label = "currentTabWidth"
+    )
+
+    val indicatorOffset by animateDpAsState(
+        targetValue = currentTabPosition.left,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessMedium
+        ),
+        label = "indicatorOffset"
+    )
+
+    fillMaxWidth()
+        .wrapContentSize(Alignment.BottomStart)
+        .offset(
+            x = indicatorOffset + leftOffset
         )
-        layout(constraints.maxWidth, maxOf(placeable.height, constraints.minHeight)) {
-            placeable.placeRelative(
-                indicatorOffset,
-                maxOf(constraints.minHeight - placeable.height, 0)
-            )
-        }
-    }
+        .width(currentTabWidth)
 }

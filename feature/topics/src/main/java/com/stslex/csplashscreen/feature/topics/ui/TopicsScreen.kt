@@ -19,23 +19,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
 import com.stslex.csplashscreen.core.ui.components.setScrollingColumnAnimation
-import kotlinx.coroutines.launch
+import com.stslex.csplashscreen.core.ui.theme.Dimen
 import com.stslex.csplashscreen.feature.topics.domain.model.TopicsUIModel
 import com.stslex.csplashscreen.feature.topics.ui.components.TopicBox
 import com.stslex.csplashscreen.feature.topics.ui.components.TopicsTitle
+import kotlinx.coroutines.launch
 
 @Composable
 fun TopicsScreen(
+    topics: LazyPagingItems<TopicsUIModel>,
     modifier: Modifier = Modifier,
-    viewModel: TopicsViewModel,
 ) {
     val lazyListState = rememberLazyListState()
-    val lazyPagingItems = remember(viewModel) {
-        viewModel.topics
-    }.collectAsLazyPagingItems()
+
     LazyRow(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background),
@@ -43,13 +42,13 @@ fun TopicsScreen(
         horizontalArrangement = Arrangement.Center
     ) {
         items(
-            count = lazyPagingItems.itemCount,
-            key = lazyPagingItems.itemKey { item ->
+            count = topics.itemCount,
+            key = topics.itemKey { item ->
                 item.id
             },
         ) { index ->
             TopicsContent(
-                item = lazyPagingItems[index],
+                item = topics[index],
                 index = index,
                 lazyListState = lazyListState
             )
@@ -60,9 +59,9 @@ fun TopicsScreen(
 @Composable
 fun TopicsContent(
     item: TopicsUIModel?,
+    index: Int,
+    lazyListState: LazyListState,
     modifier: Modifier = Modifier,
-    index: Int = 0,
-    lazyListState: LazyListState = rememberLazyListState(),
 ) {
     var isClicked by remember { mutableStateOf(false) }
     val widthState by animateDpAsState(
@@ -84,7 +83,7 @@ fun TopicsContent(
 
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .padding(Dimen.small)
             .setScrollingColumnAnimation(lazyListState, item?.id.plus(index))
             .width(widthState)
             .fillMaxHeight(),
