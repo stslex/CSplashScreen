@@ -1,4 +1,4 @@
-package com.stslex.csplashscreen.feature.user.ui.components
+package com.stslex.csplashscreen.feature.user.ui.components.header
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

@@ -1,6 +1,5 @@
 package com.stslex.csplashscreen.feature.user.ui.utils
 
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SwipeableState
 import androidx.compose.ui.geometry.Offset
@@ -11,7 +10,7 @@ import androidx.compose.ui.unit.Velocity
 @OptIn(ExperimentalMaterialApi::class)
 class SwipeScrollConnection(
     private val swipeableState: SwipeableState<SwipeState>,
-    private val lazyListState: LazyListState
+    private val isOnPreFlingAllow: () -> Boolean,
 ) : NestedScrollConnection {
 
     override fun onPreScroll(
@@ -36,7 +35,7 @@ class SwipeScrollConnection(
     }
 
     override suspend fun onPreFling(available: Velocity): Velocity {
-        return if (available.y < 0 && lazyListState.firstVisibleItemScrollOffset == 0) {
+        return if (available.y < 0 && isOnPreFlingAllow()) {
             swipeableState.performFling(available.y)
             available
         } else {

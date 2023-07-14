@@ -1,7 +1,6 @@
 package com.stslex.csplashscreen.feature.user.ui.components.tabs
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -19,12 +18,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun UserTabsRow(
     pagerState: PagerState,
+    userTabs: Set<UserTab>,
     modifier: Modifier = Modifier,
     scope: CoroutineScope = rememberCoroutineScope(),
 ) {
     TabRow(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.background),
+        modifier = modifier,
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
@@ -32,9 +31,8 @@ fun UserTabsRow(
             )
         },
         tabs = {
-            UserTabs.values().forEachIndexed { index, model ->
+            userTabs.forEachIndexed { index, model ->
                 Tab(
-                    modifier = Modifier.background(MaterialTheme.colorScheme.background),
                     text = {
                         Text(
                             text = model.title,
