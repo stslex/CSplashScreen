@@ -1,6 +1,6 @@
 package com.stslex.csplashscreen.core.collection.ui.model
 
-import st.slex.core_network.model.ui.CollectionDomainModel
+import com.stslex.csplashscreen.core.network.model.ui.CollectionDomainModel
 
 fun CollectionDomainModel.toPresentation(): CollectionModel = CollectionModel(
     uuid = uuid,

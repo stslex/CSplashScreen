@@ -1,8 +1,8 @@
 package st.slex.feature_topics.data.model
 
-import st.slex.core_network.model.toDomain
-import st.slex.core_network.model.remote.topics.RemotePreviewPhotosModel
-import st.slex.core_network.model.remote.topics.RemoteTopicsModel
+import com.stslex.csplashscreen.core.network.model.toDomain
+import com.stslex.csplashscreen.core.network.model.remote.topics.RemotePreviewPhotosModel
+import com.stslex.csplashscreen.core.network.model.remote.topics.RemoteTopicsModel
 
 fun RemoteTopicsModel.toTopicsModel(): TopicsModel = TopicsModel(
     id = id.orEmpty(),

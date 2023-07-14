@@ -8,7 +8,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:collection"))
     implementation(project(":core:navigation"))
-    implementation(project(":core-network"))
+    implementation(project(":core:network"))
     implementation(project(":core:photos"))
 
     implementation("androidx.compose.material:material:1.4.3")

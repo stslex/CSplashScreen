@@ -3,7 +3,7 @@ package com.stslex.csplashscreen.feature.search.domain.interactor
 import androidx.paging.PagingData
 import com.stslex.csplashscreen.feature.search.ui.model.SearchItem
 import kotlinx.coroutines.flow.Flow
-import st.slex.core_network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
 
 interface SearchPhotosInteractor {
 

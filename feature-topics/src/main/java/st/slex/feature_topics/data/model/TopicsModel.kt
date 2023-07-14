@@ -1,8 +1,8 @@
 package st.slex.feature_topics.data.model
 
-import st.slex.core_network.model.ui.collection.LinksCollectionModel
-import st.slex.core_network.model.ui.ImageModel
-import st.slex.core_network.model.ui.user.UserModel
+import com.stslex.csplashscreen.core.network.model.ui.collection.LinksCollectionModel
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.ui.user.UserModel
 
 data class TopicsModel(
     val id: String,

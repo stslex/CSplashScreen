@@ -15,7 +15,7 @@ import com.stslex.csplashscreen.core.ui.paging.PagingSource
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import st.slex.core_network.model.ui.user.UserModel
+import com.stslex.csplashscreen.core.network.model.ui.user.UserModel
 import com.stslex.csplashscreen.feature.user.domain.UserInteractor
 
 class UserViewModel(

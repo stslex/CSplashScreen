@@ -1,7 +1,7 @@
 package com.stslex.csplashscreen.feature.home.domain
 
-import st.slex.core_network.model.ui.CollectionDomainModel
-import st.slex.core_network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.ui.CollectionDomainModel
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
 
 interface MainScreenInteractor {
 

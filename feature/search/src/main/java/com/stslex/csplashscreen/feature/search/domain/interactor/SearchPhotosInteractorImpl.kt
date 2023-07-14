@@ -13,8 +13,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import st.slex.core_network.model.toDomain
-import st.slex.core_network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.toDomain
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
 
 class SearchPhotosInteractorImpl(
     private val repository: SearchRepository

@@ -25,6 +25,8 @@ junit = "4.13.2"
 androidxJunit = "1.1.5"
 espresso = "3.5.1"
 
+room = "2.5.2"
+
 [libraries]
 android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
@@ -86,6 +88,11 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -138,4 +145,10 @@ android-test = [
     "junit",
     "androidx-junit",
     "androidx-espresso"
+]
+
+room = [
+    "androidx-room-runtime",
+    "androidx-room-paging",
+    "androidx-room-ktx"
 ]

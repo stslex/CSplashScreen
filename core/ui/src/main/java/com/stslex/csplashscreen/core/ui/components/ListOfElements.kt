@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.graphics.toColorInt
-import st.slex.core_network.model.ui.CollectionDomainModel
+import com.stslex.csplashscreen.core.network.model.ui.CollectionDomainModel
 import com.stslex.csplashscreen.core.ui.theme.lighten
 
 

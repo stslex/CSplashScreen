@@ -4,8 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import st.slex.core_network.model.remote.user.RemoteUserModel
-import st.slex.core_network.source.interf.UserNetworkSource
+import com.stslex.csplashscreen.core.network.model.remote.user.RemoteUserModel
+import com.stslex.csplashscreen.core.network.source.interf.UserNetworkSource
 
 class UserRepositoryImpl(
     private val userSource: UserNetworkSource

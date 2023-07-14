@@ -1,8 +1,8 @@
 package com.stslex.csplashscreen.feature.collection.domain
 
 import com.stslex.csplashscreen.feature.collection.data.SingleCollectionRepository
-import st.slex.core_network.model.toDomain
-import st.slex.core_network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.toDomain
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
 
 class SingleCollectionInteractorImpl(
     private val repository: SingleCollectionRepository

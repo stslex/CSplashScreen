@@ -1,6 +1,6 @@
 package com.stslex.csplashscreen.core.photos.data
 
-import st.slex.core_network.model.remote.image.RemoteImageModel
+import com.stslex.csplashscreen.core.network.model.remote.image.RemoteImageModel
 
 interface PhotosRepository {
 

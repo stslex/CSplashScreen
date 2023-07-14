@@ -9,8 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import st.slex.core_network.model.remote.image.RemoteImageModel
-import st.slex.core_network.source.interf.SearchPhotosNetworkSource
+import com.stslex.csplashscreen.core.network.model.remote.image.RemoteImageModel
+import com.stslex.csplashscreen.core.network.source.interf.SearchPhotosNetworkSource
 
 class SearchRepositoryImpl(
     private val networkSource: SearchPhotosNetworkSource,

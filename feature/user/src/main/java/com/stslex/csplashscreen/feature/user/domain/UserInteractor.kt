@@ -1,9 +1,9 @@
 package com.stslex.csplashscreen.feature.user.domain
 
 import kotlinx.coroutines.flow.Flow
-import st.slex.core_network.model.ui.CollectionDomainModel
-import st.slex.core_network.model.ui.ImageModel
-import st.slex.core_network.model.ui.user.UserModel
+import com.stslex.csplashscreen.core.network.model.ui.CollectionDomainModel
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.model.ui.user.UserModel
 
 interface UserInteractor {
 

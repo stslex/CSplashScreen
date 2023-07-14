@@ -7,7 +7,7 @@ dependencies {
     implementation(project(":core:core"))
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
-    implementation(project(":core-network"))
+    implementation(project(":core:network"))
 }
 
 android.namespace = "st.slex.feature_image_raw"

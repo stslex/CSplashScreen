@@ -1,6 +1,6 @@
 package com.stslex.csplashscreen.core.collection.data
 
-import st.slex.core_network.model.remote.collection.RemoteCollectionModel
+import com.stslex.csplashscreen.core.network.model.remote.collection.RemoteCollectionModel
 
 interface CollectionsRepository {
 

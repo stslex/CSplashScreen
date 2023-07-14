@@ -2,9 +2,9 @@ package st.slex.feature_photo_detail.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import st.slex.core_network.model.toDomain
-import st.slex.core_network.model.ui.ImageModel
-import st.slex.core_network.source.interf.PhotoNetworkSource
+import com.stslex.csplashscreen.core.network.model.toDomain
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.network.source.interf.PhotoNetworkSource
 
 class PhotoRepositoryImpl(
     private val photoNetworkSource: PhotoNetworkSource
