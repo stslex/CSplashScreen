@@ -1,5 +1,6 @@
 package com.stslex.csplashscreen.feature.user.ui.components.header
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,11 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.bumptech.glide.Glide
-import com.skydoves.landscapist.CircularReveal
-import com.skydoves.landscapist.glide.GlideImage
+import com.stslex.csplashscreen.core.ui.components.ImageComponent
+import com.stslex.csplashscreen.core.ui.theme.Dimen
+import com.stslex.csplashscreen.feature.user.ui.components.tabs.UserTab
 
 @Composable
 fun UserHeadComponent(
@@ -28,6 +29,7 @@ fun UserHeadComponent(
     totalLikes: Int,
     totalCollections: Int,
     url: String,
+    onTabClick: (UserTab) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -41,36 +43,49 @@ fun UserHeadComponent(
             horizontalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.size(16.dp))
-            GlideImage(
+            ImageComponent(
                 modifier = Modifier
                     .padding(start = 32.dp, end = 32.dp)
                     .clip(CircleShape)
                     .size(64.dp),
-                imageModel = url,
-                contentScale = ContentScale.FillBounds,
-                circularReveal = CircularReveal(duration = 1000),
-                requestBuilder = {
-                    Glide.with(LocalContext.current.applicationContext).asDrawable()
-                }
+                url = url,
+                contentScale = ContentScale.Crop
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                TextHeaderColumn("Photos", totalPhotos.toString())
-                Spacer(modifier = Modifier.size(16.dp))
-                TextHeaderColumn("Likes", totalLikes.toString())
-                Spacer(modifier = Modifier.size(16.dp))
-                TextHeaderColumn("Collections", totalCollections.toString())
+                UserTab.values().forEach { tab ->
+                    val count = when (tab) {
+                        UserTab.COLLECTION -> totalCollections.toString()
+                        UserTab.LIKE -> totalLikes.toString()
+                        UserTab.PHOTOS -> totalPhotos.toString()
+                    }
+                    TextHeaderColumn(
+                        modifier = Modifier.clickable(
+                            onClick = { onTabClick(tab) }
+                        ),
+                        title = tab.title,
+                        contentTitle = count
+                    )
+                    Spacer(modifier = Modifier.width(Dimen.small))
+                }
             }
         }
     }
 }
 
 @Composable
-fun TextHeaderColumn(title: String, contentTitle: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+fun TextHeaderColumn(
+    title: String,
+    contentTitle: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium

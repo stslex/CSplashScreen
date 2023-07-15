@@ -8,7 +8,6 @@ dependencies {
     implementation(project(":core:network"))
 
     implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.compose.constraintlayout)
 }
 
 android.namespace = "com.stslex.csplashscreen.core.ui"

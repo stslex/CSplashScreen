@@ -8,6 +8,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.stslex.csplashscreen.core.ui.utils.tabIndicatorOffset
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 fun UserTabsRow(
     pagerState: PagerState,
     userTabs: Set<UserTab>,
+    onClick: suspend (Int) -> Unit,
     modifier: Modifier = Modifier,
     scope: CoroutineScope = rememberCoroutineScope(),
 ) {
@@ -46,9 +48,17 @@ fun UserTabsRow(
                         )
                     },
                     selected = pagerState.currentPage == index,
-                    onClick = {
-                        scope.launch { pagerState.animateScrollToPage(index) }
-                    },
+                    onClick = remember {
+                        {
+                            scope.launch {
+                                if (pagerState.currentPage == index) {
+                                    onClick(index)
+                                } else {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            }
+                        }
+                    }
                 )
             }
         }

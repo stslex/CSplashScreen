@@ -23,7 +23,7 @@ fun SearchPhotosScreen(
     querySearch: () -> StateFlow<String>,
     onQuery: (String) -> Unit,
     onUserClick: (String) -> Unit,
-    onImageClick: (String, String) -> Unit,
+    onImageClick: (String) -> Unit,
     clearHistory: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

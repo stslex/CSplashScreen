@@ -9,10 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.stslex.csplashscreen.core.network.model.ui.user.UserModel
+import com.stslex.csplashscreen.feature.user.ui.components.tabs.UserTab
 
 @Composable
 fun UserHeader(
     user: UserModel?,
+    onTabClick: (UserTab) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -22,7 +24,8 @@ fun UserHeader(
             totalPhotos = user?.totalPhotos ?: 0,
             totalLikes = user?.totalLikes ?: 0,
             totalCollections = user?.totalCollections ?: 0,
-            url = user?.profileImageModel?.large.orEmpty()
+            url = user?.profileImageModel?.large.orEmpty(),
+            onTabClick = onTabClick
         )
         Spacer(modifier = Modifier.size(16.dp))
         Divider(modifier = Modifier.padding(start = 8.dp, end = 8.dp))

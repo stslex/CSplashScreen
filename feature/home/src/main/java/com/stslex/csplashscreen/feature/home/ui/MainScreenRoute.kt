@@ -35,13 +35,8 @@ fun MainScreenRoute(
             }
         },
         navToImage = remember {
-            { url, uuid ->
-                navigator(
-                    NavigationScreen.ImageDetailScreen(
-                        url = url,
-                        imageId = uuid
-                    )
-                )
+            { uuid ->
+                navigator(NavigationScreen.ImageDetailScreen(uuid))
             }
         },
         collections = remember { collections },

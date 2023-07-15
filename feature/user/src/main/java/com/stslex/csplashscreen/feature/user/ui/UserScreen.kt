@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.stslex.csplashscreen.core.ui.base.DimensionSubcomposeLayout
@@ -16,15 +17,18 @@ import com.stslex.csplashscreen.feature.user.ui.components.toolbar.UserToolbar
 import com.stslex.csplashscreen.feature.user.ui.state.UserScreenState
 import com.stslex.csplashscreen.feature.user.ui.state.UserSwipeState
 import com.stslex.csplashscreen.feature.user.ui.utils.SwipeState
+import kotlinx.coroutines.launch
 
 @Composable
 fun UserScreen(
     userScreenState: UserScreenState,
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     DimensionSubcomposeLayout(
         mainContent = {
-            UserHeader(userScreenState.user)
+            UserHeader(userScreenState.user, {})
         }
     ) { contentSize ->
 
@@ -45,7 +49,12 @@ fun UserScreen(
             UserHeader(
                 modifier = Modifier
                     .height(userScreenState.userSwipeState.offsetDp),
-                user = userScreenState.user
+                user = userScreenState.user,
+                onTabClick = { tab ->
+                    coroutineScope.launch {
+                        userScreenState.userPagerState.navToPage(tab)
+                    }
+                }
             )
 
             UserPager(

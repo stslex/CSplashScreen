@@ -22,11 +22,8 @@ fun Modifier.tabIndicatorOffset(
         value = currentTabPosition
     }
 ) {
-    val tabWidth = currentTabPosition.width / 2
-    val leftOffset = (currentTabPosition.width - tabWidth) / 2
-
     val currentTabWidth by animateDpAsState(
-        targetValue = currentTabPosition.left,
+        targetValue = currentTabPosition.width,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioLowBouncy,
             stiffness = Spring.StiffnessMedium
@@ -46,7 +43,7 @@ fun Modifier.tabIndicatorOffset(
     fillMaxWidth()
         .wrapContentSize(Alignment.BottomStart)
         .offset(
-            x = indicatorOffset + leftOffset
+            x = indicatorOffset
         )
         .width(currentTabWidth)
 }

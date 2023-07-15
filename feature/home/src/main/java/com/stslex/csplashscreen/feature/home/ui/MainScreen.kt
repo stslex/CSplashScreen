@@ -21,15 +21,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(
     navToProfile: (username: String) -> Unit,
-    navToImage: (url: String, imageId: String) -> Unit,
+    navToImage: (imageId: String) -> Unit,
     navToCollection: (id: String) -> Unit,
     collections: LazyPagingItems<CollectionModel>,
     photos: LazyPagingItems<PhotoModel>,
     modifier: Modifier = Modifier,
 ) {
-    val pagerState = rememberPagerState(
-        pageCount = { 2 }
-    )
+    val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
     val photosListState = rememberLazyListState()
     val collectionListState = rememberLazyListState()
@@ -56,7 +54,7 @@ fun MainScreen(
         )
         HorizontalPager(
             state = pagerState,
-            key = null
+            pageCount = MainScreenTabs.values().size
         ) { pageNumber ->
             when (pageNumber) {
 

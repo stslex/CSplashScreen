@@ -23,7 +23,6 @@ sealed class NavigationScreen {
     }
 
     data class ImageDetailScreen(
-        private val url: String,
         private val imageId: String
     ) : NavigationScreen() {
 
@@ -31,7 +30,7 @@ sealed class NavigationScreen {
             get() = AppDestination.IMAGE_DETAIL
 
         override val appArgs: AppArguments.ImageDetailScreen
-            get() = AppArguments.ImageDetailScreen(url, imageId)
+            get() = AppArguments.ImageDetailScreen(imageId)
     }
 
     data class CollectionScreen(
@@ -43,17 +42,6 @@ sealed class NavigationScreen {
 
         override val appArgs: AppArguments.CollectionScreen
             get() = AppArguments.CollectionScreen(collectionId)
-    }
-
-    data class RawImageScreen(
-        private val url: String
-    ) : NavigationScreen() {
-
-        override val screen: AppDestination
-            get() = AppDestination.RAW_IMAGE
-
-        override val appArgs: AppArguments.RawImageScreen
-            get() = AppArguments.RawImageScreen(url)
     }
 
     data class SearchPhotosScreen(

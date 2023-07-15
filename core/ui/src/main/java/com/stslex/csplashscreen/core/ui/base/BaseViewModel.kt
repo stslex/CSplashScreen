@@ -29,7 +29,7 @@ open class BaseViewModel : ViewModel() {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun <T> Flow<T>.primaryStateFlow(): StateFlow<Resource<T>> = this
+    fun <T> Flow<T>.resourceStateFlow(): StateFlow<Resource<T>> = this
         .mapLatest<T, Resource<T>> { data ->
             Resource.Success(data)
         }

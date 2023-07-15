@@ -1,13 +1,17 @@
 package com.stslex.csplashscreen.core.photos.data
 
+import com.stslex.csplashscreen.core.network.model.remote.image.RemoteImageModel
+import com.stslex.csplashscreen.core.network.source.interf.PhotosNetworkSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.stslex.csplashscreen.core.network.model.remote.image.RemoteImageModel
-import com.stslex.csplashscreen.core.network.source.interf.PagingPhotosNetworkSource
 
 class PhotosRepositoryImpl(
-    private val networkSource: PagingPhotosNetworkSource
+    private val networkSource: PhotosNetworkSource
 ) : PhotosRepository {
+
+    private var _imageCache = mutableSetOf<RemoteImageModel>()
+    private val imageCache: Set<RemoteImageModel>
+        get() = _imageCache
 
     override suspend fun getAllPhotos(
         page: Int,
@@ -16,7 +20,7 @@ class PhotosRepositoryImpl(
         networkSource.getPhotos(
             page = page,
             pageSize = pageSize
-        )
+        ).also(::setToCache)
     }
 
     override suspend fun getUserPhotos(
@@ -28,7 +32,7 @@ class PhotosRepositoryImpl(
             username = username,
             page = page,
             pageSize = pageSize,
-        )
+        ).also(::setToCache)
     }
 
     override suspend fun getUserLikePhotos(
@@ -40,6 +44,27 @@ class PhotosRepositoryImpl(
             username = username,
             page = page,
             pageSize = pageSize,
-        )
+        ).also(::setToCache)
+    }
+
+    override suspend fun getSinglePhoto(
+        id: String
+    ): RemoteImageModel = imageCache
+        .firstOrNull { imageModel ->
+            imageModel.id == id
+        }
+        ?: withContext(Dispatchers.IO) {
+            networkSource
+                .getSinglePhoto(id = id)
+                .also(::setToCache)
+        }
+
+    private fun setToCache(remoteImageModel: List<RemoteImageModel>) {
+        _imageCache.clear()
+        _imageCache.addAll(remoteImageModel)
+    }
+
+    private fun setToCache(remoteImageModel: RemoteImageModel) {
+        _imageCache.add(remoteImageModel)
     }
 }

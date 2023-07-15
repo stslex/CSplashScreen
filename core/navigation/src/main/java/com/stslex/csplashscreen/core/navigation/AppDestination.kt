@@ -2,9 +2,8 @@ package com.stslex.csplashscreen.core.navigation
 
 enum class AppDestination(vararg val argsNames: String) {
     HOME,
-    IMAGE_DETAIL("url", "imageId"),
+    IMAGE_DETAIL("imageId"),
     COLLECTION("collection_id"),
-    RAW_IMAGE("url"),
     SEARCH_PHOTOS("query"),
     USER("username"),
     TOPICS;

@@ -8,15 +8,15 @@ import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
 import com.stslex.csplashscreen.core.collection.ui.model.toPresentation
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
+import com.stslex.csplashscreen.core.network.model.ui.user.UserModel
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import com.stslex.csplashscreen.core.photos.ui.model.toPresentation
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import com.stslex.csplashscreen.core.ui.paging.PagingSource
+import com.stslex.csplashscreen.feature.user.domain.UserInteractor
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import com.stslex.csplashscreen.core.network.model.ui.user.UserModel
-import com.stslex.csplashscreen.feature.user.domain.UserInteractor
 
 class UserViewModel(
     private val interactor: UserInteractor,
@@ -76,8 +76,8 @@ class UserViewModel(
         navigate(NavigationScreen.UserScreen(username))
     }
 
-    fun onImageClick(url: String, id: String) {
-        navigate(NavigationScreen.ImageDetailScreen(url, id))
+    fun onImageClick(id: String) {
+        navigate(NavigationScreen.ImageDetailScreen(id))
     }
 
     fun onCollectionClick(id: String) {
