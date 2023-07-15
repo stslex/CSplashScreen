@@ -9,7 +9,7 @@ import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.feature.collection.navigation.singleCollectionGraph
 import st.slex.feature_image_raw.navigation.rawImageGraph
 import com.stslex.csplashscreen.feature.home.navigation.homeGraph
-import st.slex.feature_photo_detail.navigation.imageDetailGraph
+import com.stslex.csplashscreen.feature.feature_photo_detail.navigation.imageDetailGraph
 import com.stslex.csplashscreen.feature.search.navigation.searchPhotosGraph
 import com.stslex.csplashscreen.feature.topics.navigation.topicsGraph
 import com.stslex.csplashscreen.feature.user.navigation.userGraph
