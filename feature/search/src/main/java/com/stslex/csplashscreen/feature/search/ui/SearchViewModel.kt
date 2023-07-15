@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
+import com.stslex.csplashscreen.core.network.model.ui.ImageModel
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import com.stslex.csplashscreen.core.photos.ui.model.toPresentation
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
@@ -17,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import com.stslex.csplashscreen.core.network.model.ui.ImageModel
 
 class SearchViewModel(
     private val interactor: SearchPhotosInteractor,
@@ -58,8 +58,8 @@ class SearchViewModel(
         navigate(NavigationScreen.UserScreen(username))
     }
 
-    fun onImageClick(url: String, imageId: String) {
-        navigate(NavigationScreen.ImageDetailScreen(url, imageId))
+    fun onImageClick(imageId: String) {
+        navigate(NavigationScreen.ImageDetailScreen(imageId))
     }
 
     fun clearHistory() {

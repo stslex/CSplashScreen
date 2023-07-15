@@ -35,6 +35,23 @@ data class UserPagerState(
         }
 
     fun getTab(index: Int): UserTab? = userTabs.toList().getOrNull(index)
+
+    suspend fun navToPage(tab: UserTab) {
+        val page = userTabs.indexOf(tab)
+        pagerState.animateScrollToPage(
+            page = page
+        )
+    }
+
+    suspend fun scrollToTop(page: Int) {
+        val listState = when (getTab(page)) {
+            UserTab.PHOTOS -> photosListState
+            UserTab.COLLECTION -> collectionsListState
+            UserTab.LIKE -> likesListState
+            null -> throw IllegalStateException()
+        }
+        listState.animateScrollToItem(0)
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -63,10 +80,7 @@ fun rememberUserPagerState(
         }
     }
 
-    val pagerState = rememberPagerState {
-        userTabs.size
-    }
-
+    val pagerState = rememberPagerState()
     val photosListState = rememberLazyListState()
     val likesListState = rememberLazyListState()
     val collectionsListState = rememberLazyListState()

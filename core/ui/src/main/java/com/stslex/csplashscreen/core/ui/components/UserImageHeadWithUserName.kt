@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -19,14 +22,12 @@ fun UserImageHeadWithUserName(
     modifier: Modifier,
     url: String,
     username: String,
-    onProfileClick: (username: String) -> Unit
+    onProfileClick: () -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable {
-                onProfileClick(username)
-            },
+            .clickable(onClick = onProfileClick),
     ) {
         Row(
             modifier = Modifier
@@ -40,9 +41,12 @@ fun UserImageHeadWithUserName(
                     .clip(CircleShape)
             )
             Spacer(modifier = Modifier.size(16.dp))
-            TextUsernamePrimary(
-                modifier = Modifier,
-                username
+            Text(
+                modifier = modifier,
+                text = username,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                lineHeight = TextUnit.Unspecified
             )
         }
     }

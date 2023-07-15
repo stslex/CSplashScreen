@@ -20,4 +20,8 @@ interface PhotosRepository {
         page: Int,
         pageSize: Int
     ): List<RemoteImageModel>
+
+    suspend fun getSinglePhoto(
+        id: String
+    ): RemoteImageModel
 }

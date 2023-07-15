@@ -1,37 +1,9 @@
 package com.stslex.csplashscreen.core.ui.components
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import com.google.android.material.animation.AnimationUtils
 import kotlin.math.absoluteValue
-
-fun Modifier.animatePager(
-    currentPageOffset: Float,
-    lazyListState: LazyListState,
-    id: String
-): Modifier = animatePager(currentPageOffset)
-    .setScrollingColumnAnimation(lazyListState, id)
-
-@SuppressLint("RestrictedApi")
-fun Modifier.animatePager(
-    currentPageOffset: Float
-): Modifier = this.graphicsLayer {
-    AnimationUtils.lerp(
-        0.85f,
-        1f,
-        1f - currentPageOffset.coerceIn(0f, 1f)
-    ).also { scale ->
-        scaleX = scale
-        scaleY = scale
-    }
-    alpha = AnimationUtils.lerp(
-        0.5f,
-        1f,
-        1f - currentPageOffset.coerceIn(0f, 1f)
-    )
-}
 
 fun Modifier.setScrollingColumnAnimation(
     lazyListState: LazyListState,

@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 data class UserScreenNavigation(
     val popBackStack: () -> Unit,
     val onUserClick: (username: String) -> Unit,
-    val onImageClick: (url: String, id: String) -> Unit,
+    val onImageClick: (id: String) -> Unit,
     val onCollectionClick: (id: String) -> Unit,
 )
 
@@ -16,7 +16,7 @@ data class UserScreenNavigation(
 fun rememberUserScreenNavigation(
     popBackStack: () -> Unit,
     onUserClick: (username: String) -> Unit,
-    onImageClick: (url: String, id: String) -> Unit,
+    onImageClick: (id: String) -> Unit,
     onCollectionClick: (id: String) -> Unit,
 ): UserScreenNavigation = remember {
     UserScreenNavigation(

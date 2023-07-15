@@ -3,10 +3,10 @@ package com.stslex.csplashscreen.feature.collection.data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.stslex.csplashscreen.core.network.model.remote.image.RemoteImageModel
-import com.stslex.csplashscreen.core.network.source.interf.PagingPhotosNetworkSource
+import com.stslex.csplashscreen.core.network.source.interf.PhotosNetworkSource
 
 class SingleCollectionRepositoryImpl(
-    private val source: PagingPhotosNetworkSource
+    private val source: PhotosNetworkSource
 ) : SingleCollectionRepository {
 
     override suspend fun getPhotos(

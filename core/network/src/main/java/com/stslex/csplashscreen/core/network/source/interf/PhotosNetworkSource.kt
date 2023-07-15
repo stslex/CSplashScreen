@@ -2,7 +2,7 @@ package com.stslex.csplashscreen.core.network.source.interf
 
 import com.stslex.csplashscreen.core.network.model.remote.image.RemoteImageModel
 
-interface PagingPhotosNetworkSource {
+interface PhotosNetworkSource {
 
     suspend fun getCollectionPhotos(
         query: String,
@@ -32,4 +32,6 @@ interface PagingPhotosNetworkSource {
         page: Int,
         pageSize: Int
     ): List<RemoteImageModel>
+
+    suspend fun getSinglePhoto(id: String): RemoteImageModel
 }

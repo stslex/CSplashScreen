@@ -12,7 +12,7 @@ import com.stslex.csplashscreen.core.ui.components.base.PhotosBaseLazyList
 fun LazyListPhotos(
     items: LazyPagingItems<PhotoModel>,
     onUserClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit,
+    onImageClick: (imageId: String) -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
     contentType: Any? = null,

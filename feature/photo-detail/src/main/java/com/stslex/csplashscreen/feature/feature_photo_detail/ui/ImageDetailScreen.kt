@@ -1,65 +1,57 @@
 package com.stslex.csplashscreen.feature.feature_photo_detail.ui
 
-import android.app.Activity
-import android.app.WallpaperManager.ACTION_CROP_AND_SET_WALLPAPER
-import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
-import com.bumptech.glide.Glide
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.skydoves.landscapist.CircularReveal
-import com.skydoves.landscapist.glide.GlideImage
 import com.stslex.csplashscreen.core.core.Resource
-import com.stslex.csplashscreen.core.core.UtilsExtensions.convertedUrl
+import com.stslex.csplashscreen.core.ui.components.ImageComponent
 import com.stslex.csplashscreen.core.ui.components.UserImageHeadWithUserName
-import kotlinx.coroutines.Dispatchers
-import com.stslex.csplashscreen.core.network.model.ui.ImageModel
+import com.stslex.csplashscreen.core.ui.theme.Dimen
+import com.stslex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
 import com.stslex.csplashscreen.feature.feature_photo_detail.ui.components.DetailImageBodyTags
 import com.stslex.csplashscreen.feature.feature_photo_detail.ui.components.DownloadImageButton
 import com.stslex.csplashscreen.feature.feature_photo_detail.ui.components.WallPaperButton
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun ImageDetailScreen(
+    imageDetail: () -> StateFlow<Resource<ImageDetail>>,
+    onProfileClick: (String) -> Unit,
+    onDownloadImageClick: (String) -> Unit,
+    onTagClick: (String) -> Unit,
+    onSetWallpaperClick: (url: String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DetailPhotoViewModel
 ) {
-    val result: Resource<ImageModel> by remember(viewModel) {
-        viewModel.photoById
-    }.collectAsState(
-        initial = Resource.Loading,
-        context = Dispatchers.IO
-    )
+    val result: Resource<ImageDetail> by remember {
+        imageDetail()
+    }.collectAsState()
+
     val systemUiController = rememberSystemUiController()
     val darkIcons = isSystemInDarkTheme().not()
 
@@ -70,58 +62,26 @@ fun ImageDetailScreen(
         )
     }
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+    Column(
+        modifier = modifier.fillMaxSize()
     ) {
-        item {
-            BindTopImageHead(url = viewModel.imageUrl, onImageClick = viewModel::onImageClick)
-        }
-        item {
-            Spacer(Modifier.padding(4.dp))
-        }
-        item(content = result.checkLoadedState(viewModel = viewModel))
-    }
-}
-
-private fun Resource<ImageModel>.checkLoadedState(
-    viewModel: DetailPhotoViewModel
-): @Composable LazyItemScope.() -> Unit = {
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                Log.i("WALLPAPER_SET", "Wallpaper set success")
-            } else {
-                Log.e(
-                    "WALLPAPER_SET",
-                    "$ACTION_CROP_AND_SET_WALLPAPER ${result.resultCode} resultCode"
-                )
-            }
-        }
-    )
-
-    val context = LocalContext.current
-
-    when (this@checkLoadedState) {
-        is Resource.Success -> BindSuccessLoaded(
-            imageModel = data,
-            onDownloadImageClick = viewModel::onDownloadImageClick,
-            onTagClick = viewModel::onTagClick,
-            onProfileClick = viewModel::onProfileClick,
-            onSetWallpaperClick = (viewModel::onWallpaperSetClick)
+        BindTopImageHead(
+            url = result.dataIfSuccess?.url.orEmpty(),
         )
-
-        is Resource.Loading -> BindDetailImageLoading(Modifier)
-        is Resource.Failure -> BindDetailImageFailure()
+        Spacer(modifier = Modifier.height(Dimen.smallest))
+        ImageDetail(
+            imageModel = result,
+            onDownloadImageClick = onDownloadImageClick,
+            onTagClick = onTagClick,
+            onProfileClick = onProfileClick,
+            onSetWallpaperClick = onSetWallpaperClick
+        )
     }
 }
 
 @Composable
-private fun BindSuccessLoaded(
-    imageModel: ImageModel,
+private fun ImageDetail(
+    imageModel: Resource<ImageDetail>,
     onProfileClick: (String) -> Unit,
     onDownloadImageClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
@@ -132,80 +92,63 @@ private fun BindSuccessLoaded(
         modifier = modifier
     ) {
         UserDetailImageHead(
-            imageModel = imageModel,
-            onProfileClick = onProfileClick,
-            onDownloadImageClick = onDownloadImageClick,
-            onSetWallpaperClick = onSetWallpaperClick
+            userUrl = imageModel.dataIfSuccess?.userUrl.orEmpty(),
+            username = imageModel.dataIfSuccess?.username.orEmpty(),
+            onProfileClick = remember(imageModel.dataIfSuccess?.username) {
+                { onProfileClick(imageModel.dataIfSuccess?.username.orEmpty()) }
+            },
+            onDownloadImageClick = remember(imageModel.dataIfSuccess?.downloadUrl) {
+                { onDownloadImageClick(imageModel.dataIfSuccess?.downloadUrl.orEmpty()) }
+            },
+            onSetWallpaperClick = remember(imageModel.dataIfSuccess?.downloadUrl) {
+                { onSetWallpaperClick(imageModel.dataIfSuccess?.downloadUrl.orEmpty()) }
+            }
         )
-        Divider(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp))
-        if (imageModel.tags.isNotEmpty()) {
-            DetailImageBodyTags(tags = imageModel.tags, onClick = onTagClick)
-            Divider(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp))
+        Divider(
+            modifier = Modifier.padding(
+                vertical = Dimen.medium,
+            )
+        )
+        if (imageModel.dataIfSuccess?.tags.orEmpty().isNotEmpty()) {
+            DetailImageBodyTags(
+                tags = imageModel.dataIfSuccess?.tags.orEmpty(),
+                onClick = onTagClick
+            )
+            Divider(
+                modifier = Modifier.padding(
+                    vertical = Dimen.medium,
+                )
+            )
         }
-        BindImageInformation()
-    }
-}
-
-@Composable
-private fun BindImageInformation() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-        elevation = CardDefaults.cardElevation(16.dp)
-    ) {
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = "Show more information..."
-        )
     }
 }
 
 @Composable
 private fun UserDetailImageHead(
-    imageModel: ImageModel,
-    onDownloadImageClick: (url: String) -> Unit,
-    onProfileClick: (username: String) -> Unit,
-    onSetWallpaperClick: (url: String) -> Unit
+    userUrl: String,
+    username: String,
+    onDownloadImageClick: () -> Unit,
+    onProfileClick: () -> Unit,
+    onSetWallpaperClick: () -> Unit
 ) {
-    ConstraintLayout(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 8.dp, end = 8.dp)
+            .padding(horizontal = Dimen.small)
     ) {
-        val (userSurface, wallpaper, download) = createRefs()
         UserImageHeadWithUserName(
-            modifier = Modifier.constrainAs(userSurface) {
-                width = Dimension.fillToConstraints
-                start.linkTo(parent.start)
-                end.linkTo(wallpaper.start)
-            },
-            url = imageModel.user.profileImageModel.medium,
-            username = imageModel.user.username,
+            modifier = Modifier.weight(1f),
+            url = userUrl,
+            username = username,
             onProfileClick = onProfileClick,
         )
         DownloadImageButton(
-            modifier = Modifier.constrainAs(download) {
-                height = Dimension.fillToConstraints
-                end.linkTo(parent.end)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-            },
-            onDownloadImageClick = {
-                onDownloadImageClick(imageModel.urls.raw)
-            }
+            modifier = Modifier,
+            onDownloadImageClick = onDownloadImageClick
         )
         WallPaperButton(
-            modifier = Modifier.constrainAs(wallpaper) {
-                height = Dimension.fillToConstraints
-                end.linkTo(download.start)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-            },
-            onSetWallpaperClick = {
-                onSetWallpaperClick(imageModel.urls.raw)
-            }
+            modifier = Modifier,
+            onSetWallpaperClick = onSetWallpaperClick
         )
     }
 }
@@ -213,34 +156,35 @@ private fun UserDetailImageHead(
 @Composable
 private fun BindTopImageHead(
     url: String,
-    onImageClick: (url: String) -> Unit
 ) {
-    GlideImage(
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+
+    BackHandler(isExpanded) {
+        isExpanded = isExpanded.not()
+    }
+
+    val height by animateDpAsState(
+        targetValue = if (isExpanded) {
+            LocalConfiguration.current.screenHeightDp.dp
+        } else {
+            300.dp
+        },
+        animationSpec = tween(600),
+        label = "detailImageHeight"
+    )
+
+    ImageComponent(
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp)
+            .height(height)
             .clipToBounds()
+            .background(MaterialTheme.colorScheme.background)
             .clickable {
-                onImageClick(url.convertedUrl)
+                isExpanded = isExpanded.not()
             },
-        imageModel = url,
-        contentScale = ContentScale.FillBounds,
-        circularReveal = CircularReveal(duration = 1000),
-        requestBuilder = {
-            Glide.with(LocalContext.current.applicationContext).asDrawable()
-        }
+        url = url,
+        contentScale = ContentScale.FillWidth
     )
 }
-
-@Composable
-private fun BindDetailImageLoading(modifier: Modifier) {
-    CircularProgressIndicator(modifier = modifier)
-}
-
-@Composable
-private fun BindDetailImageFailure() {
-
-}
-
-
-

@@ -15,11 +15,10 @@ sealed class AppArguments {
     }
 
     data class ImageDetailScreen(
-        val url: String,
         val imageId: String
     ) : AppArguments() {
         override val arguments: List<String>
-            get() = listOf(url, imageId)
+            get() = listOf(imageId)
     }
 
     data class CollectionScreen(
@@ -28,13 +27,6 @@ sealed class AppArguments {
 
         override val arguments: List<String>
             get() = listOf(collectionId)
-    }
-
-    data class RawImageScreen(
-        val url: String
-    ) : AppArguments() {
-        override val arguments: List<String>
-            get() = listOf(url)
     }
 
     data class SearchPhotosScreen(

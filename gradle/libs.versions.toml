@@ -53,7 +53,6 @@ androidx-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
-androidx-compose-constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha10"
 
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 
@@ -64,8 +63,6 @@ kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1
 
 accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "accompanist" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-
-landscapist-glide = "com.github.skydoves:landscapist-glide:1.6.1"
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
@@ -114,7 +111,6 @@ compose = [
     "androidx-compose-ui",
     "androidx-compose-tooling-preview",
     "androidx-compose-foundation",
-    "landscapist-glide",
     "androidx-compose-paging",
     "coil-compose"
 ]

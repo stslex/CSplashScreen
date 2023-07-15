@@ -10,7 +10,7 @@ import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 fun CollectionScreen(
     photos: LazyPagingItems<PhotoModel>,
     onProfileClick: (username: String) -> Unit,
-    onImageClick: (url: String, imageId: String) -> Unit,
+    onImageClick: (imageId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyListPhotos(

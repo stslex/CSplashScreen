@@ -24,11 +24,13 @@ fun UserPager(
     ) {
         UserTabsRow(
             pagerState = userPagerState.pagerState,
-            userTabs = userPagerState.userTabs
+            userTabs = userPagerState.userTabs,
+            onClick = userPagerState::scrollToTop
         )
 
         HorizontalPager(
-            state = userPagerState.pagerState
+            state = userPagerState.pagerState,
+            pageCount = userPagerState.userTabs.size
         ) { pageNumber ->
             when (userPagerState.getTab(pageNumber)) {
                 UserTab.PHOTOS -> {

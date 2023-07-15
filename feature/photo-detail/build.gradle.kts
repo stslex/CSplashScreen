@@ -8,8 +8,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
     implementation(project(":core:network"))
-
-    implementation(libs.androidx.compose.constraintlayout)
+    implementation(project(":core:photos"))
 }
 
 android.namespace = "com.stslex.csplashscreen.feature.feature_photo_detail"

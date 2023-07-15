@@ -35,8 +35,8 @@ class SingleCollectionViewModel(
         navigate(NavigationScreen.UserScreen(username))
     }
 
-    fun onImageClick(url: String, imageId: String) {
-        navigate(NavigationScreen.ImageDetailScreen(url, imageId))
+    fun onImageClick(imageId: String) {
+        navigate(NavigationScreen.ImageDetailScreen(imageId))
     }
 
     companion object {
