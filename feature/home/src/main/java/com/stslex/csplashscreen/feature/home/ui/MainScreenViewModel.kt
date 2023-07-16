@@ -35,7 +35,7 @@ class MainScreenViewModel(
     companion object {
 
         private val config = PagingConfig(
-            pageSize = 3,
+            pageSize = 10,
             enablePlaceholders = false
         )
     }

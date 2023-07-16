@@ -36,7 +36,8 @@ fun NavGraphBuilder.imageDetailGraph(
             onProfileClick = viewModel::onProfileClick,
             onDownloadImageClick = viewModel::onDownloadImageClick,
             onTagClick = viewModel::onTagClick,
-            onSetWallpaperClick = viewModel::onWallpaperSetClick
+            onSetWallpaperClick = viewModel::onWallpaperSetClick,
+            onLikeClicked = viewModel::onLikeClick
         )
     }
 }

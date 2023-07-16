@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -50,6 +51,7 @@ fun ImageDetailScreen(
     onDownloadImageClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
     onSetWallpaperClick: (url: String) -> Unit,
+    onLikeClicked: (ImageDetail) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val result: Resource<ImageDetail> by remember {
@@ -70,7 +72,7 @@ fun ImageDetailScreen(
         modifier = modifier.fillMaxSize()
     ) {
         BindTopImageHead(
-            url = result.dataIfSuccess?.url.orEmpty(),
+            url = result.dataIfSuccess?.photo?.url.orEmpty(),
         )
         Spacer(modifier = Modifier.height(Dimen.smallest))
         ImageDetail(
@@ -78,7 +80,8 @@ fun ImageDetailScreen(
             onDownloadImageClick = onDownloadImageClick,
             onTagClick = onTagClick,
             onProfileClick = onProfileClick,
-            onSetWallpaperClick = onSetWallpaperClick
+            onSetWallpaperClick = onSetWallpaperClick,
+            onLikeClicked = onLikeClicked
         )
     }
 }
@@ -90,32 +93,35 @@ private fun ImageDetail(
     onDownloadImageClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
     onSetWallpaperClick: (url: String) -> Unit,
+    onLikeClicked: (ImageDetail) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
     ) {
         UserDetailImageHead(
-            userUrl = imageModel.dataIfSuccess?.userUrl.orEmpty(),
-            username = imageModel.dataIfSuccess?.username.orEmpty(),
-            onProfileClick = remember(imageModel.dataIfSuccess?.username) {
-                { onProfileClick(imageModel.dataIfSuccess?.username.orEmpty()) }
+            userUrl = imageModel.dataIfSuccess?.photo?.userUrl.orEmpty(),
+            username = imageModel.dataIfSuccess?.photo?.username.orEmpty(),
+            onProfileClick = remember(imageModel.dataIfSuccess?.photo?.username) {
+                { onProfileClick(imageModel.dataIfSuccess?.photo?.username.orEmpty()) }
             },
-            onDownloadImageClick = remember(imageModel.dataIfSuccess?.downloadUrl) {
-                { onDownloadImageClick(imageModel.dataIfSuccess?.downloadUrl.orEmpty()) }
+            onDownloadImageClick = remember(imageModel.dataIfSuccess?.photo?.downloadUrl) {
+                { onDownloadImageClick(imageModel.dataIfSuccess?.photo?.downloadUrl.orEmpty()) }
             },
-            onSetWallpaperClick = remember(imageModel.dataIfSuccess?.downloadUrl) {
-                { onSetWallpaperClick(imageModel.dataIfSuccess?.downloadUrl.orEmpty()) }
-            }
+            onSetWallpaperClick = remember(imageModel.dataIfSuccess?.photo?.downloadUrl) {
+                { onSetWallpaperClick(imageModel.dataIfSuccess?.photo?.downloadUrl.orEmpty()) }
+            },
+            onLikeClicked = { imageModel.dataIfSuccess?.let(onLikeClicked) },
+            isLiked = imageModel.dataIfSuccess?.isLiked ?: false
         )
         Divider(
             modifier = Modifier.padding(
                 vertical = Dimen.medium,
             )
         )
-        if (imageModel.dataIfSuccess?.tags.orEmpty().isNotEmpty()) {
+        if (imageModel.dataIfSuccess?.photo?.tags.orEmpty().isNotEmpty()) {
             DetailImageBodyTags(
-                tags = imageModel.dataIfSuccess?.tags.orEmpty(),
+                tags = imageModel.dataIfSuccess?.photo?.tags.orEmpty(),
                 onClick = onTagClick
             )
             Divider(
@@ -131,9 +137,11 @@ private fun ImageDetail(
 private fun UserDetailImageHead(
     userUrl: String,
     username: String,
+    isLiked: Boolean,
     onDownloadImageClick: () -> Unit,
     onProfileClick: () -> Unit,
-    onSetWallpaperClick: () -> Unit
+    onSetWallpaperClick: () -> Unit,
+    onLikeClicked: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -164,10 +172,15 @@ private fun UserDetailImageHead(
 //            )
 //        }
         IconButton(
-            onClick = { }
+            onClick = onLikeClicked
         ) {
             Icon(
-                imageVector = Icons.Default.FavoriteBorder,
+                imageVector = if (isLiked) {
+                    Icons.Default.Favorite
+                } else {
+                    Icons.Default.FavoriteBorder
+
+                },
                 contentDescription = null
             )
         }

@@ -52,6 +52,7 @@ fun MainScreen(
                 }
             }
         )
+
         HorizontalPager(
             state = pagerState,
             pageCount = MainScreenTabs.values().size

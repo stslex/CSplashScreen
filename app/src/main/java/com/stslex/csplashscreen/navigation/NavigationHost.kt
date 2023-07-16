@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import com.stslex.csplashscreen.core.navigation.AppDestination
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.feature.collection.navigation.singleCollectionGraph
+import com.stslex.csplashscreen.feature.favourite.navigation.favouriteGraph
 import com.stslex.csplashscreen.feature.feature_photo_detail.navigation.imageDetailGraph
 import com.stslex.csplashscreen.feature.home.navigation.homeGraph
 import com.stslex.csplashscreen.feature.search.navigation.searchPhotosGraph
@@ -33,6 +34,7 @@ fun NavigationHost(
         imageDetailGraph(modifier = modifier, navigate = navigator)
         searchPhotosGraph(modifier = modifier, navigate = navigator)
         singleCollectionGraph(modifier = modifier, navigate = navigator)
+        favouriteGraph(modifier = modifier, navigate = navigator)
     }
 }
 
