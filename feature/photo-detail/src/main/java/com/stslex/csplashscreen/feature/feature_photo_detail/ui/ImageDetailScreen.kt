@@ -13,7 +13,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -27,16 +31,16 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.stslex.csplashscreen.core.core.Resource
 import com.stslex.csplashscreen.core.ui.components.ImageComponent
 import com.stslex.csplashscreen.core.ui.components.UserImageHeadWithUserName
 import com.stslex.csplashscreen.core.ui.theme.Dimen
+import com.stslex.csplashscreen.feature.feature_photo_detail.R
 import com.stslex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
 import com.stslex.csplashscreen.feature.feature_photo_detail.ui.components.DetailImageBodyTags
-import com.stslex.csplashscreen.feature.feature_photo_detail.ui.components.DownloadImageButton
-import com.stslex.csplashscreen.feature.feature_photo_detail.ui.components.WallPaperButton
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -142,14 +146,31 @@ private fun UserDetailImageHead(
             username = username,
             onProfileClick = onProfileClick,
         )
-        DownloadImageButton(
-            modifier = Modifier,
-            onDownloadImageClick = onDownloadImageClick
-        )
-        WallPaperButton(
-            modifier = Modifier,
-            onSetWallpaperClick = onSetWallpaperClick
-        )
+        IconButton(
+            onClick = onDownloadImageClick
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_baseline_arrow_download),
+                contentDescription = null
+            )
+        }
+        // TODO Add setting wallpaper
+//        IconButton(
+//            onClick = onSetWallpaperClick
+//        ) {
+//            Icon(
+//                painter = painterResource(id = R.drawable.ic_baseline_wallpaper),
+//                contentDescription = null
+//            )
+//        }
+        IconButton(
+            onClick = { }
+        ) {
+            Icon(
+                imageVector = Icons.Default.FavoriteBorder,
+                contentDescription = null
+            )
+        }
     }
 }
 

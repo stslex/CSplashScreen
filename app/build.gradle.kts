@@ -15,6 +15,5 @@ dependencies {
     implementation(project(":feature:collection"))
     implementation(project(":feature:user"))
     implementation(project(":feature:photo-detail"))
-    implementation(project(":feature:topics"))
     implementation(project(":feature:search"))
 }

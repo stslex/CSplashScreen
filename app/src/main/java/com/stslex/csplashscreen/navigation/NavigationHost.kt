@@ -10,7 +10,6 @@ import com.stslex.csplashscreen.feature.collection.navigation.singleCollectionGr
 import com.stslex.csplashscreen.feature.feature_photo_detail.navigation.imageDetailGraph
 import com.stslex.csplashscreen.feature.home.navigation.homeGraph
 import com.stslex.csplashscreen.feature.search.navigation.searchPhotosGraph
-import com.stslex.csplashscreen.feature.topics.navigation.topicsGraph
 import com.stslex.csplashscreen.feature.user.navigation.userGraph
 
 @Composable
@@ -33,7 +32,6 @@ fun NavigationHost(
         userGraph(modifier = modifier, navigate = navigator)
         imageDetailGraph(modifier = modifier, navigate = navigator)
         searchPhotosGraph(modifier = modifier, navigate = navigator)
-        topicsGraph(modifier = modifier, navigate = navigator)
         singleCollectionGraph(modifier = modifier, navigate = navigator)
     }
 }
