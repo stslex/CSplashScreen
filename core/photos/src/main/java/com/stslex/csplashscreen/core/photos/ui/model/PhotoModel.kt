@@ -7,5 +7,7 @@ data class PhotoModel(
     val uuid: String,
     val url: String,
     val username: String,
-    val userUrl: String
+    val userUrl: String,
+    val downloadUrl: String,
+    val tags: List<String>,
 )

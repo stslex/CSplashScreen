@@ -13,7 +13,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -27,16 +32,16 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.stslex.csplashscreen.core.core.Resource
 import com.stslex.csplashscreen.core.ui.components.ImageComponent
 import com.stslex.csplashscreen.core.ui.components.UserImageHeadWithUserName
 import com.stslex.csplashscreen.core.ui.theme.Dimen
+import com.stslex.csplashscreen.feature.feature_photo_detail.R
 import com.stslex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
 import com.stslex.csplashscreen.feature.feature_photo_detail.ui.components.DetailImageBodyTags
-import com.stslex.csplashscreen.feature.feature_photo_detail.ui.components.DownloadImageButton
-import com.stslex.csplashscreen.feature.feature_photo_detail.ui.components.WallPaperButton
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -46,6 +51,7 @@ fun ImageDetailScreen(
     onDownloadImageClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
     onSetWallpaperClick: (url: String) -> Unit,
+    onLikeClicked: (ImageDetail) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val result: Resource<ImageDetail> by remember {
@@ -66,7 +72,7 @@ fun ImageDetailScreen(
         modifier = modifier.fillMaxSize()
     ) {
         BindTopImageHead(
-            url = result.dataIfSuccess?.url.orEmpty(),
+            url = result.dataIfSuccess?.photo?.url.orEmpty(),
         )
         Spacer(modifier = Modifier.height(Dimen.smallest))
         ImageDetail(
@@ -74,7 +80,8 @@ fun ImageDetailScreen(
             onDownloadImageClick = onDownloadImageClick,
             onTagClick = onTagClick,
             onProfileClick = onProfileClick,
-            onSetWallpaperClick = onSetWallpaperClick
+            onSetWallpaperClick = onSetWallpaperClick,
+            onLikeClicked = onLikeClicked
         )
     }
 }
@@ -86,32 +93,35 @@ private fun ImageDetail(
     onDownloadImageClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
     onSetWallpaperClick: (url: String) -> Unit,
+    onLikeClicked: (ImageDetail) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
     ) {
         UserDetailImageHead(
-            userUrl = imageModel.dataIfSuccess?.userUrl.orEmpty(),
-            username = imageModel.dataIfSuccess?.username.orEmpty(),
-            onProfileClick = remember(imageModel.dataIfSuccess?.username) {
-                { onProfileClick(imageModel.dataIfSuccess?.username.orEmpty()) }
+            userUrl = imageModel.dataIfSuccess?.photo?.userUrl.orEmpty(),
+            username = imageModel.dataIfSuccess?.photo?.username.orEmpty(),
+            onProfileClick = remember(imageModel.dataIfSuccess?.photo?.username) {
+                { onProfileClick(imageModel.dataIfSuccess?.photo?.username.orEmpty()) }
             },
-            onDownloadImageClick = remember(imageModel.dataIfSuccess?.downloadUrl) {
-                { onDownloadImageClick(imageModel.dataIfSuccess?.downloadUrl.orEmpty()) }
+            onDownloadImageClick = remember(imageModel.dataIfSuccess?.photo?.downloadUrl) {
+                { onDownloadImageClick(imageModel.dataIfSuccess?.photo?.downloadUrl.orEmpty()) }
             },
-            onSetWallpaperClick = remember(imageModel.dataIfSuccess?.downloadUrl) {
-                { onSetWallpaperClick(imageModel.dataIfSuccess?.downloadUrl.orEmpty()) }
-            }
+            onSetWallpaperClick = remember(imageModel.dataIfSuccess?.photo?.downloadUrl) {
+                { onSetWallpaperClick(imageModel.dataIfSuccess?.photo?.downloadUrl.orEmpty()) }
+            },
+            onLikeClicked = { imageModel.dataIfSuccess?.let(onLikeClicked) },
+            isLiked = imageModel.dataIfSuccess?.isLiked ?: false
         )
         Divider(
             modifier = Modifier.padding(
                 vertical = Dimen.medium,
             )
         )
-        if (imageModel.dataIfSuccess?.tags.orEmpty().isNotEmpty()) {
+        if (imageModel.dataIfSuccess?.photo?.tags.orEmpty().isNotEmpty()) {
             DetailImageBodyTags(
-                tags = imageModel.dataIfSuccess?.tags.orEmpty(),
+                tags = imageModel.dataIfSuccess?.photo?.tags.orEmpty(),
                 onClick = onTagClick
             )
             Divider(
@@ -127,9 +137,11 @@ private fun ImageDetail(
 private fun UserDetailImageHead(
     userUrl: String,
     username: String,
+    isLiked: Boolean,
     onDownloadImageClick: () -> Unit,
     onProfileClick: () -> Unit,
-    onSetWallpaperClick: () -> Unit
+    onSetWallpaperClick: () -> Unit,
+    onLikeClicked: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -142,14 +154,36 @@ private fun UserDetailImageHead(
             username = username,
             onProfileClick = onProfileClick,
         )
-        DownloadImageButton(
-            modifier = Modifier,
-            onDownloadImageClick = onDownloadImageClick
-        )
-        WallPaperButton(
-            modifier = Modifier,
-            onSetWallpaperClick = onSetWallpaperClick
-        )
+        IconButton(
+            onClick = onDownloadImageClick
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_baseline_arrow_download),
+                contentDescription = null
+            )
+        }
+        // TODO Add setting wallpaper
+//        IconButton(
+//            onClick = onSetWallpaperClick
+//        ) {
+//            Icon(
+//                painter = painterResource(id = R.drawable.ic_baseline_wallpaper),
+//                contentDescription = null
+//            )
+//        }
+        IconButton(
+            onClick = onLikeClicked
+        ) {
+            Icon(
+                imageVector = if (isLiked) {
+                    Icons.Default.Favorite
+                } else {
+                    Icons.Default.FavoriteBorder
+
+                },
+                contentDescription = null
+            )
+        }
     }
 }
 

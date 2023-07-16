@@ -52,7 +52,7 @@ class SearchRepositoryImpl(
 
     companion object {
         private val pagerConfig = PagingConfig(
-            pageSize = 30,
+            pageSize = 10,
             enablePlaceholders = false
         )
     }

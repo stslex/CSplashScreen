@@ -9,6 +9,7 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:network"))
     implementation(project(":core:photos"))
+    implementation(project(":core:favourite"))
 }
 
 android.namespace = "com.stslex.csplashscreen.feature.feature_photo_detail"

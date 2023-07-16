@@ -87,7 +87,7 @@ class UserViewModel(
     companion object {
 
         private val pagingConfig = PagingConfig(
-            pageSize = 3,
+            pageSize = 10,
             enablePlaceholders = false
         )
     }

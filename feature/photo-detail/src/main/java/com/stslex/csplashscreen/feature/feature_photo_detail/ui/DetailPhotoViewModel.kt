@@ -44,4 +44,12 @@ class DetailPhotoViewModel(
     fun onProfileClick(username: String) {
         navigate(NavigationScreen.UserScreen(username))
     }
+
+    fun onLikeClick(
+        image: ImageDetail
+    ) {
+        viewModelScope.launch {
+            interactor.like(image.photo)
+        }
+    }
 }

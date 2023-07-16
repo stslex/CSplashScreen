@@ -20,25 +20,25 @@ enum class BottomAppBarResource(
     val titleResource: Int,
     val screen: NavigationScreen
 ) {
-    TOPICS(
+    FAVOURITE(
         unselectedIcon = Icons.Outlined.Star,
         selectedIcon = Icons.Filled.Star,
-        appDestination = AppDestination.TOPICS,
-        titleResource = R.string.nav_title_topics,
-        screen = NavigationScreen.TopicsScreen(isLaunchSingle = true)
+        appDestination = AppDestination.FAVOURITE,
+        titleResource = R.string.nav_title_favourite,
+        screen = NavigationScreen.Favourite
     ),
     HOME(
         unselectedIcon = Icons.Outlined.Home,
         selectedIcon = Icons.Filled.Home,
         appDestination = AppDestination.HOME,
         titleResource = R.string.nav_title_home,
-        screen = NavigationScreen.Home(isLaunchSingle = true)
+        screen = NavigationScreen.Home
     ),
     SEARCH(
         unselectedIcon = Icons.Outlined.Search,
         selectedIcon = Icons.Filled.Search,
         appDestination = AppDestination.SEARCH_PHOTOS,
         titleResource = R.string.nav_title_search,
-        screen = NavigationScreen.SearchPhotosScreen(query = " ", isLaunchSingle = true)
+        screen = NavigationScreen.SearchPhotosScreen(query = " ")
     )
 }

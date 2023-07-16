@@ -10,11 +10,12 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:network"))
     implementation(project(":core:photos"))
+    implementation(project(":core:favourite"))
 
     implementation(project(":feature:home"))
     implementation(project(":feature:collection"))
     implementation(project(":feature:user"))
     implementation(project(":feature:photo-detail"))
-    implementation(project(":feature:topics"))
     implementation(project(":feature:search"))
+    implementation(project(":feature:favourite"))
 }
