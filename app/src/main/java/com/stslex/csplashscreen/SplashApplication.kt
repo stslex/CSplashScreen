@@ -3,7 +3,7 @@ package com.stslex.csplashscreen
 import android.app.Application
 import com.stslex.csplashscreen.core.collection.di.moduleCoreCollection
 import com.stslex.csplashscreen.core.favourite.di.moduleCoreFavourite
-import com.stslex.csplashscreen.core.network.di.moduleCoreNetwork
+import com.stslex.csplashscreen.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
 import com.stslex.csplashscreen.core.photos.di.moduleCorePhotos
 import com.stslex.csplashscreen.feature.collection.di.singleCollectionModule
 import com.stslex.csplashscreen.feature.favourite.di.moduleFeatureFavourite
