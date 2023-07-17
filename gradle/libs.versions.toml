@@ -27,6 +27,7 @@ espresso = "3.5.1"
 
 room = "2.5.2"
 ksp = "1.8.22-1.0.11"
+mockito = "2.19.0"
 
 [libraries]
 android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
@@ -82,7 +83,11 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 
+koin-test-core = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+koin-test-junit = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
+
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 
@@ -143,6 +148,13 @@ android-test = [
     "junit",
     "androidx-junit",
     "androidx-espresso"
+]
+
+test = [
+    "mockito",
+    "junit",
+    "koin-test-core",
+    "koin-test-junit"
 ]
 
 room = [

@@ -49,8 +49,8 @@ internal fun Project.configureKotlinAndroid(
         val ktx = libs.findLibrary("androidx-core-ktx").get()
         add("implementation", ktx)
 
-        val junit = libs.findLibrary("junit").get()
-        add("testImplementation", junit)
+        val test = libs.findBundle("test").get()
+        add("testImplementation", test)
 
         val androidTest = libs.findBundle("android-test").get()
         add("androidTestImplementation", androidTest)

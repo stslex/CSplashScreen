@@ -16,11 +16,14 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val moduleCoreNetwork = module {
-    singleOf(::NetworkClientImpl) { bind<NetworkClient>() }
-    singleOf(::UserNetworkSourceImpl) { bind<UserNetworkSource>() }
-    singleOf(::TopicsNetworkSourceImpl) { bind<TopicsNetworkSource>() }
-    singleOf(::SearchPhotosNetworkSourceImpl) { bind<SearchPhotosNetworkSource>() }
-    singleOf(::PhotosNetworkSourceImpl) { bind<PhotosNetworkSource>() }
-    singleOf(::CollectionNetworkSourceImpl) { bind<CollectionNetworkSource>() }
+object ModuleCoreNetwork {
+
+    val moduleCoreNetwork = module {
+        singleOf(::NetworkClientImpl) { bind<NetworkClient>() }
+        singleOf(::UserNetworkSourceImpl) { bind<UserNetworkSource>() }
+        singleOf(::TopicsNetworkSourceImpl) { bind<TopicsNetworkSource>() }
+        singleOf(::SearchPhotosNetworkSourceImpl) { bind<SearchPhotosNetworkSource>() }
+        singleOf(::PhotosNetworkSourceImpl) { bind<PhotosNetworkSource>() }
+        singleOf(::CollectionNetworkSourceImpl) { bind<CollectionNetworkSource>() }
+    }
 }
