@@ -12,17 +12,20 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val moduleCoreFavourite = module {
-    singleOf(::FavouriteRepositoryImpl) { bind<FavouriteRepository>() }
-    singleOf(::FavouriteInteractorImpl) { bind<FavouriteInteractor>() }
-    single<FavouriteDao> {
-        Room
-            .databaseBuilder(
-                androidContext(),
-                FavouriteDatabase::class.java,
-                FavouriteDatabase.NAME
-            )
-            .build()
-            .dao
+object ModuleCoreFavourite {
+
+    val moduleCoreFavourite = module {
+        singleOf(::FavouriteRepositoryImpl) { bind<FavouriteRepository>() }
+        singleOf(::FavouriteInteractorImpl) { bind<FavouriteInteractor>() }
+        single<FavouriteDao> {
+            Room
+                .databaseBuilder(
+                    androidContext(),
+                    FavouriteDatabase::class.java,
+                    FavouriteDatabase.NAME
+                )
+                .build()
+                .dao
+        }
     }
 }
