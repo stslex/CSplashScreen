@@ -28,7 +28,7 @@ data class UserSwipeState(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun rememberUserSwipeState(
-    isOnPreFlingAllow: () -> Boolean
+    isOnPreFlingAllow: () -> Boolean,
 ): UserSwipeState {
     val swipeableState = rememberSwipeableState(
         initialValue = SwipeState.EXPAND
@@ -37,7 +37,7 @@ fun rememberUserSwipeState(
     val swipeScrollConnection = remember {
         SwipeScrollConnection(
             swipeableState = swipeableState,
-            isOnPreFlingAllow = isOnPreFlingAllow
+            isOnPreFlingAllow = isOnPreFlingAllow,
         )
     }
 
