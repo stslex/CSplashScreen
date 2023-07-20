@@ -1,5 +1,7 @@
 package com.stslex.csplashscreen.feature.user.ui.state
 
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
@@ -17,7 +19,8 @@ data class UserScreenState(
     val user: UserModel?,
     val username: String,
     val userPagerState: UserPagerState,
-    val userSwipeState: UserSwipeState
+    val userSwipeState: UserSwipeState,
+    val headerLazyListState: LazyListState
 )
 
 @Composable
@@ -34,6 +37,8 @@ fun rememberUserScreenState(
         userFlow()
     }.collectAsState()
 
+    val headerLazyListState = rememberLazyListState()
+
     val userPagerState = rememberUserPagerState(
         photos = photos,
         likes = likes,
@@ -41,7 +46,9 @@ fun rememberUserScreenState(
     )
 
     val userSwipeState = rememberUserSwipeState(
-        isOnPreFlingAllow = userPagerState::isOnPreFlingAllow
+        isOnPreFlingAllow = {
+            userPagerState.isOnPreFlingAllow && headerLazyListState.canScrollForward.not()
+        },
     )
 
     return remember(
@@ -55,6 +62,7 @@ fun rememberUserScreenState(
             username = username,
             userPagerState = userPagerState,
             userSwipeState = userSwipeState,
+            headerLazyListState = headerLazyListState
         )
     }
 }
