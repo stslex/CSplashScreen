@@ -1,5 +1,6 @@
 package com.stslex.csplashscreen.core.photos
 
+import com.stslex.csplashscreen.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
 import com.stslex.csplashscreen.core.photos.di.ModuleCorePhotos.moduleCorePhotos
 import org.junit.Test
 import org.koin.dsl.koinApplication
@@ -11,7 +12,7 @@ class ModuleCorePhotosTest : KoinTest {
     @Test
     fun checkKoinModules() {
         koinApplication {
-            modules(moduleCorePhotos)
+            modules(moduleCoreNetwork, moduleCorePhotos)
             checkModules()
         }
     }
