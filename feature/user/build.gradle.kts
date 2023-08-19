@@ -14,4 +14,4 @@ dependencies {
     implementation("androidx.compose.material:material:1.4.3")
 }
 
-android.namespace = "com.stslex.csplashscreen.feature.user"
+android.namespace = "st.slex.csplashscreen.feature.user"

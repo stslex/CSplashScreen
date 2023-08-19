@@ -7,4 +7,4 @@ dependencies {
     api(libs.androidx.compose.navigation)
 }
 
-android.namespace = "com.stslex.csplashscreen.core.navigation"
+android.namespace = "st.slex.csplashscreen.core.navigation"

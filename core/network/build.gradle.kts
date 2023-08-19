@@ -10,4 +10,4 @@ dependencies {
     implementation(libs.bundles.okhttp)
 }
 
-android.namespace = "com.stslex.csplashscreen.core.network"
+android.namespace = "st.slex.csplashscreen.core.network"

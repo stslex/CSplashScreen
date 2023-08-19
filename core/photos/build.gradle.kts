@@ -12,5 +12,5 @@ dependencies {
 }
 
 android {
-    namespace = "com.stslex.csplashscreen.core.photos"
+    namespace = "st.slex.csplashscreen.core.photos"
 }
