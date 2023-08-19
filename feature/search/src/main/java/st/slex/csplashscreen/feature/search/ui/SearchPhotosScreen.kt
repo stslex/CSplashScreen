@@ -7,14 +7,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.photos.ui.component.LazyListPhotos
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.feature.search.ui.components.TopAppBarSearch
 import st.slex.csplashscreen.feature.search.ui.components.history.LazyListHistorySearch
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
-import st.slex.csplashscreen.feature.search.ui.utils.UiExt.isNotLoading
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun SearchPhotosScreen(
@@ -39,22 +39,23 @@ fun SearchPhotosScreen(
             search = onQuery
         )
 
-        if (photos.loadState.isNotLoading) {
-            if (photos.itemCount == 0) {
-                LazyListHistorySearch(
-                    modifier = Modifier.weight(1f),
-                    items = searchHistory,
-                    onSearchClick = remember { onQuery },
-                    clearHistory = clearHistory
-                )
-            } else {
-                LazyListPhotos(
-                    modifier = Modifier.weight(1f),
-                    items = photos,
-                    onUserClick = onUserClick,
-                    onImageClick = onImageClick,
-                )
-            }
+        if (
+            photos.loadState.refresh is LoadState.NotLoading &&
+            photos.itemCount == 0
+        ) {
+            LazyListHistorySearch(
+                modifier = Modifier.weight(1f),
+                items = searchHistory,
+                onSearchClick = remember { onQuery },
+                clearHistory = clearHistory
+            )
+        } else {
+            LazyListPhotos(
+                modifier = Modifier.weight(1f),
+                items = photos,
+                onUserClick = onUserClick,
+                onImageClick = onImageClick,
+            )
         }
     }
 }
