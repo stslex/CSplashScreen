@@ -30,14 +30,20 @@ fun MainBottomAppBar(
                     onBottomAppBarClick(item.screen)
                 },
                 icon = {
-                    val icon = if (isSelected) {
-                        item.selectedIcon
-                    } else {
-                        item.unselectedIcon
-                    }
-                    Icon(icon, item.appDestination.route)
+                    Icon(
+                        imageVector = if (isSelected) {
+                            item.selectedIcon
+                        } else {
+                            item.unselectedIcon
+                        },
+                        contentDescription = item.appDestination.name
+                    )
                 },
-                label = { Text(text = stringResource(id = item.titleResource)) },
+                label = {
+                    Text(
+                        text = stringResource(id = item.titleResource)
+                    )
+                },
                 alwaysShowLabel = false
             )
         }

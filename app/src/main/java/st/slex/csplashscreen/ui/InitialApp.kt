@@ -1,6 +1,11 @@
 package st.slex.csplashscreen.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -17,10 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.koin.androidx.compose.koinViewModel
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.navigation.NavigationHost
+import st.slex.csplashscreen.ui.components.bottom_appbar.BottomAppBarResource
 import st.slex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
-import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -51,17 +57,25 @@ fun InitialApp(
     Scaffold(
         modifier = modifier,
         contentColor = MaterialTheme.colorScheme.onBackground,
-        containerColor = Color.Transparent,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
-            MainBottomAppBar(
-                onBottomAppBarClick = viewModel::navigate,
-                currentDestination = currentDestination
-            )
+            AnimatedVisibility(
+                visible = BottomAppBarResource.isAppbar(currentDestination),
+                enter = slideInVertically(tween(300)) { it },
+                exit = slideOutVertically(tween(300)) { it }
+            ) {
+                MainBottomAppBar(
+                    onBottomAppBarClick = viewModel::navigate,
+                    currentDestination = currentDestination
+                )
+            }
         },
         contentWindowInsets = WindowInsets(0.dp),
         content = {
             NavigationHost(
-                modifier = Modifier.systemBarsPadding(),
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .systemBarsPadding(),
                 navController = navController,
             )
         },

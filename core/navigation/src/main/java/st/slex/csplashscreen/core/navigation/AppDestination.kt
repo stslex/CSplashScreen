@@ -26,13 +26,18 @@ enum class AppDestination(vararg val argsNames: String) {
         }
 
     companion object {
+
         private const val SEPARATOR_ROUTE = "_"
         private const val TAG_ROUTE = "route"
 
-        fun findByRoute(route: String?) = AppDestination
-            .entries
-            .firstOrNull {
-                it.route == route
-            }
+        fun findByRoute(route: String?) = if (route == null) {
+            UNDEFINED
+        } else {
+            AppDestination
+                .entries
+                .firstOrNull { destination ->
+                    destination.navigationRoute == route
+                }
+        }
     }
 }

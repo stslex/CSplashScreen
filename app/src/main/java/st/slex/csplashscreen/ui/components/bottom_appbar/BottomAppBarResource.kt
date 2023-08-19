@@ -12,7 +12,6 @@ import st.slex.csplashscreen.R
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 
-@Suppress("UNUSED")
 enum class BottomAppBarResource(
     val unselectedIcon: ImageVector,
     val selectedIcon: ImageVector,
@@ -40,5 +39,12 @@ enum class BottomAppBarResource(
         appDestination = AppDestination.SEARCH_PHOTOS,
         titleResource = R.string.nav_title_search,
         screen = NavigationScreen.SearchPhotosScreen(query = " ")
-    )
+    );
+
+    companion object {
+
+        fun isAppbar(
+            appDestination: AppDestination?
+        ): Boolean = entries.any { it.appDestination == appDestination }
+    }
 }
