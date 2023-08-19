@@ -14,4 +14,4 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 }
 
-android.namespace = "com.stslex.csplashscreen.core.favourite"
+android.namespace = "st.slex.csplashscreen.core.favourite"

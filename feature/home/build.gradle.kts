@@ -12,4 +12,4 @@ dependencies {
     implementation(project(":core:photos"))
 }
 
-android.namespace = "com.stslex.csplashscreen.feature.home"
+android.namespace = "st.slex.csplashscreen.feature.home"
