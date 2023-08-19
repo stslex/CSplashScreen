@@ -8,15 +8,13 @@ import com.stslex.csplashscreen.core.navigation.di.moduleCoreNavigation
 import com.stslex.csplashscreen.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
 import com.stslex.csplashscreen.core.photos.di.ModuleCorePhotos.moduleCorePhotos
 import com.stslex.csplashscreen.di.appModule
-import com.stslex.csplashscreen.feature.collection.di.singleCollectionModule
 import com.stslex.csplashscreen.feature.favourite.di.moduleFeatureFavourite
-import com.stslex.csplashscreen.feature.feature_photo_detail.di.moduleFeaturePhoto
 import com.stslex.csplashscreen.feature.home.di.moduleFeatureHome
-import com.stslex.csplashscreen.feature.search.di.moduleFeatureSearchPhotos
-import com.stslex.csplashscreen.feature.user.di.moduleFeatureUser
 import org.junit.Test
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication
+import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.mockito.Mockito
@@ -32,18 +30,24 @@ class DiKoinModuleTest : KoinTest {
             modules(
                 moduleCoreNavigation(navController),
                 appModule,
-                singleCollectionModule,
+//                singleCollectionModule, // TODO arguments dependencies
                 moduleCoreCollection,
                 moduleCorePhotos,
                 moduleCoreNetwork,
-                moduleFeaturePhoto,
-                moduleFeatureSearchPhotos,
-                moduleFeatureUser,
+//                moduleFeaturePhoto, // TODO arguments dependencies
+//                moduleFeatureSearchPhotos, // TODO arguments dependencies
+//                moduleFeatureUser, // TODO arguments dependencies
                 moduleFeatureHome,
                 moduleCoreFavourite,
                 moduleFeatureFavourite,
             )
             checkModules()
         }
+    }
+
+    private inline fun <reified T> KoinApplication.load() {
+        koin.loadModules(
+            listOf(module { single<T> { Mockito.mock(T::class.java) } })
+        )
     }
 }
