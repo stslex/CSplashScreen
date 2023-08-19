@@ -19,49 +19,68 @@ class PhotosNetworkSourceImpl(
     private val client: NetworkClient
 ) : PhotosNetworkSource {
 
+    private val photos = mutableMapOf<Int, List<RemoteImageModel>>()
+    private val collectionPhotos = mutableMapOf<Int, List<RemoteImageModel>>()
+    private val userPhotos = mutableMapOf<Int, List<RemoteImageModel>>()
+    private val userLikePhotos = mutableMapOf<Int, List<RemoteImageModel>>()
+    private val userTopicPhotos = mutableMapOf<Int, List<RemoteImageModel>>()
+    private val singlePhoto = mutableMapOf<String, RemoteImageModel>()
+
     override suspend fun getCollectionPhotos(
         query: String, page: Int, pageSize: Int
-    ): List<RemoteImageModel> = client.unsplashClient.get {
+    ): List<RemoteImageModel> = collectionPhotos[page] ?: client.unsplashClient.get {
         url.appendPathSegments(PATH_COLLECTIONS, query, PATH_PHOTOS)
         parameter(PARAMETER_PAGE, page)
         parameter(PARAMETER_PAGE_SIZE, pageSize)
-    }.body()
+    }.body<List<RemoteImageModel>>().also { result ->
+        collectionPhotos[page] = result
+    }
 
     override suspend fun getPhotos(
         page: Int, pageSize: Int
-    ): List<RemoteImageModel> = client.unsplashClient.get {
+    ): List<RemoteImageModel> = photos[page] ?: client.unsplashClient.get {
         url.appendPathSegments(PATH_PHOTOS)
         parameter(PARAMETER_PAGE, page)
         parameter(PARAMETER_PAGE_SIZE, pageSize)
-    }.body()
+    }.body<List<RemoteImageModel>>().also { result ->
+        photos[page] = result
+    }
 
     override suspend fun getUserPhotos(
         username: String, page: Int, pageSize: Int
-    ): List<RemoteImageModel> = client.unsplashClient.get {
+    ): List<RemoteImageModel> = userPhotos[page] ?: client.unsplashClient.get {
         url.appendPathSegments(PATH_USERS, username, PATH_PHOTOS)
         parameter(PARAMETER_PAGE, page)
         parameter(PARAMETER_PAGE_SIZE, pageSize)
-    }.body()
+    }.body<List<RemoteImageModel>>().also { result ->
+        userPhotos[page] = result
+    }
 
     override suspend fun getUserLikePhotos(
         username: String, page: Int, pageSize: Int
-    ): List<RemoteImageModel> = client.unsplashClient.get {
+    ): List<RemoteImageModel> = userLikePhotos[page] ?: client.unsplashClient.get {
         url.appendPathSegments(PATH_USERS, username, PATH_LIKES)
         parameter(PARAMETER_PAGE, page)
         parameter(PARAMETER_PAGE_SIZE, pageSize)
-    }.body()
+    }.body<List<RemoteImageModel>>().also { result ->
+        userLikePhotos[page] = result
+    }
 
     override suspend fun getTopicPhotos(
         topicId: String, page: Int, pageSize: Int
-    ): List<RemoteImageModel> = client.unsplashClient.get {
+    ): List<RemoteImageModel> = userTopicPhotos[page] ?: client.unsplashClient.get {
         url.appendPathSegments(PATH_TOPICS, topicId, PATH_PHOTOS)
         parameter(PARAMETER_PAGE, page)
         parameter(PARAMETER_PAGE_SIZE, pageSize)
-    }.body()
+    }.body<List<RemoteImageModel>>().also { result ->
+        userTopicPhotos[page] = result
+    }
 
     override suspend fun getSinglePhoto(
         id: String
-    ): RemoteImageModel = client.unsplashClient.get {
+    ): RemoteImageModel = singlePhoto[id] ?: client.unsplashClient.get {
         url.appendPathSegments(PATH_PHOTOS, id)
-    }.body()
+    }.body<RemoteImageModel>().also { result ->
+        singlePhoto[id] = result
+    }
 }

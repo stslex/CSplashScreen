@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.stslex.csplashscreen.core.navigation.navigator.Navigator
 import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
 import com.stslex.csplashscreen.core.collection.ui.model.toPresentation
 import com.stslex.csplashscreen.core.navigation.AppArguments
@@ -20,7 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 
 class UserViewModel(
     private val interactor: UserInteractor,
-    private val navigate: (NavigationScreen) -> Unit,
+    private val navigator: Navigator,
     args: AppArguments.UserScreen,
 ) : BaseViewModel() {
 
@@ -69,19 +70,19 @@ class UserViewModel(
         }.mapState { collection -> collection.toPresentation() }
 
     fun popBackStack() {
-        navigate(NavigationScreen.PopBackStack)
+        navigator.navigate(NavigationScreen.PopBackStack)
     }
 
     fun onUserClick(username: String) {
-        navigate(NavigationScreen.UserScreen(username))
+        navigator.navigate(NavigationScreen.UserScreen(username))
     }
 
     fun onImageClick(id: String) {
-        navigate(NavigationScreen.ImageDetailScreen(id))
+        navigator.navigate(NavigationScreen.ImageDetailScreen(id))
     }
 
     fun onCollectionClick(id: String) {
-        navigate(NavigationScreen.CollectionScreen(id))
+        navigator.navigate(NavigationScreen.CollectionScreen(id))
     }
 
     companion object {
