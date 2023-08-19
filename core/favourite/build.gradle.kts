@@ -11,7 +11,6 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.paging.runtime)
-
     implementation("com.google.code.gson:gson:2.10.1")
 }
 

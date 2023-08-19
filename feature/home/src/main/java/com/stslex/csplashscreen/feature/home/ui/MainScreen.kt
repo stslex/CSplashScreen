@@ -27,7 +27,10 @@ fun MainScreen(
     photos: LazyPagingItems<PhotoModel>,
     modifier: Modifier = Modifier,
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState {
+        MainScreenTabs.values().size
+    }
+
     val coroutineScope = rememberCoroutineScope()
     val photosListState = rememberLazyListState()
     val collectionListState = rememberLazyListState()
@@ -55,7 +58,6 @@ fun MainScreen(
 
         HorizontalPager(
             state = pagerState,
-            pageCount = MainScreenTabs.values().size
         ) { pageNumber ->
             when (pageNumber) {
 
