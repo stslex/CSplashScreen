@@ -45,6 +45,7 @@ fun NavGraphBuilder.userGraph(
         }.collectAsLazyPagingItems()
 
         val navigation = rememberUserScreenNavigation(
+            username = viewModel.username,
             onImageClick = viewModel::onImageClick,
             onUserClick = viewModel::onUserClick,
             onCollectionClick = viewModel::onCollectionClick,

@@ -6,7 +6,8 @@ enum class AppDestination(vararg val argsNames: String) {
     COLLECTION("collection_id"),
     SEARCH_PHOTOS("query"),
     FAVOURITE,
-    USER("username");
+    USER("username"),
+    UNDEFINED;
 
     val route: String
         get() = StringBuilder()
