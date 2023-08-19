@@ -10,8 +10,10 @@ class DownloadImageUseCaseImpl(
     private val context: Context
 ) : DownloadImageUseCase {
 
-    private val title = context.getString(R.string.download_title)
-    private val description = context.getString(R.string.download_description)
+    private val title
+        get() = context.getString(R.string.download_title)
+    private val description
+        get() = context.getString(R.string.download_description)
 
     override fun invoke(
         url: String,
