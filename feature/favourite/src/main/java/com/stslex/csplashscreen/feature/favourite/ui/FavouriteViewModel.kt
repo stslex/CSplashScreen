@@ -1,8 +1,8 @@
 package com.stslex.csplashscreen.feature.favourite.ui
 
 import androidx.paging.PagingData
-import com.stslex.csplashscreen.core.navigation.navigator.Navigator
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
+import com.stslex.csplashscreen.core.navigation.navigator.Navigator
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
 import com.stslex.csplashscreen.feature.favourite.domain.FavouriteInteractor
@@ -22,5 +22,9 @@ class FavouriteViewModel(
 
     fun onImageClick(uuid: String) {
         navigator.navigate(NavigationScreen.ImageDetailScreen(uuid))
+    }
+
+    fun onGoToPhotosClick() {
+        navigator.navigate(NavigationScreen.Home)
     }
 }
