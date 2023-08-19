@@ -14,11 +14,12 @@ data class UserScreenNavigation(
 
 @Composable
 fun rememberUserScreenNavigation(
+    username: String,
     popBackStack: () -> Unit,
     onUserClick: (username: String) -> Unit,
     onImageClick: (id: String) -> Unit,
     onCollectionClick: (id: String) -> Unit,
-): UserScreenNavigation = remember {
+): UserScreenNavigation = remember(username) {
     UserScreenNavigation(
         onImageClick = onImageClick,
         onUserClick = onUserClick,

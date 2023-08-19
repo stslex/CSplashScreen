@@ -13,7 +13,7 @@ sealed class NavigationScreen {
     open val appArgs: AppArguments
         get() = AppArguments.Empty
 
-    object Home : NavigationScreen() {
+    data object Home : NavigationScreen() {
 
         override val screen: AppDestination = AppDestination.HOME
         override val isSingleTop: Boolean = true
@@ -53,15 +53,16 @@ sealed class NavigationScreen {
         override val appArgs: AppArguments = AppArguments.UserScreen(username)
     }
 
-    object Favourite : NavigationScreen() {
+    data object Favourite : NavigationScreen() {
 
         override val screen: AppDestination = AppDestination.FAVOURITE
         override val appArgs: AppArguments = AppArguments.Empty
         override val isSingleTop: Boolean = true
     }
 
-    object PopBackStack : NavigationScreen() {
-        override val screen: AppDestination = throw Exception("PopBackStack")
-        override val appArgs: AppArguments = throw Exception("PopBackStack")
+    data object PopBackStack : NavigationScreen() {
+
+        override val screen: AppDestination = AppDestination.UNDEFINED
+        override val appArgs: AppArguments = AppArguments.Empty
     }
 }

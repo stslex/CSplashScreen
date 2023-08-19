@@ -1,17 +1,15 @@
 package st.slex.csplashscreen.feature.user.ui.state
 
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.paging.compose.LazyPagingItems
+import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.network.model.ui.user.UserModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
-import kotlinx.coroutines.flow.StateFlow
 
 @Stable
 data class UserScreenState(
@@ -20,7 +18,6 @@ data class UserScreenState(
     val username: String,
     val userPagerState: UserPagerState,
     val userSwipeState: UserSwipeState,
-    val headerLazyListState: LazyListState
 )
 
 @Composable
@@ -37,8 +34,6 @@ fun rememberUserScreenState(
         userFlow()
     }.collectAsState()
 
-    val headerLazyListState = rememberLazyListState()
-
     val userPagerState = rememberUserPagerState(
         photos = photos,
         likes = likes,
@@ -47,7 +42,7 @@ fun rememberUserScreenState(
 
     val userSwipeState = rememberUserSwipeState(
         isOnPreFlingAllow = {
-            userPagerState.isOnPreFlingAllow && headerLazyListState.canScrollForward.not()
+            userPagerState.isOnPreFlingAllow
         },
     )
 
@@ -62,7 +57,6 @@ fun rememberUserScreenState(
             username = username,
             userPagerState = userPagerState,
             userSwipeState = userSwipeState,
-            headerLazyListState = headerLazyListState
         )
     }
 }
