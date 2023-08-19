@@ -21,8 +21,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 defaultConfig.apply {
                     applicationId = "st.slex.csplashscreen"
                     targetSdk = 34
-                    versionName = "1.0"
-                    versionCode = 1
+                    versionName = "1.3"
+                    versionCode = 3
                     buildTypes {
                         release {
                             isMinifyEnabled = false
