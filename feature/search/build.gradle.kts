@@ -17,4 +17,4 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
 }
 
-android.namespace = "com.stslex.csplashscreen.feature.search"
+android.namespace = "st.slex.csplashscreen.feature.search"
