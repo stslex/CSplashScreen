@@ -80,7 +80,9 @@ fun rememberUserPagerState(
         }
     }
 
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState {
+        userTabs.size
+    }
     val photosListState = rememberLazyListState()
     val likesListState = rememberLazyListState()
     val collectionsListState = rememberLazyListState()

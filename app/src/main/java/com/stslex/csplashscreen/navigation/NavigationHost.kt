@@ -39,15 +39,16 @@ fun NavigationHost(
 }
 
 fun NavHostController.navigateScreen(screen: NavigationScreen) {
+    val currentRoute = currentDestination?.route ?: return
+    if (currentRoute == screen.screenRoute) return
+
     navigate(screen.screenRoute) {
         if (screen.isSingleTop.not()) return@navigate
-        graph.startDestinationRoute?.let { route ->
-            popUpTo(route) {
-                inclusive = true
-                saveState = true
-            }
+
+        popUpTo(currentRoute) {
+            inclusive = true
+            saveState = true
         }
         launchSingleTop = true
-        restoreState = false
     }
 }
