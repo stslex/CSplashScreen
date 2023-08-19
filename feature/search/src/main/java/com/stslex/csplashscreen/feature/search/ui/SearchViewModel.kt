@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.stslex.csplashscreen.core.navigation.navigator.Navigator
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.core.network.model.ui.ImageModel
@@ -21,8 +22,8 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val interactor: SearchPhotosInteractor,
+    private val navigator: Navigator,
     args: AppArguments.SearchPhotosScreen,
-    private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
     private val _querySearch = MutableStateFlow(args.checkedQuery)
@@ -55,11 +56,11 @@ class SearchViewModel(
     }
 
     fun onProfileClick(username: String) {
-        navigate(NavigationScreen.UserScreen(username))
+        navigator.navigate(NavigationScreen.UserScreen(username))
     }
 
     fun onImageClick(imageId: String) {
-        navigate(NavigationScreen.ImageDetailScreen(imageId))
+        navigator.navigate(NavigationScreen.ImageDetailScreen(imageId))
     }
 
     fun clearHistory() {

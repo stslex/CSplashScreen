@@ -1,12 +1,12 @@
 package com.stslex.csplashscreen.ui.components.bottom_appbar
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.stslex.csplashscreen.core.navigation.AppDestination
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
@@ -21,8 +21,8 @@ enum class BottomAppBarResource(
     val screen: NavigationScreen
 ) {
     FAVOURITE(
-        unselectedIcon = Icons.Outlined.Star,
-        selectedIcon = Icons.Filled.Star,
+        unselectedIcon = Icons.Outlined.FavoriteBorder,
+        selectedIcon = Icons.Filled.Favorite,
         appDestination = AppDestination.FAVOURITE,
         titleResource = R.string.nav_title_favourite,
         screen = NavigationScreen.Favourite

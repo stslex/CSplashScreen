@@ -22,13 +22,6 @@ class NetworkClientImpl : NetworkClient {
     override val client: HttpClient
         get() = HttpClient(Android) {
 
-            expectSuccess = true
-
-            install(Logging) {
-                logger = Logger.DEFAULT
-                level = LogLevel.ALL
-            }
-
             install(ContentNegotiation) {
                 json(
                     Json {
@@ -40,7 +33,15 @@ class NetworkClientImpl : NetworkClient {
                 )
             }
 
-            install(HttpCache)
+            install(HttpCache) // TODO Not working?
+
+            install(Logging) {
+                logger = Logger.DEFAULT
+                level = LogLevel.ALL
+            }
+
+            expectSuccess = true
+
         }
 
     override val unsplashClient: HttpClient

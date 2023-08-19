@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSplashScreen">
         <activity
-            android:name="com.stslex.csplashscreen.ui.activity.MainActivity"
+            android:name="com.stslex.csplashscreen.ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.CSplashScreen.NoActionBar">
             <intent-filter>
