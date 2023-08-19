@@ -3,6 +3,7 @@ package com.stslex.csplashscreen.feature.collection.ui
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.stslex.csplashscreen.core.navigation.navigator.Navigator
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
@@ -14,8 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 class SingleCollectionViewModel(
     private val interactor: SingleCollectionInteractor,
+    private val navigator: Navigator,
     args: AppArguments.CollectionScreen,
-    private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
     val photos: StateFlow<PagingData<PhotoModel>> = Pager(pagingConfig) {
@@ -32,14 +33,15 @@ class SingleCollectionViewModel(
         }
 
     fun onProfileClick(username: String) {
-        navigate(NavigationScreen.UserScreen(username))
+        navigator.navigate(NavigationScreen.UserScreen(username))
     }
 
     fun onImageClick(imageId: String) {
-        navigate(NavigationScreen.ImageDetailScreen(imageId))
+        navigator.navigate(NavigationScreen.ImageDetailScreen(imageId))
     }
 
     companion object {
+
         private val pagingConfig = PagingConfig(
             pageSize = 2,
             enablePlaceholders = false

@@ -9,7 +9,6 @@ import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.AppDestination
 import com.stslex.csplashscreen.core.navigation.NavExt.composableArguments
 import com.stslex.csplashscreen.core.navigation.NavExt.parseArguments
-import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.feature.user.ui.UserScreen
 import com.stslex.csplashscreen.feature.user.ui.UserViewModel
 import com.stslex.csplashscreen.feature.user.ui.state.rememberUserScreenNavigation
@@ -19,7 +18,6 @@ import org.koin.core.parameter.parametersOf
 
 fun NavGraphBuilder.userGraph(
     modifier: Modifier = Modifier,
-    navigate: (NavigationScreen) -> Unit
 ) {
     composable(
         route = AppDestination.USER.navigationRoute,
@@ -32,7 +30,7 @@ fun NavGraphBuilder.userGraph(
 
         val viewModel: UserViewModel = koinViewModel(
             key = arguments.username
-        ) { parametersOf(arguments, navigate) }
+        ) { parametersOf(arguments) }
 
         val photos = remember {
             viewModel.photos

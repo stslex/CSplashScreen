@@ -3,8 +3,10 @@ package com.stslex.csplashscreen.feature.home.ui
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.stslex.csplashscreen.core.navigation.navigator.Navigator
 import com.stslex.csplashscreen.core.collection.ui.model.CollectionModel
 import com.stslex.csplashscreen.core.collection.ui.model.toPresentation
+import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.core.photos.ui.model.PhotoModel
 import com.stslex.csplashscreen.core.photos.ui.model.toPresentation
 import com.stslex.csplashscreen.core.ui.base.BaseViewModel
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class MainScreenViewModel(
     private val interactor: MainScreenInteractor,
+    private val navigator: Navigator
 ) : BaseViewModel() {
 
     val collections: StateFlow<PagingData<CollectionModel>>
@@ -32,10 +35,14 @@ class MainScreenViewModel(
                 image.toPresentation()
             }
 
+    fun navigate(screen: NavigationScreen) {
+        navigator.navigate(screen)
+    }
+
     companion object {
 
         private val config = PagingConfig(
-            pageSize = 10,
+            pageSize = 5,
             enablePlaceholders = false
         )
     }
