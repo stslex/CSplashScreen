@@ -30,6 +30,7 @@ fun NavGraphBuilder.favouriteGraph(
             photos = photos,
             onUserClick = viewModel::onUserClick,
             onImageClick = viewModel::onImageClick,
+            onGoToPhotosClick = viewModel::onGoToPhotosClick
         )
     }
 }
