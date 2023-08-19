@@ -1,10 +1,10 @@
 package st.slex.csplashscreen.core.network
 
-import com.slex.csplashscreen.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
 import org.junit.Test
 import org.koin.dsl.koinApplication
 import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
+import st.slex.csplashscreen.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
 
 /**
  * Example local unit test, which will execute on the development machine (host).
