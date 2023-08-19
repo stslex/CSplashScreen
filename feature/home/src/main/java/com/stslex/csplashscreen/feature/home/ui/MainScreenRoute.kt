@@ -8,10 +8,7 @@ import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MainScreenRoute(
-    modifier: Modifier = Modifier,
-    navigator: (NavigationScreen) -> Unit,
-) {
+fun MainScreenRoute(modifier: Modifier = Modifier) {
     val viewModel = koinViewModel<MainScreenViewModel>()
 
     val collections = remember {
@@ -26,17 +23,17 @@ fun MainScreenRoute(
         modifier = modifier,
         navToProfile = remember {
             { username ->
-                navigator(NavigationScreen.UserScreen(username))
+                viewModel.navigate(NavigationScreen.UserScreen(username))
             }
         },
         navToCollection = remember {
             { uuid ->
-                navigator(NavigationScreen.CollectionScreen(uuid))
+                viewModel.navigate(NavigationScreen.CollectionScreen(uuid))
             }
         },
         navToImage = remember {
             { uuid ->
-                navigator(NavigationScreen.ImageDetailScreen(uuid))
+                viewModel.navigate(NavigationScreen.ImageDetailScreen(uuid))
             }
         },
         collections = remember { collections },

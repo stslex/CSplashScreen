@@ -1,6 +1,7 @@
 package com.stslex.csplashscreen.feature.feature_photo_detail.ui
 
 import androidx.lifecycle.viewModelScope
+import com.stslex.csplashscreen.core.navigation.navigator.Navigator
 import com.stslex.csplashscreen.core.core.Resource
 import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.NavigationScreen
@@ -17,8 +18,8 @@ class DetailPhotoViewModel(
     private val interactor: ImageDetailInteractor,
     private val downloadImageUseCase: DownloadImageUseCase,
     private val wallpaperSetUseCase: WallpaperSetUseCase,
+    private val navigator: Navigator,
     private val args: AppArguments.ImageDetailScreen,
-    private val navigate: (NavigationScreen) -> Unit
 ) : BaseViewModel() {
 
     val imageDetail: StateFlow<Resource<ImageDetail>>
@@ -38,11 +39,11 @@ class DetailPhotoViewModel(
     }
 
     fun onTagClick(tag: String) {
-        navigate(NavigationScreen.SearchPhotosScreen(tag))
+        navigator.navigate(NavigationScreen.SearchPhotosScreen(tag))
     }
 
     fun onProfileClick(username: String) {
-        navigate(NavigationScreen.UserScreen(username))
+        navigator.navigate(NavigationScreen.UserScreen(username))
     }
 
     fun onLikeClick(

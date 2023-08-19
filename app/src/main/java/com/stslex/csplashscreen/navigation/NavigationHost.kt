@@ -5,7 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.stslex.csplashscreen.core.navigation.AppDestination
-import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.feature.collection.navigation.singleCollectionGraph
 import com.stslex.csplashscreen.feature.favourite.navigation.favouriteGraph
 import com.stslex.csplashscreen.feature.feature_photo_detail.navigation.imageDetailGraph
@@ -19,36 +18,15 @@ fun NavigationHost(
     modifier: Modifier = Modifier,
     startDestination: AppDestination = AppDestination.HOME
 ) {
-    val navigator: (NavigationScreen) -> Unit = { screen ->
-        when (screen) {
-            is NavigationScreen.PopBackStack -> navController.popBackStack()
-            else -> navController.navigateScreen(screen)
-        }
-    }
     NavHost(
         navController = navController,
         startDestination = startDestination.route
     ) {
-        homeGraph(modifier = modifier, navigate = navigator)
-        userGraph(modifier = modifier, navigate = navigator)
-        imageDetailGraph(modifier = modifier, navigate = navigator)
-        searchPhotosGraph(modifier = modifier, navigate = navigator)
-        singleCollectionGraph(modifier = modifier, navigate = navigator)
-        favouriteGraph(modifier = modifier, navigate = navigator)
-    }
-}
-
-fun NavHostController.navigateScreen(screen: NavigationScreen) {
-    val currentRoute = currentDestination?.route ?: return
-    if (currentRoute == screen.screenRoute) return
-
-    navigate(screen.screenRoute) {
-        if (screen.isSingleTop.not()) return@navigate
-
-        popUpTo(currentRoute) {
-            inclusive = true
-            saveState = true
-        }
-        launchSingleTop = true
+        homeGraph(modifier)
+        userGraph(modifier)
+        imageDetailGraph(modifier)
+        searchPhotosGraph(modifier)
+        singleCollectionGraph(modifier)
+        favouriteGraph(modifier)
     }
 }

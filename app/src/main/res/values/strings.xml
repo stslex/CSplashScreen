@@ -2,6 +2,6 @@
     <string name="app_name">CSplashScreen</string>
 
     <string name="nav_title_home">home</string>
-    <string name="nav_title_favourite">topics</string>
+    <string name="nav_title_favourite">favourite</string>
     <string name="nav_title_search">search</string>
 </resources>

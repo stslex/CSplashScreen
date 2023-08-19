@@ -9,7 +9,6 @@ import com.stslex.csplashscreen.core.navigation.AppArguments
 import com.stslex.csplashscreen.core.navigation.AppDestination
 import com.stslex.csplashscreen.core.navigation.NavExt.composableArguments
 import com.stslex.csplashscreen.core.navigation.NavExt.parseArguments
-import com.stslex.csplashscreen.core.navigation.NavigationScreen
 import com.stslex.csplashscreen.feature.search.ui.SearchPhotosScreen
 import com.stslex.csplashscreen.feature.search.ui.SearchViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -17,7 +16,6 @@ import org.koin.core.parameter.parametersOf
 
 fun NavGraphBuilder.searchPhotosGraph(
     modifier: Modifier = Modifier,
-    navigate: (NavigationScreen) -> Unit
 ) {
     composable(
         route = AppDestination.SEARCH_PHOTOS.navigationRoute,
@@ -29,7 +27,7 @@ fun NavGraphBuilder.searchPhotosGraph(
 
         val viewModel: SearchViewModel = koinViewModel(
             key = arguments.checkedQuery
-        ) { parametersOf(arguments, navigate) }
+        ) { parametersOf(arguments) }
 
         val photos = remember {
             viewModel.photosSearch
