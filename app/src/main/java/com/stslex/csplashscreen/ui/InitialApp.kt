@@ -8,7 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -16,7 +19,6 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.stslex.csplashscreen.core.navigation.AppDestination
 import com.stslex.csplashscreen.navigation.NavigationHost
-import com.stslex.csplashscreen.ui.InitialAppViewModel
 import com.stslex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
 import org.koin.androidx.compose.koinViewModel
 
@@ -28,8 +30,15 @@ fun InitialApp(
 ) {
     val systemUiController = rememberSystemUiController()
     val isDarkTheme = isSystemInDarkTheme()
-    val startDestination = remember { AppDestination.HOME }
     val viewModel = koinViewModel<InitialAppViewModel>()
+
+    var currentDestination by remember {
+        mutableStateOf<AppDestination?>(AppDestination.HOME)
+    }
+
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        currentDestination = AppDestination.findByRoute(destination.route)
+    }
 
     DisposableEffect(systemUiController, isDarkTheme) {
         systemUiController.setSystemBarsColor(
@@ -46,7 +55,7 @@ fun InitialApp(
         bottomBar = {
             MainBottomAppBar(
                 onBottomAppBarClick = viewModel::navigate,
-                startDestination = startDestination
+                currentDestination = currentDestination
             )
         },
         contentWindowInsets = WindowInsets(0.dp),
@@ -54,7 +63,6 @@ fun InitialApp(
             NavigationHost(
                 modifier = Modifier.systemBarsPadding(),
                 navController = navController,
-                startDestination = startDestination
             )
         },
     )
