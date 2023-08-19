@@ -30,7 +30,6 @@ fun UserPager(
 
         HorizontalPager(
             state = userPagerState.pagerState,
-            pageCount = userPagerState.userTabs.size
         ) { pageNumber ->
             when (userPagerState.getTab(pageNumber)) {
                 UserTab.PHOTOS -> {
