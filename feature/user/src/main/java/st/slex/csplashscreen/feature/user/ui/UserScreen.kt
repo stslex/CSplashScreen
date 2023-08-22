@@ -28,7 +28,6 @@ fun UserScreen(
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val itemsCount = 20
     DimensionSubcomposeLayout(
         mainContent = {
             UserHeader(
