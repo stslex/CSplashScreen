@@ -1,12 +1,12 @@
 name: Android Build
 
 on:
-  pull_request:
+  push:
     branches: [ master ]
   workflow_dispatch:
 
 jobs:
-  deploy_beta:
+  deploy_prod:
 
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -69,4 +69,4 @@ jobs:
           base64 -d -i play_config.json.b64 > play_config.json
 
       - name: Distribute app to Beta track 🚀
-        run: bundle exec fastlane beta
+        run: bundle exec fastlane deploy
