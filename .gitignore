@@ -8,3 +8,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+play_config.json
+app/keystore
+keystore.properties
