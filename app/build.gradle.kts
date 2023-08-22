@@ -1,4 +1,5 @@
 import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.util.Properties
 
 plugins {
@@ -6,22 +7,19 @@ plugins {
     id("csplashscreen.android.application.compose")
 }
 
-val keystorePropertiesFile: File = rootProject.file("keystore.properties")
-val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-
 android {
     signingConfigs {
+        val keystoreProperties = gradleKeystoreProperties(project.rootProject.projectDir)
         create("release") {
             keyAlias = keystoreProperties.getProperty("keyAlias")
             keyPassword = keystoreProperties.getProperty("keyPassword")
-            storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+            storeFile = getFile(keystoreProperties.getProperty("storeFile"))
             storePassword = keystoreProperties.getProperty("storePassword")
         }
         with(get("debug")) {
             keyAlias = keystoreProperties.getProperty("keyAlias")
             keyPassword = keystoreProperties.getProperty("keyPassword")
-            storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+            storeFile = getFile(keystoreProperties.getProperty("storeFile"))
             storePassword = keystoreProperties.getProperty("storePassword")
         }
     }
@@ -57,4 +55,25 @@ dependencies {
     implementation(project(":feature:photo-detail"))
     implementation(project(":feature:search"))
     implementation(project(":feature:favourite"))
+}
+
+fun getFile(path: String): File {
+    val file = File(project.rootProject.projectDir, path)
+    if (file.isFile) {
+        return file
+    } else {
+        throw IllegalStateException("${file.name} is inValid")
+    }
+}
+
+fun gradleKeystoreProperties(projectRootDir: File): Properties {
+    val properties = Properties()
+    val localProperties = File(projectRootDir, "keystore.properties")
+
+    if (localProperties.isFile) {
+        InputStreamReader(FileInputStream(localProperties), Charsets.UTF_8).use { reader ->
+            properties.load(reader)
+        }
+    }
+    return properties
 }
