@@ -1,7 +1,7 @@
 [versions]
 androidDesugarJdkLibs = "2.0.3"
 kotlin = "1.9.0"
-androidGradlePlugin = "8.2.0-alpha16"
+androidGradlePlugin = "8.1.1"
 
 ktx = "1.10.1"
 material = "1.9.0"
