@@ -8,7 +8,6 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.collection.domain.SingleCollectionInteractor
 import kotlinx.coroutines.flow.StateFlow

@@ -5,7 +5,6 @@ import st.slex.csplashscreen.core.navigation.navigator.Navigator
 import st.slex.csplashscreen.core.core.Resource
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.NavigationScreen
-import st.slex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.interactor.ImageDetailInteractor
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.utils.DownloadImageUseCase

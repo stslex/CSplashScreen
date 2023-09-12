@@ -9,7 +9,6 @@ import st.slex.csplashscreen.core.collection.ui.model.toPresentation
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.home.domain.MainScreenInteractor
 import kotlinx.coroutines.flow.StateFlow

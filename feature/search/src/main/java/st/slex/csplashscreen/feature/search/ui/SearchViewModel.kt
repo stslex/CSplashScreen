@@ -10,7 +10,6 @@ import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.base.BaseViewModel
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.search.domain.interactor.SearchPhotosInteractor
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
