@@ -1,8 +1,6 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.ui
 
 import androidx.lifecycle.viewModelScope
-import st.slex.csplashscreen.core.navigation.navigator.Navigator
-import st.slex.csplashscreen.core.core.Resource
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.interactor.ImageDetailInteractor

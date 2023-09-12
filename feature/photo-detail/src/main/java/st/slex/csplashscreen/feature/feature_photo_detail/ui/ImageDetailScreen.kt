@@ -35,7 +35,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import st.slex.csplashscreen.core.core.Resource
 import st.slex.csplashscreen.core.ui.components.ImageComponent
 import st.slex.csplashscreen.core.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.core.ui.theme.Dimen

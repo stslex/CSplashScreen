@@ -3,7 +3,6 @@ package st.slex.csplashscreen.feature.collection.ui
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import st.slex.csplashscreen.core.navigation.navigator.Navigator
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel

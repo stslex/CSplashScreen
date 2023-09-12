@@ -1,5 +1,6 @@
 plugins {
     id("csplashscreen.android.library")
+    id("csplashscreen.android.library.compose") // TODO put in ui layer (need models refactoring)
     kotlin("plugin.serialization")
 }
 

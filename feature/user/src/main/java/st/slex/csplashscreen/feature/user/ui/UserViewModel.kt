@@ -11,7 +11,6 @@ import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.collection.ui.model.toPresentation
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.NavigationScreen
-import st.slex.csplashscreen.core.navigation.navigator.Navigator
 import st.slex.csplashscreen.core.network.model.ui.user.UserModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation

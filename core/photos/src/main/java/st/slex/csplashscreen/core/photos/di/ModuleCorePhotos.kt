@@ -1,14 +1,15 @@
 package st.slex.csplashscreen.core.photos.di
 
+import dagger.Binds
+import dagger.Module
 import st.slex.csplashscreen.core.photos.data.PhotosRepository
 import st.slex.csplashscreen.core.photos.data.PhotosRepositoryImpl
-import org.koin.core.module.dsl.bind
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
+import javax.inject.Singleton
 
-object ModuleCorePhotos {
+@Module
+interface ModuleCorePhotos {
 
-    val moduleCorePhotos = module {
-        singleOf(::PhotosRepositoryImpl) { bind<PhotosRepository>() }
-    }
+    @Binds
+    @Singleton
+    fun bindsPhotosRepository(impl: PhotosRepositoryImpl): PhotosRepository
 }

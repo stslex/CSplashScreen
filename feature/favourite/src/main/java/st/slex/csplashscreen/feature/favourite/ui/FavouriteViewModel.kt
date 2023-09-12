@@ -2,7 +2,6 @@ package st.slex.csplashscreen.feature.favourite.ui
 
 import androidx.paging.PagingData
 import st.slex.csplashscreen.core.navigation.NavigationScreen
-import st.slex.csplashscreen.core.navigation.navigator.Navigator
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.feature.favourite.domain.FavouriteInteractor
 import kotlinx.coroutines.flow.StateFlow

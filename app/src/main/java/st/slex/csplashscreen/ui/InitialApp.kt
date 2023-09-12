@@ -24,7 +24,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.androidx.compose.koinViewModel
 import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.navigation.NavigationHost
+import st.slex.csplashscreen.ui.components.NavigationHost
 import st.slex.csplashscreen.ui.components.bottom_appbar.BottomAppBarResource
 import st.slex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
 

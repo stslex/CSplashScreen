@@ -1,12 +1,15 @@
 package st.slex.csplashscreen.core.photos.data
 
-import st.slex.csplashscreen.core.network.model.remote.image.RemoteImageModel
-import st.slex.csplashscreen.core.network.source.interf.PhotosNetworkSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import st.slex.csplashscreen.core.network.model.remote.image.RemoteImageModel
+import st.slex.csplashscreen.core.network.source.interf.PhotosNetworkClient
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PhotosRepositoryImpl(
-    private val networkSource: PhotosNetworkSource
+@Singleton
+class PhotosRepositoryImpl @Inject constructor(
+    private val client: PhotosNetworkClient
 ) : PhotosRepository {
 
     private var _imageCache = mutableSetOf<RemoteImageModel>()
@@ -17,7 +20,7 @@ class PhotosRepositoryImpl(
         page: Int,
         pageSize: Int
     ): List<RemoteImageModel> = withContext(Dispatchers.IO) {
-        networkSource.getPhotos(
+        client.getPhotos(
             page = page,
             pageSize = pageSize
         ).also(::setToCache)
@@ -28,7 +31,7 @@ class PhotosRepositoryImpl(
         page: Int,
         pageSize: Int
     ): List<RemoteImageModel> = withContext(Dispatchers.IO) {
-        networkSource.getUserPhotos(
+        client.getUserPhotos(
             username = username,
             page = page,
             pageSize = pageSize,
@@ -40,7 +43,7 @@ class PhotosRepositoryImpl(
         page: Int,
         pageSize: Int
     ): List<RemoteImageModel> = withContext(Dispatchers.IO) {
-        networkSource.getUserLikePhotos(
+        client.getUserLikePhotos(
             username = username,
             page = page,
             pageSize = pageSize,
@@ -54,7 +57,7 @@ class PhotosRepositoryImpl(
             imageModel.id == id
         }
         ?: withContext(Dispatchers.IO) {
-            networkSource
+            client
                 .getSinglePhoto(id = id)
                 .also(::setToCache)
         }
