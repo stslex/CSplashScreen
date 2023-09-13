@@ -2,6 +2,7 @@ package st.slex.csplashscreen.feature.collection.di
 
 import dagger.Component
 import st.slex.csplashscreen.core.network.di.NetworkClientApi
+import st.slex.csplashscreen.core.ui.di.NavigationApi
 
 @Component(
     dependencies = [SingleCollectionDependencies::class],
@@ -17,12 +18,13 @@ interface SingleCollectionComponent {
         ): SingleCollectionComponent
     }
 
-    @Component(dependencies = [NetworkClientApi::class])
+    @Component(dependencies = [NetworkClientApi::class, NavigationApi::class])
     interface SingleCollectionDependenciesComponent : SingleCollectionDependencies {
 
         interface Factory {
             fun create(
-                networkClientApi: NetworkClientApi
+                networkClientApi: NetworkClientApi,
+                navigationApi: NavigationApi
             ): SingleCollectionDependencies
         }
     }
