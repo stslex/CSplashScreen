@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.feature.collection.di
 
+import androidx.lifecycle.ViewModelProvider
 import dagger.Component
 import st.slex.csplashscreen.core.network.di.NetworkClientApi
 import st.slex.csplashscreen.core.ui.di.NavigationApi
@@ -21,11 +22,15 @@ interface SingleCollectionComponent {
     @Component(dependencies = [NetworkClientApi::class, NavigationApi::class])
     interface SingleCollectionDependenciesComponent : SingleCollectionDependencies {
 
+        @Component.Factory
         interface Factory {
+            
             fun create(
                 networkClientApi: NetworkClientApi,
                 navigationApi: NavigationApi
             ): SingleCollectionDependencies
         }
     }
+
+    val viewModelFactory: ViewModelProvider.Factory
 }

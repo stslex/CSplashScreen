@@ -3,7 +3,7 @@ package st.slex.csplashscreen.feature.home.domain
 import st.slex.csplashscreen.core.network.model.ui.CollectionDomainModel
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
 
-interface MainScreenInteractor {
+interface HomeInteractor {
 
     suspend fun getAllPhotos(
         page: Int,
