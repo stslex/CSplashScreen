@@ -4,8 +4,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import st.slex.csplashscreen.core.network.model.remote.image.RemoteImageModel
 import st.slex.csplashscreen.core.network.source.interf.PhotosNetworkClient
+import javax.inject.Inject
 
-class SingleCollectionRepositoryImpl(
+class SingleCollectionRepositoryImpl @Inject constructor(
     private val source: PhotosNetworkClient
 ) : SingleCollectionRepository {
 
