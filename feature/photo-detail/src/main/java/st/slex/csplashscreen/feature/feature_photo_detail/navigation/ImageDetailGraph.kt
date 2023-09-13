@@ -7,7 +7,7 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.navigation.NavExt.composableArguments
 import st.slex.csplashscreen.core.navigation.NavExt.parseArguments
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.DetailPhotoViewModel
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailViewModel
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailScreen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -23,7 +23,7 @@ fun NavGraphBuilder.imageDetailGraph(
             AppArguments.ImageDetailScreen(args[0])
         }
 
-        val viewModel: DetailPhotoViewModel = koinViewModel(
+        val viewModel: ImageDetailViewModel = koinViewModel(
             key = arguments.imageId
         ) { parametersOf(arguments) }
 
