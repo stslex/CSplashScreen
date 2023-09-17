@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import st.slex.csplashscreen.core.core.AppApi
 import st.slex.csplashscreen.core.core.appApi
+import st.slex.csplashscreen.core.ui.base.daggerViewModel
 import st.slex.csplashscreen.core.ui.di.NavigationApi
+import st.slex.csplashscreen.ui.InitialAppViewModel
 
 object MainComponentBuilder {
 
@@ -20,13 +22,17 @@ object MainComponentBuilder {
                     navigationApi = navigationApi
                 )
         )
+}
 
-    @Composable
-    fun Build(navigationApi: NavigationApi) {
-        val context = LocalContext.current
-        build(
-            appApi = context.appApi,
-            navigationApi = navigationApi
-        )
+@Composable
+fun setupMainComponent(navigationApi: NavigationApi): InitialAppViewModel {
+    val context = LocalContext.current
+    return daggerViewModel {
+        MainComponentBuilder
+            .build(
+                appApi = context.appApi,
+                navigationApi = navigationApi
+            )
+            .viewModelFactory
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import st.slex.csplashscreen.core.core.AppApi
 import st.slex.csplashscreen.core.core.ApplicationApiProvider
 import st.slex.csplashscreen.di.app.AppComponent
+import st.slex.csplashscreen.di.app.DaggerAppComponent
 
 class SplashApplication : Application(), ApplicationApiProvider {
 

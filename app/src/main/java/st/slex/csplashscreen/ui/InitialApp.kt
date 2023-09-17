@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import org.koin.androidx.compose.koinViewModel
 import st.slex.csplashscreen.core.navigation.AppDestination
+import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.ui.components.NavigationHost
 import st.slex.csplashscreen.ui.components.bottom_appbar.BottomAppBarResource
 import st.slex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
@@ -32,11 +32,11 @@ import st.slex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
 @Composable
 fun InitialApp(
     navController: NavHostController,
+    onBottomAppBarClick: (NavigationScreen) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val systemUiController = rememberSystemUiController()
     val isDarkTheme = isSystemInDarkTheme()
-    val viewModel = koinViewModel<InitialAppViewModel>()
 
     var currentDestination by remember {
         mutableStateOf<AppDestination?>(AppDestination.HOME)
@@ -65,7 +65,7 @@ fun InitialApp(
                 exit = slideOutVertically(tween(300)) { it }
             ) {
                 MainBottomAppBar(
-                    onBottomAppBarClick = viewModel::navigate,
+                    onBottomAppBarClick = onBottomAppBarClick,
                     currentDestination = currentDestination
                 )
             }

@@ -3,15 +3,20 @@ package st.slex.csplashscreen.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import org.koin.androidx.compose.getKoin
-import st.slex.csplashscreen.core.navigation.di.moduleCoreNavigation
+import st.slex.csplashscreen.core.navigation.di.NavigationComponentBuilder
+import st.slex.csplashscreen.core.ui.di.MainUiApi
+import st.slex.csplashscreen.core.ui.di.NavigationApi
 import st.slex.csplashscreen.core.ui.theme.AppTheme
+import st.slex.csplashscreen.di.main.setupMainComponent
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), MainUiApi {
+
+    private var _navigationApi: NavigationApi? = null
+    override val navigationApi: NavigationApi
+        get() = requireNotNull(_navigationApi)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,21 +25,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 val navController = rememberNavController()
-                SetupComposeDependencies(navController)
-                InitialApp(navController)
+                _navigationApi = remember(navController) {
+                    NavigationComponentBuilder.build(navController)
+                }
+
+                val viewModel = setupMainComponent(navigationApi)
+
+                InitialApp(
+                    navController = navController,
+                    onBottomAppBarClick = remember {
+                        { viewModel.navigate(it) }
+                    }
+                )
             }
         }
-    }
-
-    @Composable
-    private fun SetupComposeDependencies(
-        navController: NavHostController
-    ) {
-        getKoin().loadModules(
-            listOf(
-                moduleCoreNavigation(navController),
-                st.slex.csplashscreen.di.appModule
-            )
-        )
     }
 }
