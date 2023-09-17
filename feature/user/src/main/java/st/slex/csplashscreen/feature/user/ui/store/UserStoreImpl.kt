@@ -4,16 +4,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.map
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
@@ -35,9 +32,9 @@ class UserStoreImpl @Inject constructor(
 
     override val initialState: State = State(
         user = null,
-        likes = { MutableStateFlow(PagingData.empty()) },
-        photos = { MutableStateFlow(PagingData.empty()) },
-        collections = { MutableStateFlow(PagingData.empty()) }
+        likes = ::getLikes,
+        photos = ::getPhotos,
+        collections = ::getCollections
     )
 
     override val state = MutableStateFlow(initialState)
@@ -55,9 +52,8 @@ class UserStoreImpl @Inject constructor(
     private fun actionInit(
         action: Action.Init
     ) {
-        scope.cancel()
-        val username = action.args.username
-        interactor.getUser(username)
+        interactor
+            .getUser(action.args.username)
             .flowOn(Dispatchers.IO)
             .catch { error ->
                 Logger.exception(error)
@@ -68,14 +64,6 @@ class UserStoreImpl @Inject constructor(
                 }
             }
             .launchIn(scope)
-
-        updateState { currentState ->
-            currentState.copy(
-                photos = { getPhotos(username) },
-                likes = { getLikes(username) },
-                collections = { getCollections(username) }
-            )
-        }
     }
 
     private fun getPhotos(
@@ -86,11 +74,10 @@ class UserStoreImpl @Inject constructor(
                 username = username,
                 page = page,
                 pageSize = pageSize
-            )
+            ).map { it.toPresentation() }
         }
     }
         .flow
-        .map { pagingData -> pagingData.map { image -> image.toPresentation() } }
         .flowOn(Dispatchers.IO)
         .cachedIn(scope)
         .stateIn(scope, SharingStarted.Lazily, PagingData.empty())
@@ -103,11 +90,10 @@ class UserStoreImpl @Inject constructor(
                 username = username,
                 page = page,
                 pageSize = pageSize
-            )
+            ).map { it.toPresentation() }
         }
     }
         .flow
-        .map { pagingData -> pagingData.map { image -> image.toPresentation() } }
         .flowOn(Dispatchers.IO)
         .cachedIn(scope)
         .stateIn(scope, SharingStarted.Lazily, PagingData.empty())
@@ -120,11 +106,10 @@ class UserStoreImpl @Inject constructor(
                 username = username,
                 page = page,
                 pageSize = pageSize
-            )
+            ).map { it.toPresentation() }
         }
     }
         .flow
-        .map { pagingData -> pagingData.map { collection -> collection.toPresentation() } }
         .flowOn(Dispatchers.IO)
         .cachedIn(scope)
         .stateIn(scope, SharingStarted.Lazily, PagingData.empty())

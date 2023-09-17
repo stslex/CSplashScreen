@@ -15,8 +15,8 @@ import st.slex.csplashscreen.core.navigation.NavExt.parseArguments
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.user.di.setupUserComponent
 import st.slex.csplashscreen.feature.user.ui.UserScreen
-import st.slex.csplashscreen.feature.user.ui.state.rememberUserScreenNavigation
-import st.slex.csplashscreen.feature.user.ui.state.rememberUserScreenState
+import st.slex.csplashscreen.feature.user.ui.state.rememberUserPagerState
+import st.slex.csplashscreen.feature.user.ui.state.rememberUserSwipeState
 import st.slex.csplashscreen.feature.user.ui.store.UserStore
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.Init
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.OnBackButtonClick
@@ -52,20 +52,35 @@ fun NavGraphBuilder.userGraph(
             viewModel.state
         }.collectAsState()
 
-        val photos = remember {
-            state.photos()
+        val photos = remember(arguments) {
+            state.photos(arguments.username)
         }.collectAsLazyPagingItems()
 
-        val likes = remember {
-            state.likes()
+        val likes = remember(arguments) {
+            state.likes(arguments.username)
         }.collectAsLazyPagingItems()
 
-        val collections = remember {
-            state.collections()
+        val collections = remember(arguments) {
+            state.collections(arguments.username)
         }.collectAsLazyPagingItems()
 
-        val navigation = rememberUserScreenNavigation(
-            username = arguments.username,
+        val userPagerState = rememberUserPagerState(
+            photos = photos,
+            likes = likes,
+            collections = collections,
+        )
+
+        val userSwipeState = rememberUserSwipeState(
+            isOnPreFlingAllow = {
+                userPagerState.isOnPreFlingAllow
+            },
+        )
+
+        UserScreen(
+            modifier = modifier,
+            state = state,
+            userPagerState = userPagerState,
+            userSwipeState = userSwipeState,
             onImageClick = remember {
                 { value -> viewModel.sendAction(OnImageClick(value)) }
             },
@@ -78,20 +93,6 @@ fun NavGraphBuilder.userGraph(
             popBackStack = remember {
                 { viewModel.sendAction(OnBackButtonClick) }
             },
-        )
-
-        val userScreenState = rememberUserScreenState(
-            user = state.user,
-            photos = photos,
-            likes = likes,
-            collections = collections,
-            navigation = navigation,
-            username = arguments.username,
-        )
-
-        UserScreen(
-            modifier = modifier,
-            userScreenState = userScreenState
         )
     }
 }

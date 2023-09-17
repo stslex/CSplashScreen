@@ -25,14 +25,22 @@ class NavigatorImpl @Inject constructor(
         val currentRoute = navController.currentDestination?.route ?: return
         if (currentRoute == screen.screen.navigationRoute) return
 
-        navController.navigate(screen.screenRoute) {
-            if (screen.isSingleTop.not()) return@navigate
+        try {
+            navController.navigate(screen.screenRoute) {
+                if (screen.isSingleTop.not()) return@navigate
 
-            popUpTo(currentRoute) {
-                inclusive = true
-                saveState = true
+                popUpTo(currentRoute) {
+                    inclusive = true
+                    saveState = true
+                }
+                launchSingleTop = true
             }
-            launchSingleTop = true
+        } catch (exception: Exception) {
+            Logger.exception(exception, TAG, "screen: $screen")
         }
+    }
+
+    companion object {
+        private const val TAG = "NAVIGATION"
     }
 }

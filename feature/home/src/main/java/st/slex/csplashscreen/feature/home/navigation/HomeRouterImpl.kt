@@ -13,10 +13,10 @@ class HomeRouterImpl @Inject constructor(
     }
 
     override fun navToImage(uuid: String) {
-        navigator(NavigationScreen.CollectionScreen(uuid))
+        navigator(NavigationScreen.ImageDetailScreen(uuid))
     }
 
     override fun navToCollection(uuid: String) {
-        navigator(NavigationScreen.ImageDetailScreen(uuid))
+        navigator(NavigationScreen.CollectionScreen(uuid))
     }
 }

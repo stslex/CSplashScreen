@@ -17,9 +17,9 @@ interface UserStore : Store<State, Event, Action> {
     @Stable
     data class State(
         val user: UserModel?,
-        val photos: () -> StateFlow<PagingData<PhotoModel>>,
-        val likes: () -> StateFlow<PagingData<PhotoModel>>,
-        val collections: () -> StateFlow<PagingData<CollectionModel>>
+        val photos: (String) -> StateFlow<PagingData<PhotoModel>>,
+        val likes: (String) -> StateFlow<PagingData<PhotoModel>>,
+        val collections: (String) -> StateFlow<PagingData<CollectionModel>>
     ) : Store.State
 
     @Stable
