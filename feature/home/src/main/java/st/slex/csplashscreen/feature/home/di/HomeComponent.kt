@@ -26,6 +26,7 @@ interface HomeComponent {
             PhotosApi::class
         ]
     )
+    @HomeScope
     interface HomeDependenciesComponent : HomeDependencies {
 
         @Component.Factory

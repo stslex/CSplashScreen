@@ -19,6 +19,7 @@ interface FavouriteComponent {
     }
 
     @Component(dependencies = [FavouriteApi::class, NavigationApi::class])
+    @FavouriteScope
     interface FavouriteDependenciesComponent : FavouriteDependencies {
 
         @Component.Factory

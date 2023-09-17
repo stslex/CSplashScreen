@@ -20,11 +20,12 @@ interface SingleCollectionComponent {
     }
 
     @Component(dependencies = [NetworkClientApi::class, NavigationApi::class])
+    @SingleCollectionScope
     interface SingleCollectionDependenciesComponent : SingleCollectionDependencies {
 
         @Component.Factory
         interface Factory {
-            
+
             fun create(
                 networkClientApi: NetworkClientApi,
                 navigationApi: NavigationApi

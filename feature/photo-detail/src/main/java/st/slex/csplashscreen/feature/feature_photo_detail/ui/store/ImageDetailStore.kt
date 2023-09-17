@@ -31,6 +31,9 @@ interface ImageDetailStore : Store<State, Event, Action> {
         data class Error(
             val throwable: Throwable
         ) : ScreenState
+
+        val data: ImageDetail?
+            get() = (this as? Content)?.imageDetail
     }
 
     @Stable
