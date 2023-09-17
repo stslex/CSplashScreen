@@ -26,55 +26,54 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 defaultConfig.apply {
                     applicationId = "st.slex.csplashscreen"
                     targetSdk = 34
-                    versionName = "1.6"
-                    versionCode = 6
+                    versionName = AppVersions.versionName
+                    versionCode = AppVersions.versionCode
 
-                    signingConfigs {
-                        val keystoreProperties =
-                            gradleKeystoreProperties(project.rootProject.projectDir)
-                        val keyStore = getFile(
-                            projectRootDir = project.rootProject.projectDir,
-                            path = keystoreProperties.getProperty("storeFile")
-                        )
-                        create("release") {
-                            keyAlias = keystoreProperties.getProperty("keyAlias")
-                            keyPassword = keystoreProperties.getProperty("keyPassword")
-                            storeFile = keyStore
-                            storePassword = keystoreProperties.getProperty("storePassword")
-                        }
-                        with(getByName("debug")) {
-                            keyAlias = keystoreProperties.getProperty("keyAlias")
-                            keyPassword = keystoreProperties.getProperty("keyPassword")
-                            storeFile = keyStore
-                            storePassword = keystoreProperties.getProperty("storePassword")
-                        }
-                    }
-                    buildTypes {
-                        release {
-                            isMinifyEnabled = false
-                            proguardFiles(
-                                getDefaultProguardFile("proguard-android-optimize.txt"),
-                                "proguard-rules.pro"
-                            )
-                            signingConfig = signingConfigs.getByName("release")
-                            isDebuggable = false
-                        }
-                        debug {
-                            signingConfig = signingConfigs.getByName("debug")
-                            isDebuggable = true
-                        }
-                    }
+                    configureSigning(target)
                 }
             }
         }
     }
 }
 
-fun getFile(
-    projectRootDir: File,
-    path: String
-): File {
-    val file = File(projectRootDir, path)
+fun ApplicationExtension.configureSigning(
+    project: Project
+) {
+    signingConfigs {
+        val keystoreProperties = gradleKeystoreProperties(project.rootProject.projectDir)
+        create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = project.getFile(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
+        }
+        with(getByName("debug")) {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = project.getFile(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
+        }
+    }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("release")
+            isDebuggable = false
+        }
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
+        }
+    }
+}
+
+
+fun Project.getFile(path: String): File {
+    val file = File(project.rootProject.projectDir, path)
     if (file.isFile) {
         return file
     } else {

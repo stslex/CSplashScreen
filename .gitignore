@@ -8,6 +8,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-play_config.json
-keystore.jks
-keystore.properties
+play_config.*
+keystore.*
