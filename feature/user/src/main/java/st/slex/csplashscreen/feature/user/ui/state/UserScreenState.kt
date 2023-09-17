@@ -2,11 +2,8 @@ package st.slex.csplashscreen.feature.user.ui.state
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.paging.compose.LazyPagingItems
-import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.network.model.ui.user.UserModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
@@ -26,13 +23,9 @@ fun rememberUserScreenState(
     likes: LazyPagingItems<PhotoModel>,
     collections: LazyPagingItems<CollectionModel>,
     navigation: UserScreenNavigation,
-    userFlow: () -> StateFlow<UserModel?>,
+    user: UserModel?,
     username: String,
 ): UserScreenState {
-
-    val user by remember {
-        userFlow()
-    }.collectAsState()
 
     val userPagerState = rememberUserPagerState(
         photos = photos,
