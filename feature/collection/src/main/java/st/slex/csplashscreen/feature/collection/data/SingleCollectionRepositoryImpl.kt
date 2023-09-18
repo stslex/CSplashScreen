@@ -3,10 +3,11 @@ package st.slex.csplashscreen.feature.collection.data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import st.slex.csplashscreen.core.network.model.remote.image.RemoteImageModel
-import st.slex.csplashscreen.core.network.source.interf.PhotosNetworkSource
+import st.slex.csplashscreen.core.network.source.interf.PhotosNetworkClient
+import javax.inject.Inject
 
-class SingleCollectionRepositoryImpl(
-    private val source: PhotosNetworkSource
+class SingleCollectionRepositoryImpl @Inject constructor(
+    private val source: PhotosNetworkClient
 ) : SingleCollectionRepository {
 
     override suspend fun getPhotos(

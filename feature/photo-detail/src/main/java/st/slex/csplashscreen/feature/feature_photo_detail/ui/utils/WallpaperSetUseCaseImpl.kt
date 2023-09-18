@@ -6,8 +6,9 @@ import androidx.core.graphics.drawable.toBitmap
 import coil.ImageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import javax.inject.Inject
 
-class WallpaperSetUseCaseImpl(
+class WallpaperSetUseCaseImpl @Inject constructor(
     private val context: Context,
 ) : WallpaperSetUseCase {
 

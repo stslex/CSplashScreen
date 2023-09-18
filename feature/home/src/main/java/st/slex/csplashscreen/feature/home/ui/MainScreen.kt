@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
+import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.collection.ui.component.LazyListCollection
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.photos.ui.component.LazyListPhotos
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.feature.home.ui.components.tabs.MainScreenTabRow
 import st.slex.csplashscreen.feature.home.ui.components.tabs.MainScreenTabs
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -28,7 +28,7 @@ fun MainScreen(
     modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState {
-        MainScreenTabs.values().size
+        MainScreenTabs.entries.size
     }
 
     val coroutineScope = rememberCoroutineScope()

@@ -11,4 +11,8 @@ import androidx.room.RoomDatabase
 abstract class SearchDatabase : RoomDatabase() {
 
     abstract val dao: SearchDao
+
+    companion object {
+        const val NAME = "search.db"
+    }
 }

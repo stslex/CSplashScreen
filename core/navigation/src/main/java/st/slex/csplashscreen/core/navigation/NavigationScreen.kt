@@ -1,6 +1,8 @@
 package st.slex.csplashscreen.core.navigation
 
-sealed class NavigationScreen {
+import st.slex.csplashscreen.core.ui.di.Screen
+
+sealed class NavigationScreen : Screen {
 
     abstract val screen: AppDestination
 
