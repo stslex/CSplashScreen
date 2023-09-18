@@ -49,6 +49,9 @@ internal fun Project.configureAndroidCompose(
 
             val material = libs.findLibrary("material").get()
             add("implementation", material)
+
+            val lifecycle = libs.findBundle("lifecycle").get()
+            add("implementation", lifecycle)
         }
     }
 

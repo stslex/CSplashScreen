@@ -22,7 +22,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,18 +34,17 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import st.slex.csplashscreen.core.core.Resource
 import st.slex.csplashscreen.core.ui.components.ImageComponent
 import st.slex.csplashscreen.core.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.core.ui.theme.Dimen
 import st.slex.csplashscreen.feature.feature_photo_detail.R
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.components.DetailImageBodyTags
-import kotlinx.coroutines.flow.StateFlow
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore
 
 @Composable
 fun ImageDetailScreen(
-    imageDetail: () -> StateFlow<Resource<ImageDetail>>,
+    state: ImageDetailStore.State,
     onProfileClick: (String) -> Unit,
     onDownloadImageClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
@@ -54,9 +52,6 @@ fun ImageDetailScreen(
     onLikeClicked: (ImageDetail) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val result: Resource<ImageDetail> by remember {
-        imageDetail()
-    }.collectAsState()
 
     val systemUiController = rememberSystemUiController()
     val darkIcons = isSystemInDarkTheme().not()
@@ -72,11 +67,11 @@ fun ImageDetailScreen(
         modifier = modifier.fillMaxSize()
     ) {
         BindTopImageHead(
-            url = result.dataIfSuccess?.photo?.url.orEmpty(),
+            url = state.screenState.data?.photo?.url.orEmpty(),
         )
         Spacer(modifier = Modifier.height(Dimen.smallest))
         ImageDetail(
-            imageModel = result,
+            imageModel = state.screenState.data,
             onDownloadImageClick = onDownloadImageClick,
             onTagClick = onTagClick,
             onProfileClick = onProfileClick,
@@ -88,7 +83,7 @@ fun ImageDetailScreen(
 
 @Composable
 private fun ImageDetail(
-    imageModel: Resource<ImageDetail>,
+    imageModel: ImageDetail?,
     onProfileClick: (String) -> Unit,
     onDownloadImageClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
@@ -100,28 +95,28 @@ private fun ImageDetail(
         modifier = modifier
     ) {
         UserDetailImageHead(
-            userUrl = imageModel.dataIfSuccess?.photo?.userUrl.orEmpty(),
-            username = imageModel.dataIfSuccess?.photo?.username.orEmpty(),
-            onProfileClick = remember(imageModel.dataIfSuccess?.photo?.username) {
-                { onProfileClick(imageModel.dataIfSuccess?.photo?.username.orEmpty()) }
+            userUrl = imageModel?.photo?.userUrl.orEmpty(),
+            username = imageModel?.photo?.username.orEmpty(),
+            onProfileClick = remember(imageModel?.photo?.username) {
+                { onProfileClick(imageModel?.photo?.username.orEmpty()) }
             },
-            onDownloadImageClick = remember(imageModel.dataIfSuccess?.photo?.downloadUrl) {
-                { onDownloadImageClick(imageModel.dataIfSuccess?.photo?.downloadUrl.orEmpty()) }
+            onDownloadImageClick = remember(imageModel?.photo?.downloadUrl) {
+                { onDownloadImageClick(imageModel?.photo?.downloadUrl.orEmpty()) }
             },
-            onSetWallpaperClick = remember(imageModel.dataIfSuccess?.photo?.downloadUrl) {
-                { onSetWallpaperClick(imageModel.dataIfSuccess?.photo?.downloadUrl.orEmpty()) }
+            onSetWallpaperClick = remember(imageModel?.photo?.downloadUrl) {
+                { onSetWallpaperClick(imageModel?.photo?.downloadUrl.orEmpty()) }
             },
-            onLikeClicked = { imageModel.dataIfSuccess?.let(onLikeClicked) },
-            isLiked = imageModel.dataIfSuccess?.isLiked ?: false
+            onLikeClicked = { imageModel?.let(onLikeClicked) },
+            isLiked = imageModel?.isLiked ?: false
         )
         Divider(
             modifier = Modifier.padding(
                 vertical = Dimen.medium,
             )
         )
-        if (imageModel.dataIfSuccess?.photo?.tags.orEmpty().isNotEmpty()) {
+        if (imageModel?.photo?.tags.orEmpty().isNotEmpty()) {
             DetailImageBodyTags(
-                tags = imageModel.dataIfSuccess?.photo?.tags.orEmpty(),
+                tags = imageModel?.photo?.tags.orEmpty(),
                 onClick = onTagClick
             )
             Divider(

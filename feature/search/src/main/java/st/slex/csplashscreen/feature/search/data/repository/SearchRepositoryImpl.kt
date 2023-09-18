@@ -11,8 +11,9 @@ import st.slex.csplashscreen.core.network.model.remote.image.RemoteImageModel
 import st.slex.csplashscreen.core.network.source.interf.SearchPhotosNetworkSource
 import st.slex.csplashscreen.feature.search.data.database.SearchDao
 import st.slex.csplashscreen.feature.search.data.database.SearchEntity
+import javax.inject.Inject
 
-class SearchRepositoryImpl(
+class SearchRepositoryImpl @Inject constructor(
     private val networkSource: SearchPhotosNetworkSource,
     private val dao: SearchDao
 ) : SearchRepository {

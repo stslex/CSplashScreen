@@ -12,8 +12,11 @@ import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_PAGE_
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_QUERY
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_PHOTOS
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_SEARCH
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SearchPhotosNetworkSourceImpl(
+@Singleton
+class SearchPhotosNetworkSourceImpl @Inject constructor(
     private val client: NetworkClient
 ) : SearchPhotosNetworkSource {
 
@@ -21,7 +24,7 @@ class SearchPhotosNetworkSourceImpl(
         query: String,
         page: Int,
         pageSize: Int
-    ): RemoteImageSearchModel = client.unsplashClient.get {
+    ): RemoteImageSearchModel = client.apiClient.get {
         url.appendPathSegments(PATH_SEARCH, PATH_PHOTOS)
         parameter(PARAMETER_QUERY, query)
         parameter(PARAMETER_PAGE, page)

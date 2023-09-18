@@ -1,18 +1,22 @@
 package st.slex.csplashscreen.feature.search.navigation
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.navigation.NavExt.composableArguments
 import st.slex.csplashscreen.core.navigation.NavExt.parseArguments
+import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
+import st.slex.csplashscreen.feature.search.di.setupSearchPhotosComponent
 import st.slex.csplashscreen.feature.search.ui.SearchPhotosScreen
-import st.slex.csplashscreen.feature.search.ui.SearchViewModel
+import st.slex.csplashscreen.feature.search.ui.store.SearchStore
+import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Action
 
 fun NavGraphBuilder.searchPhotosGraph(
     modifier: Modifier = Modifier,
@@ -25,29 +29,45 @@ fun NavGraphBuilder.searchPhotosGraph(
             AppArguments.SearchPhotosScreen(args[0])
         }
 
-        val viewModel: SearchViewModel = koinViewModel(
-            key = arguments.checkedQuery
-        ) { parametersOf(arguments) }
+        val viewModel = setupSearchPhotosComponent(arguments.hashCode().toString())
+
+        LaunchedEffect(arguments) {
+            viewModel.sendAction(Action.Init(arguments))
+        }
+
+        viewModel.event.CollectAsEvent { event ->
+            when (event) {
+                is SearchStore.Event.Navigation -> viewModel.processNavigation(event)
+            }
+        }
+
+        val state by remember {
+            viewModel.state
+        }.collectAsState()
 
         val photos = remember {
-            viewModel.photosSearch
+            state.searchItems()
         }.collectAsLazyPagingItems()
 
         val searchHistory = remember {
-            viewModel.searchHistory
+            state.historyItems()
         }.collectAsLazyPagingItems()
 
         SearchPhotosScreen(
             modifier = modifier,
             photos = photos,
             searchHistory = searchHistory,
-            querySearch = remember {
-                { viewModel.querySearch }
+            query = state.query,
+            onQuery = remember {
+                { value -> viewModel.sendAction(Action.OnQueryInput(value)) }
             },
-            onQuery = viewModel::setQueryPhotosSearch,
-            onUserClick = viewModel::onProfileClick,
-            onImageClick = viewModel::onImageClick,
-            clearHistory = viewModel::clearHistory
+            onUserClick = remember {
+                { value -> viewModel.sendAction(Action.OnProfileClick(value)) }
+            },
+            onImageClick = remember {
+                { value -> viewModel.sendAction(Action.OnImageClick(value)) }
+            },
+            clearHistory = remember { { viewModel.sendAction(Action.ClearHistory) } }
         )
     }
 }

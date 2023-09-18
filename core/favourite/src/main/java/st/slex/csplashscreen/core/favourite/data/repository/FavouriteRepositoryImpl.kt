@@ -3,17 +3,20 @@ package st.slex.csplashscreen.core.favourite.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import st.slex.csplashscreen.core.favourite.data.datasource.FavouriteDao
-import st.slex.csplashscreen.core.favourite.data.repository.FavouriteMapper.toDomain
-import st.slex.csplashscreen.core.favourite.data.repository.FavouriteMapper.toEntity
-import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import st.slex.csplashscreen.core.favourite.data.datasource.FavouriteDao
+import st.slex.csplashscreen.core.favourite.data.repository.FavouriteMapper.toDomain
+import st.slex.csplashscreen.core.favourite.data.repository.FavouriteMapper.toEntity
+import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class FavouriteRepositoryImpl(
+@Singleton
+class FavouriteRepositoryImpl @Inject constructor(
     private val dao: FavouriteDao
 ) : FavouriteRepository {
 

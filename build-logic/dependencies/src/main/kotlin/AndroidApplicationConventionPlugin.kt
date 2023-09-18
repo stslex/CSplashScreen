@@ -3,6 +3,10 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import st.slex.csplashscreen.configureKotlinAndroid
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStreamReader
+import java.util.Properties
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
 
@@ -11,6 +15,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
+                apply("com.google.devtools.ksp")
             }
 
             extensions.configure<ApplicationExtension> {
@@ -21,19 +26,69 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 defaultConfig.apply {
                     applicationId = "st.slex.csplashscreen"
                     targetSdk = 34
-                    versionName = "1.6"
-                    versionCode = 6
-                    buildTypes {
-                        release {
-                            isMinifyEnabled = false
-                            proguardFiles(
-                                getDefaultProguardFile("proguard-android-optimize.txt"),
-                                "proguard-rules.pro"
-                            )
-                        }
-                    }
+                    versionName = AppVersions.versionName
+                    versionCode = AppVersions.versionCode
+
+                    configureSigning(target)
                 }
             }
         }
     }
+}
+
+fun ApplicationExtension.configureSigning(
+    project: Project
+) {
+    signingConfigs {
+        val keystoreProperties = gradleKeystoreProperties(project.rootProject.projectDir)
+        create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = project.getFile(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
+        }
+        with(getByName("debug")) {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = project.getFile(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
+        }
+    }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("release")
+            isDebuggable = false
+        }
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
+        }
+    }
+}
+
+
+fun Project.getFile(path: String): File {
+    val file = File(project.rootProject.projectDir, path)
+    if (file.isFile) {
+        return file
+    } else {
+        throw IllegalStateException("${file.name} is inValid")
+    }
+}
+
+fun gradleKeystoreProperties(projectRootDir: File): Properties {
+    val properties = Properties()
+    val localProperties = File(projectRootDir, "keystore.properties")
+
+    if (localProperties.isFile) {
+        InputStreamReader(FileInputStream(localProperties), Charsets.UTF_8).use { reader ->
+            properties.load(reader)
+        }
+    }
+    return properties
 }

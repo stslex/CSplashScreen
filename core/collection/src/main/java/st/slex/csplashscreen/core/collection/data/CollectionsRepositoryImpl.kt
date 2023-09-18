@@ -3,17 +3,18 @@ package st.slex.csplashscreen.core.collection.data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import st.slex.csplashscreen.core.network.model.remote.collection.RemoteCollectionModel
-import st.slex.csplashscreen.core.network.source.interf.CollectionNetworkSource
+import st.slex.csplashscreen.core.network.source.interf.CollectionNetworkClient
+import javax.inject.Inject
 
-class CollectionsRepositoryImpl(
-    private val networkSource: CollectionNetworkSource
+class CollectionsRepositoryImpl @Inject constructor(
+    private val client: CollectionNetworkClient
 ) : CollectionsRepository {
 
     override suspend fun getAllCollections(
         page: Int,
         pageSize: Int
     ): List<RemoteCollectionModel> = withContext(Dispatchers.IO) {
-        networkSource
+        client
             .getCollections(
                 page = page,
                 pageSize = pageSize
@@ -26,7 +27,7 @@ class CollectionsRepositoryImpl(
         page: Int,
         pageSize: Int
     ): List<RemoteCollectionModel> = withContext(Dispatchers.IO) {
-        networkSource
+        client
             .getUserCollections(
                 username = username,
                 page = page,

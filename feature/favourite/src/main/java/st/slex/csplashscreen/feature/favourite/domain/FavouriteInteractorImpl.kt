@@ -1,11 +1,12 @@
 package st.slex.csplashscreen.feature.favourite.domain
 
 import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import st.slex.csplashscreen.core.favourite.data.repository.FavouriteRepository
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class FavouriteInteractorImpl(
+class FavouriteInteractorImpl @Inject constructor(
     private val favouriteRepository: FavouriteRepository
 ) : FavouriteInteractor {
 

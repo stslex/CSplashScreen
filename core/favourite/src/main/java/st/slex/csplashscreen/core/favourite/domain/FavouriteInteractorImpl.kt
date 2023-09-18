@@ -1,13 +1,14 @@
 package st.slex.csplashscreen.core.favourite.domain
 
-import st.slex.csplashscreen.core.favourite.data.repository.FavouriteRepository
-import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import st.slex.csplashscreen.core.favourite.data.repository.FavouriteRepository
+import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
+import javax.inject.Inject
 
-class FavouriteInteractorImpl(
+class FavouriteInteractorImpl @Inject constructor(
     private val repository: FavouriteRepository
 ) : FavouriteInteractor {
 

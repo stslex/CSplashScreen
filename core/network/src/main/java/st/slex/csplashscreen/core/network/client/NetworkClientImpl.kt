@@ -1,6 +1,5 @@
 package st.slex.csplashscreen.core.network.client
 
-import st.slex.csplashscreen.core.network.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.cache.HttpCache
@@ -15,8 +14,12 @@ import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import st.slex.csplashscreen.core.network.BuildConfig
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NetworkClientImpl : NetworkClient {
+@Singleton
+class NetworkClientImpl @Inject constructor() : NetworkClient {
 
     @OptIn(ExperimentalSerializationApi::class)
     override val client: HttpClient
@@ -44,7 +47,7 @@ class NetworkClientImpl : NetworkClient {
 
         }
 
-    override val unsplashClient: HttpClient
+    override val apiClient: HttpClient
         get() = client.config {
             defaultRequest {
                 url {

@@ -10,13 +10,14 @@ import st.slex.csplashscreen.core.photos.ui.component.LazyListPhotos
 import st.slex.csplashscreen.feature.user.ui.components.tabs.UserTab
 import st.slex.csplashscreen.feature.user.ui.components.tabs.UserTabsRow
 import st.slex.csplashscreen.feature.user.ui.state.UserPagerState
-import st.slex.csplashscreen.feature.user.ui.state.UserScreenNavigation
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UserPager(
     userPagerState: UserPagerState,
-    navigation: UserScreenNavigation,
+    onUserClick: (username: String) -> Unit,
+    onImageClick: (id: String) -> Unit,
+    onCollectionClick: (id: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -35,8 +36,8 @@ fun UserPager(
                 UserTab.PHOTOS -> {
                     LazyListPhotos(
                         items = userPagerState.photos,
-                        onUserClick = navigation.onUserClick,
-                        onImageClick = navigation.onImageClick,
+                        onUserClick = onUserClick,
+                        onImageClick = onImageClick,
                         listState = userPagerState.photosListState,
                         contentType = { UserTab.PHOTOS }
                     )
@@ -45,8 +46,8 @@ fun UserPager(
                 UserTab.LIKE -> {
                     LazyListPhotos(
                         items = userPagerState.likes,
-                        onUserClick = navigation.onUserClick,
-                        onImageClick = navigation.onImageClick,
+                        onUserClick = onUserClick,
+                        onImageClick = onImageClick,
                         listState = userPagerState.likesListState,
                         contentType = { UserTab.LIKE }
                     )
@@ -55,8 +56,8 @@ fun UserPager(
                 UserTab.COLLECTION -> {
                     LazyListCollection(
                         items = userPagerState.collections,
-                        onProfileClick = navigation.onUserClick,
-                        onCollectionClick = navigation.onCollectionClick,
+                        onProfileClick = onUserClick,
+                        onCollectionClick = onCollectionClick,
                         listState = userPagerState.collectionsListState,
                         contentType = { UserTab.COLLECTION }
                     )
