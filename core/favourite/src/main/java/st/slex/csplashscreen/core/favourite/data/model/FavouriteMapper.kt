@@ -1,10 +1,10 @@
-package st.slex.csplashscreen.core.favourite.data.repository
+package st.slex.csplashscreen.core.favourite.data.model
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import st.slex.csplashscreen.core.favourite.data.datasource.FavouriteEntity
-import st.slex.csplashscreen.core.favourite.data.repository.JsonParser.parse
-import st.slex.csplashscreen.core.favourite.data.repository.JsonParser.toJson
+import st.slex.csplashscreen.core.database.favourite.FavouriteEntity
+import st.slex.csplashscreen.core.favourite.data.model.JsonParser.parse
+import st.slex.csplashscreen.core.favourite.data.model.JsonParser.toJson
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 
 object FavouriteMapper {
@@ -31,4 +31,3 @@ object FavouriteMapper {
         entity.toDomain()
     }
 }
-

@@ -1,8 +1,8 @@
 package st.slex.csplashscreen.core.favourite.di
 
-import android.content.Context
+import st.slex.csplashscreen.core.database.favourite.FavouriteDao
 
 interface FavouriteDependencies {
 
-    val context: Context
+    val favouriteDao: FavouriteDao
 }

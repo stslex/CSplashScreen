@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.core.favourite.di
 
 import st.slex.csplashscreen.core.core.AppApi
+import st.slex.csplashscreen.core.database.di.DatabaseApiBuilder
 
 object FavouriteApiBuilder {
 
@@ -9,8 +10,10 @@ object FavouriteApiBuilder {
     ): FavouriteApi = DaggerFavouriteComponent
         .factory()
         .create(
-            dependencies = DaggerFavouriteComponent_FavouriteDependenciesComponent
+            dependencies = DaggerFavouriteDependenciesComponent
                 .factory()
-                .create(appApi)
+                .create(
+                    databaseApi = DatabaseApiBuilder.build(appApi)
+                )
         )
 }

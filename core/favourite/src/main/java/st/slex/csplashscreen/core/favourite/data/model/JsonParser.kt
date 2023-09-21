@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.core.favourite.data.repository
+package st.slex.csplashscreen.core.favourite.data.model
 
 import com.google.gson.Gson
 

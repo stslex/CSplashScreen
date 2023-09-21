@@ -7,8 +7,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import st.slex.csplashscreen.core.ui.di.ViewModelKey
-import st.slex.csplashscreen.feature.search.data.repository.SearchRepository
-import st.slex.csplashscreen.feature.search.data.repository.SearchRepositoryImpl
+import st.slex.csplashscreen.feature.search.data.SearchRepository
+import st.slex.csplashscreen.feature.search.data.SearchRepositoryImpl
 import st.slex.csplashscreen.feature.search.domain.interactor.SearchPhotosInteractor
 import st.slex.csplashscreen.feature.search.domain.interactor.SearchPhotosInteractorImpl
 import st.slex.csplashscreen.feature.search.navigation.SearchPhotosRouter

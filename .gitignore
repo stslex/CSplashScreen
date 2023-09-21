@@ -10,3 +10,4 @@
 local.properties
 play_config.*
 keystore.*
+Gemfile.lock
