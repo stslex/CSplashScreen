@@ -1,6 +1,6 @@
 package st.slex.csplashscreen.feature.search.domain.model
 
-import st.slex.csplashscreen.feature.search.data.database.SearchEntity
+import st.slex.csplashscreen.core.database.search.SearchEntity
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
 import java.time.Instant
 import java.time.OffsetDateTime

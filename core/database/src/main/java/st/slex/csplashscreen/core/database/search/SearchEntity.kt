@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.feature.search.data.database
+package st.slex.csplashscreen.core.database.search
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

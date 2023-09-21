@@ -1,9 +1,9 @@
-package st.slex.csplashscreen.feature.search.data.repository
+package st.slex.csplashscreen.feature.search.data
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
+import st.slex.csplashscreen.core.database.search.SearchEntity
 import st.slex.csplashscreen.core.network.model.remote.image.RemoteImageModel
-import st.slex.csplashscreen.feature.search.data.database.SearchEntity
 
 interface SearchRepository {
 

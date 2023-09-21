@@ -10,10 +10,8 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:network"))
     implementation(project(":core:photos"))
+    implementation(project(":core:database"))
 
-    implementation(libs.bundles.room)
-    annotationProcessor(libs.androidx.room.compiler)
-    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.paging.runtime)
 }
 

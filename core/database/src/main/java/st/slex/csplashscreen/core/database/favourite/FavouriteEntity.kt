@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.core.favourite.data.datasource
+package st.slex.csplashscreen.core.database.favourite
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
