@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.feature.search.data.repository
+package st.slex.csplashscreen.feature.search.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -7,10 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import st.slex.csplashscreen.core.database.search.SearchDao
+import st.slex.csplashscreen.core.database.search.SearchEntity
 import st.slex.csplashscreen.core.network.model.remote.image.RemoteImageModel
 import st.slex.csplashscreen.core.network.source.interf.SearchPhotosNetworkSource
-import st.slex.csplashscreen.feature.search.data.database.SearchDao
-import st.slex.csplashscreen.feature.search.data.database.SearchEntity
 import javax.inject.Inject
 
 class SearchRepositoryImpl @Inject constructor(

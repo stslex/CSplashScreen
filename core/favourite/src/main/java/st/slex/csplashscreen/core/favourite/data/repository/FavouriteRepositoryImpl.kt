@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import st.slex.csplashscreen.core.favourite.data.datasource.FavouriteDao
-import st.slex.csplashscreen.core.favourite.data.repository.FavouriteMapper.toDomain
-import st.slex.csplashscreen.core.favourite.data.repository.FavouriteMapper.toEntity
+import st.slex.csplashscreen.core.database.favourite.FavouriteDao
+import st.slex.csplashscreen.core.favourite.data.model.FavouriteMapper.toDomain
+import st.slex.csplashscreen.core.favourite.data.model.FavouriteMapper.toEntity
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import javax.inject.Inject
 import javax.inject.Singleton

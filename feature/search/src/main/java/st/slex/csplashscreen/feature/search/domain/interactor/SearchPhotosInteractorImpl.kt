@@ -9,10 +9,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import st.slex.csplashscreen.core.database.search.SearchEntity
 import st.slex.csplashscreen.core.network.model.toDomain
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
-import st.slex.csplashscreen.feature.search.data.database.SearchEntity
-import st.slex.csplashscreen.feature.search.data.repository.SearchRepository
+import st.slex.csplashscreen.feature.search.data.SearchRepository
 import st.slex.csplashscreen.feature.search.domain.model.SearchMapper.toPresentation
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
 import javax.inject.Inject

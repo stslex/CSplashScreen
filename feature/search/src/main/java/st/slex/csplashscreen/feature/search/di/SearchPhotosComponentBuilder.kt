@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import st.slex.csplashscreen.core.core.AppApi
 import st.slex.csplashscreen.core.core.appApi
+import st.slex.csplashscreen.core.database.di.DatabaseApiBuilder
 import st.slex.csplashscreen.core.network.di.NetworkApiBuilder
 import st.slex.csplashscreen.core.ui.base.daggerViewModel
 import st.slex.csplashscreen.core.ui.di.NavigationApi
@@ -18,10 +19,10 @@ object SearchPhotosComponentBuilder {
     ): SearchPhotosComponent = DaggerSearchPhotosComponent
         .factory()
         .create(
-            dependencies = DaggerSearchPhotosComponent_SearchPhotosDependenciesComponent
+            dependencies = DaggerSearchPhotosDependenciesComponent
                 .factory()
                 .create(
-                    appApi = appApi,
+                    databaseApi = DatabaseApiBuilder.build(appApi),
                     navigationApi = navigationApi,
                     networkClientApi = NetworkApiBuilder.build()
                 )
@@ -31,7 +32,7 @@ object SearchPhotosComponentBuilder {
 @Composable
 fun setupSearchPhotosComponent(key: String): SearchViewModel {
     val context = LocalContext.current
-    return daggerViewModel {
+    return daggerViewModel(key) {
         SearchPhotosComponentBuilder
             .build(context.appApi, context.navigationApi)
             .viewModelFactory
