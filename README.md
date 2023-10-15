@@ -15,13 +15,13 @@ The app client with Image library using Unsplash api
 ### Tools
 
 - JetpackCompose
-- MVVM
-- Coin (DI)
+- MVVM + MVI
+- Dagger (DI)
 - Ktor
 - Coroutines / Flow
 - Jetpack paging library
 - Jetpack compose navigation
-- Coil (in process for migration from Glide)
+- Coil
 - Material design 3 (Material YOU)
 
 ### Installation

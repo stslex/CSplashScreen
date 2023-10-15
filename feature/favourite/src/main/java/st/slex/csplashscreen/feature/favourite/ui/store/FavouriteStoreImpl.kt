@@ -1,14 +1,9 @@
 package st.slex.csplashscreen.feature.favourite.ui.store
 
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.BaseStoreImpl
 import st.slex.csplashscreen.feature.favourite.domain.FavouriteInteractor
@@ -32,13 +27,7 @@ class FavouriteStoreImpl @Inject constructor(
             .map { pagingData ->
                 pagingData
             }
-            .flowOn(Dispatchers.IO)
-            .cachedIn(scope)
-            .stateIn(
-                scope = scope,
-                started = SharingStarted.Lazily,
-                initialValue = PagingData.empty()
-            )
+            .state()
 
     override fun processAction(action: Action) {
         when (action) {

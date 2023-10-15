@@ -9,9 +9,14 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.swipeable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onSizeChanged
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.ui.base.DimensionSubcomposeLayout
 import st.slex.csplashscreen.core.ui.utils.UiExt.toPx
@@ -36,6 +41,7 @@ fun UserScreen(
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
+
     DimensionSubcomposeLayout(
         mainContent = {
             UserHeader(
@@ -44,7 +50,10 @@ fun UserScreen(
             )
         }
     ) { contentSize ->
-        val initialHeight = contentSize.height.toPx
+        val currentHeight = contentSize.height.toPx
+        var userHeaderHeight by remember {
+            mutableStateOf(currentHeight)
+        }
 
         Column(
             modifier = modifier
@@ -60,14 +69,23 @@ fun UserScreen(
                         state = userSwipeState.swipeableState,
                         anchors = mapOf(
                             0f to SwipeState.COLLAPSE,
-                            initialHeight to SwipeState.EXPAND
+                            userHeaderHeight to SwipeState.EXPAND
                         ),
                         orientation = Orientation.Vertical,
                     )
                     .nestedScroll(userSwipeState.swipeScrollConnection)
             ) {
                 UserHeader(
-                    modifier = Modifier,
+                    modifier = Modifier
+                        .onSizeChanged { currentSize ->
+                            val floatSize = currentSize.height.toFloat()
+                            if (
+                                userHeaderHeight != floatSize &&
+                                floatSize != 0f
+                            ) {
+                                userHeaderHeight = floatSize
+                            }
+                        },
                     user = state.user,
                     onTabClick = { tab ->
                         coroutineScope.launch {
