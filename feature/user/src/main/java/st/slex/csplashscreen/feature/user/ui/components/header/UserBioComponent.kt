@@ -1,7 +1,6 @@
 package st.slex.csplashscreen.feature.user.ui.components.header
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,10 +23,10 @@ private enum class UserBioState(val value: Int) {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BindUserBio(
-    modifier: Modifier = Modifier, bioText: String
+    bioText: String,
+    modifier: Modifier = Modifier,
 ) {
     val userBioState = remember {
         mutableStateOf(UserBioState.COLLAPSE)

@@ -3,18 +3,14 @@ package st.slex.csplashscreen.feature.search.ui.store
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import androidx.paging.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.core.Logger
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
@@ -42,10 +38,7 @@ class SearchStoreImpl @Inject constructor(
     override val state = MutableStateFlow(initialState)
 
     private val searchHistory: StateFlow<PagingData<SearchItem>>
-        get() = interactor.searchHistory
-            .flowOn(Dispatchers.IO)
-            .cachedIn(scope)
-            .stateIn(scope, SharingStarted.Lazily, PagingData.empty())
+        get() = interactor.searchHistory.state()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val photosSearch: StateFlow<PagingData<PhotoModel>>
@@ -54,9 +47,7 @@ class SearchStoreImpl @Inject constructor(
             .map(::newPagerPhotosSearch)
             .flatMapLatest { it.flow }
             .map { pagingData -> pagingData.map { it.toPresentation() } }
-            .flowOn(Dispatchers.IO)
-            .cachedIn(scope)
-            .stateIn(scope, SharingStarted.Lazily, PagingData.empty())
+            .state()
 
     private fun newPagerPhotosSearch(
         query: String

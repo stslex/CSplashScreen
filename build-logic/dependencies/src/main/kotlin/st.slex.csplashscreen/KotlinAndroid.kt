@@ -63,6 +63,9 @@ internal fun Project.configureKotlinAndroid(
 
         val daggerCompiler = libs.findLibrary("dagger-compiler").get()
         add("ksp", daggerCompiler)
+
+        val coroutines = libs.findLibrary("coroutines").get()
+        add("implementation", coroutines)
     }
 }
 

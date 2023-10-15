@@ -13,9 +13,11 @@ class SingleCollectionInteractorImpl @Inject constructor(
         uuid: String,
         page: Int,
         pageSize: Int
-    ): List<ImageModel> = repository.getPhotos(
-        uuid = uuid,
-        page = page,
-        pageSize = pageSize
-    ).toDomain()
+    ): List<ImageModel> = repository
+        .getPhotos(
+            uuid = uuid,
+            page = page,
+            pageSize = pageSize
+        )
+        .toDomain()
 }

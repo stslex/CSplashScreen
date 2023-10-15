@@ -13,7 +13,8 @@ interface SingleCollectionStore : Store<State, Event, Action> {
 
     @Stable
     data class State(
-        val photos: () -> StateFlow<PagingData<PhotoModel>>
+        val photos: () -> StateFlow<PagingData<PhotoModel>>,
+        val collectionId: String,
     ) : Store.State
 
     @Stable
