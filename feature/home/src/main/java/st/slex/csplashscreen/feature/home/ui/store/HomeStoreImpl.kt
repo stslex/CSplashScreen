@@ -41,13 +41,7 @@ class HomeStoreImpl @Inject constructor(
         }
             .flow
             .map { pagingData -> pagingData.map { it.toPresentation() } }
-            .flowOn(Dispatchers.IO)
-            .cachedIn(scope)
-            .stateIn(
-                scope = scope,
-                started = SharingStarted.Lazily,
-                initialValue = PagingData.empty()
-            )
+            .state()
 
     private val photos: StateFlow<PagingData<PhotoModel>>
         get() = Pager(config = config) {

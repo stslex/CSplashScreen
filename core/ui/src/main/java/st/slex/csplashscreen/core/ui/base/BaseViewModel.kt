@@ -23,4 +23,9 @@ open class BaseViewModel<out S : State, out E : Event, in A : Action>(
     fun sendAction(action: A) {
         store.processAction(action)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        store.destroy()
+    }
 }

@@ -1,11 +1,11 @@
 package st.slex.csplashscreen.core.ui.mvi
 
-import st.slex.csplashscreen.core.ui.mvi.Store.Action
-import st.slex.csplashscreen.core.ui.mvi.Store.Event
-import st.slex.csplashscreen.core.ui.mvi.Store.State
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import st.slex.csplashscreen.core.ui.mvi.Store.Action
+import st.slex.csplashscreen.core.ui.mvi.Store.Event
+import st.slex.csplashscreen.core.ui.mvi.Store.State
 
 interface Store<out S : State, out E : Event, in A : Action> {
 
@@ -16,8 +16,9 @@ interface Store<out S : State, out E : Event, in A : Action> {
 
     fun init(scope: CoroutineScope)
 
+    fun destroy()
+
     interface State
     interface Event
     interface Action
 }
-
