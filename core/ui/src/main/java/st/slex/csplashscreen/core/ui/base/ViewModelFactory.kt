@@ -1,4 +1,4 @@
-package com.stslex93.notes.core.ui.base
+package st.slex.csplashscreen.core.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

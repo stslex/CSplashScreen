@@ -11,13 +11,5 @@ import javax.inject.Inject
 
 class SingleCollectionViewModel @Inject constructor(
     store: SingleCollectionStore,
-    private val router: SingleCollectionRouter
-) : BaseViewModel<State, Event, Action>(store) {
-
-    fun processNavigation(event: Navigation) {
-        when (event) {
-            is Navigation.ImageDetail -> router.navToImage(event.uuid)
-            is Navigation.Profile -> router.navToProfile(event.username)
-        }
-    }
-}
+    router: SingleCollectionRouter
+) : BaseViewModel<State, Event, Action, Navigation>(store, router)

@@ -25,7 +25,7 @@ interface UserStore : Store<State, Event, Action> {
     @Stable
     sealed interface Event : Store.Event {
 
-        sealed interface Navigation : Event {
+        sealed interface Navigation : Event, Store.Event.Navigation {
 
             data object PopBack : Navigation
 

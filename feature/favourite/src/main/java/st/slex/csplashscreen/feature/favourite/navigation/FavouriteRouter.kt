@@ -1,11 +1,6 @@
 package st.slex.csplashscreen.feature.favourite.navigation
 
-interface FavouriteRouter {
+import st.slex.csplashscreen.core.ui.mvi.Router
+import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore
 
-    fun navToUser(username: String)
-
-    fun navToImage(uuid: String)
-
-    fun navHome()
-}
-
+interface FavouriteRouter : Router<FavouriteStore.Event.Navigation>

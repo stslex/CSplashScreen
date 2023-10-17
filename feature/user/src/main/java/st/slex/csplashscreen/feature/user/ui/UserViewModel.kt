@@ -10,16 +10,6 @@ import st.slex.csplashscreen.feature.user.ui.store.UserStore.State
 import javax.inject.Inject
 
 class UserViewModel @Inject constructor(
-    private val router: UserRouter,
+    router: UserRouter,
     store: UserStore
-) : BaseViewModel<State, Event, Action>(store) {
-
-    fun processNavigation(event: Navigation) {
-        when (event) {
-            is Navigation.Collection -> router.navToCollection(event.uuid)
-            is Navigation.Image -> router.navToImage(event.uuid)
-            is Navigation.PopBack -> router.popBack()
-            is Navigation.User -> router.navToUser(event.username)
-        }
-    }
-}
+) : BaseViewModel<State, Event, Action, Navigation>(store, router)

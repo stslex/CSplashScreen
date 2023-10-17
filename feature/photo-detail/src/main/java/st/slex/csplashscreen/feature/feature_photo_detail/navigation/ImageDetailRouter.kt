@@ -1,9 +1,6 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.navigation
 
-interface ImageDetailRouter {
+import st.slex.csplashscreen.core.ui.mvi.Router
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event.Navigation
 
-    fun navToSearch(tag: String)
-
-    fun navToProfile(username: String)
-}
-
+interface ImageDetailRouter : Router<Navigation>

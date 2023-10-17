@@ -1,9 +1,6 @@
 package st.slex.csplashscreen.feature.search.navigation
 
-interface SearchPhotosRouter {
+import st.slex.csplashscreen.core.ui.mvi.Router
+import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Event.Navigation
 
-    fun navToImage(uuid: String)
-
-    fun navToProfile(username: String)
-}
-
+interface SearchPhotosRouter : Router<Navigation>

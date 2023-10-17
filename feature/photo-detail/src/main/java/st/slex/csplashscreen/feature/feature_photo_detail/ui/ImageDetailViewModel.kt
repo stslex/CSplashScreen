@@ -5,18 +5,11 @@ import st.slex.csplashscreen.feature.feature_photo_detail.navigation.ImageDetail
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Action
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event.Navigation
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.State
 import javax.inject.Inject
 
 class ImageDetailViewModel @Inject constructor(
-    private val router: ImageDetailRouter,
+    router: ImageDetailRouter,
     store: ImageDetailStore
-) : BaseViewModel<State, Event, Action>(store) {
-
-    fun processNavigation(event: Event.Navigation) {
-        when (event) {
-            is Event.Navigation.Profile -> router.navToProfile(event.username)
-            is Event.Navigation.Search -> router.navToSearch(event.tag)
-        }
-    }
-}
+) : BaseViewModel<State, Event, Action, Navigation>(store, router)
