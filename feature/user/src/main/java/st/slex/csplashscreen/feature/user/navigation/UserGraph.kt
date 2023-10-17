@@ -44,7 +44,7 @@ fun NavGraphBuilder.userGraph(
 
         viewModel.event.CollectAsEvent { event ->
             when (event) {
-                is UserStore.Event.Navigation -> viewModel.processNavigation(event)
+                is UserStore.Event.Navigation -> viewModel.navigate(event)
             }
         }
 

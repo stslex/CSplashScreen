@@ -41,7 +41,7 @@ fun NavGraphBuilder.imageDetailGraph(
 
         viewModel.event.CollectAsEvent { event ->
             when (event) {
-                is ImageDetailStore.Event.Navigation -> viewModel.processNavigation(event)
+                is ImageDetailStore.Event.Navigation -> viewModel.navigate(event)
             }
         }
 

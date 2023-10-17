@@ -2,7 +2,7 @@ package st.slex.csplashscreen.feature.favourite.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.stslex93.notes.core.ui.base.ViewModelFactory
+import st.slex.csplashscreen.core.ui.base.ViewModelFactory
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

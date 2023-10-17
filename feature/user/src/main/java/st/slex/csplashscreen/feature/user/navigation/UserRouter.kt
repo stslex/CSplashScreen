@@ -1,13 +1,6 @@
 package st.slex.csplashscreen.feature.user.navigation
 
-interface UserRouter {
+import st.slex.csplashscreen.core.ui.mvi.Router
+import st.slex.csplashscreen.feature.user.ui.store.UserStore
 
-    fun popBack()
-
-    fun navToUser(username: String)
-
-    fun navToImage(uuid: String)
-
-    fun navToCollection(uuid: String)
-}
-
+interface UserRouter : Router<UserStore.Event.Navigation>

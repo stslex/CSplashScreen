@@ -35,7 +35,7 @@ fun NavGraphBuilder.homeGraph(
 
         viewModel.event.CollectAsEvent { event ->
             when (event) {
-                is HomeStore.Event.Navigation -> viewModel.processNavigation(event)
+                is HomeStore.Event.Navigation -> viewModel.navigate(event)
             }
         }
 

@@ -24,7 +24,7 @@ interface SearchStore : Store<State, Event, Action> {
     sealed interface Event : Store.Event {
 
         @Stable
-        sealed interface Navigation : Event {
+        sealed interface Navigation : Event, Store.Event.Navigation {
 
             @Stable
             data class Profile(

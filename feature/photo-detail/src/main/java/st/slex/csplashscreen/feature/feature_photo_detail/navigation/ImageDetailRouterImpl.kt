@@ -2,17 +2,25 @@ package st.slex.csplashscreen.feature.feature_photo_detail.navigation
 
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.ui.di.Navigator
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event.Navigation
 import javax.inject.Inject
 
 class ImageDetailRouterImpl @Inject constructor(
     private val navigator: Navigator
 ) : ImageDetailRouter {
 
-    override fun navToSearch(tag: String) {
-        navigator(NavigationScreen.SearchPhotosScreen(tag))
+    override fun invoke(event: Navigation) {
+        when (event) {
+            is Navigation.Profile -> navToProfile(event)
+            is Navigation.Search -> navToSearch(event)
+        }
     }
 
-    override fun navToProfile(username: String) {
-        navigator(NavigationScreen.UserScreen(username))
+    private fun navToSearch(event: Navigation.Search) {
+        navigator(NavigationScreen.SearchPhotosScreen(event.tag))
+    }
+
+    private fun navToProfile(event: Navigation.Profile) {
+        navigator(NavigationScreen.UserScreen(event.username))
     }
 }

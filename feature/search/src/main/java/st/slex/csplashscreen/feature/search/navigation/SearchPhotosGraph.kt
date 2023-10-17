@@ -37,7 +37,7 @@ fun NavGraphBuilder.searchPhotosGraph(
 
         viewModel.event.CollectAsEvent { event ->
             when (event) {
-                is SearchStore.Event.Navigation -> viewModel.processNavigation(event)
+                is SearchStore.Event.Navigation -> viewModel.navigate(event)
             }
         }
 

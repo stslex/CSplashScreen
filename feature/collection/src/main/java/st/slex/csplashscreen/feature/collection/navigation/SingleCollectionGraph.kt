@@ -44,7 +44,7 @@ fun NavGraphBuilder.singleCollectionGraph(
 
         viewModel.event.CollectAsEvent { event ->
             when (event) {
-                is Event.Navigation -> viewModel.processNavigation(event)
+                is Event.Navigation -> viewModel.navigate(event)
             }
         }
 

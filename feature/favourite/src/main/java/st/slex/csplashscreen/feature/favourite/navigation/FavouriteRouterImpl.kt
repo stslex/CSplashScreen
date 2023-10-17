@@ -2,21 +2,30 @@ package st.slex.csplashscreen.feature.favourite.navigation
 
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.ui.di.Navigator
+import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore
 import javax.inject.Inject
 
 class FavouriteRouterImpl @Inject constructor(
     private val navigator: Navigator
 ) : FavouriteRouter {
 
-    override fun navToUser(username: String) {
-        navigator(NavigationScreen.UserScreen(username))
+    override fun invoke(event: FavouriteStore.Event.Navigation) {
+        when (event) {
+            FavouriteStore.Event.Navigation.Home -> navHome()
+            is FavouriteStore.Event.Navigation.Image -> navToImage(event)
+            is FavouriteStore.Event.Navigation.User -> navToUser(event)
+        }
     }
 
-    override fun navToImage(uuid: String) {
-        navigator(NavigationScreen.ImageDetailScreen(uuid))
+    private fun navToUser(event: FavouriteStore.Event.Navigation.User) {
+        navigator(NavigationScreen.UserScreen(event.username))
     }
 
-    override fun navHome() {
+    private fun navToImage(event: FavouriteStore.Event.Navigation.Image) {
+        navigator(NavigationScreen.ImageDetailScreen(event.uuid))
+    }
+
+    private fun navHome() {
         navigator(NavigationScreen.Home)
     }
 }
