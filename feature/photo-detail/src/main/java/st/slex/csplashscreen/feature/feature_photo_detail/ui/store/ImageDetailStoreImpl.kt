@@ -1,14 +1,13 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.ui.store
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.core.Logger
-import st.slex.csplashscreen.core.ui.mvi.BaseStoreImpl
+import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.interactor.ImageDetailInteractor
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Action
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event
@@ -22,14 +21,12 @@ class ImageDetailStoreImpl @Inject constructor(
     private val interactor: ImageDetailInteractor,
     private val downloadImageUseCase: DownloadImageUseCase,
     private val wallpaperSetUseCase: WallpaperSetUseCase,
-) : ImageDetailStore, BaseStoreImpl<State, Event, Action>() {
+) : ImageDetailStore, BaseStore<State, Event, Action>() {
 
     override val initialState: State = State(
         imageId = "",
         screenState = ScreenState.Loading
     )
-
-    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     override fun processAction(action: Action) {
         when (action) {

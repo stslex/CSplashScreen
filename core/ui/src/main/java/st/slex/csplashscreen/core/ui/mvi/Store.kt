@@ -20,9 +20,9 @@ interface Store<out S : State, out E : Event, in A : Action> {
 
     interface State
 
-    interface Event {
-        interface Navigation : Event
-    }
+    interface Event
+
+    interface Navigation
 
     interface Action
 }

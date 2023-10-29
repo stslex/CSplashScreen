@@ -4,7 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -15,7 +14,7 @@ import st.slex.csplashscreen.core.collection.ui.model.toPresentation
 import st.slex.csplashscreen.core.core.Logger
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.mvi.BaseStoreImpl
+import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.user.domain.UserInteractor
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action
@@ -25,7 +24,7 @@ import javax.inject.Inject
 
 class UserStoreImpl @Inject constructor(
     private val interactor: UserInteractor
-) : UserStore, BaseStoreImpl<State, Event, Action>() {
+) : UserStore, BaseStore<State, Event, Action>() {
 
     override val initialState: State = State(
         user = null,
@@ -33,8 +32,6 @@ class UserStoreImpl @Inject constructor(
         photos = ::getPhotos,
         collections = ::getCollections
     )
-
-    override val state = MutableStateFlow(initialState)
 
     override fun processAction(action: Action) {
         when (action) {

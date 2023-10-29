@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -16,7 +15,7 @@ import st.slex.csplashscreen.core.core.Logger
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.mvi.BaseStoreImpl
+import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.search.domain.interactor.SearchPhotosInteractor
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
@@ -27,15 +26,13 @@ import javax.inject.Inject
 
 class SearchStoreImpl @Inject constructor(
     val interactor: SearchPhotosInteractor
-) : SearchStore, BaseStoreImpl<State, Event, Action>() {
+) : SearchStore, BaseStore<State, Event, Action>() {
 
     override val initialState = State(
         query = "",
         searchItems = ::photosSearch,
         historyItems = ::searchHistory
     )
-
-    override val state = MutableStateFlow(initialState)
 
     private val searchHistory: StateFlow<PagingData<SearchItem>>
         get() = interactor.searchHistory.state()

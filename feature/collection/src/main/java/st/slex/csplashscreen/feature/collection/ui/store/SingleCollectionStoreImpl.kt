@@ -5,7 +5,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
@@ -13,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import st.slex.csplashscreen.core.core.CoroutineExt.mapState
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.mvi.BaseStoreImpl
+import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.collection.domain.SingleCollectionInteractor
 import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Action
@@ -23,15 +22,13 @@ import javax.inject.Inject
 
 class SingleCollectionStoreImpl @Inject constructor(
     private val interactor: SingleCollectionInteractor
-) : SingleCollectionStore, BaseStoreImpl<State, Event, Action>() {
+) : SingleCollectionStore, BaseStore<State, Event, Action>() {
 
     override val initialState: State
         get() = State(
             photos = ::allPhotos,
             collectionId = ""
         )
-
-    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     override fun processAction(action: Action) {
         when (action) {
