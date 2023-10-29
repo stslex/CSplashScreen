@@ -18,7 +18,6 @@ import st.slex.csplashscreen.feature.collection.di.SingleCollectionBuilder
 import st.slex.csplashscreen.feature.collection.ui.CollectionScreen
 import st.slex.csplashscreen.feature.collection.ui.SingleCollectionViewModel
 import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Action
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Event
 
 fun NavGraphBuilder.singleCollectionGraph(
     modifier: Modifier = Modifier,
@@ -48,9 +47,7 @@ fun NavGraphBuilder.singleCollectionGraph(
         }
 
         viewModel.event.CollectAsEvent { event ->
-            when (event) {
-                is Event.Navigation -> viewModel.navigate(event)
-            }
+            // TODO NOT IMPLEMENTED YET
         }
 
         CollectionScreen(

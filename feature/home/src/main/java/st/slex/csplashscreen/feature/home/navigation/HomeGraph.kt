@@ -36,9 +36,7 @@ fun NavGraphBuilder.homeGraph(
         }.collectAsLazyPagingItems()
 
         viewModel.event.CollectAsEvent { event ->
-            when (event) {
-                is HomeStore.Event.Navigation -> viewModel.navigate(event)
-            }
+            // TODO NOT IMPLEMENTED YET
         }
 
         MainScreen(

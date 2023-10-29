@@ -15,7 +15,6 @@ import st.slex.csplashscreen.feature.favourite.di.FavouriteComponentBuilder
 import st.slex.csplashscreen.feature.favourite.ui.FavouriteScreen
 import st.slex.csplashscreen.feature.favourite.ui.FavouriteViewModel
 import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.Action
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.Event
 
 fun NavGraphBuilder.favouriteGraph(
     modifier: Modifier = Modifier,
@@ -36,9 +35,7 @@ fun NavGraphBuilder.favouriteGraph(
         }.collectAsLazyPagingItems()
 
         viewModel.event.CollectAsEvent { event ->
-            when (event) {
-                is Event.Navigation -> viewModel.navigate(event)
-            }
+            // TODO NOT IMPLEMENTED YET
         }
 
         FavouriteScreen(

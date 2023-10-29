@@ -2,7 +2,7 @@ package st.slex.csplashscreen.feature.home.navigation
 
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.ui.di.Navigator
-import st.slex.csplashscreen.feature.home.ui.store.HomeStore.Event.Navigation
+import st.slex.csplashscreen.feature.home.ui.store.HomeStore.Navigation
 import javax.inject.Inject
 
 class HomeRouterImpl @Inject constructor(

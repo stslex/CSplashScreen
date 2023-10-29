@@ -16,7 +16,6 @@ import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.feature_photo_detail.di.ImageDetailComponentBuilder
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailScreen
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailViewModel
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Action
 
 fun NavGraphBuilder.imageDetailGraph(
@@ -44,9 +43,7 @@ fun NavGraphBuilder.imageDetailGraph(
         }.collectAsState()
 
         viewModel.event.CollectAsEvent { event ->
-            when (event) {
-                is ImageDetailStore.Event.Navigation -> viewModel.navigate(event)
-            }
+            // TODO NOT IMPLEMENTED YET
         }
 
         ImageDetailScreen(
