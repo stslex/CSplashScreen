@@ -1,16 +1,16 @@
 package st.slex.csplashscreen.feature.favourite.di
 
-import androidx.lifecycle.ViewModelProvider
 import dagger.Component
 import st.slex.csplashscreen.core.favourite.di.FavouriteApi
 import st.slex.csplashscreen.core.ui.di.NavigationApi
+import st.slex.csplashscreen.core.ui.di.builder.Feature
 
 @Component(
     dependencies = [FavouriteDependencies::class],
     modules = [FavouriteModule::class]
 )
 @FavouriteScope
-interface FavouriteComponent {
+interface FavouriteComponent : Feature {
 
     @Component.Factory
     interface Factory {
@@ -31,6 +31,4 @@ interface FavouriteComponent {
             ): FavouriteDependencies
         }
     }
-
-    val viewModelFactory: ViewModelProvider.Factory
 }

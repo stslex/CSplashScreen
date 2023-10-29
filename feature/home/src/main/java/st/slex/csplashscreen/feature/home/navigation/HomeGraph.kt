@@ -8,8 +8,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import st.slex.csplashscreen.core.navigation.AppDestination
+import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
-import st.slex.csplashscreen.feature.home.di.setupComponent
+import st.slex.csplashscreen.feature.home.di.HomeComponentBuilder
+import st.slex.csplashscreen.feature.home.ui.HomeViewModel
 import st.slex.csplashscreen.feature.home.ui.MainScreen
 import st.slex.csplashscreen.feature.home.ui.store.HomeStore
 
@@ -19,7 +21,7 @@ fun NavGraphBuilder.homeGraph(
     composable(
         route = AppDestination.HOME.navigationRoute
     ) {
-        val viewModel = setupComponent()
+        val viewModel: HomeViewModel = setupComponent(HomeComponentBuilder)
 
         val state by remember {
             viewModel.state
@@ -34,9 +36,7 @@ fun NavGraphBuilder.homeGraph(
         }.collectAsLazyPagingItems()
 
         viewModel.event.CollectAsEvent { event ->
-            when (event) {
-                is HomeStore.Event.Navigation -> viewModel.navigate(event)
-            }
+            // TODO NOT IMPLEMENTED YET
         }
 
         MainScreen(

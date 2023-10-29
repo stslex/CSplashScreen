@@ -13,17 +13,20 @@ import kotlinx.coroutines.flow.map
 import st.slex.csplashscreen.core.core.CoroutineExt.mapState
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.mvi.BaseStoreImpl
+import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.collection.domain.SingleCollectionInteractor
+import st.slex.csplashscreen.feature.collection.navigation.SingleCollectionRouter
 import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Action
 import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Event
+import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Navigation
 import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.State
 import javax.inject.Inject
 
 class SingleCollectionStoreImpl @Inject constructor(
-    private val interactor: SingleCollectionInteractor
-) : SingleCollectionStore, BaseStoreImpl<State, Event, Action>() {
+    private val interactor: SingleCollectionInteractor,
+    router: SingleCollectionRouter
+) : SingleCollectionStore, BaseStore<State, Event, Action, Navigation>(router) {
 
     override val initialState: State
         get() = State(
@@ -71,11 +74,11 @@ class SingleCollectionStoreImpl @Inject constructor(
             .state()
 
     private fun actionProfileClick(action: Action.OnProfileClick) {
-        sendEvent(Event.Navigation.Profile(action.username))
+        navigate(Navigation.Profile(action.username))
     }
 
     private fun actionImageClick(action: Action.OnImageClick) {
-        sendEvent(Event.Navigation.ImageDetail(action.uuid))
+        navigate(Navigation.ImageDetail(action.uuid))
     }
 
     companion object {

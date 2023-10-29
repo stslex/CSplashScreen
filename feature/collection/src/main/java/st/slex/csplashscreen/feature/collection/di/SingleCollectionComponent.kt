@@ -1,16 +1,16 @@
 package st.slex.csplashscreen.feature.collection.di
 
-import androidx.lifecycle.ViewModelProvider
 import dagger.Component
 import st.slex.csplashscreen.core.network.di.NetworkClientApi
 import st.slex.csplashscreen.core.ui.di.NavigationApi
+import st.slex.csplashscreen.core.ui.di.builder.Feature
 
 @Component(
     dependencies = [SingleCollectionDependencies::class],
     modules = [SingleCollectionModule::class]
 )
 @SingleCollectionScope
-interface SingleCollectionComponent {
+interface SingleCollectionComponent : Feature {
 
     @Component.Factory
     interface Factory {
@@ -32,6 +32,4 @@ interface SingleCollectionComponent {
             ): SingleCollectionDependencies
         }
     }
-
-    val viewModelFactory: ViewModelProvider.Factory
 }

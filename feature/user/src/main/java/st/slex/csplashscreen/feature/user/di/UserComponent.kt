@@ -1,18 +1,18 @@
 package st.slex.csplashscreen.feature.user.di
 
-import androidx.lifecycle.ViewModelProvider
 import dagger.Component
 import st.slex.csplashscreen.core.collection.di.CollectionApi
 import st.slex.csplashscreen.core.network.di.NetworkClientApi
 import st.slex.csplashscreen.core.photos.di.PhotosApi
 import st.slex.csplashscreen.core.ui.di.NavigationApi
+import st.slex.csplashscreen.core.ui.di.builder.Feature
 
 @Component(
     dependencies = [UserDependencies::class],
     modules = [UserModule::class]
 )
 @UserScope
-interface UserComponent {
+interface UserComponent : Feature {
 
     @Component.Factory
     interface Factory {
@@ -39,6 +39,4 @@ interface UserComponent {
             ): UserDependencies
         }
     }
-
-    val viewModelFactory: ViewModelProvider.Factory
 }

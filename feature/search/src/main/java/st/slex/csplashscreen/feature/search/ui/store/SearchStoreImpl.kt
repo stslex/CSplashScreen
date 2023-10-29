@@ -16,18 +16,21 @@ import st.slex.csplashscreen.core.core.Logger
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.mvi.BaseStoreImpl
+import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.search.domain.interactor.SearchPhotosInteractor
+import st.slex.csplashscreen.feature.search.navigation.SearchPhotosRouter
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
 import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Action
 import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Event
+import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Navigation
 import st.slex.csplashscreen.feature.search.ui.store.SearchStore.State
 import javax.inject.Inject
 
 class SearchStoreImpl @Inject constructor(
-    val interactor: SearchPhotosInteractor
-) : SearchStore, BaseStoreImpl<State, Event, Action>() {
+    private val interactor: SearchPhotosInteractor,
+    router: SearchPhotosRouter
+) : SearchStore, BaseStore<State, Event, Action, Navigation>(router) {
 
     override val initialState = State(
         query = "",
@@ -35,7 +38,7 @@ class SearchStoreImpl @Inject constructor(
         historyItems = ::searchHistory
     )
 
-    override val state = MutableStateFlow(initialState)
+    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     private val searchHistory: StateFlow<PagingData<SearchItem>>
         get() = interactor.searchHistory.state()
@@ -79,11 +82,11 @@ class SearchStoreImpl @Inject constructor(
     }
 
     private fun actionOnProfileClick(action: Action.OnProfileClick) {
-        sendEvent(Event.Navigation.Profile(action.username))
+        navigate(Navigation.Profile(action.username))
     }
 
     private fun actionOnImageClick(action: Action.OnImageClick) {
-        sendEvent(Event.Navigation.ImageDetail(action.uuid))
+        navigate(Navigation.ImageDetail(action.uuid))
     }
 
     private fun actionClearHistory() {

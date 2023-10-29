@@ -2,7 +2,7 @@ package st.slex.csplashscreen.feature.feature_photo_detail.navigation
 
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.ui.di.Navigator
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event.Navigation
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Navigation
 import javax.inject.Inject
 
 class ImageDetailRouterImpl @Inject constructor(

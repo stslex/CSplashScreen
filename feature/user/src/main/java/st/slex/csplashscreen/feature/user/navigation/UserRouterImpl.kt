@@ -2,19 +2,19 @@ package st.slex.csplashscreen.feature.user.navigation
 
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.ui.di.Navigator
-import st.slex.csplashscreen.feature.user.ui.store.UserStore
+import st.slex.csplashscreen.feature.user.ui.store.UserStore.Navigation
 import javax.inject.Inject
 
 class UserRouterImpl @Inject constructor(
     private val navigator: Navigator
 ) : UserRouter {
 
-    override fun invoke(event: UserStore.Event.Navigation) {
+    override fun invoke(event: Navigation) {
         when (event) {
-            is UserStore.Event.Navigation.Collection -> navToCollection(event)
-            is UserStore.Event.Navigation.Image -> navToImage(event)
-            is UserStore.Event.Navigation.PopBack -> popBack()
-            is UserStore.Event.Navigation.User -> navToUser(event)
+            is Navigation.Collection -> navToCollection(event)
+            is Navigation.Image -> navToImage(event)
+            is Navigation.PopBack -> popBack()
+            is Navigation.User -> navToUser(event)
         }
     }
 
@@ -22,15 +22,15 @@ class UserRouterImpl @Inject constructor(
         navigator(NavigationScreen.PopBackStack)
     }
 
-    private fun navToUser(event: UserStore.Event.Navigation.User) {
+    private fun navToUser(event: Navigation.User) {
         navigator(NavigationScreen.UserScreen(event.username))
     }
 
-    private fun navToImage(event: UserStore.Event.Navigation.Image) {
+    private fun navToImage(event: Navigation.Image) {
         navigator(NavigationScreen.ImageDetailScreen(event.uuid))
     }
 
-    private fun navToCollection(event: UserStore.Event.Navigation.Collection) {
+    private fun navToCollection(event: Navigation.Collection) {
         navigator(NavigationScreen.CollectionScreen(event.uuid))
     }
 }

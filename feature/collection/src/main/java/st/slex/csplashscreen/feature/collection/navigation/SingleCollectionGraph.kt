@@ -12,11 +12,12 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.navigation.NavExt.composableArguments
 import st.slex.csplashscreen.core.navigation.NavExt.parseArguments
+import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
-import st.slex.csplashscreen.feature.collection.di.setupComponent
+import st.slex.csplashscreen.feature.collection.di.SingleCollectionBuilder
 import st.slex.csplashscreen.feature.collection.ui.CollectionScreen
+import st.slex.csplashscreen.feature.collection.ui.SingleCollectionViewModel
 import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Action
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Event
 
 fun NavGraphBuilder.singleCollectionGraph(
     modifier: Modifier = Modifier,
@@ -28,7 +29,10 @@ fun NavGraphBuilder.singleCollectionGraph(
         val arguments = AppDestination.COLLECTION.parseArguments(navBackStackEntry).let { args ->
             AppArguments.CollectionScreen(args[0])
         }
-        val viewModel = setupComponent(key = arguments.collectionId)
+        val viewModel: SingleCollectionViewModel = setupComponent(
+            key = arguments.collectionId,
+            builder = SingleCollectionBuilder
+        )
 
         val state by remember {
             viewModel.state
@@ -43,9 +47,7 @@ fun NavGraphBuilder.singleCollectionGraph(
         }
 
         viewModel.event.CollectAsEvent { event ->
-            when (event) {
-                is Event.Navigation -> viewModel.navigate(event)
-            }
+            // TODO NOT IMPLEMENTED YET
         }
 
         CollectionScreen(

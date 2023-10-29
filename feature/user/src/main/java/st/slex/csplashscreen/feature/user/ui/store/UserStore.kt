@@ -23,24 +23,23 @@ interface UserStore : Store<State, Event, Action> {
     ) : Store.State
 
     @Stable
-    sealed interface Event : Store.Event {
+    sealed interface Event : Store.Event
 
-        sealed interface Navigation : Event, Store.Event.Navigation {
+    sealed interface Navigation : Store.Navigation {
 
-            data object PopBack : Navigation
+        data object PopBack : Navigation
 
-            data class User(
-                val username: String
-            ) : Navigation
+        data class User(
+            val username: String
+        ) : Navigation
 
-            data class Image(
-                val uuid: String
-            ) : Navigation
+        data class Image(
+            val uuid: String
+        ) : Navigation
 
-            data class Collection(
-                val uuid: String
-            ) : Navigation
-        }
+        data class Collection(
+            val uuid: String
+        ) : Navigation
     }
 
     @Stable

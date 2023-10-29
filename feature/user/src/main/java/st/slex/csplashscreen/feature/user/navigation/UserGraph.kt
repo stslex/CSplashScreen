@@ -12,12 +12,13 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.navigation.NavExt.composableArguments
 import st.slex.csplashscreen.core.navigation.NavExt.parseArguments
+import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
-import st.slex.csplashscreen.feature.user.di.setupUserComponent
+import st.slex.csplashscreen.feature.user.di.UserComponentBuilder
 import st.slex.csplashscreen.feature.user.ui.UserScreen
+import st.slex.csplashscreen.feature.user.ui.UserViewModel
 import st.slex.csplashscreen.feature.user.ui.state.rememberUserPagerState
 import st.slex.csplashscreen.feature.user.ui.state.rememberUserSwipeState
-import st.slex.csplashscreen.feature.user.ui.store.UserStore
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.Init
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.OnBackButtonClick
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.OnCollectionClick
@@ -36,16 +37,17 @@ fun NavGraphBuilder.userGraph(
             AppArguments.UserScreen(args.first())
         }
 
-        val viewModel = setupUserComponent(arguments.username)
+        val viewModel: UserViewModel = setupComponent(
+            key = arguments.username,
+            builder = UserComponentBuilder
+        )
 
         LaunchedEffect(arguments) {
             viewModel.sendAction(Init(arguments))
         }
 
         viewModel.event.CollectAsEvent { event ->
-            when (event) {
-                is UserStore.Event.Navigation -> viewModel.navigate(event)
-            }
+            // TODO NOT IMPLEMENTED YET
         }
 
         val state by remember {
