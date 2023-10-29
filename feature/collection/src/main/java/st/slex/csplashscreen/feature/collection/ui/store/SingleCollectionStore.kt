@@ -18,21 +18,20 @@ interface SingleCollectionStore : Store<State, Event, Action> {
     ) : Store.State
 
     @Stable
-    sealed interface Event : Store.Event {
+    sealed interface Event : Store.Event
+
+    @Stable
+    sealed interface Navigation : Store.Navigation {
 
         @Stable
-        sealed interface Navigation : Event {
+        data class Profile(
+            val username: String
+        ) : Navigation
 
-            @Stable
-            data class Profile(
-                val username: String
-            ) : Navigation
-
-            @Stable
-            data class ImageDetail(
-                val uuid: String
-            ) : Navigation
-        }
+        @Stable
+        data class ImageDetail(
+            val uuid: String
+        ) : Navigation
     }
 
     @Stable

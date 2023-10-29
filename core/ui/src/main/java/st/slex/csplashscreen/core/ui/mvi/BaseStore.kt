@@ -16,28 +16,36 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.ui.mvi.Store.Action
 import st.slex.csplashscreen.core.ui.mvi.Store.Event
+import st.slex.csplashscreen.core.ui.mvi.Store.Navigation
 import st.slex.csplashscreen.core.ui.mvi.Store.State
 
-abstract class BaseStoreImpl<S : State, E : Event, A : Action> :
-    Store<S, E, A>,
-    StoreImpl<S, E, A> {
+abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
+    private val router: Router<N>
+) : Store<S, E, A> {
+
+    abstract val initialState: S
 
     private var _scope: CoroutineScope? = null
     val scope: CoroutineScope
         get() = requireNotNull(_scope)
 
-    @Suppress("LeakingThis")
-    override val state: MutableStateFlow<S> = MutableStateFlow(initialState)
+    override val state: MutableStateFlow<S>
+        get() = MutableStateFlow(initialState)
+
     override val event: MutableSharedFlow<E> = MutableSharedFlow()
 
-    override fun updateState(update: (S) -> S) {
+    fun updateState(update: (S) -> S) {
         state.update(update)
     }
 
-    override fun sendEvent(event: E) {
+    fun sendEvent(event: E) {
         scope.launch {
-            this@BaseStoreImpl.event.emit(event)
+            this@BaseStore.event.emit(event)
         }
+    }
+
+    fun navigate(event: N) {
+        router(event)
     }
 
     override fun init(scope: CoroutineScope) {

@@ -1,8 +1,6 @@
 package st.slex.csplashscreen.feature.collection.navigation
 
-interface SingleCollectionRouter {
+import st.slex.csplashscreen.core.ui.mvi.Router
+import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Navigation
 
-    fun navToImage(uuid: String)
-
-    fun navToProfile(username: String)
-}
+interface SingleCollectionRouter : Router<Navigation>

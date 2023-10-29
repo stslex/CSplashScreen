@@ -10,7 +10,7 @@ import st.slex.csplashscreen.core.ui.mvi.Store.Event
 import st.slex.csplashscreen.core.ui.mvi.Store.State
 
 open class BaseViewModel<out S : State, out E : Event, in A : Action>(
-    private val store: Store<S, E, A>
+    private val store: Store<S, E, A>,
 ) : ViewModel() {
 
     val state: StateFlow<S> = store.state

@@ -16,24 +16,27 @@ import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.collection.ui.model.toPresentation
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.mvi.BaseStoreImpl
+import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.home.domain.HomeInteractor
+import st.slex.csplashscreen.feature.home.navigation.HomeRouter
 import st.slex.csplashscreen.feature.home.ui.store.HomeStore.Action
 import st.slex.csplashscreen.feature.home.ui.store.HomeStore.Event
+import st.slex.csplashscreen.feature.home.ui.store.HomeStore.Navigation
 import st.slex.csplashscreen.feature.home.ui.store.HomeStore.State
 import javax.inject.Inject
 
 class HomeStoreImpl @Inject constructor(
-    private val interactor: HomeInteractor
-) : HomeStore, BaseStoreImpl<State, Event, Action>() {
+    private val interactor: HomeInteractor,
+    router: HomeRouter
+) : HomeStore, BaseStore<State, Event, Action, Navigation>(router) {
 
     override val initialState: State = State(
         collections = ::collections,
         photos = ::photos
     )
 
-    override val state = MutableStateFlow(initialState)
+    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     private val collections: StateFlow<PagingData<CollectionModel>>
         get() = Pager(config = config) {
@@ -66,15 +69,15 @@ class HomeStoreImpl @Inject constructor(
     }
 
     private fun actionCollectionClick(action: Action.OnCollectionClick) {
-        sendEvent(Event.Navigation.Collection(action.uuid))
+        navigate(Navigation.Collection(action.uuid))
     }
 
     private fun actionImageClick(action: Action.OnImageClick) {
-        sendEvent(Event.Navigation.Image(action.uuid))
+        navigate(Navigation.Image(action.uuid))
     }
 
     private fun actionUserClick(action: Action.OnUserClick) {
-        sendEvent(Event.Navigation.User(action.username))
+        navigate(Navigation.User(action.username))
     }
 
     companion object {

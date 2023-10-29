@@ -8,10 +8,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.core.Logger
-import st.slex.csplashscreen.core.ui.mvi.BaseStoreImpl
+import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.interactor.ImageDetailInteractor
+import st.slex.csplashscreen.feature.feature_photo_detail.navigation.ImageDetailRouter
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Action
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Navigation
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.ScreenState
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.State
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.utils.DownloadImageUseCase
@@ -22,7 +24,8 @@ class ImageDetailStoreImpl @Inject constructor(
     private val interactor: ImageDetailInteractor,
     private val downloadImageUseCase: DownloadImageUseCase,
     private val wallpaperSetUseCase: WallpaperSetUseCase,
-) : ImageDetailStore, BaseStoreImpl<State, Event, Action>() {
+    router: ImageDetailRouter
+) : ImageDetailStore, BaseStore<State, Event, Action, Navigation>(router) {
 
     override val initialState: State = State(
         imageId = "",
@@ -60,11 +63,11 @@ class ImageDetailStoreImpl @Inject constructor(
     }
 
     private fun actionProfileClick(action: Action.OnProfileClick) {
-        sendEvent(Event.Navigation.Profile(action.username))
+        navigate(Navigation.Profile(action.username))
     }
 
     private fun actionTagClick(action: Action.OnTagClick) {
-        sendEvent(Event.Navigation.Search(action.tag))
+        navigate(Navigation.Search(action.tag))
     }
 
     private fun setWallpaperClick(action: Action.SetWallpaperClick) {

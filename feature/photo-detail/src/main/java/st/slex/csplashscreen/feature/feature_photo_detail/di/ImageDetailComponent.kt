@@ -1,18 +1,18 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.di
 
-import androidx.lifecycle.ViewModelProvider
 import dagger.Component
 import st.slex.csplashscreen.core.core.AppApi
 import st.slex.csplashscreen.core.favourite.di.FavouriteApi
 import st.slex.csplashscreen.core.photos.di.PhotosApi
 import st.slex.csplashscreen.core.ui.di.NavigationApi
+import st.slex.csplashscreen.core.ui.di.builder.Feature
 
 @Component(
     dependencies = [ImageDetailDependencies::class],
     modules = [ImageDetailModule::class]
 )
 @ImageDetailScope
-interface ImageDetailComponent {
+interface ImageDetailComponent : Feature {
 
     @Component.Factory
     interface Factory {
@@ -40,6 +40,4 @@ interface ImageDetailComponent {
             ): ImageDetailDependencies
         }
     }
-
-    val viewModelFactory: ViewModelProvider.Factory
 }

@@ -2,21 +2,30 @@ package st.slex.csplashscreen.feature.home.navigation
 
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.ui.di.Navigator
+import st.slex.csplashscreen.feature.home.ui.store.HomeStore.Navigation
 import javax.inject.Inject
 
 class HomeRouterImpl @Inject constructor(
     private val navigator: Navigator
 ) : HomeRouter {
 
-    override fun navToProfile(username: String) {
-        navigator(NavigationScreen.UserScreen(username))
+    override fun invoke(event: Navigation) {
+        when (event) {
+            is Navigation.Collection -> navToCollection(event)
+            is Navigation.Image -> navToImage(event)
+            is Navigation.User -> navToProfile(event)
+        }
     }
 
-    override fun navToImage(uuid: String) {
-        navigator(NavigationScreen.ImageDetailScreen(uuid))
+    private fun navToProfile(event: Navigation.User) {
+        navigator(NavigationScreen.UserScreen(event.username))
     }
 
-    override fun navToCollection(uuid: String) {
-        navigator(NavigationScreen.CollectionScreen(uuid))
+    private fun navToImage(event: Navigation.Image) {
+        navigator(NavigationScreen.ImageDetailScreen(event.uuid))
+    }
+
+    private fun navToCollection(event: Navigation.Collection) {
+        navigator(NavigationScreen.CollectionScreen(event.uuid))
     }
 }

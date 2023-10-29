@@ -19,6 +19,10 @@ interface Store<out S : State, out E : Event, in A : Action> {
     fun destroy()
 
     interface State
+
     interface Event
+
+    interface Navigation
+
     interface Action
 }
