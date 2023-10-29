@@ -20,7 +20,7 @@ interface FavouriteStore : Store<State, Event, Action> {
     sealed interface Event : Store.Event
 
     @Stable
-    sealed interface Navigation : Event, Store.Navigation {
+    sealed interface Navigation : Store.Navigation {
 
         @Stable
         data class User(

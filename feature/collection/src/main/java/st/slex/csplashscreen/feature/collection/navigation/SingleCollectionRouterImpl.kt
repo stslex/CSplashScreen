@@ -2,7 +2,7 @@ package st.slex.csplashscreen.feature.collection.navigation
 
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.ui.di.Navigator
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Event.Navigation
+import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Navigation
 import javax.inject.Inject
 
 class SingleCollectionRouterImpl @Inject constructor(
