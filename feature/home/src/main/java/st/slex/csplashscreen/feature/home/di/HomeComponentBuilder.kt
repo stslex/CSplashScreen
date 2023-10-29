@@ -3,13 +3,14 @@ package st.slex.csplashscreen.feature.home.di
 import android.content.Context
 import st.slex.csplashscreen.core.collection.di.CollectionApiBuilder
 import st.slex.csplashscreen.core.photos.di.PhotosApiBuilder
-import st.slex.csplashscreen.core.ui.di.builder.Feature
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 import st.slex.csplashscreen.core.ui.di.navigationApi
 
-object HomeComponentBuilder : FeatureBuilder {
+object HomeComponentBuilder : FeatureBuilder<HomeComponent> {
 
-    override fun create(context: Context): Feature = DaggerHomeComponent
+    override var feature: HomeComponent? = null
+
+    override fun create(context: Context) = DaggerHomeComponent
         .factory()
         .create(
             dependencies = DaggerHomeComponent_HomeDependenciesComponent

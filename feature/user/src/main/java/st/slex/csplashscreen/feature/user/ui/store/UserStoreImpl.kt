@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -35,6 +36,8 @@ class UserStoreImpl @Inject constructor(
         photos = ::getPhotos,
         collections = ::getCollections
     )
+
+    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     override fun processAction(action: Action) {
         when (action) {

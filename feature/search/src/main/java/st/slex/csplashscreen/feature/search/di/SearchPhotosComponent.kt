@@ -15,4 +15,3 @@ interface SearchPhotosComponent : Feature {
         fun create(dependencies: SearchPhotosDependencies): SearchPhotosComponent
     }
 }
-

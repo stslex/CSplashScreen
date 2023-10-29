@@ -19,7 +19,6 @@ import st.slex.csplashscreen.feature.user.ui.UserScreen
 import st.slex.csplashscreen.feature.user.ui.UserViewModel
 import st.slex.csplashscreen.feature.user.ui.state.rememberUserPagerState
 import st.slex.csplashscreen.feature.user.ui.state.rememberUserSwipeState
-import st.slex.csplashscreen.feature.user.ui.store.UserStore
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.Init
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.OnBackButtonClick
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.OnCollectionClick

@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.feature.favourite.ui.store
 
 import androidx.paging.PagingData
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
@@ -21,6 +22,8 @@ class FavouriteStoreImpl @Inject constructor(
     override val initialState: State = State(
         photos = ::photos
     )
+
+    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     private val photos: StateFlow<PagingData<PhotoModel>>
         get() = interactor.photos

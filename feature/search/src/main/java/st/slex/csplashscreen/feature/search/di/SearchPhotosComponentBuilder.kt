@@ -4,15 +4,16 @@ import android.content.Context
 import st.slex.csplashscreen.core.core.appApi
 import st.slex.csplashscreen.core.database.di.DatabaseApiBuilder
 import st.slex.csplashscreen.core.network.di.NetworkApiBuilder
-import st.slex.csplashscreen.core.ui.di.builder.Feature
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 import st.slex.csplashscreen.core.ui.di.navigationApi
 
-object SearchPhotosComponentBuilder : FeatureBuilder {
+object SearchPhotosComponentBuilder : FeatureBuilder<SearchPhotosComponent> {
+
+    override var feature: SearchPhotosComponent? = null
 
     override fun create(
         context: Context
-    ): Feature = DaggerSearchPhotosComponent
+    ) = DaggerSearchPhotosComponent
         .factory()
         .create(
             dependencies = DaggerSearchPhotosDependenciesComponent

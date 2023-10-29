@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.ui.store
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -30,6 +31,8 @@ class ImageDetailStoreImpl @Inject constructor(
         imageId = "",
         screenState = ScreenState.Loading
     )
+
+    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     override fun processAction(action: Action) {
         when (action) {

@@ -2,16 +2,20 @@ package st.slex.csplashscreen.core.ui.di.builder
 
 import android.content.Context
 
-interface FeatureBuilder {
+interface FeatureBuilder<F : Feature> {
 
-    fun create(context: Context): Feature
+    var feature: F?
 
-    fun build(context: Context): Feature = _feature ?: create(context)
+    fun create(context: Context): F
+
+    fun build(
+        context: Context
+    ): F = feature ?: create(context)
         .also { createdFeature ->
-            _feature = createdFeature
+            feature = createdFeature
         }
 
-    companion object {
-        private var _feature: Feature? = null
+    fun clear() {
+        feature = null
     }
 }

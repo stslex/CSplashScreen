@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -36,6 +37,8 @@ class SearchStoreImpl @Inject constructor(
         searchItems = ::photosSearch,
         historyItems = ::searchHistory
     )
+
+    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     private val searchHistory: StateFlow<PagingData<SearchItem>>
         get() = interactor.searchHistory.state()

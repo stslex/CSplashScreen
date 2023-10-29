@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
@@ -34,6 +35,8 @@ class HomeStoreImpl @Inject constructor(
         collections = ::collections,
         photos = ::photos
     )
+
+    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     private val collections: StateFlow<PagingData<CollectionModel>>
         get() = Pager(config = config) {
