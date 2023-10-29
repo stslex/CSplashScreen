@@ -13,9 +13,9 @@ import st.slex.csplashscreen.core.core.CoroutineExt.mapState
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
 import st.slex.csplashscreen.core.ui.mvi.BaseStore
-import st.slex.csplashscreen.core.ui.mvi.Router
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.collection.domain.SingleCollectionInteractor
+import st.slex.csplashscreen.feature.collection.navigation.SingleCollectionRouter
 import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Action
 import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Event
 import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Navigation
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 class SingleCollectionStoreImpl @Inject constructor(
     private val interactor: SingleCollectionInteractor,
-    router: Router<Navigation>
+    router: SingleCollectionRouter
 ) : SingleCollectionStore, BaseStore<State, Event, Action, Navigation>(router) {
 
     override val initialState: State

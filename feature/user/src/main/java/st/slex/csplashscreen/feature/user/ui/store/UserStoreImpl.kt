@@ -17,14 +17,17 @@ import st.slex.csplashscreen.core.photos.ui.model.toPresentation
 import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.user.domain.UserInteractor
+import st.slex.csplashscreen.feature.user.navigation.UserRouter
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.Event
+import st.slex.csplashscreen.feature.user.ui.store.UserStore.Navigation
 import st.slex.csplashscreen.feature.user.ui.store.UserStore.State
 import javax.inject.Inject
 
 class UserStoreImpl @Inject constructor(
-    private val interactor: UserInteractor
-) : UserStore, BaseStore<State, Event, Action>() {
+    private val interactor: UserInteractor,
+    router: UserRouter
+) : UserStore, BaseStore<State, Event, Action, Navigation>(router) {
 
     override val initialState: State = State(
         user = null,
@@ -97,19 +100,19 @@ class UserStoreImpl @Inject constructor(
     }.flow.state()
 
     private fun actionBackClick() {
-        sendEvent(Event.Navigation.PopBack)
+        navigate(Navigation.PopBack)
     }
 
     private fun actionCollectionClick(action: Action.OnCollectionClick) {
-        sendEvent(Event.Navigation.Collection(action.uuid))
+        navigate(Navigation.Collection(action.uuid))
     }
 
     private fun actionImageClick(action: Action.OnImageClick) {
-        sendEvent(Event.Navigation.Image(action.uuid))
+        navigate(Navigation.Image(action.uuid))
     }
 
     private fun actionUserClick(action: Action.OnUserClick) {
-        sendEvent(Event.Navigation.User(action.username))
+        navigate(Navigation.User(action.username))
     }
 
     companion object {

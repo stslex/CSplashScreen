@@ -17,7 +17,6 @@ import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.search.di.SearchPhotosComponentBuilder
 import st.slex.csplashscreen.feature.search.ui.SearchPhotosScreen
 import st.slex.csplashscreen.feature.search.ui.SearchViewModel
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore
 import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Action
 
 fun NavGraphBuilder.searchPhotosGraph(
@@ -41,9 +40,7 @@ fun NavGraphBuilder.searchPhotosGraph(
         }
 
         viewModel.event.CollectAsEvent { event ->
-            when (event) {
-                is SearchStore.Event.Navigation -> viewModel.navigate(event)
-            }
+            // TODO NOT IMPLEMENTED YET
         }
 
         val state by remember {

@@ -2,7 +2,7 @@ package st.slex.csplashscreen.feature.search.navigation
 
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.ui.di.Navigator
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Event.Navigation
+import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Navigation
 import javax.inject.Inject
 
 class SearchPhotosRouterImpl @Inject constructor(
