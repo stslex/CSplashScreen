@@ -1,17 +1,17 @@
 package st.slex.csplashscreen.feature.home.di
 
-import androidx.lifecycle.ViewModelProvider
 import dagger.Component
 import st.slex.csplashscreen.core.collection.di.CollectionApi
 import st.slex.csplashscreen.core.photos.di.PhotosApi
 import st.slex.csplashscreen.core.ui.di.NavigationApi
+import st.slex.csplashscreen.core.ui.di.builder.Feature
 
 @Component(
     dependencies = [HomeDependencies::class],
     modules = [HomeModule::class]
 )
 @HomeScope
-interface HomeComponent {
+interface HomeComponent : Feature {
 
     @Component.Factory
     interface Factory {
@@ -38,6 +38,4 @@ interface HomeComponent {
             ): HomeDependencies
         }
     }
-
-    val viewModelFactory: ViewModelProvider.Factory
 }

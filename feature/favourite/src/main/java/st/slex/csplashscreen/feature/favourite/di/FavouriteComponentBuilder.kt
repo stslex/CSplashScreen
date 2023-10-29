@@ -1,40 +1,23 @@
 package st.slex.csplashscreen.feature.favourite.di
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import st.slex.csplashscreen.core.core.AppApi
+import android.content.Context
 import st.slex.csplashscreen.core.core.appApi
 import st.slex.csplashscreen.core.favourite.di.FavouriteApiBuilder
-import st.slex.csplashscreen.core.ui.base.daggerViewModel
-import st.slex.csplashscreen.core.ui.di.NavigationApi
+import st.slex.csplashscreen.core.ui.di.builder.Feature
+import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 import st.slex.csplashscreen.core.ui.di.navigationApi
-import st.slex.csplashscreen.feature.favourite.ui.FavouriteViewModel
 
-object FavouriteComponentBuilder {
+object FavouriteComponentBuilder : FeatureBuilder {
 
-    fun build(
-        appApi: AppApi,
-        navigationApi: NavigationApi
-    ): FavouriteComponent = DaggerFavouriteComponent.factory()
+    override fun create(
+        context: Context
+    ): Feature = DaggerFavouriteComponent.factory()
         .create(
             dependencies = DaggerFavouriteComponent_FavouriteDependenciesComponent
                 .factory()
                 .create(
-                    navigationApi = navigationApi,
-                    favouriteApi = FavouriteApiBuilder.build(appApi)
+                    navigationApi = context.navigationApi,
+                    favouriteApi = FavouriteApiBuilder.build(context.appApi)
                 )
         )
-}
-
-@Composable
-fun setupComponent(): FavouriteViewModel {
-    val context = LocalContext.current
-    return daggerViewModel {
-        FavouriteComponentBuilder
-            .build(
-                appApi = context.appApi,
-                navigationApi = context.navigationApi
-            )
-            .viewModelFactory
-    }
 }

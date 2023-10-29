@@ -12,9 +12,11 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.navigation.NavExt.composableArguments
 import st.slex.csplashscreen.core.navigation.NavExt.parseArguments
+import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
-import st.slex.csplashscreen.feature.search.di.setupSearchPhotosComponent
+import st.slex.csplashscreen.feature.search.di.SearchPhotosComponentBuilder
 import st.slex.csplashscreen.feature.search.ui.SearchPhotosScreen
+import st.slex.csplashscreen.feature.search.ui.SearchViewModel
 import st.slex.csplashscreen.feature.search.ui.store.SearchStore
 import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Action
 
@@ -29,7 +31,10 @@ fun NavGraphBuilder.searchPhotosGraph(
             AppArguments.SearchPhotosScreen(args[0])
         }
 
-        val viewModel = setupSearchPhotosComponent(arguments.hashCode().toString())
+        val viewModel: SearchViewModel = setupComponent(
+            key = arguments.hashCode().toString(),
+            builder = SearchPhotosComponentBuilder
+        )
 
         LaunchedEffect(arguments) {
             viewModel.sendAction(Action.Init(arguments))
