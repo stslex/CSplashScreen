@@ -1,7 +1,9 @@
 package st.slex.csplashscreen.core.ui.mvi
 
+import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -56,6 +59,13 @@ abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
         _scope?.cancel()
         _scope = null
     }
+
+    fun <K : Any, T : Any, R : Any> Pager<K, T>.state(
+        transform: suspend (value: T) -> R
+    ): StateFlow<PagingData<R>> = this
+        .flow
+        .map { pagingData -> pagingData.map(transform) }
+        .state()
 
     fun <T : Any> Flow<PagingData<T>>.state(): StateFlow<PagingData<T>> = this
         .flowOn(Dispatchers.Default)

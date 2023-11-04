@@ -3,15 +3,8 @@ package st.slex.csplashscreen.feature.home.ui.store
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.collection.ui.model.toPresentation
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
@@ -39,26 +32,12 @@ class HomeStoreImpl @Inject constructor(
     override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     private val collections: StateFlow<PagingData<CollectionModel>>
-        get() = Pager(config = config) {
-            PagingSource(interactor::getAllCollections)
-        }
-            .flow
-            .map { pagingData -> pagingData.map { it.toPresentation() } }
-            .state()
+        get() = Pager(config = config) { PagingSource(interactor::getAllCollections) }
+            .state { collection -> collection.toPresentation() }
 
     private val photos: StateFlow<PagingData<PhotoModel>>
-        get() = Pager(config = config) {
-            PagingSource(interactor::getAllPhotos)
-        }
-            .flow
-            .map { pagingData -> pagingData.map { it.toPresentation() } }
-            .flowOn(Dispatchers.IO)
-            .cachedIn(scope)
-            .stateIn(
-                scope = scope,
-                started = SharingStarted.Lazily,
-                initialValue = PagingData.empty()
-            )
+        get() = Pager(config = config) { PagingSource(interactor::getAllPhotos) }
+            .state { image -> image.toPresentation() }
 
     override fun processAction(action: Action) {
         when (action) {
@@ -83,7 +62,7 @@ class HomeStoreImpl @Inject constructor(
     companion object {
 
         private val config = PagingConfig(
-            pageSize = 5,
+            pageSize = 10,
             enablePlaceholders = false
         )
     }
