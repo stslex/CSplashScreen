@@ -2,8 +2,8 @@ package st.slex.csplashscreen.di.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import st.slex.csplashscreen.core.core.AppApi
-import st.slex.csplashscreen.core.core.appApi
+import st.slex.csplashscreen.core.core.api.AppApi
+import st.slex.csplashscreen.core.core.api.appApi
 import st.slex.csplashscreen.core.ui.base.daggerViewModel
 import st.slex.csplashscreen.core.ui.di.NavigationApi
 import st.slex.csplashscreen.ui.InitialAppViewModel

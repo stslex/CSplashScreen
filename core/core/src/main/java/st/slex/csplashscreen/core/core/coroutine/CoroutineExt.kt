@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.core.core
+package st.slex.csplashscreen.core.core.coroutine
 
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine as combinePrimary

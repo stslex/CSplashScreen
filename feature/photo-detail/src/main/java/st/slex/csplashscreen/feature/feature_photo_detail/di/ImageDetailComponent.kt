@@ -1,7 +1,7 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.di
 
 import dagger.Component
-import st.slex.csplashscreen.core.core.AppApi
+import st.slex.csplashscreen.core.core.api.AppApi
 import st.slex.csplashscreen.core.favourite.di.FavouriteApi
 import st.slex.csplashscreen.core.photos.di.PhotosApi
 import st.slex.csplashscreen.core.ui.di.NavigationApi

@@ -2,7 +2,7 @@ package st.slex.csplashscreen.di.main
 
 import androidx.lifecycle.ViewModelProvider
 import dagger.Component
-import st.slex.csplashscreen.core.core.AppApi
+import st.slex.csplashscreen.core.core.api.AppApi
 import st.slex.csplashscreen.core.ui.di.NavigationApi
 
 @Component(

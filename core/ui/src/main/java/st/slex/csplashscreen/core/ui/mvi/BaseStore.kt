@@ -20,7 +20,7 @@ import st.slex.csplashscreen.core.ui.mvi.Store.Navigation
 import st.slex.csplashscreen.core.ui.mvi.Store.State
 
 abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
-    private val router: Router<N>
+    private val router: Router<N>,
 ) : Store<S, E, A> {
 
     abstract val initialState: S
@@ -39,7 +39,7 @@ abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
     }
 
     fun sendEvent(event: E) {
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             this@BaseStore.event.emit(event)
         }
     }
@@ -58,7 +58,7 @@ abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
     }
 
     fun <T : Any> Flow<PagingData<T>>.state(): StateFlow<PagingData<T>> = this
-        .flowOn(Dispatchers.IO)
+        .flowOn(Dispatchers.Default)
         .cachedIn(scope)
         .stateIn(
             initialValue = PagingData.empty(),

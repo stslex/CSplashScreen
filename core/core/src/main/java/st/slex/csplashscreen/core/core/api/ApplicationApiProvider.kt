@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.core.core
+package st.slex.csplashscreen.core.core.api
 
 import android.content.Context
 

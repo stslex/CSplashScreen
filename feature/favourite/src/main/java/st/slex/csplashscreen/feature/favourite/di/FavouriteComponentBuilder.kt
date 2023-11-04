@@ -1,7 +1,7 @@
 package st.slex.csplashscreen.feature.favourite.di
 
 import android.content.Context
-import st.slex.csplashscreen.core.core.appApi
+import st.slex.csplashscreen.core.core.api.appApi
 import st.slex.csplashscreen.core.favourite.di.FavouriteApiBuilder
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 import st.slex.csplashscreen.core.ui.di.navigationApi

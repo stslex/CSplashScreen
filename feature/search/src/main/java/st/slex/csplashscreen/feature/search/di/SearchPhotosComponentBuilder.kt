@@ -1,7 +1,7 @@
 package st.slex.csplashscreen.feature.search.di
 
 import android.content.Context
-import st.slex.csplashscreen.core.core.appApi
+import st.slex.csplashscreen.core.core.api.appApi
 import st.slex.csplashscreen.core.database.di.DatabaseApiBuilder
 import st.slex.csplashscreen.core.network.di.NetworkApiBuilder
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder

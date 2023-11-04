@@ -4,11 +4,11 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import st.slex.csplashscreen.SplashApplication
-import st.slex.csplashscreen.core.core.AppApi
+import st.slex.csplashscreen.core.core.api.AppApi
 import javax.inject.Singleton
 
 @Singleton
-@Component
+@Component(modules = [AppModule::class])
 interface AppComponent : AppApi {
 
     @Component.Builder
