@@ -15,7 +15,7 @@ import st.slex.csplashscreen.feature.search.ui.model.SearchItem
 @Composable
 fun LazyListHistorySearch(
     items: LazyPagingItems<SearchItem>,
-    onSearchClick: (String) -> Unit,
+    onSearchHistoryClick: (String) -> Unit,
     clearHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -54,17 +54,15 @@ fun LazyListHistorySearch(
             key = items.itemKey { item ->
                 item.query
             },
-            contentType = items.itemContentType {
-                "Search Item"
-            }
+            contentType = items.itemContentType { "Search Item" }
         ) { index ->
 
             items[index]?.let { searchItem ->
                 Column {
                     SearchHistoryItem(
-                        item = searchItem,
+                        query = searchItem.query,
                         listState = listState,
-                        onSearchClick = onSearchClick
+                        onSearchHistoryClick = onSearchHistoryClick
                     )
                 }
             }

@@ -62,5 +62,10 @@ interface SearchStore : Store<State, Event, Action> {
         data class OnQueryInput(
             val query: String
         ) : Action
+
+        @Stable
+        data class OnSearchHistoryClick(
+            val query: String
+        ) : Action
     }
 }

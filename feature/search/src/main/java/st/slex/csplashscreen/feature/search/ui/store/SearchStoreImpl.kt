@@ -71,11 +71,17 @@ class SearchStoreImpl @Inject constructor(
             is Action.OnImageClick -> actionOnImageClick(action)
             is Action.OnProfileClick -> actionOnProfileClick(action)
             is Action.OnQueryInput -> actionQueryInput(action)
+            is Action.OnSearchHistoryClick -> actionSearchHistoryClick(action)
+        }
+    }
+
+    private fun actionSearchHistoryClick(action: Action.OnSearchHistoryClick) {
+        updateState { currentState ->
+            currentState.copy(query = action.query)
         }
     }
 
     private fun actionQueryInput(action: Action.OnQueryInput) {
-        if (state.value.query == action.query) return
         updateState { currentState ->
             currentState.copy(query = action.query)
         }

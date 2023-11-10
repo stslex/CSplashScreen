@@ -60,7 +60,7 @@ fun NavGraphBuilder.searchPhotosGraph(
             photos = photos,
             searchHistory = searchHistory,
             query = state.query,
-            onQuery = remember {
+            onQueryChange = remember {
                 { value -> viewModel.sendAction(Action.OnQueryInput(value)) }
             },
             onUserClick = remember {
@@ -69,7 +69,10 @@ fun NavGraphBuilder.searchPhotosGraph(
             onImageClick = remember {
                 { value -> viewModel.sendAction(Action.OnImageClick(value)) }
             },
-            clearHistory = remember { { viewModel.sendAction(Action.ClearHistory) } }
+            clearHistory = remember { { viewModel.sendAction(Action.ClearHistory) } },
+            onSearchHistoryClick = remember {
+                { value -> viewModel.sendAction(Action.OnSearchHistoryClick(value)) }
+            }
         )
     }
 }
