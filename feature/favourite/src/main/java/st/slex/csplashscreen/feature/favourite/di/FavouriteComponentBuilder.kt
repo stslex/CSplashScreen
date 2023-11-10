@@ -17,6 +17,7 @@ object FavouriteComponentBuilder : FeatureBuilder<FavouriteComponent> {
             dependencies = DaggerFavouriteComponent_FavouriteDependenciesComponent
                 .factory()
                 .create(
+                    appApi = context.appApi,
                     navigationApi = context.navigationApi,
                     favouriteApi = FavouriteApiBuilder.build(context.appApi)
                 )

@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.feature.favourite.di
 
 import dagger.Component
+import st.slex.csplashscreen.core.core.api.AppApi
 import st.slex.csplashscreen.core.favourite.di.FavouriteApi
 import st.slex.csplashscreen.core.ui.di.NavigationApi
 import st.slex.csplashscreen.core.ui.di.builder.Feature
@@ -18,7 +19,13 @@ interface FavouriteComponent : Feature {
         fun create(dependencies: FavouriteDependencies): FavouriteComponent
     }
 
-    @Component(dependencies = [FavouriteApi::class, NavigationApi::class])
+    @Component(
+        dependencies = [
+            AppApi::class,
+            FavouriteApi::class,
+            NavigationApi::class
+        ]
+    )
     @FavouriteScope
     interface FavouriteDependenciesComponent : FavouriteDependencies {
 
@@ -26,6 +33,7 @@ interface FavouriteComponent : Feature {
         interface Factory {
 
             fun create(
+                appApi: AppApi,
                 favouriteApi: FavouriteApi,
                 navigationApi: NavigationApi
             ): FavouriteDependencies

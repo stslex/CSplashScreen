@@ -19,6 +19,7 @@ object SearchPhotosComponentBuilder : FeatureBuilder<SearchPhotosComponent> {
             dependencies = DaggerSearchPhotosDependenciesComponent
                 .factory()
                 .create(
+                    appApi = context.appApi,
                     databaseApi = DatabaseApiBuilder.build(context.appApi),
                     navigationApi = context.navigationApi,
                     networkClientApi = NetworkApiBuilder.build()

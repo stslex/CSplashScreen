@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.collection.ui.model.toPresentation
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
 import st.slex.csplashscreen.core.ui.mvi.BaseStore
@@ -21,8 +22,9 @@ import javax.inject.Inject
 
 class HomeStoreImpl @Inject constructor(
     private val interactor: HomeInteractor,
+    appDispatcher: AppDispatcher,
     router: HomeRouter
-) : HomeStore, BaseStore<State, Event, Action, Navigation>(router) {
+) : HomeStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
 
     override val initialState: State = State(
         collections = ::collections,

@@ -4,15 +4,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.core.Logger
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
@@ -29,8 +28,9 @@ import javax.inject.Inject
 
 class SearchStoreImpl @Inject constructor(
     private val interactor: SearchPhotosInteractor,
+    appDispatcher: AppDispatcher,
     router: SearchPhotosRouter
-) : SearchStore, BaseStore<State, Event, Action, Navigation>(router) {
+) : SearchStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
 
     override val initialState = State(
         query = "",
@@ -96,7 +96,7 @@ class SearchStoreImpl @Inject constructor(
     }
 
     private fun actionClearHistory() {
-        scope.launch(Dispatchers.IO) {
+        launch {
             runCatching {
                 interactor.clearHistory()
             }.onFailure { error ->

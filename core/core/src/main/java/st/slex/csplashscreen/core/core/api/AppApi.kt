@@ -1,3 +1,11 @@
 package st.slex.csplashscreen.core.core.api
 
-interface AppApi : AppCoreApi
+import android.content.Context
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
+
+interface AppApi {
+
+    val context: Context
+
+    val appDispatcher: AppDispatcher
+}
