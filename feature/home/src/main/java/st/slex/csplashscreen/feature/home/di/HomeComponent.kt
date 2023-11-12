@@ -2,9 +2,8 @@ package st.slex.csplashscreen.feature.home.di
 
 import dagger.Component
 import st.slex.csplashscreen.core.collection.di.CollectionApi
-import st.slex.csplashscreen.core.core.api.AppApi
 import st.slex.csplashscreen.core.photos.di.PhotosApi
-import st.slex.csplashscreen.core.ui.di.NavigationApi
+import st.slex.csplashscreen.core.ui.di.MainUiApi
 import st.slex.csplashscreen.core.ui.di.builder.Feature
 
 @Component(
@@ -22,8 +21,7 @@ interface HomeComponent : Feature {
 
     @Component(
         dependencies = [
-            AppApi::class,
-            NavigationApi::class,
+            MainUiApi::class,
             CollectionApi::class,
             PhotosApi::class
         ]
@@ -34,8 +32,7 @@ interface HomeComponent : Feature {
         @Component.Factory
         interface Factory {
             fun create(
-                appApi: AppApi,
-                navigationApi: NavigationApi,
+                mainUiApi: MainUiApi,
                 collectionApi: CollectionApi,
                 photosApi: PhotosApi
             ): HomeDependencies

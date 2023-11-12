@@ -1,16 +1,14 @@
 package st.slex.csplashscreen.feature.search.di
 
 import dagger.Component
-import st.slex.csplashscreen.core.core.api.AppApi
 import st.slex.csplashscreen.core.database.di.DatabaseApi
 import st.slex.csplashscreen.core.network.di.NetworkClientApi
-import st.slex.csplashscreen.core.ui.di.NavigationApi
+import st.slex.csplashscreen.core.ui.di.MainUiApi
 
 @Component(
     dependencies = [
-        AppApi::class,
+        MainUiApi::class,
         DatabaseApi::class,
-        NavigationApi::class,
         NetworkClientApi::class
     ]
 )
@@ -20,9 +18,8 @@ interface SearchPhotosDependenciesComponent : SearchPhotosDependencies {
     @Component.Factory
     interface Factory {
         fun create(
-            appApi: AppApi,
+            mainUiApi: MainUiApi,
             databaseApi: DatabaseApi,
-            navigationApi: NavigationApi,
             networkClientApi: NetworkClientApi
         ): SearchPhotosDependencies
     }
