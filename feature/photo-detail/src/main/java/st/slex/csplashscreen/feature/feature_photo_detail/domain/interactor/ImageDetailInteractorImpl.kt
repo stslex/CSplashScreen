@@ -27,6 +27,8 @@ class ImageDetailInteractorImpl @Inject constructor(
         transform = ::transformDetail
     )
 
+    override suspend fun getDownloadLink(id: String): String = repository.getDownloadLink(id)
+
     override suspend fun like(photoModel: PhotoModel) {
         favouriteInteractor.like(photoModel)
     }

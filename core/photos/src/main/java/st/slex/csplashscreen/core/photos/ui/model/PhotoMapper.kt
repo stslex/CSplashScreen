@@ -7,6 +7,6 @@ fun ImageModel.toPresentation(): PhotoModel = PhotoModel(
     url = urls.regular,
     username = user.username,
     userUrl = user.profileImageModel.medium,
-    downloadUrl = this.links.download,
+    downloadUrl = this.links.downloadLocation,
     tags = this.tags.map { tag -> tag.title },
 )

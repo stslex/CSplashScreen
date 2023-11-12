@@ -24,4 +24,6 @@ interface PhotosRepository {
     suspend fun getSinglePhoto(
         id: String
     ): RemoteImageModel
+
+    suspend fun getDownloadLink(id: String): String
 }

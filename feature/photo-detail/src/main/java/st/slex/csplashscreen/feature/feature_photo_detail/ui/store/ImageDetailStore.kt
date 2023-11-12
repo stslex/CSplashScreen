@@ -62,9 +62,7 @@ interface ImageDetailStore : Store<State, Event, Action> {
         ) : Action
 
         @Stable
-        data class DownloadImageClick(
-            val url: String,
-        ) : Action
+        data object DownloadImageClick : Action
 
         @Stable
         data class SetWallpaperClick(
@@ -84,6 +82,11 @@ interface ImageDetailStore : Store<State, Event, Action> {
         @Stable
         data class OnLikeClicked(
             val imageDetail: ImageDetail
+        ) : Action
+
+        @Stable
+        data class DownloadImage(
+            val url: String
         ) : Action
     }
 }

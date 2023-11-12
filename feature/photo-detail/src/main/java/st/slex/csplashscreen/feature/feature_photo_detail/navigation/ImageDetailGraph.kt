@@ -53,7 +53,7 @@ fun NavGraphBuilder.imageDetailGraph(
                 { username -> viewModel.sendAction(Action.OnProfileClick(username)) }
             },
             onDownloadImageClick = remember {
-                { url -> viewModel.sendAction(Action.SetWallpaperClick(url)) }
+                { viewModel.sendAction(Action.DownloadImageClick) }
             },
             onTagClick = remember {
                 { tag -> viewModel.sendAction(Action.OnTagClick(tag)) }

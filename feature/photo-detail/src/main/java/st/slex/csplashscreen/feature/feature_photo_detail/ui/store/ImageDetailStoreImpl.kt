@@ -33,19 +33,26 @@ class ImageDetailStoreImpl @Inject constructor(
     override fun processAction(action: Action) {
         when (action) {
             is Action.Init -> actionInit(action)
-            is Action.DownloadImageClick -> actionDownloadImageClick(action)
+            is Action.DownloadImageClick -> actionDownloadImageClick()
             is Action.OnLikeClicked -> actionLikeClick(action)
             is Action.OnProfileClick -> actionProfileClick(action)
             is Action.OnTagClick -> actionTagClick(action)
             is Action.SetWallpaperClick -> setWallpaperClick(action)
+            is Action.DownloadImage -> Unit
         }
     }
 
-    private fun actionDownloadImageClick(action: Action.DownloadImageClick) {
-        downloadImageUseCase(
-            url = action.url,
-            fileName = state.value.imageId
-        )
+    private fun actionDownloadImageClick() {
+        launchCatching(
+            block = {
+                interactor.getDownloadLink(state.value.imageId)
+            }
+        ) { downloadUrl ->
+            downloadImageUseCase(
+                url = downloadUrl,
+                fileName = state.value.imageId
+            )
+        }
     }
 
     private fun actionLikeClick(action: Action.OnLikeClicked) {
@@ -76,7 +83,7 @@ class ImageDetailStoreImpl @Inject constructor(
         }
         interactor.getImageDetail(action.args.imageId)
             .launch(
-                catch = { error ->
+                onError = { error ->
                     updateState { currentState ->
                         currentState.copy(
                             screenState = ScreenState.Error(error)
