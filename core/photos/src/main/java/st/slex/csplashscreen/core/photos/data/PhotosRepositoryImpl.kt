@@ -19,24 +19,20 @@ class PhotosRepositoryImpl @Inject constructor(
     override suspend fun getAllPhotos(
         page: Int,
         pageSize: Int
-    ): List<RemoteImageModel> = withContext(Dispatchers.IO) {
-        client.getPhotos(
-            page = page,
-            pageSize = pageSize
-        ).also(::setToCache)
-    }
+    ): List<RemoteImageModel> = client.getPhotos(
+        page = page,
+        pageSize = pageSize
+    ).also(::setToCache)
 
     override suspend fun getUserPhotos(
         username: String,
         page: Int,
         pageSize: Int
-    ): List<RemoteImageModel> = withContext(Dispatchers.IO) {
-        client.getUserPhotos(
-            username = username,
-            page = page,
-            pageSize = pageSize,
-        ).also(::setToCache)
-    }
+    ): List<RemoteImageModel> = client.getUserPhotos(
+        username = username,
+        page = page,
+        pageSize = pageSize,
+    ).also(::setToCache)
 
     override suspend fun getUserLikePhotos(
         username: String,
@@ -56,11 +52,15 @@ class PhotosRepositoryImpl @Inject constructor(
         .firstOrNull { imageModel ->
             imageModel.id == id
         }
-        ?: withContext(Dispatchers.IO) {
-            client
-                .getSinglePhoto(id = id)
-                .also(::setToCache)
-        }
+        ?: client
+            .getSinglePhoto(id = id)
+            .also(::setToCache)
+
+    override suspend fun getDownloadLink(
+        id: String
+    ): String = client
+        .getDownloadLink(id)
+        .url
 
     private fun setToCache(remoteImageModel: List<RemoteImageModel>) {
         _imageCache.clear()

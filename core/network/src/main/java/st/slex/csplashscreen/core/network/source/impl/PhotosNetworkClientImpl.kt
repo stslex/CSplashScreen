@@ -5,11 +5,13 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import st.slex.csplashscreen.core.network.client.NetworkClient
+import st.slex.csplashscreen.core.network.model.remote.download.RemoteDownloadModel
 import st.slex.csplashscreen.core.network.model.remote.image.RemoteImageModel
 import st.slex.csplashscreen.core.network.source.interf.PhotosNetworkClient
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_PAGE
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_PAGE_SIZE
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_COLLECTIONS
+import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_DOWNLOAD
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_LIKES
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_PHOTOS
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_TOPICS
@@ -28,6 +30,7 @@ class PhotosNetworkClientImpl @Inject constructor(
     private val userLikePhotos = mutableMapOf<Int, List<RemoteImageModel>>()
     private val userTopicPhotos = mutableMapOf<Int, List<RemoteImageModel>>()
     private val singlePhoto = mutableMapOf<String, RemoteImageModel>()
+    private var downloadLink = mutableMapOf<String, RemoteDownloadModel>()
 
     override suspend fun getCollectionPhotos(
         query: String, page: Int, pageSize: Int
@@ -96,6 +99,16 @@ class PhotosNetworkClientImpl @Inject constructor(
             url.appendPathSegments(PATH_PHOTOS, id)
         }.body<RemoteImageModel>().also { result ->
             singlePhoto[id] = result
+        }
+    }
+
+    override suspend fun getDownloadLink(
+        id: String
+    ): RemoteDownloadModel = downloadLink[id] ?: client.request {
+        get {
+            url.appendPathSegments(PATH_PHOTOS, id, PATH_DOWNLOAD)
+        }.body<RemoteDownloadModel>().also { result ->
+            downloadLink[id] = result
         }
     }
 }

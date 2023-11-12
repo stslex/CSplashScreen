@@ -5,7 +5,7 @@ import androidx.compose.runtime.Stable
 @Stable
 data class PhotoModel(
     val uuid: String,
-    val url: String,
+    val urls: Urls,
     val username: String,
     val userUrl: String,
     val downloadUrl: String,

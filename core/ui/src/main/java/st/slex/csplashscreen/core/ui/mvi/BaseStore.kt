@@ -8,7 +8,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -88,14 +87,30 @@ abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
         block = block
     )
 
+    fun <T> launchCatching(
+        block: suspend CoroutineScope.() -> T,
+        onFailure: suspend (Throwable) -> Unit = {},
+        onSuccess: (T) -> Unit,
+    ): Job = scope.launch(appDispatcher.default) {
+        runCatching {
+            block()
+        }
+            .onSuccess(onSuccess)
+            .onFailure { error ->
+                onFailure(error)
+                Logger.exception(error)
+            }
+    }
+
     fun <T> Flow<T>.launch(
-        catch: suspend FlowCollector<T>.(cause: Throwable) -> Unit = { error ->
-            Logger.exception(error)
-        },
+        onError: suspend (cause: Throwable) -> Unit = {},
         each: suspend (T) -> Unit
     ): Job = this
         .flowOn(appDispatcher.default)
-        .catch(catch)
+        .catch { error ->
+            onError(error)
+            Logger.exception(error)
+        }
         .onEach(each)
         .launchIn(scope)
 }

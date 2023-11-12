@@ -1,10 +1,17 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.navigation
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import st.slex.csplashscreen.core.navigation.AppArguments
@@ -16,7 +23,10 @@ import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.feature_photo_detail.di.ImageDetailComponentBuilder
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailScreen
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailViewModel
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.components.dialogs.DownloadImageDialog
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Action
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.DialogType
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event
 
 fun NavGraphBuilder.imageDetailGraph(
     modifier: Modifier = Modifier,
@@ -42,18 +52,29 @@ fun NavGraphBuilder.imageDetailGraph(
             viewModel.state
         }.collectAsState()
 
+        var dialogType by remember {
+            mutableStateOf(DialogType.NONE)
+        }
+
+        val blurBackground by animateDpAsState(
+            targetValue = if (dialogType == DialogType.NONE) 0.dp else 16.dp,
+            animationSpec = tween(durationMillis = 600)
+        )
+
         viewModel.event.CollectAsEvent { event ->
-            // TODO NOT IMPLEMENTED YET
+            when (event) {
+                is Event.Dialog -> dialogType = event.type
+            }
         }
 
         ImageDetailScreen(
-            modifier = modifier,
+            modifier = modifier.blur(blurBackground),
             state = state,
             onProfileClick = remember {
                 { username -> viewModel.sendAction(Action.OnProfileClick(username)) }
             },
             onDownloadImageClick = remember {
-                { url -> viewModel.sendAction(Action.SetWallpaperClick(url)) }
+                { viewModel.sendAction(Action.DownloadImageButtonClick) }
             },
             onTagClick = remember {
                 { tag -> viewModel.sendAction(Action.OnTagClick(tag)) }
@@ -65,5 +86,18 @@ fun NavGraphBuilder.imageDetailGraph(
                 { image -> viewModel.sendAction(Action.OnLikeClicked(image)) }
             }
         )
+
+        if (dialogType != DialogType.NONE) {
+            Dialog(
+                onDismissRequest = {
+                    viewModel.sendAction(Action.CloseDialog)
+                },
+            ) {
+                when (dialogType) {
+                    DialogType.DOWNLOAD -> DownloadImageDialog(viewModel::sendAction)
+                    DialogType.NONE -> Unit
+                }
+            }
+        }
     }
 }

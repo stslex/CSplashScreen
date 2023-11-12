@@ -37,7 +37,18 @@ interface ImageDetailStore : Store<State, Event, Action> {
     }
 
     @Stable
-    sealed interface Event : Store.Event
+    sealed interface Event : Store.Event {
+
+        @Stable
+        data class Dialog(
+            val type: DialogType
+        ) : Event
+    }
+
+    enum class DialogType {
+        DOWNLOAD,
+        NONE
+    }
 
     @Stable
     sealed interface Navigation : Store.Navigation {
@@ -62,11 +73,6 @@ interface ImageDetailStore : Store<State, Event, Action> {
         ) : Action
 
         @Stable
-        data class DownloadImageClick(
-            val url: String,
-        ) : Action
-
-        @Stable
         data class SetWallpaperClick(
             val url: String
         ) : Action
@@ -85,6 +91,16 @@ interface ImageDetailStore : Store<State, Event, Action> {
         data class OnLikeClicked(
             val imageDetail: ImageDetail
         ) : Action
+
+        @Stable
+        data object DownloadImageButtonClick : Action
+
+        @Stable
+        data class DownloadImageChooseClick(
+            val type: DownloadImageType
+        ) : Action
+
+        @Stable
+        data object CloseDialog : Action
     }
 }
-

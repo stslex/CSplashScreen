@@ -6,7 +6,12 @@ import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.interactor.ImageDetailInteractor
 import st.slex.csplashscreen.feature.feature_photo_detail.navigation.ImageDetailRouter
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.DownloadImageType.LARGE
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.DownloadImageType.MEDIUM
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.DownloadImageType.ORIGINAL
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.DownloadImageType.SMALL
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Action
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.DialogType
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Navigation
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.ScreenState
@@ -33,19 +38,45 @@ class ImageDetailStoreImpl @Inject constructor(
     override fun processAction(action: Action) {
         when (action) {
             is Action.Init -> actionInit(action)
-            is Action.DownloadImageClick -> actionDownloadImageClick(action)
+            is Action.DownloadImageButtonClick -> actionDownloadImageButtonClick()
             is Action.OnLikeClicked -> actionLikeClick(action)
             is Action.OnProfileClick -> actionProfileClick(action)
             is Action.OnTagClick -> actionTagClick(action)
             is Action.SetWallpaperClick -> setWallpaperClick(action)
+            is Action.DownloadImageChooseClick -> actionDownloadImageChooseClick(action)
+            is Action.CloseDialog -> actionCloseDialog()
         }
     }
 
-    private fun actionDownloadImageClick(action: Action.DownloadImageClick) {
-        downloadImageUseCase(
-            url = action.url,
-            fileName = state.value.imageId
-        )
+    private fun actionCloseDialog() {
+        sendEvent(Event.Dialog(DialogType.NONE))
+    }
+
+    private fun actionDownloadImageButtonClick() {
+        // TODO Show dialog to choose type
+        sendEvent(Event.Dialog(DialogType.DOWNLOAD))
+    }
+
+    private fun actionDownloadImageChooseClick(
+        action: Action.DownloadImageChooseClick
+    ) {
+        val photo = state.value.screenState.data?.photo ?: return // TODO show Toast
+        launchCatching(
+            block = {
+                when (action.type) {
+                    LARGE -> photo.urls.raw
+                    MEDIUM -> photo.urls.regular
+                    SMALL -> photo.urls.small
+                    ORIGINAL -> interactor.getDownloadLink(state.value.imageId)
+                }
+            }
+        ) { downloadUrl ->
+            downloadImageUseCase(
+                url = downloadUrl,
+                fileName = state.value.imageId
+            )
+            sendEvent(Event.Dialog(DialogType.NONE))
+        }
     }
 
     private fun actionLikeClick(action: Action.OnLikeClicked) {
@@ -76,7 +107,7 @@ class ImageDetailStoreImpl @Inject constructor(
         }
         interactor.getImageDetail(action.args.imageId)
             .launch(
-                catch = { error ->
+                onError = { error ->
                     updateState { currentState ->
                         currentState.copy(
                             screenState = ScreenState.Error(error)

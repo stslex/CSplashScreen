@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.core.network.source.interf
 
+import st.slex.csplashscreen.core.network.model.remote.download.RemoteDownloadModel
 import st.slex.csplashscreen.core.network.model.remote.image.RemoteImageModel
 
 interface PhotosNetworkClient {
@@ -34,4 +35,6 @@ interface PhotosNetworkClient {
     ): List<RemoteImageModel>
 
     suspend fun getSinglePhoto(id: String): RemoteImageModel
+
+    suspend fun getDownloadLink(id: String): RemoteDownloadModel
 }

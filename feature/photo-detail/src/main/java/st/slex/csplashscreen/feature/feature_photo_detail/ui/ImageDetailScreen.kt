@@ -46,7 +46,7 @@ import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailSt
 fun ImageDetailScreen(
     state: ImageDetailStore.State,
     onProfileClick: (String) -> Unit,
-    onDownloadImageClick: (String) -> Unit,
+    onDownloadImageClick: () -> Unit,
     onTagClick: (String) -> Unit,
     onSetWallpaperClick: (url: String) -> Unit,
     onLikeClicked: (ImageDetail) -> Unit,
@@ -67,7 +67,7 @@ fun ImageDetailScreen(
         modifier = modifier.fillMaxSize()
     ) {
         BindTopImageHead(
-            url = state.screenState.data?.photo?.url.orEmpty(),
+            url = state.screenState.data?.photo?.urls?.regular.orEmpty(),
         )
         Spacer(modifier = Modifier.height(Dimen.smallest))
         ImageDetail(
@@ -85,7 +85,7 @@ fun ImageDetailScreen(
 private fun ImageDetail(
     imageModel: ImageDetail?,
     onProfileClick: (String) -> Unit,
-    onDownloadImageClick: (String) -> Unit,
+    onDownloadImageClick: () -> Unit,
     onTagClick: (String) -> Unit,
     onSetWallpaperClick: (url: String) -> Unit,
     onLikeClicked: (ImageDetail) -> Unit,
@@ -100,9 +100,7 @@ private fun ImageDetail(
             onProfileClick = remember(imageModel?.photo?.username) {
                 { onProfileClick(imageModel?.photo?.username.orEmpty()) }
             },
-            onDownloadImageClick = remember(imageModel?.photo?.downloadUrl) {
-                { onDownloadImageClick(imageModel?.photo?.downloadUrl.orEmpty()) }
-            },
+            onDownloadImageClick = onDownloadImageClick,
             onSetWallpaperClick = remember(imageModel?.photo?.downloadUrl) {
                 { onSetWallpaperClick(imageModel?.photo?.downloadUrl.orEmpty()) }
             },

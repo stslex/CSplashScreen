@@ -27,7 +27,7 @@ fun LazyListPhotoItem(
         onHeaderClick = remember(item.username) {
             { onUserClick(item.username) }
         },
-        url = item.url,
+        url = item.urls.regular,
         headerContent = {
             MainUserAvatar(item.userUrl)
             Spacer(modifier = Modifier.width(Dimen.medium))
