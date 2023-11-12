@@ -16,4 +16,12 @@ object ImageDetailMapper {
         photo = this,
         isLiked = isLiked
     )
+
+    fun transformDetail(
+        image: ImageDetail,
+        isLiked: Boolean
+    ) = ImageDetail(
+        photo = image.photo,
+        isLiked = isLiked
+    )
 }

@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.domain.interactor
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import st.slex.csplashscreen.core.favourite.data.repository.FavouriteRepository
 import st.slex.csplashscreen.core.favourite.domain.FavouriteInteractor
@@ -8,6 +9,7 @@ import st.slex.csplashscreen.core.photos.data.PhotosRepository
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetailMapper.toImageDetail
+import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetailMapper.transformDetail
 import javax.inject.Inject
 
 class ImageDetailInteractorImpl @Inject constructor(
@@ -20,9 +22,13 @@ class ImageDetailInteractorImpl @Inject constructor(
         val item = favouriteRepository
             .getItem(id)
             ?.toImageDetail(isLiked = true)
-            ?: repository.getSinglePhoto(id).toImageDetail(isLiked = false)
+            ?: repository.getSinglePhoto(id)
+                .toImageDetail(isLiked = false)
         emit(item)
-    }
+    }.combine(
+        flow = favouriteRepository.isLiked(uuid = id),
+        transform = ::transformDetail
+    )
 
     override suspend fun getDownloadLink(id: String): String = repository.getDownloadLink(id)
 
