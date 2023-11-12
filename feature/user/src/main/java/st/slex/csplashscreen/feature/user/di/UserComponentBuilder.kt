@@ -19,9 +19,9 @@ object UserComponentBuilder : FeatureBuilder<UserComponent> {
                 .factory()
                 .create(
                     mainUiApi = mainUiApi,
-                    networkClientApi = NetworkApiBuilder.build(),
-                    photosApi = PhotosApiBuilder.build(),
-                    collectionApi = CollectionApiBuilder.build()
+                    networkClientApi = NetworkApiBuilder.build(mainUiApi),
+                    photosApi = PhotosApiBuilder.build(mainUiApi),
+                    collectionApi = CollectionApiBuilder.build(mainUiApi)
                 )
         )
         .also { component ->

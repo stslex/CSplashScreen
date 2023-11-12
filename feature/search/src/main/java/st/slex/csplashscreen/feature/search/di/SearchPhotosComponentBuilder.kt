@@ -19,7 +19,7 @@ object SearchPhotosComponentBuilder : FeatureBuilder<SearchPhotosComponent> {
                 .create(
                     mainUiApi = mainUiApi,
                     databaseApi = DatabaseApiBuilder.build(mainUiApi),
-                    networkClientApi = NetworkApiBuilder.build()
+                    networkClientApi = NetworkApiBuilder.build(mainUiApi)
                 )
         )
 }

@@ -18,7 +18,7 @@ object SingleCollectionBuilder : FeatureBuilder<SingleCollectionComponent> {
                     .factory()
                     .create(
                         mainUiApi = mainUiApi,
-                        networkClientApi = NetworkApiBuilder.build(),
+                        networkClientApi = NetworkApiBuilder.build(mainUiApi),
                     )
             )
 }

@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.core.network.source.real
+package st.slex.csplashscreen.core.network.source.impl
 
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -24,10 +24,12 @@ class SearchPhotosNetworkSourceImpl @Inject constructor(
         query: String,
         page: Int,
         pageSize: Int
-    ): RemoteImageSearchModel = client.apiClient.get {
-        url.appendPathSegments(PATH_SEARCH, PATH_PHOTOS)
-        parameter(PARAMETER_QUERY, query)
-        parameter(PARAMETER_PAGE, page)
-        parameter(PARAMETER_PAGE_SIZE, pageSize)
-    }.body()
+    ): RemoteImageSearchModel = client.request {
+        get {
+            url.appendPathSegments(PATH_SEARCH, PATH_PHOTOS)
+            parameter(PARAMETER_QUERY, query)
+            parameter(PARAMETER_PAGE, page)
+            parameter(PARAMETER_PAGE_SIZE, pageSize)
+        }.body()
+    }
 }

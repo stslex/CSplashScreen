@@ -16,7 +16,7 @@ object ImageDetailComponentBuilder : FeatureBuilder<ImageDetailComponent> {
                 .factory()
                 .create(
                     mainUiApi = mainUiApi,
-                    photosApi = PhotosApiBuilder.build(),
+                    photosApi = PhotosApiBuilder.build(mainUiApi),
                     favouriteApi = FavouriteApiBuilder.build(mainUiApi),
                 )
         )

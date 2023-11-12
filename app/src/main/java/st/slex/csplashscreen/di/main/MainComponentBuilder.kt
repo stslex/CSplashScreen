@@ -13,10 +13,12 @@ import st.slex.csplashscreen.core.ui.di.NavigationApi
 
 object MainComponentBuilder {
 
+    private var component: MainComponent? = null
+
     fun build(
         appApi: AppApi,
         navigationApi: NavigationApi,
-    ): MainComponent = DaggerMainComponent
+    ): MainComponent = component ?: DaggerMainComponent
         .factory()
         .create(
             DaggerMainComponent_MainDependenciesComponent.factory()
@@ -25,6 +27,9 @@ object MainComponentBuilder {
                     navigationApi = navigationApi
                 )
         )
+        .also {
+            component = it
+        }
 }
 
 @Composable
@@ -37,7 +42,7 @@ fun buildMainUIApi(
     }
     val context = LocalContext.current
     val appApi = (context.applicationContext as ApplicationApiProvider).appApi
-    return remember {
+    return remember(navHostController) {
         MainComponentBuilder.build(
             appApi = object : AppApi {
                 override val context: Context = context

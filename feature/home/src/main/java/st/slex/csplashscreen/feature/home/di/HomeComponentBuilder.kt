@@ -18,8 +18,8 @@ object HomeComponentBuilder : FeatureBuilder<HomeComponent> {
                 .factory()
                 .create(
                     mainUiApi = mainUiApi,
-                    collectionApi = CollectionApiBuilder.build(),
-                    photosApi = PhotosApiBuilder.build()
+                    collectionApi = CollectionApiBuilder.build(mainUiApi),
+                    photosApi = PhotosApiBuilder.build(mainUiApi)
                 )
         )
 }
