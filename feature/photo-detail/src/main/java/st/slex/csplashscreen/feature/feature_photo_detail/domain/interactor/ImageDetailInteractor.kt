@@ -8,7 +8,7 @@ interface ImageDetailInteractor {
 
     fun getImageDetail(id: String): Flow<ImageDetail>
 
-    suspend fun getDownloadLink(url: String): String
+    suspend fun getDownloadLink(id: String): String
 
     suspend fun like(photoModel: PhotoModel)
 }
