@@ -85,7 +85,11 @@ class FavouriteDaoTest {
         .let { uuid ->
             FavouriteEntity(
                 uuid = uuid,
-                url = "url_$uuid",
+                urlRaw = "urlRaw$uuid",
+                urlThumb = "urlThumb$uuid",
+                urlSmall = "urlSmall$uuid",
+                urlRegular = "urlRegular$uuid",
+                urlFull = "urlFull$uuid",
                 username = "username_$uuid",
                 userUrl = "user_url_$uuid",
                 downloadUrl = "download_url_$uuid",
