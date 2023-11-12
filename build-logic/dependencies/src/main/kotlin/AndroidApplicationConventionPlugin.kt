@@ -26,8 +26,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 defaultConfig.apply {
                     applicationId = "st.slex.csplashscreen"
                     targetSdk = 34
-                    versionName = AppVersions.versionName
-                    versionCode = AppVersions.versionCode
+                    versionName = AppVersions.VERSION_NAME
+                    versionCode = AppVersions.VERSION_CODE
 
                     configureSigning(target)
                 }
