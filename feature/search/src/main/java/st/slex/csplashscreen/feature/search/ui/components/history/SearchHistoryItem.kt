@@ -13,35 +13,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import st.slex.csplashscreen.core.ui.components.animateItemTop
 import st.slex.csplashscreen.core.ui.components.base.MediumText
-import st.slex.csplashscreen.feature.search.ui.model.SearchItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchHistoryItem(
-    item: SearchItem,
+    query: String,
     listState: LazyListState,
-    onSearchClick: (String) -> Unit,
+    onSearchHistoryClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
             .animateItemTop(
                 listState = listState,
-                key = item.query,
+                key = query,
                 valueKf = 0.05f
             )
             .padding(16.dp)
             .wrapContentHeight()
             .fillMaxWidth(),
-        onClick = remember(item) {
-            { onSearchClick(item.query) }
-        },
+        onClick =  remember(query) { { onSearchHistoryClick(query) } },
     ) {
         MediumText(
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally),
-            text = item.query
+            text = query
         )
     }
 }

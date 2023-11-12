@@ -1,28 +1,27 @@
 package st.slex.csplashscreen.feature.user.di
 
-import android.content.Context
 import st.slex.csplashscreen.core.collection.di.CollectionApiBuilder
 import st.slex.csplashscreen.core.network.di.NetworkApiBuilder
 import st.slex.csplashscreen.core.photos.di.PhotosApiBuilder
+import st.slex.csplashscreen.core.ui.di.MainUiApi
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
-import st.slex.csplashscreen.core.ui.di.navigationApi
 
 object UserComponentBuilder : FeatureBuilder<UserComponent> {
 
     override var feature: UserComponent? = null
 
     override fun create(
-        context: Context
+        mainUiApi: MainUiApi
     ) = feature ?: DaggerUserComponent
         .factory()
         .create(
             dependencies = DaggerUserComponent_UserDependenciesComponent
                 .factory()
                 .create(
-                    navigationApi = context.navigationApi,
-                    networkClientApi = NetworkApiBuilder.build(),
-                    photosApi = PhotosApiBuilder.build(),
-                    collectionApi = CollectionApiBuilder.build()
+                    mainUiApi = mainUiApi,
+                    networkClientApi = NetworkApiBuilder.build(mainUiApi),
+                    photosApi = PhotosApiBuilder.build(mainUiApi),
+                    collectionApi = CollectionApiBuilder.build(mainUiApi)
                 )
         )
         .also { component ->

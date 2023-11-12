@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.core.network.source.real
+package st.slex.csplashscreen.core.network.source.impl
 
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -17,7 +17,9 @@ class UserNetworkSourceImpl @Inject constructor(
 
     override suspend fun getUser(
         username: String
-    ): RemoteUserModel = client.apiClient.get {
-        url.appendPathSegments(ServiceConstants.PATH_USERS, username)
-    }.body()
+    ): RemoteUserModel = client.request {
+        get {
+            url.appendPathSegments(ServiceConstants.PATH_USERS, username)
+        }.body()
+    }
 }

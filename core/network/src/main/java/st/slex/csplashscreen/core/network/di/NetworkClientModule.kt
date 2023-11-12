@@ -9,11 +9,11 @@ import st.slex.csplashscreen.core.network.source.interf.PhotosNetworkClient
 import st.slex.csplashscreen.core.network.source.interf.SearchPhotosNetworkSource
 import st.slex.csplashscreen.core.network.source.interf.TopicsNetworkSource
 import st.slex.csplashscreen.core.network.source.interf.UserNetworkSource
-import st.slex.csplashscreen.core.network.source.real.CollectionNetworkClientImpl
-import st.slex.csplashscreen.core.network.source.real.PhotosNetworkClientImpl
-import st.slex.csplashscreen.core.network.source.real.SearchPhotosNetworkSourceImpl
-import st.slex.csplashscreen.core.network.source.real.TopicsNetworkSourceImpl
-import st.slex.csplashscreen.core.network.source.real.UserNetworkSourceImpl
+import st.slex.csplashscreen.core.network.source.impl.CollectionNetworkClientImpl
+import st.slex.csplashscreen.core.network.source.impl.PhotosNetworkClientImpl
+import st.slex.csplashscreen.core.network.source.impl.SearchPhotosNetworkSourceImpl
+import st.slex.csplashscreen.core.network.source.impl.TopicsNetworkSourceImpl
+import st.slex.csplashscreen.core.network.source.impl.UserNetworkSourceImpl
 import javax.inject.Singleton
 
 @Module

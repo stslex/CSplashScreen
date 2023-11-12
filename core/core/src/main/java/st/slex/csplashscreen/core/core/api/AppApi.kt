@@ -1,12 +1,9 @@
-package st.slex.csplashscreen.di.main
+package st.slex.csplashscreen.core.core.api
 
 import android.content.Context
 import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
-import st.slex.csplashscreen.core.ui.di.Navigator
 
-interface MainDependencies {
-
-    val navigator: Navigator
+interface AppApi {
 
     val context: Context
 

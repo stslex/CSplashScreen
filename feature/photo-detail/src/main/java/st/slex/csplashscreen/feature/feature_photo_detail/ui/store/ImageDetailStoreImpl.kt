@@ -1,13 +1,8 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.ui.store
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.core.Logger
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.interactor.ImageDetailInteractor
 import st.slex.csplashscreen.feature.feature_photo_detail.navigation.ImageDetailRouter
@@ -24,8 +19,9 @@ class ImageDetailStoreImpl @Inject constructor(
     private val interactor: ImageDetailInteractor,
     private val downloadImageUseCase: DownloadImageUseCase,
     private val wallpaperSetUseCase: WallpaperSetUseCase,
+    appDispatcher: AppDispatcher,
     router: ImageDetailRouter
-) : ImageDetailStore, BaseStore<State, Event, Action, Navigation>(router) {
+) : ImageDetailStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
 
     override val initialState: State = State(
         imageId = "",
@@ -53,7 +49,7 @@ class ImageDetailStoreImpl @Inject constructor(
     }
 
     private fun actionLikeClick(action: Action.OnLikeClicked) {
-        scope.launch(Dispatchers.IO) {
+        launch {
             runCatching {
                 interactor.like(action.imageDetail.photo)
             }.onFailure { error ->
@@ -79,21 +75,21 @@ class ImageDetailStoreImpl @Inject constructor(
             currentState.copy(imageId = action.args.imageId)
         }
         interactor.getImageDetail(action.args.imageId)
-            .flowOn(Dispatchers.IO)
-            .catch { error ->
-                updateState { currentState ->
-                    currentState.copy(
-                        screenState = ScreenState.Error(error)
-                    )
+            .launch(
+                catch = { error ->
+                    updateState { currentState ->
+                        currentState.copy(
+                            screenState = ScreenState.Error(error)
+                        )
+                    }
+                },
+                each = { imageDetail ->
+                    updateState { currentState ->
+                        currentState.copy(
+                            screenState = ScreenState.Content(imageDetail)
+                        )
+                    }
                 }
-            }
-            .onEach { imageDetail ->
-                updateState { currentState ->
-                    currentState.copy(
-                        screenState = ScreenState.Content(imageDetail)
-                    )
-                }
-            }
-            .launchIn(scope)
+            )
     }
 }

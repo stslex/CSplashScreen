@@ -10,7 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import st.slex.csplashscreen.core.core.CoroutineExt.mapState
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
+import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
 import st.slex.csplashscreen.core.ui.mvi.BaseStore
@@ -25,8 +26,9 @@ import javax.inject.Inject
 
 class SingleCollectionStoreImpl @Inject constructor(
     private val interactor: SingleCollectionInteractor,
+    appDispatcher: AppDispatcher,
     router: SingleCollectionRouter
-) : SingleCollectionStore, BaseStore<State, Event, Action, Navigation>(router) {
+) : SingleCollectionStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
 
     override val initialState: State
         get() = State(

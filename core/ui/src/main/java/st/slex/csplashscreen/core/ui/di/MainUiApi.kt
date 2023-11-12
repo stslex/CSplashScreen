@@ -1,11 +1,5 @@
 package st.slex.csplashscreen.core.ui.di
 
-import android.content.Context
+import st.slex.csplashscreen.core.core.api.AppApi
 
-interface MainUiApi {
-
-    val navigationApi: NavigationApi
-}
-
-val Context.navigationApi: NavigationApi
-    get() = (this as MainUiApi).navigationApi
+interface MainUiApi : AppApi, NavigationApi

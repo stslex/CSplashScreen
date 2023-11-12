@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import st.slex.csplashscreen.core.ui.di.builder.Feature
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
+import st.slex.csplashscreen.core.ui.di.mainUiApi
 
 @Composable
 inline fun <reified T : ViewModel> daggerViewModel(
@@ -27,7 +28,7 @@ inline fun <reified VM : ViewModel, F : Feature> setupComponent(
     val context = LocalContext.current
 
     DisposableEffect(Unit) {
-        builder.create(context)
+        builder.create(context.mainUiApi)
         onDispose {
             builder.clear()
         }
@@ -35,7 +36,7 @@ inline fun <reified VM : ViewModel, F : Feature> setupComponent(
 
     return daggerViewModel(key) {
         builder
-            .build(context)
+            .build(context.mainUiApi)
             .viewModelFactory
     }
 }

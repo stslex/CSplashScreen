@@ -1,23 +1,24 @@
 package st.slex.csplashscreen.feature.collection.di
 
-import android.content.Context
 import st.slex.csplashscreen.core.network.di.NetworkApiBuilder
+import st.slex.csplashscreen.core.ui.di.MainUiApi
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
-import st.slex.csplashscreen.core.ui.di.navigationApi
 
 object SingleCollectionBuilder : FeatureBuilder<SingleCollectionComponent> {
 
     override var feature: SingleCollectionComponent? = null
 
-    override fun create(context: Context): SingleCollectionComponent =
+    override fun create(
+        mainUiApi: MainUiApi
+    ): SingleCollectionComponent =
         DaggerSingleCollectionComponent
             .factory()
             .create(
                 dependencies = DaggerSingleCollectionComponent_SingleCollectionDependenciesComponent
                     .factory()
                     .create(
-                        networkClientApi = NetworkApiBuilder.build(),
-                        navigationApi = context.navigationApi
+                        mainUiApi = mainUiApi,
+                        networkClientApi = NetworkApiBuilder.build(mainUiApi),
                     )
             )
 }

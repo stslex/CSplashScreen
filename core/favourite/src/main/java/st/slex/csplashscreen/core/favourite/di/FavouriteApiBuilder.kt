@@ -1,6 +1,6 @@
 package st.slex.csplashscreen.core.favourite.di
 
-import st.slex.csplashscreen.core.core.AppApi
+import st.slex.csplashscreen.core.core.api.AppApi
 import st.slex.csplashscreen.core.database.di.DatabaseApiBuilder
 
 object FavouriteApiBuilder {

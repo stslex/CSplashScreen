@@ -1,7 +1,7 @@
 package st.slex.csplashscreen.core.database.di
 
 import dagger.Component
-import st.slex.csplashscreen.core.core.AppApi
+import st.slex.csplashscreen.core.core.api.AppApi
 import javax.inject.Singleton
 
 @Component(dependencies = [AppApi::class])
