@@ -4,7 +4,16 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Component(
-    modules = [NetworkClientModule::class]
+    modules = [NetworkClientModule::class],
+    dependencies = [NetworkDependencies::class]
 )
 @Singleton
-interface NetworkClientComponent : NetworkClientApi
+interface NetworkClientComponent : NetworkClientApi {
+
+    @Component.Factory
+    interface Factory {
+
+        fun create(dependencies: NetworkDependencies): NetworkClientApi
+    }
+}
+

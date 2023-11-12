@@ -3,16 +3,11 @@ package st.slex.csplashscreen.feature.user.ui.store
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.collection.ui.model.toPresentation
-import st.slex.csplashscreen.core.core.Logger
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
 import st.slex.csplashscreen.core.ui.mvi.BaseStore
@@ -27,8 +22,9 @@ import javax.inject.Inject
 
 class UserStoreImpl @Inject constructor(
     private val interactor: UserInteractor,
+    appDispatcher: AppDispatcher,
     router: UserRouter
-) : UserStore, BaseStore<State, Event, Action, Navigation>(router) {
+) : UserStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
 
     override val initialState: State = State(
         user = null,
@@ -54,16 +50,11 @@ class UserStoreImpl @Inject constructor(
     ) {
         interactor
             .getUser(action.args.username)
-            .flowOn(Dispatchers.IO)
-            .catch { error ->
-                Logger.exception(error)
-            }
-            .onEach { user ->
+            .launch { user ->
                 updateState { currentState ->
                     currentState.copy(user = user)
                 }
             }
-            .launchIn(scope)
     }
 
     private fun getPhotos(

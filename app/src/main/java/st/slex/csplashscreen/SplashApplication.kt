@@ -1,8 +1,8 @@
 package st.slex.csplashscreen
 
 import android.app.Application
-import st.slex.csplashscreen.core.core.AppApi
-import st.slex.csplashscreen.core.core.ApplicationApiProvider
+import st.slex.csplashscreen.core.core.api.AppApi
+import st.slex.csplashscreen.core.core.api.ApplicationApiProvider
 import st.slex.csplashscreen.di.app.AppComponent
 import st.slex.csplashscreen.di.app.DaggerAppComponent
 

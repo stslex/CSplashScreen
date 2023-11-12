@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.BaseStore
 import st.slex.csplashscreen.feature.favourite.domain.FavouriteInteractor
@@ -16,8 +17,9 @@ import javax.inject.Inject
 
 class FavouriteStoreImpl @Inject constructor(
     private val interactor: FavouriteInteractor,
+    appDispatcher: AppDispatcher,
     router: FavouriteRouter
-) : FavouriteStore, BaseStore<State, Event, Action, Navigation>(router) {
+) : FavouriteStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
 
     override val initialState: State = State(
         photos = ::photos

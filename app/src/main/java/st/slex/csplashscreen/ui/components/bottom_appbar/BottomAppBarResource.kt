@@ -41,6 +41,8 @@ enum class BottomAppBarResource(
         screen = NavigationScreen.SearchPhotosScreen(query = " ")
     );
 
+    fun getIcon(isSelected: Boolean) = if (isSelected) selectedIcon else unselectedIcon
+
     companion object {
 
         fun isAppbar(

@@ -1,19 +1,24 @@
 package st.slex.csplashscreen.di.main
 
+import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import st.slex.csplashscreen.core.core.AppApi
-import st.slex.csplashscreen.core.core.appApi
-import st.slex.csplashscreen.core.ui.base.daggerViewModel
+import androidx.navigation.NavHostController
+import st.slex.csplashscreen.core.core.api.AppApi
+import st.slex.csplashscreen.core.core.api.ApplicationApiProvider
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
+import st.slex.csplashscreen.core.navigation.di.NavigationComponentBuilder
 import st.slex.csplashscreen.core.ui.di.NavigationApi
-import st.slex.csplashscreen.ui.InitialAppViewModel
 
 object MainComponentBuilder {
 
+    private var component: MainComponent? = null
+
     fun build(
         appApi: AppApi,
-        navigationApi: NavigationApi
-    ): MainComponent = DaggerMainComponent
+        navigationApi: NavigationApi,
+    ): MainComponent = component ?: DaggerMainComponent
         .factory()
         .create(
             DaggerMainComponent_MainDependenciesComponent.factory()
@@ -22,17 +27,28 @@ object MainComponentBuilder {
                     navigationApi = navigationApi
                 )
         )
+        .also {
+            component = it
+        }
 }
 
 @Composable
-fun setupMainComponent(navigationApi: NavigationApi): InitialAppViewModel {
+fun buildMainUIApi(
+    navHostController: NavHostController
+): MainComponent {
+    val navigationApi = remember(navHostController) {
+        NavigationComponentBuilder
+            .build(navHostController)
+    }
     val context = LocalContext.current
-    return daggerViewModel {
-        MainComponentBuilder
-            .build(
-                appApi = context.appApi,
-                navigationApi = navigationApi
-            )
-            .viewModelFactory
+    val appApi = (context.applicationContext as ApplicationApiProvider).appApi
+    return remember(navHostController) {
+        MainComponentBuilder.build(
+            appApi = object : AppApi {
+                override val context: Context = context
+                override val appDispatcher: AppDispatcher = appApi.appDispatcher
+            },
+            navigationApi = navigationApi
+        )
     }
 }

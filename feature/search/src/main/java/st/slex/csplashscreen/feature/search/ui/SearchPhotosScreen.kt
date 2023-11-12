@@ -3,7 +3,6 @@ package st.slex.csplashscreen.feature.search.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -18,9 +17,10 @@ fun SearchPhotosScreen(
     photos: LazyPagingItems<PhotoModel>,
     searchHistory: LazyPagingItems<SearchItem>,
     query: String,
-    onQuery: (String) -> Unit,
+    onQueryChange: (String) -> Unit,
     onUserClick: (String) -> Unit,
     onImageClick: (String) -> Unit,
+    onSearchHistoryClick: (String) -> Unit,
     clearHistory: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -30,7 +30,7 @@ fun SearchPhotosScreen(
     ) {
         TopAppBarSearch(
             querySearch = query,
-            search = onQuery
+            search = onQueryChange
         )
 
         if (
@@ -40,7 +40,7 @@ fun SearchPhotosScreen(
             LazyListHistorySearch(
                 modifier = Modifier.weight(1f),
                 items = searchHistory,
-                onSearchClick = remember { onQuery },
+                onSearchHistoryClick = onSearchHistoryClick,
                 clearHistory = clearHistory
             )
         } else {
