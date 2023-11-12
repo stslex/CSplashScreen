@@ -67,7 +67,7 @@ fun ImageDetailScreen(
         modifier = modifier.fillMaxSize()
     ) {
         BindTopImageHead(
-            url = state.screenState.data?.photo?.url.orEmpty(),
+            url = state.screenState.data?.photo?.urls?.regular.orEmpty(),
         )
         Spacer(modifier = Modifier.height(Dimen.smallest))
         ImageDetail(
