@@ -1,20 +1,18 @@
-package st.slex.csplashscreen.feature.collection.ui.store
+package st.slex.csplashscreen.feature.home.ui.presenter
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.StateFlow
+import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.Store
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Action
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Event
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.State
 
-interface SingleCollectionStore : Store<State, Event, Action> {
+interface HomeStore : Store {
 
     @Stable
     data class State(
-        val photos: () -> StateFlow<PagingData<PhotoModel>>,
-        val collectionId: String,
+        val collections: () -> StateFlow<PagingData<CollectionModel>>,
+        val photos: () -> StateFlow<PagingData<PhotoModel>>
     ) : Store.State
 
     @Stable
@@ -24,12 +22,17 @@ interface SingleCollectionStore : Store<State, Event, Action> {
     sealed interface Navigation : Store.Navigation {
 
         @Stable
-        data class Profile(
+        data class User(
             val username: String
         ) : Navigation
 
         @Stable
-        data class ImageDetail(
+        data class Collection(
+            val uuid: String
+        ) : Navigation
+
+        @Stable
+        data class Image(
             val uuid: String
         ) : Navigation
     }
@@ -38,18 +41,19 @@ interface SingleCollectionStore : Store<State, Event, Action> {
     sealed interface Action : Store.Action {
 
         @Stable
-        data class Init(
-            val collectionId: String
+        data class OnUserClick(
+            val username: String
+        ) : Action
+
+        @Stable
+        data class OnCollectionClick(
+            val uuid: String
         ) : Action
 
         @Stable
         data class OnImageClick(
             val uuid: String
         ) : Action
-
-        @Stable
-        data class OnProfileClick(
-            val username: String
-        ) : Action
     }
 }
+

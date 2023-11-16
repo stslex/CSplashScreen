@@ -2,18 +2,16 @@ package st.slex.csplashscreen.feature.home.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import st.slex.csplashscreen.core.ui.base.ViewModelFactory
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import st.slex.csplashscreen.core.ui.base.ViewModelFactory
 import st.slex.csplashscreen.core.ui.di.ViewModelKey
 import st.slex.csplashscreen.feature.home.domain.HomeInteractor
 import st.slex.csplashscreen.feature.home.domain.HomeInteractorImpl
 import st.slex.csplashscreen.feature.home.navigation.HomeRouter
 import st.slex.csplashscreen.feature.home.navigation.HomeRouterImpl
-import st.slex.csplashscreen.feature.home.ui.HomeViewModel
-import st.slex.csplashscreen.feature.home.ui.store.HomeStore
-import st.slex.csplashscreen.feature.home.ui.store.HomeStoreImpl
+import st.slex.csplashscreen.feature.home.ui.presenter.HomeViewModel
 
 @Module
 interface HomeModule {
@@ -25,10 +23,6 @@ interface HomeModule {
     @Binds
     @HomeScope
     fun bindsRouter(impl: HomeRouterImpl): HomeRouter
-
-    @Binds
-    @HomeScope
-    fun bindsStore(impl: HomeStoreImpl): HomeStore
 
     @Binds
     @HomeScope

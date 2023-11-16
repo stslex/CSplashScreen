@@ -13,8 +13,8 @@ import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.favourite.di.FavouriteComponentBuilder
 import st.slex.csplashscreen.feature.favourite.ui.FavouriteScreen
-import st.slex.csplashscreen.feature.favourite.ui.FavouriteViewModel
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.Action
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore.Action
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteViewModel
 
 fun NavGraphBuilder.favouriteGraph(
     modifier: Modifier = Modifier,

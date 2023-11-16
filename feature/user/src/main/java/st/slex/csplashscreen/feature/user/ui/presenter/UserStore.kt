@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.feature.user.ui.store
+package st.slex.csplashscreen.feature.user.ui.presenter
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
@@ -8,11 +8,8 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.network.model.ui.user.UserModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.Store
-import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action
-import st.slex.csplashscreen.feature.user.ui.store.UserStore.Event
-import st.slex.csplashscreen.feature.user.ui.store.UserStore.State
 
-interface UserStore : Store<State, Event, Action> {
+interface UserStore {
 
     @Stable
     data class State(

@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.feature.search.ui.store
+package st.slex.csplashscreen.feature.search.ui.presenter
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -15,22 +15,22 @@ import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.mvi.BaseStore
+import st.slex.csplashscreen.core.ui.mvi.BaseViewModel
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.search.domain.interactor.SearchPhotosInteractor
 import st.slex.csplashscreen.feature.search.navigation.SearchPhotosRouter
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Action
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Event
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Navigation
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore.State
+import st.slex.csplashscreen.feature.search.ui.presenter.SearchStore.Action
+import st.slex.csplashscreen.feature.search.ui.presenter.SearchStore.Event
+import st.slex.csplashscreen.feature.search.ui.presenter.SearchStore.Navigation
+import st.slex.csplashscreen.feature.search.ui.presenter.SearchStore.State
 import javax.inject.Inject
 
-class SearchStoreImpl @Inject constructor(
+class SearchViewModel @Inject constructor(
     private val interactor: SearchPhotosInteractor,
     appDispatcher: AppDispatcher,
     router: SearchPhotosRouter
-) : SearchStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
+) : BaseViewModel<State, Event, Action, Navigation>(router, appDispatcher) {
 
     override val initialState = State(
         query = "",
@@ -38,7 +38,7 @@ class SearchStoreImpl @Inject constructor(
         historyItems = ::searchHistory
     )
 
-    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
+    override val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     private val searchHistory: StateFlow<PagingData<SearchItem>>
         get() = interactor.searchHistory.state()
@@ -52,6 +52,17 @@ class SearchStoreImpl @Inject constructor(
             .map { pagingData -> pagingData.map { it.toPresentation() } }
             .state()
 
+    override fun sendAction(action: Action) {
+        when (action) {
+            is Action.Init -> actionInit(action)
+            is Action.ClearHistory -> actionClearHistory()
+            is Action.OnImageClick -> actionOnImageClick(action)
+            is Action.OnProfileClick -> actionOnProfileClick(action)
+            is Action.OnQueryInput -> actionQueryInput(action)
+            is Action.OnSearchHistoryClick -> actionSearchHistoryClick(action)
+        }
+    }
+
     private fun newPagerPhotosSearch(
         query: String
     ): Pager<Int, ImageModel> = Pager(config) {
@@ -61,17 +72,6 @@ class SearchStoreImpl @Inject constructor(
             } else {
                 interactor.getPhotos(query, page, pageSize)
             }
-        }
-    }
-
-    override fun processAction(action: Action) {
-        when (action) {
-            is Action.Init -> actionInit(action)
-            is Action.ClearHistory -> actionClearHistory()
-            is Action.OnImageClick -> actionOnImageClick(action)
-            is Action.OnProfileClick -> actionOnProfileClick(action)
-            is Action.OnQueryInput -> actionQueryInput(action)
-            is Action.OnSearchHistoryClick -> actionSearchHistoryClick(action)
         }
     }
 

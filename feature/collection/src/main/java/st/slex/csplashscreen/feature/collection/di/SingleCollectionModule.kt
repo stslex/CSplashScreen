@@ -2,10 +2,10 @@ package st.slex.csplashscreen.feature.collection.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import st.slex.csplashscreen.core.ui.base.ViewModelFactory
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import st.slex.csplashscreen.core.ui.base.ViewModelFactory
 import st.slex.csplashscreen.core.ui.di.ViewModelKey
 import st.slex.csplashscreen.feature.collection.data.SingleCollectionRepository
 import st.slex.csplashscreen.feature.collection.data.SingleCollectionRepositoryImpl
@@ -13,9 +13,7 @@ import st.slex.csplashscreen.feature.collection.domain.SingleCollectionInteracto
 import st.slex.csplashscreen.feature.collection.domain.SingleCollectionInteractorImpl
 import st.slex.csplashscreen.feature.collection.navigation.SingleCollectionRouter
 import st.slex.csplashscreen.feature.collection.navigation.SingleCollectionRouterImpl
-import st.slex.csplashscreen.feature.collection.ui.SingleCollectionViewModel
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStoreImpl
+import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionViewModel
 
 @Module
 interface SingleCollectionModule {
@@ -27,10 +25,6 @@ interface SingleCollectionModule {
     @Binds
     @SingleCollectionScope
     fun bindsInteractor(impl: SingleCollectionInteractorImpl): SingleCollectionInteractor
-
-    @Binds
-    @SingleCollectionScope
-    fun bindsStore(impl: SingleCollectionStoreImpl): SingleCollectionStore
 
     @Binds
     @SingleCollectionScope

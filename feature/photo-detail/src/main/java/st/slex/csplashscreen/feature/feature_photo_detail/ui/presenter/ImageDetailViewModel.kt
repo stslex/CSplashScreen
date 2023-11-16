@@ -1,41 +1,41 @@
-package st.slex.csplashscreen.feature.feature_photo_detail.ui.store
+package st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import st.slex.csplashscreen.core.core.Logger
 import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
-import st.slex.csplashscreen.core.ui.mvi.BaseStore
+import st.slex.csplashscreen.core.ui.mvi.BaseViewModel
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.interactor.ImageDetailInteractor
 import st.slex.csplashscreen.feature.feature_photo_detail.navigation.ImageDetailRouter
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.DownloadImageType.LARGE
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.DownloadImageType.MEDIUM
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.DownloadImageType.ORIGINAL
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.DownloadImageType.SMALL
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Action
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.DialogType
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Navigation
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.ScreenState
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.State
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType.LARGE
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType.MEDIUM
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType.ORIGINAL
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType.SMALL
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.Action
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.DialogType
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.Event
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.Navigation
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.ScreenState
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.State
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.utils.DownloadImageUseCase
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.utils.WallpaperSetUseCase
 import javax.inject.Inject
 
-class ImageDetailStoreImpl @Inject constructor(
+class ImageDetailViewModel @Inject constructor(
     private val interactor: ImageDetailInteractor,
     private val downloadImageUseCase: DownloadImageUseCase,
     private val wallpaperSetUseCase: WallpaperSetUseCase,
     appDispatcher: AppDispatcher,
     router: ImageDetailRouter
-) : ImageDetailStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
+) : BaseViewModel<State, Event, Action, Navigation>(router, appDispatcher) {
 
     override val initialState: State = State(
         imageId = "",
         screenState = ScreenState.Loading
     )
 
-    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
+    override val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
-    override fun processAction(action: Action) {
+    override fun sendAction(action: Action) {
         when (action) {
             is Action.Init -> actionInit(action)
             is Action.DownloadImageButtonClick -> actionDownloadImageButtonClick()

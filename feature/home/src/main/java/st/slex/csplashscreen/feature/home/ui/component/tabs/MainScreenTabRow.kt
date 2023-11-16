@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.feature.home.ui.components.tabs
+package st.slex.csplashscreen.feature.home.ui.component.tabs
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState

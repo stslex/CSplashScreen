@@ -1,17 +1,19 @@
 package st.slex.csplashscreen.core.ui.mvi
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -27,43 +29,32 @@ import st.slex.csplashscreen.core.ui.mvi.Store.Event
 import st.slex.csplashscreen.core.ui.mvi.Store.Navigation
 import st.slex.csplashscreen.core.ui.mvi.Store.State
 
-abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
+abstract class BaseViewModel<S : State, E : Event, A : Action, N : Navigation>(
     private val router: Router<N>,
     private val appDispatcher: AppDispatcher
-) : Store<S, E, A> {
+) : ViewModel() {
 
     abstract val initialState: S
+    abstract fun sendAction(action: A)
 
-    private var _scope: CoroutineScope? = null
-    private val scope: CoroutineScope
-        get() = requireNotNull(_scope)
+    protected open val _state: MutableStateFlow<S> = MutableStateFlow(initialState)
+    val state: StateFlow<S>
+        get() = _state.asStateFlow()
 
-    override val state: MutableStateFlow<S>
-        get() = MutableStateFlow(initialState)
-
-    override val event: MutableSharedFlow<E> = MutableSharedFlow()
+    val event: MutableSharedFlow<E> = MutableSharedFlow()
 
     fun updateState(update: (S) -> S) {
-        state.update(update)
+        _state.update(update)
     }
 
     fun sendEvent(event: E) {
-        scope.launch(appDispatcher.default) {
-            this@BaseStore.event.emit(event)
+        viewModelScope.launch(appDispatcher.default) {
+            this@BaseViewModel.event.emit(event)
         }
     }
 
     fun navigate(event: N) {
         router(event)
-    }
-
-    override fun init(scope: CoroutineScope) {
-        _scope = scope
-    }
-
-    override fun destroy() {
-        _scope?.cancel()
-        _scope = null
     }
 
     fun <K : Any, T : Any, R : Any> Pager<K, T>.state(
@@ -75,14 +66,16 @@ abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
 
     fun <T : Any> Flow<PagingData<T>>.state(): StateFlow<PagingData<T>> = this
         .flowOn(appDispatcher.default)
-        .cachedIn(scope)
+        .cachedIn(viewModelScope)
         .stateIn(
             initialValue = PagingData.empty(),
-            scope = scope,
+            scope = viewModelScope,
             started = SharingStarted.Lazily
         )
 
-    fun launch(block: suspend CoroutineScope.() -> Unit): Job = scope.launch(
+    fun launch(
+        block: suspend CoroutineScope.() -> Unit
+    ): Job = viewModelScope.launch(
         context = appDispatcher.default,
         block = block
     )
@@ -91,7 +84,7 @@ abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
         block: suspend CoroutineScope.() -> T,
         onFailure: suspend (Throwable) -> Unit = {},
         onSuccess: (T) -> Unit,
-    ): Job = scope.launch(appDispatcher.default) {
+    ): Job = viewModelScope.launch(appDispatcher.default) {
         runCatching {
             block()
         }
@@ -112,5 +105,5 @@ abstract class BaseStore<S : State, E : Event, A : Action, N : Navigation>(
             Logger.exception(error)
         }
         .onEach(each)
-        .launchIn(scope)
+        .launchIn(viewModelScope)
 }
