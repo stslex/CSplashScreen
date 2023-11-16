@@ -11,9 +11,9 @@ import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.home.di.HomeComponentBuilder
-import st.slex.csplashscreen.feature.home.ui.HomeViewModel
+import st.slex.csplashscreen.feature.home.ui.presenter.HomeStore
+import st.slex.csplashscreen.feature.home.ui.presenter.HomeViewModel
 import st.slex.csplashscreen.feature.home.ui.MainScreen
-import st.slex.csplashscreen.feature.home.ui.store.HomeStore
 
 fun NavGraphBuilder.homeGraph(
     modifier: Modifier = Modifier,

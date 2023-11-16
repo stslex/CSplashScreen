@@ -1,15 +1,12 @@
-package st.slex.csplashscreen.feature.favourite.ui.store
+package st.slex.csplashscreen.feature.favourite.ui.presenter
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.Store
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.Action
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.Event
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.State
 
-interface FavouriteStore : Store<State, Event, Action> {
+interface FavouriteStore : Store {
 
     @Stable
     data class State(

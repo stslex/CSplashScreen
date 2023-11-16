@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.feature.search.ui.store
+package st.slex.csplashscreen.feature.search.ui.presenter
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
@@ -7,11 +7,8 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.Store
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Action
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Event
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore.State
 
-interface SearchStore : Store<State, Event, Action> {
+interface SearchStore {
 
     @Stable
     data class State(

@@ -22,11 +22,11 @@ import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.feature_photo_detail.di.ImageDetailComponentBuilder
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailScreen
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailViewModel
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.Action
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.DialogType
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.Event
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailViewModel
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.components.dialogs.DownloadImageDialog
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Action
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.DialogType
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event
 
 fun NavGraphBuilder.imageDetailGraph(
     modifier: Modifier = Modifier,

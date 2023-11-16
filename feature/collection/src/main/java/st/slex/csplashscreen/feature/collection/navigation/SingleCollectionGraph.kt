@@ -16,8 +16,8 @@ import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.collection.di.SingleCollectionBuilder
 import st.slex.csplashscreen.feature.collection.ui.CollectionScreen
-import st.slex.csplashscreen.feature.collection.ui.SingleCollectionViewModel
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Action
+import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionStore.Action
+import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionViewModel
 
 fun NavGraphBuilder.singleCollectionGraph(
     modifier: Modifier = Modifier,
