@@ -1,5 +1,10 @@
 package st.slex.csplashscreen.core.ui.di
 
-fun interface Navigator {
+import androidx.navigation.NavHostController
+
+interface Navigator {
+
+    val controller: NavHostController
+
     operator fun invoke(screen: Screen)
 }

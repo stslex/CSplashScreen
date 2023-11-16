@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import st.slex.csplashscreen.core.ui.base.daggerViewModel
 import st.slex.csplashscreen.core.ui.di.MainUiApi
@@ -26,10 +25,10 @@ class MainActivity : ComponentActivity(), MainUiProvider {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             AppTheme {
-                val navController = rememberNavController()
-                val viewModel = buildViewModel(navController)
+                val viewModel = buildViewModel()
+
                 InitialApp(
-                    navController = navController,
+                    navController = api.navigator.controller,
                     onBottomAppBarClick = remember {
                         { viewModel.navigate(it) }
                     }
@@ -39,9 +38,8 @@ class MainActivity : ComponentActivity(), MainUiProvider {
     }
 
     @Composable
-    private fun buildViewModel(
-        navHostController: NavHostController
-    ): InitialAppViewModel {
+    private fun buildViewModel(): InitialAppViewModel {
+        val navHostController = rememberNavController()
         val component = buildMainUIApi(
             navHostController = navHostController
         )

@@ -11,6 +11,9 @@ class NavigatorImpl @Inject constructor(
     private val navController: NavHostController
 ) : Navigator {
 
+    override val controller: NavHostController
+        get() = navController
+
     override fun invoke(screen: Screen) {
         when (screen) {
             is NavigationScreen.PopBackStack -> navController.popBackStack()
