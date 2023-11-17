@@ -16,14 +16,14 @@ import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.user.di.UserComponentBuilder
 import st.slex.csplashscreen.feature.user.ui.UserScreen
-import st.slex.csplashscreen.feature.user.ui.UserViewModel
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.Init
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.OnBackButtonClick
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.OnCollectionClick
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.OnImageClick
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.OnUserClick
+import st.slex.csplashscreen.feature.user.ui.presenter.UserViewModel
 import st.slex.csplashscreen.feature.user.ui.state.rememberUserPagerState
 import st.slex.csplashscreen.feature.user.ui.state.rememberUserSwipeState
-import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.Init
-import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.OnBackButtonClick
-import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.OnCollectionClick
-import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.OnImageClick
-import st.slex.csplashscreen.feature.user.ui.store.UserStore.Action.OnUserClick
 
 fun NavGraphBuilder.userGraph(
     modifier: Modifier = Modifier,

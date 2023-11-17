@@ -16,8 +16,8 @@ import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.search.di.SearchPhotosComponentBuilder
 import st.slex.csplashscreen.feature.search.ui.SearchPhotosScreen
-import st.slex.csplashscreen.feature.search.ui.SearchViewModel
-import st.slex.csplashscreen.feature.search.ui.store.SearchStore.Action
+import st.slex.csplashscreen.feature.search.ui.presenter.SearchStore.Action
+import st.slex.csplashscreen.feature.search.ui.presenter.SearchViewModel
 
 fun NavGraphBuilder.searchPhotosGraph(
     modifier: Modifier = Modifier,

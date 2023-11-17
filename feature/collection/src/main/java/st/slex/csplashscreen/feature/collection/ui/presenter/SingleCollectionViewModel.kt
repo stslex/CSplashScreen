@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.feature.collection.ui.store
+package st.slex.csplashscreen.feature.collection.ui.presenter
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -14,31 +14,30 @@ import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.photos.ui.model.toPresentation
-import st.slex.csplashscreen.core.ui.mvi.BaseStore
+import st.slex.csplashscreen.core.ui.mvi.BaseViewModel
 import st.slex.csplashscreen.core.ui.paging.PagingSource
 import st.slex.csplashscreen.feature.collection.domain.SingleCollectionInteractor
 import st.slex.csplashscreen.feature.collection.navigation.SingleCollectionRouter
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Action
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Event
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.Navigation
-import st.slex.csplashscreen.feature.collection.ui.store.SingleCollectionStore.State
+import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionStore.Action
+import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionStore.Event
+import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionStore.Navigation
+import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionStore.State
 import javax.inject.Inject
 
-class SingleCollectionStoreImpl @Inject constructor(
+class SingleCollectionViewModel @Inject constructor(
     private val interactor: SingleCollectionInteractor,
     appDispatcher: AppDispatcher,
     router: SingleCollectionRouter
-) : SingleCollectionStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
+) : BaseViewModel<State, Event, Action, Navigation>(router, appDispatcher) {
 
-    override val initialState: State
-        get() = State(
-            photos = ::allPhotos,
-            collectionId = ""
-        )
+    override val initialState: State = State(
+        photos = ::allPhotos,
+        collectionId = ""
+    )
 
-    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
+    override val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
-    override fun processAction(action: Action) {
+    override fun sendAction(action: Action) {
         when (action) {
             is Action.Init -> actionInit(action)
             is Action.OnProfileClick -> actionProfileClick(action)

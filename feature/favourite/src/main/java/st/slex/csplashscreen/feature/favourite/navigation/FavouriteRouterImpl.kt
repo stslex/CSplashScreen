@@ -2,7 +2,7 @@ package st.slex.csplashscreen.feature.favourite.navigation
 
 import st.slex.csplashscreen.core.navigation.NavigationScreen
 import st.slex.csplashscreen.core.ui.di.Navigator
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.Navigation
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore.Navigation
 import javax.inject.Inject
 
 class FavouriteRouterImpl @Inject constructor(

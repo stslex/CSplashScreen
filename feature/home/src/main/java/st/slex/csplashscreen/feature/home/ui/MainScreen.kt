@@ -14,8 +14,8 @@ import st.slex.csplashscreen.core.collection.ui.component.LazyListCollection
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.photos.ui.component.LazyListPhotos
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
-import st.slex.csplashscreen.feature.home.ui.components.tabs.MainScreenTabRow
-import st.slex.csplashscreen.feature.home.ui.components.tabs.MainScreenTabs
+import st.slex.csplashscreen.feature.home.ui.component.tabs.MainScreenTabRow
+import st.slex.csplashscreen.feature.home.ui.component.tabs.MainScreenTabs
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

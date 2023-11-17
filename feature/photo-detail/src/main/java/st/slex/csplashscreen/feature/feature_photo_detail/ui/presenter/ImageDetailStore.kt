@@ -1,14 +1,11 @@
-package st.slex.csplashscreen.feature.feature_photo_detail.ui.store
+package st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter
 
 import androidx.compose.runtime.Stable
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.ui.mvi.Store
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Action
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.Event
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore.State
 
-interface ImageDetailStore : Store<State, Event, Action> {
+interface ImageDetailStore : Store {
 
     @Stable
     data class State(

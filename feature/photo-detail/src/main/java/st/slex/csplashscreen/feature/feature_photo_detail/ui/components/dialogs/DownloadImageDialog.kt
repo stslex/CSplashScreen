@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import st.slex.csplashscreen.core.ui.theme.Dimen
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.DownloadImageType
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.store.ImageDetailStore
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore
 
 @Composable
 fun DownloadImageDialog(

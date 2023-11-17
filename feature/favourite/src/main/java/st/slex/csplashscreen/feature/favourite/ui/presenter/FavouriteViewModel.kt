@@ -1,4 +1,4 @@
-package st.slex.csplashscreen.feature.favourite.ui.store
+package st.slex.csplashscreen.feature.favourite.ui.presenter
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -6,26 +6,26 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
-import st.slex.csplashscreen.core.ui.mvi.BaseStore
+import st.slex.csplashscreen.core.ui.mvi.BaseViewModel
 import st.slex.csplashscreen.feature.favourite.domain.FavouriteInteractor
 import st.slex.csplashscreen.feature.favourite.navigation.FavouriteRouter
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.Action
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.Event
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.Navigation
-import st.slex.csplashscreen.feature.favourite.ui.store.FavouriteStore.State
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore.Action
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore.Event
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore.Navigation
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore.State
 import javax.inject.Inject
 
-class FavouriteStoreImpl @Inject constructor(
+class FavouriteViewModel @Inject constructor(
     private val interactor: FavouriteInteractor,
     appDispatcher: AppDispatcher,
     router: FavouriteRouter
-) : FavouriteStore, BaseStore<State, Event, Action, Navigation>(router, appDispatcher) {
+) : BaseViewModel<State, Event, Action, Navigation>(router, appDispatcher) {
 
     override val initialState: State = State(
         photos = ::photos
     )
 
-    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
+    override val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     private val photos: StateFlow<PagingData<PhotoModel>>
         get() = interactor.photos
@@ -34,7 +34,7 @@ class FavouriteStoreImpl @Inject constructor(
             }
             .state()
 
-    override fun processAction(action: Action) {
+    override fun sendAction(action: Action) {
         when (action) {
             is Action.GoToPhotosClick -> actionGoHome()
             is Action.OnImageClick -> actionImageClick(action)
