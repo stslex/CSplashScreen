@@ -20,7 +20,7 @@ fun NavigationHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination.route
+        startDestination = startDestination.navigationRoute
     ) {
         homeGraph(modifier)
         userGraph(modifier)

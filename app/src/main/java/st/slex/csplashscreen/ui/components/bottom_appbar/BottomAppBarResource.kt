@@ -10,35 +10,35 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import st.slex.csplashscreen.R
 import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.navigation.NavigationScreen
+import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 
 enum class BottomAppBarResource(
     val unselectedIcon: ImageVector,
     val selectedIcon: ImageVector,
     val appDestination: AppDestination,
     val titleResource: Int,
-    val screen: NavigationScreen
+    val screen: Screen
 ) {
     FAVOURITE(
         unselectedIcon = Icons.Outlined.FavoriteBorder,
         selectedIcon = Icons.Filled.Favorite,
         appDestination = AppDestination.FAVOURITE,
         titleResource = R.string.nav_title_favourite,
-        screen = NavigationScreen.Favourite
+        screen = Screen.Favourite
     ),
     HOME(
         unselectedIcon = Icons.Outlined.Home,
         selectedIcon = Icons.Filled.Home,
         appDestination = AppDestination.HOME,
         titleResource = R.string.nav_title_home,
-        screen = NavigationScreen.Home
+        screen = Screen.Home
     ),
     SEARCH(
         unselectedIcon = Icons.Outlined.Search,
         selectedIcon = Icons.Filled.Search,
         appDestination = AppDestination.SEARCH_PHOTOS,
         titleResource = R.string.nav_title_search,
-        screen = NavigationScreen.SearchPhotosScreen(query = " ")
+        screen = Screen.SearchPhotosScreen(query = " ")
     );
 
     fun getIcon(isSelected: Boolean) = if (isSelected) selectedIcon else unselectedIcon

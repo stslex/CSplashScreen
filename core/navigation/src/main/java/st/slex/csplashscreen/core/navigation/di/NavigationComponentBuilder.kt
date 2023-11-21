@@ -1,7 +1,6 @@
 package st.slex.csplashscreen.core.navigation.di
 
 import androidx.navigation.NavHostController
-import st.slex.csplashscreen.core.ui.di.NavigationApi
 
 object NavigationComponentBuilder {
 
