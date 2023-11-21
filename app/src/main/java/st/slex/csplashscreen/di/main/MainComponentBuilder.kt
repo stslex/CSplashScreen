@@ -8,8 +8,8 @@ import androidx.navigation.NavHostController
 import st.slex.csplashscreen.core.core.api.AppApi
 import st.slex.csplashscreen.core.core.api.ApplicationApiProvider
 import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
+import st.slex.csplashscreen.core.navigation.di.NavigationApi
 import st.slex.csplashscreen.core.navigation.di.NavigationComponentBuilder
-import st.slex.csplashscreen.core.ui.di.NavigationApi
 
 object MainComponentBuilder {
 

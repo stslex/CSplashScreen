@@ -1,6 +1,13 @@
 package st.slex.csplashscreen.core.navigation
 
-enum class AppDestination(vararg val argsNames: String) {
+import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+
+enum class AppDestination(
+    private vararg val argsNames: String
+) {
     HOME,
     IMAGE_DETAIL("imageId"),
     COLLECTION("collection_id"),
@@ -9,35 +16,35 @@ enum class AppDestination(vararg val argsNames: String) {
     USER("username"),
     UNDEFINED;
 
-    val route: String
-        get() = StringBuilder()
-            .append(name, SEPARATOR_ROUTE, TAG_ROUTE)
-            .toString()
-            .lowercase()
+    val destinationName: String = "${name}_route"
+    val navigationRoute: String = "$destinationName${argsNames.argumentsRoute}"
+    val composableArguments: List<NamedNavArgument> = argsNames.map { name ->
+        navArgument(name) { NavType.StringType }
+    }
 
-    val navigationRoute: String
-        get() = "$route${argsNames.argumentsRoute}"
+    fun parseArguments(
+        navBackStackEntry: NavBackStackEntry
+    ): List<String> = argsNames.map { name ->
+        navBackStackEntry.arguments?.getString(name).orEmpty()
+    }
 
     private val Array<out String>.argumentsRoute: String
-        get() = if (isEmpty()) {
-            String()
-        } else {
-            joinToString(separator = "}/{", prefix = "/{", postfix = "}")
-        }
+        get() = if (isEmpty()) "" else joinToString(
+            separator = "}/{",
+            prefix = "/{",
+            postfix = "}"
+        )
 
     companion object {
 
-        private const val SEPARATOR_ROUTE = "_"
-        private const val TAG_ROUTE = "route"
-
-        fun findByRoute(route: String?) = if (route == null) {
+        fun findByRoute(
+            route: String?
+        ) = if (route.isNullOrBlank()) {
             UNDEFINED
         } else {
-            AppDestination
-                .entries
-                .firstOrNull { destination ->
-                    destination.navigationRoute == route
-                }
+            AppDestination.entries.firstOrNull {
+                it.navigationRoute == route
+            }
         }
     }
 }

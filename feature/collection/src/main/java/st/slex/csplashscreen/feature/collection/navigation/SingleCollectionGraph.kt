@@ -10,8 +10,6 @@ import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.navigation.NavExt.composableArguments
-import st.slex.csplashscreen.core.navigation.NavExt.parseArguments
 import st.slex.csplashscreen.core.ui.base.setupComponent
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.collection.di.SingleCollectionBuilder
@@ -26,9 +24,11 @@ fun NavGraphBuilder.singleCollectionGraph(
         route = AppDestination.COLLECTION.navigationRoute,
         arguments = AppDestination.COLLECTION.composableArguments
     ) { navBackStackEntry ->
-        val arguments = AppDestination.COLLECTION.parseArguments(navBackStackEntry).let { args ->
-            AppArguments.CollectionScreen(args[0])
-        }
+        val arguments = AppDestination.COLLECTION
+            .parseArguments(navBackStackEntry)
+            .first()
+            .let(AppArguments::CollectionScreen)
+
         val viewModel: SingleCollectionViewModel = setupComponent(
             key = arguments.collectionId,
             builder = SingleCollectionBuilder

@@ -2,9 +2,6 @@ package st.slex.csplashscreen.core.navigation.navigator
 
 import androidx.navigation.NavHostController
 import st.slex.csplashscreen.core.core.Logger
-import st.slex.csplashscreen.core.navigation.NavigationScreen
-import st.slex.csplashscreen.core.ui.di.Navigator
-import st.slex.csplashscreen.core.ui.di.Screen
 import javax.inject.Inject
 
 class NavigatorImpl @Inject constructor(
@@ -14,17 +11,14 @@ class NavigatorImpl @Inject constructor(
     override val controller: NavHostController
         get() = navController
 
-    override fun invoke(screen: Screen) {
+    override fun navigate(screen: NavigationTarget) {
         when (screen) {
-            is NavigationScreen.PopBackStack -> navController.popBackStack()
-            is NavigationScreen -> navigateScreen(screen)
-            else -> {
-                Logger.debug("un resolve navigation route", this::class.simpleName)
-            }
+            is NavigationTarget.PopBackStack -> navController.popBackStack()
+            is NavigationTarget.Screen -> navigateScreen(screen)
         }
     }
 
-    private fun navigateScreen(screen: NavigationScreen) {
+    private fun navigateScreen(screen: NavigationTarget.Screen) {
         val currentRoute = navController.currentDestination?.route ?: return
         if (currentRoute == screen.screen.navigationRoute) return
 

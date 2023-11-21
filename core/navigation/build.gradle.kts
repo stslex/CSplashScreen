@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     implementation(project(":core:core"))
-    implementation(project(":core:ui"))
     api(libs.androidx.compose.navigation)
 }
 
