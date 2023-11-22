@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(project(":core:core"))
+    implementation(project(":core:navigation"))
     implementation(project(":core:network"))
     api(libs.androidx.compose.navigation)
 

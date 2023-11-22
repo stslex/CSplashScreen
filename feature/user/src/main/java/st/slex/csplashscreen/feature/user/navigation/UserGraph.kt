@@ -6,13 +6,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.navigation.NavExt.composableArguments
-import st.slex.csplashscreen.core.navigation.NavExt.parseArguments
-import st.slex.csplashscreen.core.ui.base.setupComponent
+import st.slex.csplashscreen.core.ui.base.createScreen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.user.di.UserComponentBuilder
 import st.slex.csplashscreen.feature.user.ui.UserScreen
@@ -28,31 +25,15 @@ import st.slex.csplashscreen.feature.user.ui.state.rememberUserSwipeState
 fun NavGraphBuilder.userGraph(
     modifier: Modifier = Modifier,
 ) {
-    composable(
-        route = AppDestination.USER.navigationRoute,
-        arguments = AppDestination.USER.composableArguments
-    ) { navBackStackEntry ->
+    createScreen(
+        appDestination = AppDestination.USER,
+        featureBuilder = UserComponentBuilder
+    ) { viewModel: UserViewModel, args ->
+        val arguments = args.firstOrNull()
+            .orEmpty()
+            .let(AppArguments::UserScreen)
 
-        val arguments = AppDestination.USER.parseArguments(navBackStackEntry).let { args ->
-            AppArguments.UserScreen(args.first())
-        }
-
-        val viewModel: UserViewModel = setupComponent(
-            key = arguments.username,
-            builder = UserComponentBuilder
-        )
-
-        LaunchedEffect(arguments) {
-            viewModel.sendAction(Init(arguments))
-        }
-
-        viewModel.event.CollectAsEvent { event ->
-            // TODO NOT IMPLEMENTED YET
-        }
-
-        val state by remember {
-            viewModel.state
-        }.collectAsState()
+        val state by remember { viewModel.state }.collectAsState()
 
         val photos = remember(arguments) {
             state.photos(arguments.username)
@@ -66,6 +47,14 @@ fun NavGraphBuilder.userGraph(
             state.collections(arguments.username)
         }.collectAsLazyPagingItems()
 
+        LaunchedEffect(arguments) {
+            viewModel.sendAction(Init(arguments))
+        }
+
+        viewModel.event.CollectAsEvent { event ->
+            // TODO NOT IMPLEMENTED YET
+        }
+
         val userPagerState = rememberUserPagerState(
             photos = photos,
             likes = likes,
@@ -73,9 +62,7 @@ fun NavGraphBuilder.userGraph(
         )
 
         val userSwipeState = rememberUserSwipeState(
-            isOnPreFlingAllow = {
-                userPagerState.isOnPreFlingAllow
-            },
+            isOnPreFlingAllow = { userPagerState.isOnPreFlingAllow },
         )
 
         UserScreen(

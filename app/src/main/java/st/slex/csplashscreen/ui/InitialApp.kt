@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.navigation.NavigationScreen
+import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget
 import st.slex.csplashscreen.ui.components.NavigationHost
 import st.slex.csplashscreen.ui.components.bottom_appbar.BottomAppBarResource
 import st.slex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
@@ -32,7 +32,7 @@ import st.slex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
 @Composable
 fun InitialApp(
     navController: NavHostController,
-    onBottomAppBarClick: (NavigationScreen) -> Unit,
+    onBottomAppBarClick: (NavigationTarget.Screen) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val systemUiController = rememberSystemUiController()

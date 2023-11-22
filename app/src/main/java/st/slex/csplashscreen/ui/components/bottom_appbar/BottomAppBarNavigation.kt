@@ -12,11 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.navigation.NavigationScreen
+import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget
 
 @Composable
 fun MainBottomAppBar(
-    onBottomAppBarClick: (NavigationScreen) -> Unit,
+    onBottomAppBarClick: (NavigationTarget.Screen) -> Unit,
     currentDestination: AppDestination?
 ) {
     NavigationBar(
@@ -43,7 +43,7 @@ fun MainBottomAppBar(
 private fun RowScope.BottomAppBarItem(
     item: BottomAppBarResource,
     isSelected: Boolean,
-    onBottomAppBarClick: (NavigationScreen) -> Unit
+    onBottomAppBarClick: (NavigationTarget.Screen) -> Unit
 ) {
     NavigationBarItem(
         selected = isSelected,

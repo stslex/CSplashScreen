@@ -1,40 +1,28 @@
 package st.slex.csplashscreen.core.navigation
 
-sealed class AppArguments {
+sealed class AppArguments(
+    vararg val arguments: String
+) {
 
-    abstract val arguments: List<String>
+    val argumentsForRoute: String
+        get() = when (arguments.isEmpty()) {
+            true -> String()
+            false -> arguments.joinToString(separator = "/", prefix = "/")
+        }
 
-    open val argumentsForRoute: String
-        get() = arguments.joinToString(separator = "/", prefix = "/")
-
-    object Empty : AppArguments() {
-        override val arguments: List<String>
-            get() = emptyList()
-        override val argumentsForRoute: String
-            get() = String()
-    }
+    data object Empty : AppArguments()
 
     data class ImageDetailScreen(
         val imageId: String
-    ) : AppArguments() {
-        override val arguments: List<String>
-            get() = listOf(imageId)
-    }
+    ) : AppArguments(imageId)
 
     data class CollectionScreen(
         val collectionId: String
-    ) : AppArguments() {
-
-        override val arguments: List<String>
-            get() = listOf(collectionId)
-    }
+    ) : AppArguments(collectionId)
 
     data class SearchPhotosScreen(
         private val query: String
-    ) : AppArguments() {
-
-        override val arguments: List<String>
-            get() = listOf(query)
+    ) : AppArguments(query) {
 
         val checkedQuery: String
             get() = arguments.firstOrNull().orEmpty().trimEnd()
@@ -42,8 +30,5 @@ sealed class AppArguments {
 
     data class UserScreen(
         val username: String
-    ) : AppArguments() {
-        override val arguments: List<String>
-            get() = listOf(username)
-    }
+    ) : AppArguments(username)
 }
