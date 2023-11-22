@@ -13,10 +13,9 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.ui.base.setupComponent
+import st.slex.csplashscreen.core.ui.base.createScreen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.feature_photo_detail.di.ImageDetailComponentBuilder
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailScreen
@@ -29,26 +28,19 @@ import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDeta
 fun NavGraphBuilder.imageDetailGraph(
     modifier: Modifier = Modifier,
 ) {
-    composable(
-        route = AppDestination.IMAGE_DETAIL.navigationRoute,
-        arguments = AppDestination.IMAGE_DETAIL.composableArguments
-    ) { navBackStackEntry ->
-        val arguments = AppDestination.IMAGE_DETAIL.parseArguments(navBackStackEntry).let { args ->
-            AppArguments.ImageDetailScreen(args[0])
-        }
-
-        val viewModel: ImageDetailViewModel = setupComponent(
-            key = arguments.imageId,
-            builder = ImageDetailComponentBuilder
-        )
+    createScreen(
+        appDestination = AppDestination.IMAGE_DETAIL,
+        featureBuilder = ImageDetailComponentBuilder
+    ) { viewModel: ImageDetailViewModel, args ->
+        val arguments = args.firstOrNull()
+            .orEmpty()
+            .let(AppArguments::ImageDetailScreen)
 
         LaunchedEffect(arguments) {
             viewModel.sendAction(Action.Init(arguments))
         }
 
-        val state by remember {
-            viewModel.state
-        }.collectAsState()
+        val state by remember { viewModel.state }.collectAsState()
 
         var dialogType by remember {
             mutableStateOf(DialogType.NONE)
@@ -56,7 +48,8 @@ fun NavGraphBuilder.imageDetailGraph(
 
         val blurBackground by animateDpAsState(
             targetValue = if (dialogType == DialogType.NONE) 0.dp else 16.dp,
-            animationSpec = tween(durationMillis = 600)
+            animationSpec = tween(durationMillis = 600),
+            label = "anim_blur_dialog_background"
         )
 
         viewModel.event.CollectAsEvent { event ->
