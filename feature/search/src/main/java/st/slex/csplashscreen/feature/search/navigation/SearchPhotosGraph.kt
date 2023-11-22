@@ -6,11 +6,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.ui.base.setupComponent
+import st.slex.csplashscreen.core.ui.base.createScreen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.search.di.SearchPhotosComponentBuilder
 import st.slex.csplashscreen.feature.search.ui.SearchPhotosScreen
@@ -20,18 +19,15 @@ import st.slex.csplashscreen.feature.search.ui.presenter.SearchViewModel
 fun NavGraphBuilder.searchPhotosGraph(
     modifier: Modifier = Modifier,
 ) {
-    composable(
-        route = AppDestination.SEARCH_PHOTOS.navigationRoute,
-        arguments = AppDestination.SEARCH_PHOTOS.composableArguments
-    ) { navBackStackEntry ->
-        val arguments = AppDestination.SEARCH_PHOTOS.parseArguments(navBackStackEntry).let { args ->
-            AppArguments.SearchPhotosScreen(args[0])
-        }
+    createScreen(
+        appDestination = AppDestination.SEARCH_PHOTOS,
+        featureBuilder = SearchPhotosComponentBuilder
+    ) { viewModel: SearchViewModel, args ->
+        val arguments = args.firstOrNull().orEmpty().let(AppArguments::SearchPhotosScreen)
 
-        val viewModel: SearchViewModel = setupComponent(
-            key = arguments.hashCode().toString(),
-            builder = SearchPhotosComponentBuilder
-        )
+        val state by remember { viewModel.state }.collectAsState()
+        val photos = remember(state.searchItems).collectAsLazyPagingItems()
+        val searchHistory = remember(state.historyItems).collectAsLazyPagingItems()
 
         LaunchedEffect(arguments) {
             viewModel.sendAction(Action.Init(arguments))
@@ -40,18 +36,6 @@ fun NavGraphBuilder.searchPhotosGraph(
         viewModel.event.CollectAsEvent { event ->
             // TODO NOT IMPLEMENTED YET
         }
-
-        val state by remember {
-            viewModel.state
-        }.collectAsState()
-
-        val photos = remember {
-            state.searchItems()
-        }.collectAsLazyPagingItems()
-
-        val searchHistory = remember {
-            state.historyItems()
-        }.collectAsLazyPagingItems()
 
         SearchPhotosScreen(
             modifier = modifier,
