@@ -58,6 +58,8 @@ inline fun <reified VM : ViewModel, F : Feature> NavGraphBuilder.createScreen(
             builder = featureBuilder,
             key = arguments.hashCode().toString()
         )
+        /*TODO maybe good point to make instance of state, event, action here
+           and then send in to Content Screen*/
         content(viewModel, arguments)
     }
 }

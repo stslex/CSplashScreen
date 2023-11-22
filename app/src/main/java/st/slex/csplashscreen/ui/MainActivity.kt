@@ -28,6 +28,9 @@ class MainActivity : ComponentActivity(), MainUiProvider {
                 val viewModel = buildViewModel()
 
                 InitialApp(
+                    /*TODO AFTER reconfiguration controller in VM don't change it State,
+                       so it need to have latest instance.
+                       Need Research to find more efficient way */
                     navController = api.navigator.controller,
                     onBottomAppBarClick = remember {
                         { viewModel.navigate(it) }
