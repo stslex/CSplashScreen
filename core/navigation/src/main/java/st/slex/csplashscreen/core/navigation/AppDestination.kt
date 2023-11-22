@@ -22,6 +22,7 @@ enum class AppDestination(
         navArgument(name) { NavType.StringType }
     }
 
+    // TODO Arguments always String - Need research for Parcelable implementation
     fun parseArguments(
         navBackStackEntry: NavBackStackEntry
     ): List<String> = argsNames.map { name ->
