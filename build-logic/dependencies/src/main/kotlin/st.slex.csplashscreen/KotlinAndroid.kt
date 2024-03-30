@@ -13,12 +13,13 @@ import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.konan.properties.Properties
 
 /**
  * Configure base Kotlin with Android options
  */
 internal fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     commonExtension.apply {
 
@@ -27,7 +28,13 @@ internal fun Project.configureKotlinAndroid(
         defaultConfig {
             minSdk = 28
             buildFeatures.buildConfig = true
-            setLocalProperty(project.rootProject)
+
+            gradleLocalProperties(
+                projectRootDir = project.rootProject.projectDir,
+                providers = providers
+            ).let { properties ->
+                setLocalProperties(properties)
+            }
         }
 
         compileOptions {
@@ -69,7 +76,7 @@ internal fun Project.configureKotlinAndroid(
     }
 }
 
-private fun CommonExtension<*, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
+private fun CommonExtension<*, *, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }
 
@@ -108,12 +115,15 @@ private fun Project.configureKotlin() {
     }
 }
 
-
-fun DefaultConfig.setLocalProperty(
-    dir: Project
+fun DefaultConfig.setLocalProperties(
+    properties: Properties
 ) {
-    val key = gradleLocalProperties(dir.projectDir)["API_KEY"]
-        ?.toString()
-        ?: throw IllegalStateException("API_KEY should be initialised")
-    buildConfigField("String", "API_KEY", key)
+    LocalProperties.values().forEach { property ->
+        properties[property.key]
+            ?.toString()
+            ?.let { value ->
+                buildConfigField(property.type, property.buildName, value)
+            }
+            ?: throw IllegalStateException("API_KEY should be initialised")
+    }
 }
