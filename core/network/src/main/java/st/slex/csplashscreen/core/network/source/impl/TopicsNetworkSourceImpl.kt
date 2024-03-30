@@ -1,10 +1,9 @@
 package st.slex.csplashscreen.core.network.source.impl
 
-import io.ktor.client.call.body
-import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import st.slex.csplashscreen.core.network.client.NetworkClient
+import st.slex.csplashscreen.core.network.client.get
 import st.slex.csplashscreen.core.network.model.remote.topics.RemoteTopicsModel
 import st.slex.csplashscreen.core.network.source.interf.TopicsNetworkSource
 import st.slex.csplashscreen.core.network.utils.ServiceConstants
@@ -21,11 +20,9 @@ class TopicsNetworkSourceImpl @Inject constructor(
     override suspend fun getTopics(
         page: Int,
         pageSize: Int
-    ): List<RemoteTopicsModel> = client.request {
-        get {
-            url.appendPathSegments(ServiceConstants.PATH_TOPICS)
-            parameter(PARAMETER_PAGE, page)
-            parameter(PARAMETER_PAGE_SIZE, pageSize)
-        }.body()
+    ): List<RemoteTopicsModel> = client.get {
+        url.appendPathSegments(ServiceConstants.PATH_TOPICS)
+        parameter(PARAMETER_PAGE, page)
+        parameter(PARAMETER_PAGE_SIZE, pageSize)
     }
 }
