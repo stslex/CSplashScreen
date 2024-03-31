@@ -1,10 +1,9 @@
 package st.slex.csplashscreen.core.network.source.impl
 
-import io.ktor.client.call.body
-import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import st.slex.csplashscreen.core.network.client.NetworkClient
+import st.slex.csplashscreen.core.network.client.get
 import st.slex.csplashscreen.core.network.model.remote.collection.RemoteCollectionModel
 import st.slex.csplashscreen.core.network.source.interf.CollectionNetworkClient
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_PAGE
@@ -22,24 +21,19 @@ class CollectionNetworkClientImpl @Inject constructor(
     override suspend fun getCollections(
         page: Int,
         pageSize: Int
-    ): List<RemoteCollectionModel> = client.request {
-        get {
-            url.appendPathSegments(PATH_COLLECTIONS)
-            parameter(PARAMETER_PAGE, page)
-            parameter(PARAMETER_PAGE_SIZE, pageSize)
-        }.body()
+    ): List<RemoteCollectionModel> = client.get {
+        url.appendPathSegments(PATH_COLLECTIONS)
+        parameter(PARAMETER_PAGE, page)
+        parameter(PARAMETER_PAGE_SIZE, pageSize)
     }
-
 
     override suspend fun getUserCollections(
         username: String,
         page: Int,
         pageSize: Int
-    ): List<RemoteCollectionModel> = client.request {
-        get {
-            url.appendPathSegments(PATH_USERS, username, PATH_COLLECTIONS)
-            parameter(PARAMETER_PAGE, page)
-            parameter(PARAMETER_PAGE_SIZE, pageSize)
-        }.body()
+    ): List<RemoteCollectionModel> = client.get {
+        url.appendPathSegments(PATH_USERS, username, PATH_COLLECTIONS)
+        parameter(PARAMETER_PAGE, page)
+        parameter(PARAMETER_PAGE_SIZE, pageSize)
     }
 }

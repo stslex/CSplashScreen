@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.application) apply false
     alias(libs.plugins.kotlin) apply false
@@ -7,7 +6,6 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp) apply false
 }
-true // Needed to make the Suppress annotation work for the plugins block
 
 buildscript {
 
@@ -18,5 +16,5 @@ buildscript {
 }
 
 tasks.register(name = "type", type = Delete::class) {
-    delete(rootProject.buildDir)
+    delete(rootProject.projectDir.resolve("build"))
 }
