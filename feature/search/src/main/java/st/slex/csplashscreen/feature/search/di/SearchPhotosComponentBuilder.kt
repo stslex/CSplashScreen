@@ -5,9 +5,9 @@ import st.slex.csplashscreen.core.network.di.NetworkApiBuilder
 import st.slex.csplashscreen.core.ui.di.MainUiApi
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 
-object SearchPhotosComponentBuilder : FeatureBuilder<SearchPhotosComponent> {
+object SearchPhotosComponentBuilder : FeatureBuilder<SearchPhotosComponent>() {
 
-    override var feature: SearchPhotosComponent? = null
+    override val key: Any = "search-photos-feature"
 
     override fun create(
         mainUiApi: MainUiApi

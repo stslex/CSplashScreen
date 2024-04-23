@@ -9,9 +9,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import st.slex.csplashscreen.core.navigation.AppDestination
+import st.slex.csplashscreen.core.ui.di.MainUiProvider
 import st.slex.csplashscreen.core.ui.di.builder.Feature
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
-import st.slex.csplashscreen.core.ui.di.mainUiApi
 
 @Composable
 inline fun <reified T : ViewModel> daggerViewModel(
@@ -24,14 +24,21 @@ inline fun <reified T : ViewModel> daggerViewModel(
 )
 
 @Composable
-inline fun <reified VM : ViewModel, F : Feature> setupComponent(
+inline fun <reified VM : ViewModel, reified F : Feature> setupComponent(
     builder: FeatureBuilder<F>,
     key: String? = null,
+    featureKey: Any? = null
 ): VM {
     val context = LocalContext.current
+    val mainUiApi = checkNotNull(context as? MainUiProvider) {
+        "MainUiProvider is not implemented in $context"
+    }.api
 
     DisposableEffect(Unit) {
-        builder.create(context.mainUiApi)
+        builder.setup(
+            mainUiApi = mainUiApi,
+            key = featureKey
+        )
         onDispose {
             builder.clear()
         }
@@ -39,12 +46,15 @@ inline fun <reified VM : ViewModel, F : Feature> setupComponent(
 
     return daggerViewModel(key) {
         builder
-            .build(context.mainUiApi)
+            .build<F>(
+                mainUiApi = mainUiApi,
+                key = featureKey
+            )
             .viewModelFactory
     }
 }
 
-inline fun <reified VM : ViewModel, F : Feature> NavGraphBuilder.createScreen(
+inline fun <reified VM : ViewModel, reified F : Feature> NavGraphBuilder.createScreen(
     appDestination: AppDestination,
     featureBuilder: FeatureBuilder<F>,
     crossinline content: @Composable (VM, List<String>) -> Unit

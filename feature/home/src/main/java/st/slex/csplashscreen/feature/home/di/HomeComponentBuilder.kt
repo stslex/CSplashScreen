@@ -5,9 +5,9 @@ import st.slex.csplashscreen.core.photos.di.PhotosApiBuilder
 import st.slex.csplashscreen.core.ui.di.MainUiApi
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 
-object HomeComponentBuilder : FeatureBuilder<HomeComponent> {
+object HomeComponentBuilder : FeatureBuilder<HomeComponent>() {
 
-    override var feature: HomeComponent? = null
+    override val key: Any = "home-feature"
 
     override fun create(
         mainUiApi: MainUiApi

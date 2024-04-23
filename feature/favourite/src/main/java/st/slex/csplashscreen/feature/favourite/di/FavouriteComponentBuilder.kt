@@ -4,9 +4,9 @@ import st.slex.csplashscreen.core.favourite.di.FavouriteApiBuilder
 import st.slex.csplashscreen.core.ui.di.MainUiApi
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 
-object FavouriteComponentBuilder : FeatureBuilder<FavouriteComponent> {
+object FavouriteComponentBuilder : FeatureBuilder<FavouriteComponent>() {
 
-    override var feature: FavouriteComponent? = null
+    override val key: Any = "favorite-feature"
 
     override fun create(
         mainUiApi: MainUiApi

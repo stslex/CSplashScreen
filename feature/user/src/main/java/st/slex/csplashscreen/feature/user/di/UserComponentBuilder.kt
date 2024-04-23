@@ -6,13 +6,11 @@ import st.slex.csplashscreen.core.photos.di.PhotosApiBuilder
 import st.slex.csplashscreen.core.ui.di.MainUiApi
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 
-object UserComponentBuilder : FeatureBuilder<UserComponent> {
+object UserComponentBuilder : FeatureBuilder<UserComponent>() {
 
-    override var feature: UserComponent? = null
+    override val key: Any = "user-feature"
 
-    override fun create(
-        mainUiApi: MainUiApi
-    ) = feature ?: DaggerUserComponent
+    override fun create(mainUiApi: MainUiApi) = DaggerUserComponent
         .factory()
         .create(
             dependencies = DaggerUserComponent_UserDependenciesComponent
@@ -24,7 +22,4 @@ object UserComponentBuilder : FeatureBuilder<UserComponent> {
                     collectionApi = CollectionApiBuilder.build(mainUiApi)
                 )
         )
-        .also { component ->
-            feature = component
-        }
 }

@@ -4,9 +4,9 @@ import st.slex.csplashscreen.core.network.di.NetworkApiBuilder
 import st.slex.csplashscreen.core.ui.di.MainUiApi
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 
-object SingleCollectionBuilder : FeatureBuilder<SingleCollectionComponent> {
+object SingleCollectionBuilder : FeatureBuilder<SingleCollectionComponent>() {
 
-    override var feature: SingleCollectionComponent? = null
+    override val key: Any = "single-collection-feature"
 
     override fun create(
         mainUiApi: MainUiApi
