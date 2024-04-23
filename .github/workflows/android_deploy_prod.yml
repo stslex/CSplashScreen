@@ -1,6 +1,8 @@
 name: Android Deploy Prod
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -10,11 +12,14 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - run: |
           echo "${{ secrets.KEYSTORE }}" > keystore.jks.asc
           gpg -d --passphrase "${{ secrets.KEYSTORE_PASSPHRASE }}" --batch keystore.jks.asc > keystore.jks
+
+      - name: Update Version
+        run: bash ./.github/scripts/update_versions.sh
 
       - uses: ruby/setup-ruby@v1.152.0
         with:
@@ -80,3 +85,15 @@ jobs:
 
       - name: Distribute app to Beta track 🚀
         run: bundle exec fastlane deploy
+
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "update version"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PUSH_TOKEN }}
+          branch: ${{ github.ref }}
