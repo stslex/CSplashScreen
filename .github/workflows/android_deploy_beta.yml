@@ -2,7 +2,7 @@ name: Android Deploy Beta
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
