@@ -1,10 +1,10 @@
 package st.slex.csplashscreen
 
+import AppExt.currentLibs
+import AppExt.findVersionString
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -14,15 +14,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+    val libs = currentLibs
 
     commonExtension.apply {
 
         buildFeatures.compose = true
-        composeOptions.kotlinCompilerExtensionVersion = libs
-            .findVersion("composeCompiler")
-            .get()
-            .toString()
+        composeOptions.kotlinCompilerExtensionVersion = libs.findVersionString("composeCompiler")
 
         dependencies {
             val composeBom = libs.findLibrary("androidx-compose-bom").get()

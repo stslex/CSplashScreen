@@ -1,3 +1,6 @@
+import AppExt.currentLibs
+import AppExt.findVersionInt
+import AppExt.findVersionString
 import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -12,6 +15,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
+            val libs = currentLibs
             with(pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
@@ -22,12 +26,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 configureKotlinAndroid(this)
 
                 namespace = "st.slex.csplashscreen"
-
                 defaultConfig.apply {
                     applicationId = "st.slex.csplashscreen"
-                    targetSdk = 34
-                    versionName = AppVersions.VERSION_NAME
-                    versionCode = AppVersions.VERSION_CODE
+                    targetSdk = libs.findVersionInt("targetSdk")
+                    versionName = libs.findVersionString("versionName")
+                    versionCode = libs.findVersionInt("versionCode")
 
                     configureSigning(target)
                 }

@@ -1,14 +1,14 @@
 package st.slex.csplashscreen
 
+import AppExt.currentLibs
+import AppExt.findVersionInt
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DefaultConfig
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
@@ -21,12 +21,14 @@ import org.jetbrains.kotlin.konan.properties.Properties
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
+    val libs = currentLibs
+
     commonExtension.apply {
 
-        compileSdk = 34
+        compileSdk = libs.findVersionInt("compileSdk")
 
         defaultConfig {
-            minSdk = 28
+            minSdk = libs.findVersionInt("minSdk")
             buildFeatures.buildConfig = true
 
             gradleLocalProperties(
@@ -47,8 +49,6 @@ internal fun Project.configureKotlinAndroid(
     }
 
     configureKotlin()
-
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
     dependencies {
         add("coreLibraryDesugaring", libs.findLibrary("android-desugarJdkLibs").get())
