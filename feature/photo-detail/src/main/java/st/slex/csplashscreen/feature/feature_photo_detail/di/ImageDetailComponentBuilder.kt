@@ -5,9 +5,9 @@ import st.slex.csplashscreen.core.photos.di.PhotosApiBuilder
 import st.slex.csplashscreen.core.ui.di.MainUiApi
 import st.slex.csplashscreen.core.ui.di.builder.FeatureBuilder
 
-object ImageDetailComponentBuilder : FeatureBuilder<ImageDetailComponent> {
+object ImageDetailComponentBuilder : FeatureBuilder<ImageDetailComponent>() {
 
-    override var feature: ImageDetailComponent? = null
+    override val key: Any = "image-detail-feature"
 
     override fun create(mainUiApi: MainUiApi) = DaggerImageDetailComponent
         .factory()
