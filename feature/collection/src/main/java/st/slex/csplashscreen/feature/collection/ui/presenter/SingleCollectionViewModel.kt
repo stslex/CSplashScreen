@@ -5,7 +5,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
@@ -28,14 +27,11 @@ class SingleCollectionViewModel @Inject constructor(
     private val interactor: SingleCollectionInteractor,
     appDispatcher: AppDispatcher,
     router: SingleCollectionRouter
-) : BaseViewModel<State, Event, Action, Navigation>(router, appDispatcher) {
-
-    override val initialState: State = State(
-        photos = ::allPhotos,
-        collectionId = ""
-    )
-
-    override val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
+) : BaseViewModel<State, Event, Action, Navigation>(
+    router = router,
+    appDispatcher = appDispatcher,
+    initialState = State.INITIAL
+) {
 
     override fun sendAction(action: Action) {
         when (action) {
@@ -50,6 +46,13 @@ class SingleCollectionViewModel @Inject constructor(
             currentState.copy(
                 collectionId = action.collectionId
             )
+        }
+        allPhotos.launch { pagingData ->
+            updateState { currentState ->
+                currentState.copy(
+                    photos = pagingData
+                )
+            }
         }
     }
 

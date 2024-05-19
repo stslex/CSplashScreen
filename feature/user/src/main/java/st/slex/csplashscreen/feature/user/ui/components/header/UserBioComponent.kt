@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 private enum class UserBioState(val value: Int) {
@@ -48,7 +49,8 @@ fun BindUserBio(
                     .padding(16.dp),
                 text = bioText,
                 maxLines = target.value,
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleSmall,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

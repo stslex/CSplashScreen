@@ -31,21 +31,17 @@ import st.slex.csplashscreen.core.ui.mvi.Store.State
 
 abstract class BaseViewModel<S : State, E : Event, A : Action, N : Navigation>(
     private val router: Router<N>,
-    private val appDispatcher: AppDispatcher
+    private val appDispatcher: AppDispatcher,
+    initialState: S
 ) : ViewModel() {
 
-    abstract val initialState: S
-    abstract fun sendAction(action: A)
-
-    protected open val _state: MutableStateFlow<S> = MutableStateFlow(initialState)
+    private val _state: MutableStateFlow<S> = MutableStateFlow(initialState)
     val state: StateFlow<S>
         get() = _state.asStateFlow()
 
     val event: MutableSharedFlow<E> = MutableSharedFlow()
 
-    fun updateState(update: (S) -> S) {
-        _state.update(update)
-    }
+    abstract fun sendAction(action: A)
 
     fun sendEvent(event: E) {
         viewModelScope.launch(appDispatcher.default) {
@@ -53,18 +49,22 @@ abstract class BaseViewModel<S : State, E : Event, A : Action, N : Navigation>(
         }
     }
 
-    fun navigate(event: N) {
+    protected fun navigate(event: N) {
         router(event)
     }
 
-    fun <K : Any, T : Any, R : Any> Pager<K, T>.state(
+    protected fun updateState(update: (S) -> S) {
+        _state.update(update)
+    }
+
+    protected fun <K : Any, T : Any, R : Any> Pager<K, T>.state(
         transform: suspend (value: T) -> R
     ): StateFlow<PagingData<R>> = this
         .flow
         .map { pagingData -> pagingData.map(transform) }
         .state()
 
-    fun <T : Any> Flow<PagingData<T>>.state(): StateFlow<PagingData<T>> = this
+    protected fun <T : Any> Flow<PagingData<T>>.state(): StateFlow<PagingData<T>> = this
         .flowOn(appDispatcher.default)
         .cachedIn(viewModelScope)
         .stateIn(
@@ -73,14 +73,14 @@ abstract class BaseViewModel<S : State, E : Event, A : Action, N : Navigation>(
             started = SharingStarted.Lazily
         )
 
-    fun launch(
+    protected fun launch(
         block: suspend CoroutineScope.() -> Unit
     ): Job = viewModelScope.launch(
         context = appDispatcher.default,
         block = block
     )
 
-    fun <T> launchCatching(
+    protected fun <T> launchCatching(
         block: suspend CoroutineScope.() -> T,
         onFailure: suspend (Throwable) -> Unit = {},
         onSuccess: (T) -> Unit,
@@ -95,7 +95,7 @@ abstract class BaseViewModel<S : State, E : Event, A : Action, N : Navigation>(
             }
     }
 
-    fun <T> Flow<T>.launch(
+    protected fun <T> Flow<T>.launch(
         onError: suspend (cause: Throwable) -> Unit = {},
         each: suspend (T) -> Unit
     ): Job = this

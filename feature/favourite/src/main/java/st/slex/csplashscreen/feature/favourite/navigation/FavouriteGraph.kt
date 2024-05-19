@@ -1,11 +1,11 @@
 package st.slex.csplashscreen.feature.favourite.navigation
 
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.paging.compose.collectAsLazyPagingItems
+import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.ui.base.createScreen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
@@ -21,9 +21,14 @@ fun NavGraphBuilder.favouriteGraph(
         appDestination = AppDestination.FAVOURITE,
         featureBuilder = FavouriteComponentBuilder
     ) { viewModel: FavouriteViewModel, _ ->
-        val state by remember { viewModel.state }.collectAsState()
 
-        val photos = remember(state.photos).collectAsLazyPagingItems()
+        LaunchedEffect(Unit) {
+            viewModel.sendAction(Action.Init)
+        }
+
+        val photos = remember {
+            viewModel.state.mapState { it.photos }
+        }.collectAsLazyPagingItems()
 
         viewModel.event.CollectAsEvent { event ->
             // TODO NOT IMPLEMENTED YET

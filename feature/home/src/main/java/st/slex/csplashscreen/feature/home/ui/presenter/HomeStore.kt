@@ -2,7 +2,6 @@ package st.slex.csplashscreen.feature.home.ui.presenter
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
-import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.Store
@@ -11,9 +10,17 @@ interface HomeStore : Store {
 
     @Stable
     data class State(
-        val collections: () -> StateFlow<PagingData<CollectionModel>>,
-        val photos: () -> StateFlow<PagingData<PhotoModel>>
-    ) : Store.State
+        val collections: PagingData<CollectionModel>,
+        val photos: PagingData<PhotoModel>
+    ) : Store.State {
+
+        companion object {
+            val INIT = State(
+                collections = PagingData.empty(),
+                photos = PagingData.empty()
+            )
+        }
+    }
 
     @Stable
     sealed interface Event : Store.Event
@@ -39,6 +46,8 @@ interface HomeStore : Store {
 
     @Stable
     sealed interface Action : Store.Action {
+
+        data object Init : Action
 
         @Stable
         data class OnUserClick(

@@ -1,6 +1,5 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter
 
-import kotlinx.coroutines.flow.MutableStateFlow
 import st.slex.csplashscreen.core.core.Logger
 import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.ui.mvi.BaseViewModel
@@ -26,14 +25,11 @@ class ImageDetailViewModel @Inject constructor(
     private val wallpaperSetUseCase: WallpaperSetUseCase,
     appDispatcher: AppDispatcher,
     router: ImageDetailRouter
-) : BaseViewModel<State, Event, Action, Navigation>(router, appDispatcher) {
-
-    override val initialState: State = State(
-        imageId = "",
-        screenState = ScreenState.Loading
-    )
-
-    override val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
+) : BaseViewModel<State, Event, Action, Navigation>(
+    router = router,
+    appDispatcher = appDispatcher,
+    initialState = State.INITIAL
+) {
 
     override fun sendAction(action: Action) {
         when (action) {

@@ -1,12 +1,11 @@
 package st.slex.csplashscreen.feature.collection.navigation
 
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.paging.compose.collectAsLazyPagingItems
+import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.ui.base.createScreen
@@ -24,8 +23,7 @@ fun NavGraphBuilder.singleCollectionGraph(
         featureBuilder = SingleCollectionBuilder
     ) { viewModel: SingleCollectionViewModel, args ->
         val arguments = args.first().let(AppArguments::CollectionScreen)
-        val state by remember { viewModel.state }.collectAsState()
-        val photos = remember { state.photos() }.collectAsLazyPagingItems()
+        val photos = remember { viewModel.state.mapState { it.photos } }.collectAsLazyPagingItems()
 
         LaunchedEffect(Unit) {
             viewModel.sendAction(Action.Init(arguments.collectionId))

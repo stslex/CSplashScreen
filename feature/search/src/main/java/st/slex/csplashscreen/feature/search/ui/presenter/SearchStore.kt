@@ -2,7 +2,6 @@ package st.slex.csplashscreen.feature.search.ui.presenter
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
-import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.Store
@@ -13,9 +12,17 @@ interface SearchStore {
     @Stable
     data class State(
         val query: String,
-        val historyItems: () -> StateFlow<PagingData<SearchItem>>,
-        val searchItems: () -> StateFlow<PagingData<PhotoModel>>
-    ) : Store.State
+        val historyItems: PagingData<SearchItem>,
+        val searchItems: PagingData<PhotoModel>
+    ) : Store.State {
+        companion object {
+            val INITIAL = State(
+                query = "",
+                historyItems = PagingData.empty(),
+                searchItems = PagingData.empty()
+            )
+        }
+    }
 
     @Stable
     sealed interface Event : Store.Event
