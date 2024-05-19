@@ -73,6 +73,15 @@ internal fun Project.configureKotlinAndroid(
 
         val coroutines = libs.findLibrary("coroutines").get()
         add("implementation", coroutines)
+
+        val koinAndroid = libs.findLibrary("koin-android").get()
+        add("implementation", koinAndroid)
+
+        val koinAnnotations = libs.findLibrary("koin-annotations").get()
+        add("implementation", koinAnnotations)
+
+        val koinKsp = libs.findLibrary("koin-ksp").get()
+        add("ksp", koinKsp)
     }
 }
 
