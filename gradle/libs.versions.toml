@@ -23,6 +23,10 @@ accompanist = "0.30.0"
 coilCompose = "2.5.0"
 composeActivity = "1.9.0"
 
+koinAndroid = "3.5.6"
+koinCompose = "1.1.5"
+koinKsp = "1.3.1"
+
 ktor = "2.3.6"
 ktorAndroid = "2.2.4"
 okhttp3 = "4.12.0"
@@ -106,6 +110,11 @@ androidx-room-testing = { group = "androidx.room", name = "room-testing", versio
 
 dagger-core = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
 dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
+koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koinCompose" }
+koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinKsp" }
+koin-ksp = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinKsp" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
