@@ -3,7 +3,6 @@ package st.slex.csplashscreen.feature.home.ui.presenter
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.collection.ui.model.toPresentation
@@ -24,14 +23,11 @@ class HomeViewModel @Inject constructor(
     private val interactor: HomeInteractor,
     appDispatcher: AppDispatcher,
     router: HomeRouter
-) : BaseViewModel<State, Event, Action, Navigation>(router, appDispatcher) {
-
-    override val initialState: State = State(
-        collections = ::collections,
-        photos = ::photos
-    )
-
-    override val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
+) : BaseViewModel<State, Event, Action, Navigation>(
+    router = router,
+    appDispatcher = appDispatcher,
+    initialState = State.INIT
+) {
 
     private val collections: StateFlow<PagingData<CollectionModel>>
         get() = Pager(config = config) { PagingSource(interactor::getAllCollections) }
@@ -43,9 +39,23 @@ class HomeViewModel @Inject constructor(
 
     override fun sendAction(action: Action) {
         when (action) {
+            is Action.Init -> actionInit()
             is Action.OnCollectionClick -> actionCollectionClick(action)
             is Action.OnImageClick -> actionImageClick(action)
             is Action.OnUserClick -> actionUserClick(action)
+        }
+    }
+
+    private fun actionInit() {
+        collections.launch { data ->
+            updateState { currentState ->
+                currentState.copy(collections = data)
+            }
+        }
+        photos.launch { data ->
+            updateState { currentState ->
+                currentState.copy(photos = data)
+            }
         }
     }
 

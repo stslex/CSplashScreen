@@ -11,7 +11,15 @@ interface ImageDetailStore : Store {
     data class State(
         val imageId: String,
         val screenState: ScreenState
-    ) : Store.State
+    ) : Store.State {
+
+        companion object {
+            val INITIAL: State = State(
+                imageId = "",
+                screenState = ScreenState.Loading
+            )
+        }
+    }
 
     @Stable
     sealed interface ScreenState {

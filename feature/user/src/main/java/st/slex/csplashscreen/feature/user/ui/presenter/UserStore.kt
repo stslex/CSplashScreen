@@ -2,7 +2,6 @@ package st.slex.csplashscreen.feature.user.ui.presenter
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
-import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.network.model.ui.user.UserModel
@@ -14,10 +13,19 @@ interface UserStore {
     @Stable
     data class State(
         val user: UserModel?,
-        val photos: (String) -> StateFlow<PagingData<PhotoModel>>,
-        val likes: (String) -> StateFlow<PagingData<PhotoModel>>,
-        val collections: (String) -> StateFlow<PagingData<CollectionModel>>
-    ) : Store.State
+        val photos: PagingData<PhotoModel>,
+        val likes: PagingData<PhotoModel>,
+        val collections: PagingData<CollectionModel>
+    ) : Store.State {
+        companion object {
+            val INITIAL = State(
+                user = null,
+                photos = PagingData.empty(),
+                likes = PagingData.empty(),
+                collections = PagingData.empty()
+            )
+        }
+    }
 
     @Stable
     sealed interface Event : Store.Event

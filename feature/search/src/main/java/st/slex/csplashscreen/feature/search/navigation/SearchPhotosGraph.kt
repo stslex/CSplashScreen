@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.paging.compose.collectAsLazyPagingItems
+import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
 import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.ui.base.createScreen
@@ -26,8 +27,12 @@ fun NavGraphBuilder.searchPhotosGraph(
         val arguments = args.firstOrNull().orEmpty().let(AppArguments::SearchPhotosScreen)
 
         val state by remember { viewModel.state }.collectAsState()
-        val photos = remember(state.searchItems).collectAsLazyPagingItems()
-        val searchHistory = remember(state.historyItems).collectAsLazyPagingItems()
+        val photos = remember {
+            viewModel.state.mapState { it.searchItems }
+        }.collectAsLazyPagingItems()
+        val searchHistory = remember {
+            viewModel.state.mapState { it.historyItems }
+        }.collectAsLazyPagingItems()
 
         LaunchedEffect(arguments) {
             viewModel.sendAction(Action.Init(arguments))

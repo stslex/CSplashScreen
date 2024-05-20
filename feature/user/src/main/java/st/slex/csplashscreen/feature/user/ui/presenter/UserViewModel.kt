@@ -3,7 +3,6 @@ package st.slex.csplashscreen.feature.user.ui.presenter
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.collection.ui.model.toPresentation
@@ -24,16 +23,11 @@ class UserViewModel @Inject constructor(
     private val interactor: UserInteractor,
     appDispatcher: AppDispatcher,
     router: UserRouter
-) : BaseViewModel<State, Event, Action, Navigation>(router, appDispatcher) {
-
-    override val initialState: State = State(
-        user = null,
-        likes = ::getLikes,
-        photos = ::getPhotos,
-        collections = ::getCollections
-    )
-
-    override val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
+) : BaseViewModel<State, Event, Action, Navigation>(
+    router = router,
+    appDispatcher = appDispatcher,
+    initialState = State.INITIAL
+) {
 
     override fun sendAction(action: Action) {
         when (action) {
@@ -53,6 +47,27 @@ class UserViewModel @Inject constructor(
             .launch { user ->
                 updateState { currentState ->
                     currentState.copy(user = user)
+                }
+            }
+
+        getPhotos(action.args.username)
+            .launch { photos ->
+                updateState { currentState ->
+                    currentState.copy(photos = photos)
+                }
+            }
+
+        getLikes(action.args.username)
+            .launch { likes ->
+                updateState { currentState ->
+                    currentState.copy(likes = likes)
+                }
+            }
+
+        getCollections(action.args.username)
+            .launch { collections ->
+                updateState { currentState ->
+                    currentState.copy(collections = collections)
                 }
             }
     }

@@ -30,15 +30,11 @@ class SearchViewModel @Inject constructor(
     private val interactor: SearchPhotosInteractor,
     appDispatcher: AppDispatcher,
     router: SearchPhotosRouter
-) : BaseViewModel<State, Event, Action, Navigation>(router, appDispatcher) {
-
-    override val initialState = State(
-        query = "",
-        searchItems = ::photosSearch,
-        historyItems = ::searchHistory
-    )
-
-    override val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
+) : BaseViewModel<State, Event, Action, Navigation>(
+    router = router,
+    appDispatcher = appDispatcher,
+    initialState = State.INITIAL
+) {
 
     private val searchHistory: StateFlow<PagingData<SearchItem>>
         get() = interactor.searchHistory.state()
@@ -60,6 +56,22 @@ class SearchViewModel @Inject constructor(
             is Action.OnProfileClick -> actionOnProfileClick(action)
             is Action.OnQueryInput -> actionQueryInput(action)
             is Action.OnSearchHistoryClick -> actionSearchHistoryClick(action)
+        }
+    }
+
+    private fun actionInit(action: Action.Init) {
+        updateState { currentState ->
+            currentState.copy(query = action.args.checkedQuery)
+        }
+        searchHistory.launch { data ->
+            updateState { currentState ->
+                currentState.copy(historyItems = data)
+            }
+        }
+        photosSearch.launch { data ->
+            updateState { currentState ->
+                currentState.copy(searchItems = data)
+            }
         }
     }
 
@@ -102,12 +114,6 @@ class SearchViewModel @Inject constructor(
             }.onFailure { error ->
                 Logger.exception(error)
             }
-        }
-    }
-
-    private fun actionInit(action: Action.Init) {
-        updateState { currentState ->
-            currentState.copy(query = action.args.checkedQuery)
         }
     }
 
