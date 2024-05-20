@@ -12,33 +12,29 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.ui.base.createScreen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
-import st.slex.csplashscreen.feature.search.di.SearchPhotosComponentBuilder
 import st.slex.csplashscreen.feature.search.ui.SearchPhotosScreen
-import st.slex.csplashscreen.feature.search.ui.presenter.SearchStore.Action
-import st.slex.csplashscreen.feature.search.ui.presenter.SearchViewModel
+import st.slex.csplashscreen.feature.search.ui.presenter.SearchStore
+import st.slex.csplashscreen.feature.search.ui.presenter.SearchStoreComponent.Action
 
 fun NavGraphBuilder.searchPhotosGraph(
     modifier: Modifier = Modifier,
 ) {
-    createScreen(
-        appDestination = AppDestination.SEARCH_PHOTOS,
-        featureBuilder = SearchPhotosComponentBuilder
-    ) { viewModel: SearchViewModel, args ->
+    createScreen(AppDestination.SEARCH_PHOTOS) { store: SearchStore, args ->
         val arguments = args.firstOrNull().orEmpty().let(AppArguments::SearchPhotosScreen)
 
-        val state by remember { viewModel.state }.collectAsState()
+        val state by remember { store.state }.collectAsState()
         val photos = remember {
-            viewModel.state.mapState { it.searchItems }
+            store.state.mapState { it.searchItems }
         }.collectAsLazyPagingItems()
         val searchHistory = remember {
-            viewModel.state.mapState { it.historyItems }
+            store.state.mapState { it.historyItems }
         }.collectAsLazyPagingItems()
 
         LaunchedEffect(arguments) {
-            viewModel.sendAction(Action.Init(arguments))
+            store.sendAction(Action.Init(arguments))
         }
 
-        viewModel.event.CollectAsEvent { event ->
+        store.event.CollectAsEvent { event ->
             // TODO NOT IMPLEMENTED YET
         }
 
@@ -48,17 +44,17 @@ fun NavGraphBuilder.searchPhotosGraph(
             searchHistory = searchHistory,
             query = state.query,
             onQueryChange = remember {
-                { value -> viewModel.sendAction(Action.OnQueryInput(value)) }
+                { value -> store.sendAction(Action.OnQueryInput(value)) }
             },
             onUserClick = remember {
-                { value -> viewModel.sendAction(Action.OnProfileClick(value)) }
+                { value -> store.sendAction(Action.OnProfileClick(value)) }
             },
             onImageClick = remember {
-                { value -> viewModel.sendAction(Action.OnImageClick(value)) }
+                { value -> store.sendAction(Action.OnImageClick(value)) }
             },
-            clearHistory = remember { { viewModel.sendAction(Action.ClearHistory) } },
+            clearHistory = remember { { store.sendAction(Action.ClearHistory) } },
             onSearchHistoryClick = remember {
-                { value -> viewModel.sendAction(Action.OnSearchHistoryClick(value)) }
+                { value -> store.sendAction(Action.OnSearchHistoryClick(value)) }
             }
         )
     }

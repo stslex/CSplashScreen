@@ -65,20 +65,11 @@ internal fun Project.configureKotlinAndroid(
         val immutableCollection = libs.findLibrary("kotlinx-collections-immutable").get()
         add("implementation", immutableCollection)
 
-        val dagger = libs.findLibrary("dagger-core").get()
-        add("implementation", dagger)
-
-        val daggerCompiler = libs.findLibrary("dagger-compiler").get()
-        add("ksp", daggerCompiler)
-
         val coroutines = libs.findLibrary("coroutines").get()
         add("implementation", coroutines)
 
-        val koinAndroid = libs.findLibrary("koin-android").get()
-        add("implementation", koinAndroid)
-
-        val koinAnnotations = libs.findLibrary("koin-annotations").get()
-        add("implementation", koinAnnotations)
+        val koinBundle = libs.findBundle("koin").get()
+        add("implementation", koinBundle)
 
         val koinKsp = libs.findLibrary("koin-ksp").get()
         add("ksp", koinKsp)

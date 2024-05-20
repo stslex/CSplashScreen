@@ -23,8 +23,7 @@ accompanist = "0.30.0"
 coilCompose = "2.5.0"
 composeActivity = "1.9.0"
 
-koinAndroid = "3.5.6"
-koinCompose = "1.1.5"
+koin = "3.5.6"
 koinKsp = "1.3.1"
 
 ktor = "2.3.6"
@@ -40,8 +39,6 @@ androidxTest = "1.5.0"
 room = "2.6.1"
 ksp = "1.9.23-1.0.19"
 mockito = "2.19.0"
-
-dagger = "2.48"
 
 [libraries]
 android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
@@ -108,13 +105,17 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 
-dagger-core = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
-
-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
-koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koinCompose" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinKsp" }
+
+koin-test-core = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+koin-test-junit = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
+
 koin-ksp = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinKsp" }
+
+coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.7.3" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -127,6 +128,12 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 lifecycle = [
     "lifecycle-compose",
     "lifecycle-viewModel"
+]
+
+koin = [
+    "koin-core",
+    "koin-android",
+    "koin-annotations"
 ]
 
 accompanist = [
@@ -172,7 +179,10 @@ test = [
     "mockito",
     "junit",
     "robolectric",
-    "androidx-test"
+    "androidx-test",
+    "koin-test-core",
+    "koin-test-junit",
+    "coroutine-test"
 ]
 
 room = [

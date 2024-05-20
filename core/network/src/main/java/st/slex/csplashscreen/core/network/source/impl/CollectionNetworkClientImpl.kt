@@ -10,11 +10,8 @@ import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_PAGE
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_PAGE_SIZE
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_COLLECTIONS
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_USERS
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class CollectionNetworkClientImpl @Inject constructor(
+class CollectionNetworkClientImpl(
     private val client: NetworkClient
 ) : CollectionNetworkClient {
 

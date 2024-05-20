@@ -20,11 +20,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import st.slex.csplashscreen.core.ui.theme.Dimen
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent
 
 @Composable
 fun DownloadImageDialog(
-    onAction: (ImageDetailStore.Action.DownloadImageChooseClick) -> Unit,
+    onAction: (ImageDetailStoreComponent.Action.DownloadImageChooseClick) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -45,7 +45,7 @@ fun DownloadImageDialog(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        onAction(ImageDetailStore.Action.DownloadImageChooseClick(type))
+                        onAction(ImageDetailStoreComponent.Action.DownloadImageChooseClick(type))
                     },
                 ) {
                     Text(

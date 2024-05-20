@@ -1,111 +1,121 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter
 
-import androidx.compose.runtime.Stable
-import st.slex.csplashscreen.core.navigation.AppArguments
+import st.slex.csplashscreen.core.core.Logger
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.ui.mvi.Store
-import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
+import st.slex.csplashscreen.feature.feature_photo_detail.domain.interactor.ImageDetailInteractor
+import st.slex.csplashscreen.feature.feature_photo_detail.navigation.ImageDetailRouter
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType.LARGE
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType.MEDIUM
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType.ORIGINAL
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.DownloadImageType.SMALL
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.Action
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.DialogType
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.Event
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.Navigation
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.ScreenState
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.State
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.utils.DownloadImageUseCase
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.utils.WallpaperSetUseCase
 
-interface ImageDetailStore : Store {
+class ImageDetailStore(
+    private val interactor: ImageDetailInteractor,
+    private val downloadImageUseCase: DownloadImageUseCase,
+    private val wallpaperSetUseCase: WallpaperSetUseCase,
+    appDispatcher: AppDispatcher,
+    router: ImageDetailRouter
+) : Store<State, Event, Action, Navigation>(
+    router = router,
+    appDispatcher = appDispatcher,
+    initialState = State.INITIAL
+) {
 
-    @Stable
-    data class State(
-        val imageId: String,
-        val screenState: ScreenState
-    ) : Store.State {
-
-        companion object {
-            val INITIAL: State = State(
-                imageId = "",
-                screenState = ScreenState.Loading
-            )
+    override fun sendAction(action: Action) {
+        when (action) {
+            is Action.Init -> actionInit(action)
+            is Action.DownloadImageButtonClick -> actionDownloadImageButtonClick()
+            is Action.OnLikeClicked -> actionLikeClick(action)
+            is Action.OnProfileClick -> actionProfileClick(action)
+            is Action.OnTagClick -> actionTagClick(action)
+            is Action.SetWallpaperClick -> setWallpaperClick(action)
+            is Action.DownloadImageChooseClick -> actionDownloadImageChooseClick(action)
+            is Action.CloseDialog -> actionCloseDialog()
         }
     }
 
-    @Stable
-    sealed interface ScreenState {
-
-        @Stable
-        data object Loading : ScreenState
-
-        @Stable
-        data class Content(
-            val imageDetail: ImageDetail
-        ) : ScreenState
-
-        @Stable
-        data class Error(
-            val throwable: Throwable
-        ) : ScreenState
-
-        val data: ImageDetail?
-            get() = (this as? Content)?.imageDetail
+    private fun actionCloseDialog() {
+        sendEvent(Event.Dialog(DialogType.NONE))
     }
 
-    @Stable
-    sealed interface Event : Store.Event {
-
-        @Stable
-        data class Dialog(
-            val type: DialogType
-        ) : Event
+    private fun actionDownloadImageButtonClick() {
+        // TODO Show dialog to choose type
+        sendEvent(Event.Dialog(DialogType.DOWNLOAD))
     }
 
-    enum class DialogType {
-        DOWNLOAD,
-        NONE
+    private fun actionDownloadImageChooseClick(
+        action: Action.DownloadImageChooseClick
+    ) {
+        val photo = state.value.screenState.data?.photo ?: return // TODO show Toast
+        launchCatching(
+            block = {
+                when (action.type) {
+                    LARGE -> photo.urls.raw
+                    MEDIUM -> photo.urls.regular
+                    SMALL -> photo.urls.small
+                    ORIGINAL -> interactor.getDownloadLink(state.value.imageId)
+                }
+            }
+        ) { downloadUrl ->
+            downloadImageUseCase(
+                url = downloadUrl,
+                fileName = state.value.imageId
+            )
+            sendEvent(Event.Dialog(DialogType.NONE))
+        }
     }
 
-    @Stable
-    sealed interface Navigation : Store.Navigation {
-
-        @Stable
-        data class Profile(
-            val username: String
-        ) : Navigation
-
-        @Stable
-        data class Search(
-            val tag: String
-        ) : Navigation
+    private fun actionLikeClick(action: Action.OnLikeClicked) {
+        launch {
+            runCatching {
+                interactor.like(action.imageDetail.photo)
+            }.onFailure { error ->
+                Logger.exception(error)
+            }
+        }
     }
 
-    @Stable
-    sealed interface Action : Store.Action {
+    private fun actionProfileClick(action: Action.OnProfileClick) {
+        navigate(Navigation.Profile(action.username))
+    }
 
-        @Stable
-        data class Init(
-            val args: AppArguments.ImageDetailScreen
-        ) : Action
+    private fun actionTagClick(action: Action.OnTagClick) {
+        navigate(Navigation.Search(action.tag))
+    }
 
-        @Stable
-        data class SetWallpaperClick(
-            val url: String
-        ) : Action
+    private fun setWallpaperClick(action: Action.SetWallpaperClick) {
+        wallpaperSetUseCase(action.url)
+    }
 
-        @Stable
-        data class OnTagClick(
-            val tag: String
-        ) : Action
-
-        @Stable
-        data class OnProfileClick(
-            val username: String
-        ) : Action
-
-        @Stable
-        data class OnLikeClicked(
-            val imageDetail: ImageDetail
-        ) : Action
-
-        @Stable
-        data object DownloadImageButtonClick : Action
-
-        @Stable
-        data class DownloadImageChooseClick(
-            val type: DownloadImageType
-        ) : Action
-
-        @Stable
-        data object CloseDialog : Action
+    private fun actionInit(action: Action.Init) {
+        updateState { currentState ->
+            currentState.copy(imageId = action.args.imageId)
+        }
+        interactor.getImageDetail(action.args.imageId)
+            .launch(
+                onError = { error ->
+                    updateState { currentState ->
+                        currentState.copy(
+                            screenState = ScreenState.Error(error)
+                        )
+                    }
+                },
+                each = { imageDetail ->
+                    updateState { currentState ->
+                        currentState.copy(
+                            screenState = ScreenState.Content(imageDetail)
+                        )
+                    }
+                }
+            )
     }
 }

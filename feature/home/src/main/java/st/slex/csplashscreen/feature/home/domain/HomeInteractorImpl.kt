@@ -6,9 +6,8 @@ import st.slex.csplashscreen.core.network.model.toDomain
 import st.slex.csplashscreen.core.network.model.ui.CollectionDomainModel
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
 import st.slex.csplashscreen.core.photos.data.PhotosRepository
-import javax.inject.Inject
 
-class HomeInteractorImpl @Inject constructor(
+class HomeInteractorImpl(
     private val photosRepository: PhotosRepository,
     private val collectionsRepository: CollectionsRepository
 ) : HomeInteractor {

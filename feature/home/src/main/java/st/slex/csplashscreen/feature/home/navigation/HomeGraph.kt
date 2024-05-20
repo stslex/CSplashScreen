@@ -9,32 +9,28 @@ import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.ui.base.createScreen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
-import st.slex.csplashscreen.feature.home.di.HomeComponentBuilder
 import st.slex.csplashscreen.feature.home.ui.MainScreen
-import st.slex.csplashscreen.feature.home.ui.presenter.HomeStore.Action
-import st.slex.csplashscreen.feature.home.ui.presenter.HomeViewModel
+import st.slex.csplashscreen.feature.home.ui.presenter.HomeStore
+import st.slex.csplashscreen.feature.home.ui.presenter.HomeStoreComponent.Action
 
 fun NavGraphBuilder.homeGraph(
     modifier: Modifier = Modifier,
 ) {
-    createScreen(
-        appDestination = AppDestination.HOME,
-        featureBuilder = HomeComponentBuilder
-    ) { viewModel: HomeViewModel, _ ->
+    createScreen(AppDestination.HOME) { store: HomeStore, _ ->
 
         LaunchedEffect(Unit) {
-            viewModel.sendAction(Action.Init)
+            store.sendAction(Action.Init)
         }
 
         val collections = remember {
-            viewModel.state.mapState { it.collections }
+            store.state.mapState { it.collections }
         }.collectAsLazyPagingItems()
 
         val photos = remember {
-            viewModel.state.mapState { it.photos }
+            store.state.mapState { it.photos }
         }.collectAsLazyPagingItems()
 
-        viewModel.event.CollectAsEvent { event ->
+        store.event.CollectAsEvent { event ->
             // TODO NOT IMPLEMENTED YET
         }
 
@@ -42,17 +38,17 @@ fun NavGraphBuilder.homeGraph(
             modifier = modifier,
             navToProfile = remember {
                 { username ->
-                    viewModel.sendAction(Action.OnUserClick(username))
+                    store.sendAction(Action.OnUserClick(username))
                 }
             },
             navToCollection = remember {
                 { uuid ->
-                    viewModel.sendAction(Action.OnCollectionClick(uuid))
+                    store.sendAction(Action.OnCollectionClick(uuid))
                 }
             },
             navToImage = remember {
                 { uuid ->
-                    viewModel.sendAction(Action.OnImageClick(uuid))
+                    store.sendAction(Action.OnImageClick(uuid))
                 }
             },
             collections = remember { collections },

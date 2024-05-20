@@ -10,9 +10,8 @@ import st.slex.csplashscreen.core.network.model.ui.ImageModel
 import st.slex.csplashscreen.core.network.model.ui.user.UserModel
 import st.slex.csplashscreen.core.photos.data.PhotosRepository
 import st.slex.csplashscreen.feature.user.data.UserRepository
-import javax.inject.Inject
 
-class UserInteractorImpl @Inject constructor(
+class UserInteractorImpl(
     private val photosRepository: PhotosRepository,
     private val collectionsRepository: CollectionsRepository,
     private val userRepository: UserRepository

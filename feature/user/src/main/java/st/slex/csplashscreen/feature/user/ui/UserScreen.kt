@@ -25,13 +25,13 @@ import st.slex.csplashscreen.feature.user.ui.components.pager.UserPager
 import st.slex.csplashscreen.feature.user.ui.components.toolbar.UserToolbar
 import st.slex.csplashscreen.feature.user.ui.state.UserPagerState
 import st.slex.csplashscreen.feature.user.ui.state.UserSwipeState
-import st.slex.csplashscreen.feature.user.ui.presenter.UserStore
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStoreComponent
 import st.slex.csplashscreen.feature.user.ui.utils.SwipeState
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun UserScreen(
-    state: UserStore.State,
+    state: UserStoreComponent.State,
     userPagerState: UserPagerState,
     userSwipeState: UserSwipeState,
     popBackStack: () -> Unit,

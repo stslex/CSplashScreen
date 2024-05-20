@@ -11,11 +11,8 @@ import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_PAGE_
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_QUERY
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_PHOTOS
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_SEARCH
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SearchPhotosNetworkSourceImpl @Inject constructor(
+class SearchPhotosNetworkSourceImpl(
     private val client: NetworkClient
 ) : SearchPhotosNetworkSource {
 
