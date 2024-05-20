@@ -10,9 +10,8 @@ import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetailMapper.toImageDetail
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetailMapper.transformDetail
-import javax.inject.Inject
 
-class ImageDetailInteractorImpl @Inject constructor(
+class ImageDetailInteractorImpl(
     private val repository: PhotosRepository,
     private val favouriteRepository: FavouriteRepository,
     private val favouriteInteractor: FavouriteInteractor

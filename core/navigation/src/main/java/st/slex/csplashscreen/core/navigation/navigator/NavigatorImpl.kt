@@ -2,9 +2,8 @@ package st.slex.csplashscreen.core.navigation.navigator
 
 import androidx.navigation.NavHostController
 import st.slex.csplashscreen.core.core.Logger
-import javax.inject.Inject
 
-class NavigatorImpl @Inject constructor(
+class NavigatorImpl(
     private val navController: NavHostController
 ) : Navigator {
 

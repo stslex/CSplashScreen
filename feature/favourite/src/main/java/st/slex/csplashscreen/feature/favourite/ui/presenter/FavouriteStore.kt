@@ -1,58 +1,56 @@
 package st.slex.csplashscreen.feature.favourite.ui.presenter
 
-import androidx.compose.runtime.Stable
-import androidx.paging.PagingData
-import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
+import kotlinx.coroutines.flow.map
+import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.ui.mvi.Store
+import st.slex.csplashscreen.feature.favourite.domain.FavouriteInteractor
+import st.slex.csplashscreen.feature.favourite.navigation.FavouriteRouter
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStoreComponent.Action
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStoreComponent.Event
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStoreComponent.Navigation
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStoreComponent.State
 
-interface FavouriteStore : Store {
+class FavouriteStore(
+    private val interactor: FavouriteInteractor,
+    appDispatcher: AppDispatcher,
+    router: FavouriteRouter
+) : Store<State, Event, Action, Navigation>(
+    router = router,
+    appDispatcher = appDispatcher,
+    initialState = State.INITIAL
+) {
 
-    @Stable
-    data class State(
-        val photos: PagingData<PhotoModel>
-    ) : Store.State {
-
-        companion object {
-            val INITIAL = State(
-                photos = PagingData.empty()
-            )
+    override fun sendAction(action: Action) {
+        when (action) {
+            is Action.Init -> actionInit()
+            is Action.GoToPhotosClick -> actionGoHome()
+            is Action.OnImageClick -> actionImageClick(action)
+            is Action.OnUserClick -> actionUserClick(action)
         }
     }
 
-    @Stable
-    sealed interface Event : Store.Event
-
-    @Stable
-    sealed interface Navigation : Store.Navigation {
-
-        @Stable
-        data class User(
-            val username: String
-        ) : Navigation
-
-        @Stable
-        data class Image(
-            val uuid: String
-        ) : Navigation
-
-        @Stable
-        data object Home : Navigation
+    private fun actionInit() {
+        interactor.photos
+            .map { pagingData ->
+                pagingData
+            }
+            .state()
+            .launch { data ->
+                updateState { state ->
+                    state.copy(photos = data)
+                }
+            }
     }
 
-    @Stable
-    sealed interface Action : Store.Action {
+    private fun actionGoHome() {
+        navigate(Navigation.Home)
+    }
 
-        data object Init : Action
+    private fun actionImageClick(action: Action.OnImageClick) {
+        navigate(Navigation.Image(action.uuid))
+    }
 
-        data class OnUserClick(
-            val username: String
-        ) : Action
-
-        data class OnImageClick(
-            val uuid: String
-        ) : Action
-
-        data object GoToPhotosClick : Action
+    private fun actionUserClick(action: Action.OnUserClick) {
+        navigate(Navigation.User(action.username))
     }
 }
-

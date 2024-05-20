@@ -17,30 +17,26 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.ui.base.createScreen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
-import st.slex.csplashscreen.feature.feature_photo_detail.di.ImageDetailComponentBuilder
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailScreen
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.components.dialogs.DownloadImageDialog
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.Action
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.DialogType
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.Event
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailViewModel
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.Action
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.DialogType
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.Event
 
 fun NavGraphBuilder.imageDetailGraph(
     modifier: Modifier = Modifier,
 ) {
-    createScreen(
-        appDestination = AppDestination.IMAGE_DETAIL,
-        featureBuilder = ImageDetailComponentBuilder
-    ) { viewModel: ImageDetailViewModel, args ->
+    createScreen(AppDestination.IMAGE_DETAIL) { store: ImageDetailStore, args ->
         val arguments = args.firstOrNull()
             .orEmpty()
             .let(AppArguments::ImageDetailScreen)
 
         LaunchedEffect(arguments) {
-            viewModel.sendAction(Action.Init(arguments))
+            store.sendAction(Action.Init(arguments))
         }
 
-        val state by remember { viewModel.state }.collectAsState()
+        val state by remember { store.state }.collectAsState()
 
         var dialogType by remember {
             mutableStateOf(DialogType.NONE)
@@ -52,7 +48,7 @@ fun NavGraphBuilder.imageDetailGraph(
             label = "anim_blur_dialog_background"
         )
 
-        viewModel.event.CollectAsEvent { event ->
+        store.event.CollectAsEvent { event ->
             when (event) {
                 is Event.Dialog -> dialogType = event.type
             }
@@ -62,30 +58,30 @@ fun NavGraphBuilder.imageDetailGraph(
             modifier = modifier.blur(blurBackground),
             state = state,
             onProfileClick = remember {
-                { username -> viewModel.sendAction(Action.OnProfileClick(username)) }
+                { username -> store.sendAction(Action.OnProfileClick(username)) }
             },
             onDownloadImageClick = remember {
-                { viewModel.sendAction(Action.DownloadImageButtonClick) }
+                { store.sendAction(Action.DownloadImageButtonClick) }
             },
             onTagClick = remember {
-                { tag -> viewModel.sendAction(Action.OnTagClick(tag)) }
+                { tag -> store.sendAction(Action.OnTagClick(tag)) }
             },
             onSetWallpaperClick = remember {
-                { url -> viewModel.sendAction(Action.SetWallpaperClick(url)) }
+                { url -> store.sendAction(Action.SetWallpaperClick(url)) }
             },
             onLikeClicked = remember {
-                { image -> viewModel.sendAction(Action.OnLikeClicked(image)) }
+                { image -> store.sendAction(Action.OnLikeClicked(image)) }
             }
         )
 
         if (dialogType != DialogType.NONE) {
             Dialog(
                 onDismissRequest = {
-                    viewModel.sendAction(Action.CloseDialog)
+                    store.sendAction(Action.CloseDialog)
                 },
             ) {
                 when (dialogType) {
-                    DialogType.DOWNLOAD -> DownloadImageDialog(viewModel::sendAction)
+                    DialogType.DOWNLOAD -> DownloadImageDialog(store::sendAction)
                     DialogType.NONE -> Unit
                 }
             }

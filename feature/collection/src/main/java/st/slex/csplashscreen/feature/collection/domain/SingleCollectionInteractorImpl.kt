@@ -3,9 +3,8 @@ package st.slex.csplashscreen.feature.collection.domain
 import st.slex.csplashscreen.core.network.model.toDomain
 import st.slex.csplashscreen.core.network.model.ui.ImageModel
 import st.slex.csplashscreen.feature.collection.data.SingleCollectionRepository
-import javax.inject.Inject
 
-class SingleCollectionInteractorImpl @Inject constructor(
+class SingleCollectionInteractorImpl(
     private val repository: SingleCollectionRepository
 ) : SingleCollectionInteractor {
 

@@ -9,28 +9,26 @@ import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.ui.base.createScreen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
-import st.slex.csplashscreen.feature.favourite.di.FavouriteComponentBuilder
 import st.slex.csplashscreen.feature.favourite.ui.FavouriteScreen
-import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore.Action
-import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteViewModel
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStoreComponent.Action
 
 fun NavGraphBuilder.favouriteGraph(
     modifier: Modifier = Modifier,
 ) {
     createScreen(
         appDestination = AppDestination.FAVOURITE,
-        featureBuilder = FavouriteComponentBuilder
-    ) { viewModel: FavouriteViewModel, _ ->
+    ) { store: FavouriteStore, _ ->
 
         LaunchedEffect(Unit) {
-            viewModel.sendAction(Action.Init)
+            store.sendAction(Action.Init)
         }
 
         val photos = remember {
-            viewModel.state.mapState { it.photos }
+            store.state.mapState { it.photos }
         }.collectAsLazyPagingItems()
 
-        viewModel.event.CollectAsEvent { event ->
+        store.event.CollectAsEvent { event ->
             // TODO NOT IMPLEMENTED YET
         }
 
@@ -38,13 +36,13 @@ fun NavGraphBuilder.favouriteGraph(
             modifier = modifier,
             photos = photos,
             onUserClick = remember {
-                { username -> viewModel.sendAction(Action.OnUserClick(username)) }
+                { username -> store.sendAction(Action.OnUserClick(username)) }
             },
             onImageClick = remember {
-                { uuid -> viewModel.sendAction(Action.OnImageClick(uuid)) }
+                { uuid -> store.sendAction(Action.OnImageClick(uuid)) }
             },
             onGoToPhotosClick = remember {
-                { viewModel.sendAction(Action.GoToPhotosClick) }
+                { store.sendAction(Action.GoToPhotosClick) }
             }
         )
     }

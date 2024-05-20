@@ -12,47 +12,43 @@ import st.slex.csplashscreen.core.navigation.AppArguments
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.ui.base.createScreen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
-import st.slex.csplashscreen.feature.user.di.UserComponentBuilder
 import st.slex.csplashscreen.feature.user.ui.UserScreen
-import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.Init
-import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.OnBackButtonClick
-import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.OnCollectionClick
-import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.OnImageClick
-import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Action.OnUserClick
-import st.slex.csplashscreen.feature.user.ui.presenter.UserViewModel
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStore
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStoreComponent.Action.Init
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStoreComponent.Action.OnBackButtonClick
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStoreComponent.Action.OnCollectionClick
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStoreComponent.Action.OnImageClick
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStoreComponent.Action.OnUserClick
 import st.slex.csplashscreen.feature.user.ui.state.rememberUserPagerState
 import st.slex.csplashscreen.feature.user.ui.state.rememberUserSwipeState
 
 fun NavGraphBuilder.userGraph(
     modifier: Modifier = Modifier,
 ) {
-    createScreen(
-        appDestination = AppDestination.USER,
-        featureBuilder = UserComponentBuilder
-    ) { viewModel: UserViewModel, args ->
+    createScreen(AppDestination.USER) { store: UserStore, args ->
         val arguments = args.firstOrNull()
             .orEmpty()
             .let(AppArguments::UserScreen)
 
-        val state by remember { viewModel.state }.collectAsState()
+        val state by remember { store.state }.collectAsState()
 
         val photos = remember {
-            viewModel.state.mapState { it.photos }
+            store.state.mapState { it.photos }
         }.collectAsLazyPagingItems()
 
         val likes = remember(arguments) {
-            viewModel.state.mapState { it.likes }
+            store.state.mapState { it.likes }
         }.collectAsLazyPagingItems()
 
         val collections = remember(arguments) {
-            viewModel.state.mapState { it.collections }
+            store.state.mapState { it.collections }
         }.collectAsLazyPagingItems()
 
         LaunchedEffect(arguments) {
-            viewModel.sendAction(Init(arguments))
+            store.sendAction(Init(arguments))
         }
 
-        viewModel.event.CollectAsEvent { event ->
+        store.event.CollectAsEvent { event ->
             // TODO NOT IMPLEMENTED YET
         }
 
@@ -72,16 +68,16 @@ fun NavGraphBuilder.userGraph(
             userPagerState = userPagerState,
             userSwipeState = userSwipeState,
             onImageClick = remember {
-                { value -> viewModel.sendAction(OnImageClick(value)) }
+                { value -> store.sendAction(OnImageClick(value)) }
             },
             onUserClick = remember {
-                { value -> viewModel.sendAction(OnUserClick(value)) }
+                { value -> store.sendAction(OnUserClick(value)) }
             },
             onCollectionClick = remember {
-                { value -> viewModel.sendAction(OnCollectionClick(value)) }
+                { value -> store.sendAction(OnCollectionClick(value)) }
             },
             popBackStack = remember {
-                { viewModel.sendAction(OnBackButtonClick) }
+                { store.sendAction(OnBackButtonClick) }
             },
         )
     }

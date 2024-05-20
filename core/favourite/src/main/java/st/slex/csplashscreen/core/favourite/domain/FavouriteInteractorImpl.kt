@@ -6,9 +6,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.favourite.data.repository.FavouriteRepository
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
-import javax.inject.Inject
 
-class FavouriteInteractorImpl @Inject constructor(
+class FavouriteInteractorImpl(
     private val repository: FavouriteRepository
 ) : FavouriteInteractor {
 

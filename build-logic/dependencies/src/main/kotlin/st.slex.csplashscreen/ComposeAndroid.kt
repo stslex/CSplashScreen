@@ -50,7 +50,7 @@ internal fun Project.configureAndroidCompose(
             val lifecycle = libs.findBundle("lifecycle").get()
             add("implementation", lifecycle)
 
-            val koinCompose = libs.findLibrary("koin-compose").get()
+            val koinCompose = libs.findLibrary("koin-androidx-compose").get()
             add("implementation", koinCompose)
         }
     }
