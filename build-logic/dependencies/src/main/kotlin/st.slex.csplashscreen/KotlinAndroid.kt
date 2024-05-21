@@ -51,28 +51,14 @@ internal fun Project.configureKotlinAndroid(
     configureKotlin()
 
     dependencies {
-        add("coreLibraryDesugaring", libs.findLibrary("android-desugarJdkLibs").get())
-
-        val ktx = libs.findLibrary("androidx-core-ktx").get()
-        add("implementation", ktx)
-
-        val test = libs.findBundle("test").get()
-        add("testImplementation", test)
-
-        val androidTest = libs.findBundle("android-test").get()
-        add("androidTestImplementation", androidTest)
-
-        val immutableCollection = libs.findLibrary("kotlinx-collections-immutable").get()
-        add("implementation", immutableCollection)
-
-        val coroutines = libs.findLibrary("coroutines").get()
-        add("implementation", coroutines)
-
-        val koinBundle = libs.findBundle("koin").get()
-        add("implementation", koinBundle)
-
-        val koinKsp = libs.findLibrary("koin-ksp").get()
-        add("ksp", koinKsp)
+        "coreLibraryDesugaring"(libs.findLibrary("android-desugarJdkLibs").get())
+        "implementation"(libs.findLibrary("androidx-core-ktx").get())
+        "testImplementation"(libs.findBundle("test").get())
+        "androidTestImplementation"(libs.findBundle("android-test").get())
+        "implementation"(libs.findLibrary("kotlinx-collections-immutable").get())
+        "implementation"(libs.findLibrary("coroutines").get())
+        "implementation"(libs.findBundle("koin").get())
+        "ksp"(libs.findLibrary("koin-ksp").get())
     }
 }
 

@@ -2,6 +2,7 @@
 androidDesugarJdkLibs = "2.0.4"
 kotlin = "1.9.23"
 androidGradlePlugin = "8.3.2"
+androidTools = "31.4.0"
 
 minSdk = "28"
 targetSdk = "34"
@@ -45,6 +46,9 @@ android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", versio
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
+room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
 
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "immutableCollection" }
 
@@ -123,6 +127,13 @@ serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref 
 application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
+
+convention-application = { id = "csplashscreen.android.application", version = "1.0" }
+convention-application-compose = { id = "csplashscreen.android.application.compose", version = "1.0" }
+convention-library = { id = "csplashscreen.android.library", version = "1.0" }
+convention-library-compose = { id = "csplashscreen.android.library.compose", version = "1.0" }
+convention-room-library = { id = "csplashscreen.room.library", version = "1.0" }
 
 [bundles]
 lifecycle = [
