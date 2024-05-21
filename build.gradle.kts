@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.library) apply false
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.room) apply false
 }
 
 buildscript {

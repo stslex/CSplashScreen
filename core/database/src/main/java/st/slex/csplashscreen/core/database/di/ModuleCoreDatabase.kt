@@ -17,6 +17,6 @@ val moduleCoreDatabase = module {
             .build()
     }
 
-    single<SearchDao> { get<AppDatabase>().searchDao }
-    single<FavouriteDao> { get<AppDatabase>().favouriteDao }
+    single<SearchDao> { get<AppDatabase>().getSearchDao() }
+    single<FavouriteDao> { get<AppDatabase>().getFavouriteDao() }
 }

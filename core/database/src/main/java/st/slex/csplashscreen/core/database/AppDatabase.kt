@@ -25,9 +25,9 @@ import st.slex.csplashscreen.core.database.search.SearchEntity
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract val favouriteDao: FavouriteDao
+    abstract fun getFavouriteDao(): FavouriteDao
 
-    abstract val searchDao: SearchDao
+    abstract fun getSearchDao(): SearchDao
 
     @RenameColumn(
         tableName = "favourite_table",
