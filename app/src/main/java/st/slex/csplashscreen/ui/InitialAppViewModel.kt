@@ -3,9 +3,8 @@ package st.slex.csplashscreen.ui
 import androidx.lifecycle.ViewModel
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
-import javax.inject.Inject
 
-class InitialAppViewModel @Inject constructor(
+class InitialAppViewModel(
     private val navigator: Navigator
 ) : ViewModel() {
 

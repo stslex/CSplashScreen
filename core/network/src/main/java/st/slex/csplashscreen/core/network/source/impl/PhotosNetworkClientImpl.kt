@@ -15,14 +15,9 @@ import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_LIKES
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_PHOTOS
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_TOPICS
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PATH_USERS
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.collections.List
-import kotlin.collections.mutableMapOf
 import kotlin.collections.set
 
-@Singleton
-class PhotosNetworkClientImpl @Inject constructor(
+class PhotosNetworkClientImpl(
     private val client: NetworkClient
 ) : PhotosNetworkClient {
 

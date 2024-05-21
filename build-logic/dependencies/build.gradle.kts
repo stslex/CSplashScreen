@@ -5,9 +5,12 @@ plugins {
 group = "st.slex.csplashscreen.buildlogic"
 
 dependencies {
-    implementation(libs.android.gradlePlugin)
-    implementation(libs.kotlin.gradlePlugin)
-    implementation(libs.kotlin.serialization)
+    compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.kotlin.serialization)
+    compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
+    compileOnly(libs.android.tools.common)
 }
 
 gradlePlugin {
@@ -27,6 +30,10 @@ gradlePlugin {
         register("androidLibrary") {
             id = "csplashscreen.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("roomLibrary"){
+            id = "csplashscreen.room.library"
+            implementationClass = "RoomLibraryConventionPlugin"
         }
     }
 }

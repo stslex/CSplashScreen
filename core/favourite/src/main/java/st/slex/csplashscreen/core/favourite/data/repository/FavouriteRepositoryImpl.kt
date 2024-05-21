@@ -12,11 +12,8 @@ import st.slex.csplashscreen.core.database.favourite.FavouriteDao
 import st.slex.csplashscreen.core.favourite.data.model.FavouriteMapper.toDomain
 import st.slex.csplashscreen.core.favourite.data.model.FavouriteMapper.toEntity
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class FavouriteRepositoryImpl @Inject constructor(
+class FavouriteRepositoryImpl(
     private val dao: FavouriteDao
 ) : FavouriteRepository {
 

@@ -6,9 +6,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import st.slex.csplashscreen.core.network.model.remote.user.RemoteUserModel
 import st.slex.csplashscreen.core.network.source.interf.UserNetworkSource
-import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(
+class UserRepositoryImpl(
     private val userSource: UserNetworkSource
 ) : UserRepository {
 

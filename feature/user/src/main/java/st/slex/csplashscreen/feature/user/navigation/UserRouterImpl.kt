@@ -3,10 +3,9 @@ package st.slex.csplashscreen.feature.user.navigation
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.PopBackStack
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
-import st.slex.csplashscreen.feature.user.ui.presenter.UserStore.Navigation
-import javax.inject.Inject
+import st.slex.csplashscreen.feature.user.ui.presenter.UserStoreComponent.Navigation
 
-class UserRouterImpl @Inject constructor(
+class UserRouterImpl(
     private val navigator: Navigator
 ) : UserRouter {
 

@@ -1,4 +1,5 @@
 import com.android.build.gradle.LibraryExtension
+import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -34,6 +35,10 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                         }
                     }
                 }
+            }
+
+            extensions.configure<KspExtension> {
+                arg("KOIN_CONFIG_CHECK", "true")
             }
 
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")

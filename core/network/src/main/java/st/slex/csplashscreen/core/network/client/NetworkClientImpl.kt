@@ -20,11 +20,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.network.BuildConfig
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class NetworkClientImpl @Inject constructor(
+class NetworkClientImpl(
     private val appDispatcher: AppDispatcher
 ) : NetworkClient {
 
