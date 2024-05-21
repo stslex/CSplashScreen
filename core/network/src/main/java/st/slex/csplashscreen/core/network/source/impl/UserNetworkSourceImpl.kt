@@ -6,11 +6,8 @@ import st.slex.csplashscreen.core.network.client.get
 import st.slex.csplashscreen.core.network.model.remote.user.RemoteUserModel
 import st.slex.csplashscreen.core.network.source.interf.UserNetworkSource
 import st.slex.csplashscreen.core.network.utils.ServiceConstants
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class UserNetworkSourceImpl @Inject constructor(
+class UserNetworkSourceImpl(
     private val client: NetworkClient
 ) : UserNetworkSource {
 

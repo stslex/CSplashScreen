@@ -4,9 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import st.slex.csplashscreen.core.network.model.remote.collection.RemoteCollectionModel
 import st.slex.csplashscreen.core.network.source.interf.CollectionNetworkClient
-import javax.inject.Inject
 
-class CollectionsRepositoryImpl @Inject constructor(
+class CollectionsRepositoryImpl(
     private val client: CollectionNetworkClient
 ) : CollectionsRepository {
 

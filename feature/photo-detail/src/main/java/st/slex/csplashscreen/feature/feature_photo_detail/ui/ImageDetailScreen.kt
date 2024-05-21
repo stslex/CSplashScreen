@@ -39,7 +39,7 @@ import st.slex.csplashscreen.core.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.core.ui.theme.Dimen
 import st.slex.csplashscreen.feature.feature_photo_detail.R
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStore.State
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.State
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.components.DetailImageBodyTags
 
 @Composable

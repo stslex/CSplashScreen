@@ -2,10 +2,9 @@ package st.slex.csplashscreen.feature.collection.navigation
 
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
-import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionStore.Navigation
-import javax.inject.Inject
+import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionStoreComponent.Navigation
 
-class SingleCollectionRouterImpl @Inject constructor(
+class SingleCollectionRouterImpl(
     private val navigator: Navigator
 ) : SingleCollectionRouter {
 

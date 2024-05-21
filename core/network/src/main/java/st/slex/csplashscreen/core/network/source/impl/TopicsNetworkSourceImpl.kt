@@ -9,11 +9,8 @@ import st.slex.csplashscreen.core.network.source.interf.TopicsNetworkSource
 import st.slex.csplashscreen.core.network.utils.ServiceConstants
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_PAGE
 import st.slex.csplashscreen.core.network.utils.ServiceConstants.PARAMETER_PAGE_SIZE
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TopicsNetworkSourceImpl @Inject constructor(
+class TopicsNetworkSourceImpl(
     private val client: NetworkClient
 ) : TopicsNetworkSource {
 

@@ -15,9 +15,8 @@ import st.slex.csplashscreen.core.network.model.ui.ImageModel
 import st.slex.csplashscreen.feature.search.data.SearchRepository
 import st.slex.csplashscreen.feature.search.domain.model.SearchMapper.toPresentation
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
-import javax.inject.Inject
 
-class SearchPhotosInteractorImpl @Inject constructor(
+class SearchPhotosInteractorImpl(
     private val repository: SearchRepository
 ) : SearchPhotosInteractor {
 

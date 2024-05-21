@@ -2,10 +2,9 @@ package st.slex.csplashscreen.feature.favourite.navigation
 
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
-import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore.Navigation
-import javax.inject.Inject
+import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStoreComponent.Navigation
 
-class FavouriteRouterImpl @Inject constructor(
+class FavouriteRouterImpl(
     private val navigator: Navigator
 ) : FavouriteRouter {
 

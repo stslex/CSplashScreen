@@ -5,9 +5,8 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import st.slex.csplashscreen.feature.feature_photo_detail.R
-import javax.inject.Inject
 
-class DownloadImageUseCaseImpl @Inject constructor(
+class DownloadImageUseCaseImpl(
     private val context: Context
 ) : DownloadImageUseCase {
 

@@ -2,10 +2,9 @@ package st.slex.csplashscreen.feature.home.navigation
 
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
-import st.slex.csplashscreen.feature.home.ui.presenter.HomeStore.Navigation
-import javax.inject.Inject
+import st.slex.csplashscreen.feature.home.ui.presenter.HomeStoreComponent.Navigation
 
-class HomeRouterImpl @Inject constructor(
+class HomeRouterImpl(
     private val navigator: Navigator
 ) : HomeRouter {
 

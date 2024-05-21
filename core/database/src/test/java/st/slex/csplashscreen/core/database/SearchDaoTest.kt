@@ -27,7 +27,7 @@ class SearchDaoTest {
         database = Room
             .databaseBuilder(context, AppDatabase::class.java, AppDatabase.NAME)
             .build()
-        dao = database.searchDao
+        dao = database.getSearchDao()
     }
 
     @Test

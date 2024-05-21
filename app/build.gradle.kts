@@ -1,11 +1,12 @@
 plugins {
-    id("csplashscreen.android.application")
-    id("csplashscreen.android.application.compose")
+    alias(libs.plugins.convention.application)
+    alias(libs.plugins.convention.application.compose)
 }
 
 dependencies {
     implementation(project(":core:core"))
     implementation(project(":core:ui"))
+    implementation(project(":core:database"))
 
     implementation(project(":core:collection"))
     implementation(project(":core:navigation"))

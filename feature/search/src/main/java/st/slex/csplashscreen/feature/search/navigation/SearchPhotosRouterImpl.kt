@@ -2,10 +2,9 @@ package st.slex.csplashscreen.feature.search.navigation
 
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
-import st.slex.csplashscreen.feature.search.ui.presenter.SearchStore.Navigation
-import javax.inject.Inject
+import st.slex.csplashscreen.feature.search.ui.presenter.SearchStoreComponent.Navigation
 
-class SearchPhotosRouterImpl @Inject constructor(
+class SearchPhotosRouterImpl(
     private val navigator: Navigator
 ) : SearchPhotosRouter {
 

@@ -29,7 +29,7 @@ class FavouriteDaoTest {
         database = Room
             .databaseBuilder(context, AppDatabase::class.java, AppDatabase.NAME)
             .build()
-        dao = database.favouriteDao
+        dao = database.getFavouriteDao()
     }
 
     @Test
