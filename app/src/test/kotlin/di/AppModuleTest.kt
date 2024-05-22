@@ -17,20 +17,8 @@ import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.koin.test.mock.MockProviderRule
 import org.mockito.Mockito
-import st.slex.csplashscreen.core.collection.di.moduleCoreCollection
-import st.slex.csplashscreen.core.core.di.moduleCore
-import st.slex.csplashscreen.core.database.di.moduleCoreDatabase
-import st.slex.csplashscreen.core.favourite.di.moduleCoreFavourite
 import st.slex.csplashscreen.core.navigation.di.moduleCoreNavigation
-import st.slex.csplashscreen.core.network.di.moduleCoreNetwork
-import st.slex.csplashscreen.core.photos.di.moduleCorePhotos
-import st.slex.csplashscreen.di.appModule
-import st.slex.csplashscreen.feature.collection.di.moduleFeatureSingleCollection
-import st.slex.csplashscreen.feature.favourite.di.moduleFeatureFavourite
-import st.slex.csplashscreen.feature.feature_photo_detail.di.moduleFeatureImageDetail
-import st.slex.csplashscreen.feature.home.di.moduleFeatureHome
-import st.slex.csplashscreen.feature.search.di.moduleFeatureSearchPhotos
-import st.slex.csplashscreen.feature.user.di.moduleFeatureUser
+import st.slex.csplashscreen.di.AppModules
 
 class AppModuleTest : KoinTest {
 
@@ -46,22 +34,11 @@ class AppModuleTest : KoinTest {
     @Test
     fun `check koin configuration`() {
         val navController = Mockito.mock(NavHostController::class.java)
+
         koinApplication {
             modules(
-                moduleCoreNavigation(navController),
-                appModule,
-                moduleCore,
-                moduleCoreCollection,
-                moduleCoreDatabase,
-                moduleCoreFavourite,
-                moduleCoreNetwork,
-                moduleCorePhotos,
-                moduleFeatureSingleCollection,
-                moduleFeatureFavourite,
-                moduleFeatureHome,
-                moduleFeatureImageDetail,
-                moduleFeatureSearchPhotos,
-                moduleFeatureUser
+                listOf(moduleCoreNavigation(navController)) +
+                        AppModules
             )
             checkModules {
                 withInstance<Context>()
