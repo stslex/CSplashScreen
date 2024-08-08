@@ -11,19 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import st.slex.csplashscreen.core.ui.utils.tabIndicatorOffset
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.launch
+import st.slex.csplashscreen.core.ui.utils.tabIndicatorOffset
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UserTabsRow(
     pagerState: PagerState,
-    userTabs: Set<UserTab>,
-    onClick: suspend (Int) -> Unit,
+    userTabs: ImmutableSet<UserTab>,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
+    val scope = rememberCoroutineScope()
     TabRow(
         modifier = modifier,
         selectedTabIndex = pagerState.currentPage,
@@ -50,13 +50,14 @@ fun UserTabsRow(
                     selected = pagerState.currentPage == index,
                     onClick = remember {
                         {
-                            scope.launch {
-                                if (pagerState.currentPage == index) {
-                                    onClick(index)
-                                } else {
+                            if (pagerState.currentPage == index) {
+                                onClick(index)
+                            } else {
+                                scope.launch {
                                     pagerState.animateScrollToPage(index)
                                 }
                             }
+
                         }
                     }
                 )

@@ -1,4 +1,4 @@
-import AppExt.currentLibs
+import AppExt.libs
 import androidx.room.gradle.RoomExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Plugin
@@ -25,11 +25,11 @@ class RoomLibraryConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                "implementation"(currentLibs.findBundle("room").get())
-                "annotationProcessor"(currentLibs.findLibrary("androidx-room-compiler").get())
-                "implementation"(currentLibs.findLibrary("androidx-paging-runtime").get())
-                "androidTestApi"(currentLibs.findLibrary("androidx-room-testing").get())
-                "ksp"(currentLibs.findLibrary("androidx-room-compiler").get())
+                "implementation"(libs.findBundle("room").get())
+                "annotationProcessor"(libs.findLibrary("androidx-room-compiler").get())
+                "implementation"(libs.findLibrary("androidx-paging-runtime").get())
+                "androidTestApi"(libs.findLibrary("androidx-room-testing").get())
+                "ksp"(libs.findLibrary("androidx-room-compiler").get())
             }
         }
     }

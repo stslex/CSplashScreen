@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,18 +21,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import st.slex.csplashscreen.core.navigation.AppDestination
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget
+import st.slex.csplashscreen.ui.components.NavHostControllerHolder
 import st.slex.csplashscreen.ui.components.NavigationHost
 import st.slex.csplashscreen.ui.components.bottom_appbar.BottomAppBarResource
 import st.slex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
+@Stable
 fun InitialApp(
-    navController: NavHostController,
+    navControllerHolder: NavHostControllerHolder,
     onBottomAppBarClick: (NavigationTarget.Screen) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -42,7 +44,7 @@ fun InitialApp(
         mutableStateOf<AppDestination?>(AppDestination.HOME)
     }
 
-    navController.addOnDestinationChangedListener { _, destination, _ ->
+    navControllerHolder.navController.addOnDestinationChangedListener { _, destination, _ ->
         currentDestination = AppDestination.findByRoute(destination.route)
     }
 
@@ -76,7 +78,7 @@ fun InitialApp(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background)
                     .systemBarsPadding(),
-                navController = navController,
+                holder = navControllerHolder,
             )
         },
     )

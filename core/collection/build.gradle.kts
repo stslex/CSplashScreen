@@ -1,6 +1,7 @@
 plugins {
     id("csplashscreen.android.library")
     id("csplashscreen.android.library.compose")
+    alias(libs.plugins.composeCompiler)
 }
 
 dependencies {

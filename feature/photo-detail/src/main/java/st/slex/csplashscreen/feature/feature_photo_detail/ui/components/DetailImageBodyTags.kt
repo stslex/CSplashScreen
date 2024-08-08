@@ -13,10 +13,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun DetailImageBodyTags(
-    tags: List<String>,
+    tags: ImmutableList<String>,
     onClick: (tag: String) -> Unit
 ) {
     LazyRow(
