@@ -8,7 +8,7 @@ minSdk = "28"
 targetSdk = "34"
 compileSdk = "34"
 versionName = "1.72"
-versionCode = "18"
+versionCode = "19"
 
 ktx = "1.13.1"
 material = "1.12.0"
