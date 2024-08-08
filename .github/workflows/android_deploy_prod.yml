@@ -19,9 +19,7 @@ jobs:
       - name: Update Version
         run: bash ./.github/scripts/update_versions.sh
 
-      - uses: ruby/setup-ruby@v1.152.0
-        with:
-          ruby-version: '2.7.0'
+      - uses: ruby/setup-ruby@v1
 
       - name: Cache Ruby - Bundler
         uses: actions/cache@v2
