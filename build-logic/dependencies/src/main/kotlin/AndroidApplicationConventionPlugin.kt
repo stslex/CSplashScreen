@@ -1,8 +1,7 @@
-import AppExt.currentLibs
 import AppExt.findVersionInt
 import AppExt.findVersionString
+import AppExt.libs
 import com.android.build.api.dsl.ApplicationExtension
-import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -16,7 +15,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            val libs = currentLibs
             with(pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
@@ -35,10 +33,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
                     configureSigning(target)
                 }
-            }
-
-            extensions.configure<KspExtension> {
-                arg("KOIN_CONFIG_CHECK", "true")
             }
         }
     }

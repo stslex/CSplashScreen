@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.room) apply false
+    alias(libs.plugins.vkompose) apply false
+    alias(libs.plugins.composeCompiler) apply false
 }
 
 buildscript {

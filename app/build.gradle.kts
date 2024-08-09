@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.convention.application)
     alias(libs.plugins.convention.application.compose)
+    alias(libs.plugins.composeCompiler)
 }
 
 dependencies {

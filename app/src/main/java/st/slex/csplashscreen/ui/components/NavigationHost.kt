@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.ui.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,14 +13,18 @@ import st.slex.csplashscreen.feature.home.navigation.homeGraph
 import st.slex.csplashscreen.feature.search.navigation.searchPhotosGraph
 import st.slex.csplashscreen.feature.user.navigation.userGraph
 
+@Stable
+class NavHostControllerHolder(val navController: NavHostController)
+
 @Composable
+@Stable
 fun NavigationHost(
-    navController: NavHostController,
+    holder: NavHostControllerHolder,
     modifier: Modifier = Modifier,
     startDestination: AppDestination = AppDestination.HOME
 ) {
     NavHost(
-        navController = navController,
+        navController = holder.navController,
         startDestination = startDestination.navigationRoute
     ) {
         homeGraph(modifier)

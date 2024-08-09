@@ -11,6 +11,8 @@ dependencies {
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
     compileOnly(libs.android.tools.common)
+    compileOnly(libs.vkompose.gradlePlugin)
+    compileOnly(libs.composeCompiler.gradlePlugin)
 }
 
 tasks {
@@ -38,7 +40,7 @@ gradlePlugin {
             id = "csplashscreen.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
-        register("roomLibrary"){
+        register("roomLibrary") {
             id = "csplashscreen.room.library"
             implementationClass = "RoomLibraryConventionPlugin"
         }

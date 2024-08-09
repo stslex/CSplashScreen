@@ -2,6 +2,7 @@ package st.slex.csplashscreen.core.ui.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -38,6 +39,7 @@ object UiExt {
 }
 
 @Composable
+@NonRestartableComposable
 fun <T> SharedFlow<T>.CollectAsEvent(
     minActionState: Lifecycle.State = Lifecycle.State.STARTED,
     action: suspend (T) -> Unit,

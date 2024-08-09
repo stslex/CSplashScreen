@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.paging.compose.LazyPagingItems
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.toImmutableSet
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.feature.user.ui.components.tabs.UserTab
@@ -22,7 +24,7 @@ data class UserPagerState(
     val photosListState: LazyListState,
     val collectionsListState: LazyListState,
     val likesListState: LazyListState,
-    val userTabs: Set<UserTab>,
+    val userTabs: ImmutableSet<UserTab>,
     val pagerState: PagerState,
 ) {
 
@@ -92,7 +94,7 @@ fun rememberUserPagerState(
             photos = photos,
             likes = likes,
             collections = collections,
-            userTabs = userTabs,
+            userTabs = userTabs.toImmutableSet(),
             pagerState = pagerState,
             photosListState = photosListState,
             likesListState = likesListState,

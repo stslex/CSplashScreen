@@ -4,7 +4,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.collection.ui.component.LazyListCollection
 import st.slex.csplashscreen.core.photos.ui.component.LazyListPhotos
 import st.slex.csplashscreen.feature.user.ui.components.tabs.UserTab
@@ -23,10 +25,15 @@ fun UserPager(
     Column(
         modifier = modifier
     ) {
+        val coroutineScope = rememberCoroutineScope()
         UserTabsRow(
             pagerState = userPagerState.pagerState,
             userTabs = userPagerState.userTabs,
-            onClick = userPagerState::scrollToTop
+            onClick = {
+                coroutineScope.launch {
+                    userPagerState.scrollToTop(it)
+                }
+            }
         )
 
         HorizontalPager(

@@ -30,6 +30,7 @@ class FavouriteStore(
     }
 
     private fun actionInit() {
+
         interactor.photos
             .map { pagingData ->
                 pagingData

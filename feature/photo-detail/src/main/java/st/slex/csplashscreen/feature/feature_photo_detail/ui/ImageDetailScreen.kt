@@ -34,13 +34,14 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.collections.immutable.toImmutableList
 import st.slex.csplashscreen.core.ui.components.ImageComponent
 import st.slex.csplashscreen.core.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.core.ui.theme.Dimen
 import st.slex.csplashscreen.feature.feature_photo_detail.R
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
-import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.State
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.components.DetailImageBodyTags
+import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.State
 
 @Composable
 fun ImageDetailScreen(
@@ -114,7 +115,7 @@ private fun ImageDetail(
         )
         if (imageModel?.photo?.tags.orEmpty().isNotEmpty()) {
             DetailImageBodyTags(
-                tags = imageModel?.photo?.tags.orEmpty(),
+                tags = imageModel?.photo?.tags.orEmpty().toImmutableList(),
                 onClick = onTagClick
             )
             Divider(
