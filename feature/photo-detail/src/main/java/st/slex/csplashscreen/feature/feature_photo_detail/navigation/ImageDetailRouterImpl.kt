@@ -1,7 +1,10 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.navigation
 
+import st.slex.csplashscreen.core.navigation.Screen.SearchPhotosScreen
+import st.slex.csplashscreen.core.navigation.Screen.UserScreen
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
+import st.slex.csplashscreen.core.navigation.navigator.NavigatorOptions
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDetailStoreComponent.Navigation
 
 class ImageDetailRouterImpl(
@@ -16,10 +19,15 @@ class ImageDetailRouterImpl(
     }
 
     private fun navToSearch(event: Navigation.Search) {
-        navigator.navigate(Screen.SearchPhotosScreen(event.tag))
+        navigator(
+            Screen(
+                screen = SearchPhotosScreen(event.tag),
+                options = NavigatorOptions(isSingleTop = true)
+            )
+        )
     }
 
     private fun navToProfile(event: Navigation.Profile) {
-        navigator.navigate(Screen.UserScreen(event.username))
+        navigator(Screen(UserScreen(event.username)))
     }
 }

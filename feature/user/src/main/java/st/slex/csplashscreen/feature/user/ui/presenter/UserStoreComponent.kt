@@ -3,7 +3,7 @@ package st.slex.csplashscreen.feature.user.ui.presenter
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
-import st.slex.csplashscreen.core.navigation.AppArguments
+import st.slex.csplashscreen.core.navigation.Screen
 import st.slex.csplashscreen.core.network.model.ui.user.UserModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.StoreComponent
@@ -50,9 +50,7 @@ interface UserStoreComponent {
     @Stable
     sealed interface Action : StoreComponent.Action {
 
-        data class Init(
-            val args: AppArguments.UserScreen
-        ) : Action
+        data class Init(val screen: Screen.UserScreen) : Action
 
         data object OnBackButtonClick : Action
 

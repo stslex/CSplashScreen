@@ -42,28 +42,28 @@ class UserStore(
         action: Action.Init
     ) {
         interactor
-            .getUser(action.args.username)
+            .getUser(action.screen.username)
             .launch { user ->
                 updateState { currentState ->
                     currentState.copy(user = user)
                 }
             }
 
-        getPhotos(action.args.username)
+        getPhotos(action.screen.username)
             .launch { photos ->
                 updateState { currentState ->
                     currentState.copy(photos = photos)
                 }
             }
 
-        getLikes(action.args.username)
+        getLikes(action.screen.username)
             .launch { likes ->
                 updateState { currentState ->
                     currentState.copy(likes = likes)
                 }
             }
 
-        getCollections(action.args.username)
+        getCollections(action.screen.username)
             .launch { collections ->
                 updateState { currentState ->
                     currentState.copy(collections = collections)

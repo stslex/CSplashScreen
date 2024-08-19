@@ -8,9 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.paging.compose.collectAsLazyPagingItems
 import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
-import st.slex.csplashscreen.core.navigation.AppArguments
-import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.ui.base.createScreen
+import st.slex.csplashscreen.core.navigation.Screen
+import st.slex.csplashscreen.core.ui.base.screen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.user.ui.UserScreen
 import st.slex.csplashscreen.feature.user.ui.presenter.UserStore
@@ -25,10 +24,7 @@ import st.slex.csplashscreen.feature.user.ui.state.rememberUserSwipeState
 fun NavGraphBuilder.userGraph(
     modifier: Modifier = Modifier,
 ) {
-    createScreen(AppDestination.USER) { store: UserStore, args ->
-        val arguments = args.firstOrNull()
-            .orEmpty()
-            .let(AppArguments::UserScreen)
+    screen<Screen.UserScreen, UserStore> { screen, store ->
 
         val state by remember { store.state }.collectAsState()
 
@@ -36,16 +32,16 @@ fun NavGraphBuilder.userGraph(
             store.state.mapState { it.photos }
         }.collectAsLazyPagingItems()
 
-        val likes = remember(arguments) {
+        val likes = remember(screen) {
             store.state.mapState { it.likes }
         }.collectAsLazyPagingItems()
 
-        val collections = remember(arguments) {
+        val collections = remember(screen) {
             store.state.mapState { it.collections }
         }.collectAsLazyPagingItems()
 
-        LaunchedEffect(arguments) {
-            store.sendAction(Init(arguments))
+        LaunchedEffect(screen) {
+            store.sendAction(Init(screen))
         }
 
         store.event.CollectAsEvent { event ->

@@ -4,26 +4,26 @@ import androidx.navigation.NavHostController
 import st.slex.csplashscreen.core.core.Logger
 
 class NavigatorImpl(
-    private val navController: NavHostController
+    private val navHostController: NavHostController
 ) : Navigator {
 
-    override val controller: NavHostController
-        get() = navController
-
-    override fun navigate(screen: NavigationTarget) {
-        when (screen) {
-            is NavigationTarget.PopBackStack -> navController.popBackStack()
-            is NavigationTarget.Screen -> navigateScreen(screen)
+    override fun invoke(target: NavigationTarget) {
+        Logger.d("process $target", TAG)
+        when (target) {
+            NavigationTarget.PopBackStack -> popBackStack()
+            is NavigationTarget.Screen -> navigateScreen(target)
         }
     }
 
-    private fun navigateScreen(screen: NavigationTarget.Screen) {
-        val currentRoute = navController.currentDestination?.route ?: return
-        if (currentRoute == screen.screen.navigationRoute) return
+    private fun popBackStack() {
+        navHostController.popBackStack()
+    }
 
+    private fun navigateScreen(target: NavigationTarget.Screen) {
+        val currentRoute = navHostController.currentDestination?.route ?: return
         try {
-            navController.navigate(screen.screenRoute) {
-                if (screen.isSingleTop.not()) return@navigate
+            navHostController.navigate(target.screen) {
+                if (target.options.isSingleTop.not()) return@navigate
 
                 popUpTo(currentRoute) {
                     inclusive = true
@@ -32,7 +32,7 @@ class NavigatorImpl(
                 launchSingleTop = true
             }
         } catch (exception: Exception) {
-            Logger.exception(exception, TAG, "screen: $screen")
+            Logger.e(exception, TAG, "screen: ${target.screen}")
         }
     }
 

@@ -79,7 +79,7 @@ class ImageDetailStore(
             runCatching {
                 interactor.like(action.imageDetail.photo)
             }.onFailure { error ->
-                Logger.exception(error)
+                Logger.e(error)
             }
         }
     }
@@ -98,9 +98,9 @@ class ImageDetailStore(
 
     private fun actionInit(action: Action.Init) {
         updateState { currentState ->
-            currentState.copy(imageId = action.args.imageId)
+            currentState.copy(imageId = action.screen.imageId)
         }
-        interactor.getImageDetail(action.args.imageId)
+        interactor.getImageDetail(action.screen.imageId)
             .launch(
                 onError = { error ->
                     updateState { currentState ->

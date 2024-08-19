@@ -9,34 +9,33 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import st.slex.csplashscreen.R
-import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
+import st.slex.csplashscreen.core.navigation.Screen
 
 enum class BottomAppBarResource(
     val unselectedIcon: ImageVector,
     val selectedIcon: ImageVector,
-    val appDestination: AppDestination,
+    val appDestination: Screen,
     val titleResource: Int,
     val screen: Screen
 ) {
     FAVOURITE(
         unselectedIcon = Icons.Outlined.FavoriteBorder,
         selectedIcon = Icons.Filled.Favorite,
-        appDestination = AppDestination.FAVOURITE,
+        appDestination = Screen.Favourite,
         titleResource = R.string.nav_title_favourite,
         screen = Screen.Favourite
     ),
     HOME(
         unselectedIcon = Icons.Outlined.Home,
         selectedIcon = Icons.Filled.Home,
-        appDestination = AppDestination.HOME,
+        appDestination = Screen.Home,
         titleResource = R.string.nav_title_home,
         screen = Screen.Home
     ),
     SEARCH(
         unselectedIcon = Icons.Outlined.Search,
         selectedIcon = Icons.Filled.Search,
-        appDestination = AppDestination.SEARCH_PHOTOS,
+        appDestination = Screen.SearchPhotosScreen(" "),
         titleResource = R.string.nav_title_search,
         screen = Screen.SearchPhotosScreen(query = " ")
     );
@@ -45,8 +44,6 @@ enum class BottomAppBarResource(
 
     companion object {
 
-        fun isAppbar(
-            appDestination: AppDestination?
-        ): Boolean = entries.any { it.appDestination == appDestination }
+        fun isAppbar(screen: Any?): Boolean = entries.any { it.appDestination == screen }
     }
 }

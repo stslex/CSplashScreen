@@ -5,7 +5,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import st.slex.csplashscreen.core.navigation.AppDestination
+import st.slex.csplashscreen.core.navigation.Screen
 import st.slex.csplashscreen.feature.collection.navigation.singleCollectionGraph
 import st.slex.csplashscreen.feature.favourite.navigation.favouriteGraph
 import st.slex.csplashscreen.feature.feature_photo_detail.navigation.imageDetailGraph
@@ -21,11 +21,11 @@ class NavHostControllerHolder(val navController: NavHostController)
 fun NavigationHost(
     holder: NavHostControllerHolder,
     modifier: Modifier = Modifier,
-    startDestination: AppDestination = AppDestination.HOME
+    startDestination: Screen = Screen.Home
 ) {
     NavHost(
         navController = holder.navController,
-        startDestination = startDestination.navigationRoute
+        startDestination = startDestination
     ) {
         homeGraph(modifier)
         userGraph(modifier)

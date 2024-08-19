@@ -2,7 +2,7 @@ package st.slex.csplashscreen.feature.search.ui.presenter
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
-import st.slex.csplashscreen.core.navigation.AppArguments
+import st.slex.csplashscreen.core.navigation.Screen
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.core.ui.mvi.StoreComponent
 import st.slex.csplashscreen.feature.search.ui.model.SearchItem
@@ -45,31 +45,21 @@ interface SearchStoreComponent {
     sealed interface Action : StoreComponent.Action {
 
         @Stable
-        data class Init(
-            val args: AppArguments.SearchPhotosScreen
-        ) : Action
+        data class Init(val screen: Screen.SearchPhotosScreen) : Action
 
         @Stable
         data object ClearHistory : Action
 
         @Stable
-        data class OnImageClick(
-            val uuid: String
-        ) : Action
+        data class OnImageClick(val uuid: String) : Action
 
         @Stable
-        data class OnProfileClick(
-            val username: String
-        ) : Action
+        data class OnProfileClick(val username: String) : Action
 
         @Stable
-        data class OnQueryInput(
-            val query: String
-        ) : Action
+        data class OnQueryInput(val query: String) : Action
 
         @Stable
-        data class OnSearchHistoryClick(
-            val query: String
-        ) : Action
+        data class OnSearchHistoryClick(val query: String) : Action
     }
 }

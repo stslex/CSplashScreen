@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget
+import st.slex.csplashscreen.core.core.Logger
+import st.slex.csplashscreen.core.navigation.Screen
 import st.slex.csplashscreen.ui.components.NavHostControllerHolder
 import st.slex.csplashscreen.ui.components.NavigationHost
 import st.slex.csplashscreen.ui.components.bottom_appbar.BottomAppBarResource
@@ -34,18 +34,22 @@ import st.slex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
 @Stable
 fun InitialApp(
     navControllerHolder: NavHostControllerHolder,
-    onBottomAppBarClick: (NavigationTarget.Screen) -> Unit,
+    onBottomAppBarClick: (Screen) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val systemUiController = rememberSystemUiController()
     val isDarkTheme = isSystemInDarkTheme()
 
     var currentDestination by remember {
-        mutableStateOf<AppDestination?>(AppDestination.HOME)
+        mutableStateOf<Screen?>(Screen.Home)
     }
 
     navControllerHolder.navController.addOnDestinationChangedListener { _, destination, _ ->
-        currentDestination = AppDestination.findByRoute(destination.route)
+        Logger.d("Destination: ${destination.route}")
+        // todo need reflection to get Screen by route
+        currentDestination = destination.route?.let {
+            Screen.getByRoute(it)
+        }
     }
 
     DisposableEffect(systemUiController, isDarkTheme) {

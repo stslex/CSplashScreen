@@ -13,9 +13,8 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavGraphBuilder
-import st.slex.csplashscreen.core.navigation.AppArguments
-import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.ui.base.createScreen
+import st.slex.csplashscreen.core.navigation.Screen
+import st.slex.csplashscreen.core.ui.base.screen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.ImageDetailScreen
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.components.dialogs.DownloadImageDialog
@@ -27,13 +26,10 @@ import st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter.ImageDeta
 fun NavGraphBuilder.imageDetailGraph(
     modifier: Modifier = Modifier,
 ) {
-    createScreen(AppDestination.IMAGE_DETAIL) { store: ImageDetailStore, args ->
-        val arguments = args.firstOrNull()
-            .orEmpty()
-            .let(AppArguments::ImageDetailScreen)
+    screen<Screen.ImageDetailScreen, ImageDetailStore> { screen, store ->
 
-        LaunchedEffect(arguments) {
-            store.sendAction(Action.Init(arguments))
+        LaunchedEffect(screen) {
+            store.sendAction(Action.Init(screen))
         }
 
         val state by remember { store.state }.collectAsState()
