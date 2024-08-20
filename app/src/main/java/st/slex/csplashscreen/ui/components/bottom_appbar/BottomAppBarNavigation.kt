@@ -26,7 +26,7 @@ fun MainBottomAppBar(
         BottomAppBarResource
             .entries
             .forEach { item ->
-                val isSelected = currentDestination == item.appDestination
+                val isSelected = currentDestination == item.screen
                 BottomAppBarItem(
                     item = item,
                     isSelected = isSelected,

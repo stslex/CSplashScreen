@@ -27,6 +27,7 @@ import st.slex.csplashscreen.core.navigation.Screen
 import st.slex.csplashscreen.ui.components.NavHostControllerHolder
 import st.slex.csplashscreen.ui.components.NavigationHost
 import st.slex.csplashscreen.ui.components.bottom_appbar.BottomAppBarResource
+import st.slex.csplashscreen.ui.components.bottom_appbar.BottomAppBarResource.Companion.getByRoute
 import st.slex.csplashscreen.ui.components.bottom_appbar.MainBottomAppBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -45,11 +46,9 @@ fun InitialApp(
     }
 
     navControllerHolder.navController.addOnDestinationChangedListener { _, destination, _ ->
-        Logger.d("Destination: ${destination.route}")
-        // todo need reflection to get Screen by route
-        currentDestination = destination.route?.let {
-            Screen.getByRoute(it)
-        }
+        Logger.d("current route: ${destination.route}")
+        currentDestination = destination.route?.let(::getByRoute)
+        Logger.d("currentDestination: ${currentDestination}")
     }
 
     DisposableEffect(systemUiController, isDarkTheme) {

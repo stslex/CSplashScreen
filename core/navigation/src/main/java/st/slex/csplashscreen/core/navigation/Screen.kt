@@ -29,14 +29,6 @@ sealed interface Screen {
     @Serializable
     data object Favourite : Screen
 
-
-    companion object {
-        fun getByRoute(route: String): Screen? = this::class.sealedSubclasses
-            .firstOrNull { screenClass ->
-                screenClass.simpleName.orEmpty()
-                    .contains(route, ignoreCase = true)
-            }?.objectInstance as Screen?
-    }
 }
 
 inline fun <reified S : Screen> NavGraphBuilder.navScreen(
