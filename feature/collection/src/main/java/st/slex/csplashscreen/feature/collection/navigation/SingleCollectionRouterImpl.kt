@@ -1,5 +1,7 @@
 package st.slex.csplashscreen.feature.collection.navigation
 
+import st.slex.csplashscreen.core.navigation.Screen.ImageDetailScreen
+import st.slex.csplashscreen.core.navigation.Screen.UserScreen
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
 import st.slex.csplashscreen.feature.collection.ui.presenter.SingleCollectionStoreComponent.Navigation
@@ -16,10 +18,10 @@ class SingleCollectionRouterImpl(
     }
 
     private fun navToImage(event: Navigation.ImageDetail) {
-        navigator.navigate(Screen.ImageDetailScreen(event.uuid))
+        navigator(Screen(ImageDetailScreen(event.uuid)))
     }
 
     private fun navToProfile(event: Navigation.Profile) {
-        navigator.navigate(Screen.UserScreen(event.username))
+        navigator(Screen(UserScreen(event.username)))
     }
 }

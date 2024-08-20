@@ -32,7 +32,9 @@ class MainActivity : ComponentActivity() {
                        Need Research to find more efficient way */
                     navControllerHolder = navHostControllerHolder,
                     onBottomAppBarClick = remember {
-                        { viewModel.navigate(it) }
+                        { screen ->
+                            viewModel.navigate(screen)
+                        }
                     }
                 )
             }

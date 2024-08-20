@@ -1,5 +1,8 @@
 package st.slex.csplashscreen.feature.user.navigation
 
+import st.slex.csplashscreen.core.navigation.Screen.CollectionScreen
+import st.slex.csplashscreen.core.navigation.Screen.ImageDetailScreen
+import st.slex.csplashscreen.core.navigation.Screen.UserScreen
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.PopBackStack
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
@@ -19,18 +22,18 @@ class UserRouterImpl(
     }
 
     private fun popBack() {
-        navigator.navigate(PopBackStack)
+        navigator(PopBackStack)
     }
 
     private fun navToUser(event: Navigation.User) {
-        navigator.navigate(Screen.UserScreen(event.username))
+        navigator(Screen(UserScreen(event.username)))
     }
 
     private fun navToImage(event: Navigation.Image) {
-        navigator.navigate(Screen.ImageDetailScreen(event.uuid))
+        navigator(Screen(ImageDetailScreen(event.uuid)))
     }
 
     private fun navToCollection(event: Navigation.Collection) {
-        navigator.navigate(Screen.CollectionScreen(event.uuid))
+        navigator(Screen(CollectionScreen(event.uuid)))
     }
 }

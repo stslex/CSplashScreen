@@ -91,7 +91,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
             .onSuccess(onSuccess)
             .onFailure { error ->
                 onFailure(error)
-                Logger.exception(error)
+                Logger.e(error)
             }
     }
 
@@ -102,7 +102,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
         .flowOn(appDispatcher.default)
         .catch { error ->
             onError(error)
-            Logger.exception(error)
+            Logger.e(error)
         }
         .onEach(each)
         .launchIn(viewModelScope)

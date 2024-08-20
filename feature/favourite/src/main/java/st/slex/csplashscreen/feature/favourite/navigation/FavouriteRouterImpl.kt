@@ -1,7 +1,11 @@
 package st.slex.csplashscreen.feature.favourite.navigation
 
+import st.slex.csplashscreen.core.navigation.Screen.Home
+import st.slex.csplashscreen.core.navigation.Screen.ImageDetailScreen
+import st.slex.csplashscreen.core.navigation.Screen.UserScreen
 import st.slex.csplashscreen.core.navigation.navigator.NavigationTarget.Screen
 import st.slex.csplashscreen.core.navigation.navigator.Navigator
+import st.slex.csplashscreen.core.navigation.navigator.NavigatorOptions
 import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStoreComponent.Navigation
 
 class FavouriteRouterImpl(
@@ -17,14 +21,14 @@ class FavouriteRouterImpl(
     }
 
     private fun navToUser(event: Navigation.User) {
-        navigator.navigate(Screen.UserScreen(event.username))
+        navigator(Screen(UserScreen(event.username)))
     }
 
     private fun navToImage(event: Navigation.Image) {
-        navigator.navigate(Screen.ImageDetailScreen(event.uuid))
+        navigator(Screen(ImageDetailScreen(event.uuid)))
     }
 
     private fun navHome() {
-        navigator.navigate(Screen.Home)
+        navigator(Screen(Home, NavigatorOptions(isSingleTop = true)))
     }
 }

@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.paging.compose.collectAsLazyPagingItems
 import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
-import st.slex.csplashscreen.core.navigation.AppDestination
-import st.slex.csplashscreen.core.ui.base.createScreen
+import st.slex.csplashscreen.core.navigation.Screen
+import st.slex.csplashscreen.core.ui.base.screen
 import st.slex.csplashscreen.core.ui.utils.CollectAsEvent
 import st.slex.csplashscreen.feature.favourite.ui.FavouriteScreen
 import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStore
@@ -16,9 +16,8 @@ import st.slex.csplashscreen.feature.favourite.ui.presenter.FavouriteStoreCompon
 fun NavGraphBuilder.favouriteGraph(
     modifier: Modifier = Modifier,
 ) {
-    createScreen(
-        appDestination = AppDestination.FAVOURITE,
-    ) { store: FavouriteStore, _ ->
+
+    screen<Screen.Favourite, FavouriteStore> { _, store ->
 
         LaunchedEffect(Unit) {
             store.sendAction(Action.Init)

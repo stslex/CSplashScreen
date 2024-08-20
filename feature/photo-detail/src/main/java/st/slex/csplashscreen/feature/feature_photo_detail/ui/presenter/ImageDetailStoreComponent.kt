@@ -1,7 +1,7 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.ui.presenter
 
 import androidx.compose.runtime.Stable
-import st.slex.csplashscreen.core.navigation.AppArguments
+import st.slex.csplashscreen.core.navigation.Screen
 import st.slex.csplashscreen.core.ui.mvi.StoreComponent
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
 
@@ -73,37 +73,25 @@ interface ImageDetailStoreComponent : StoreComponent {
     sealed interface Action : StoreComponent.Action {
 
         @Stable
-        data class Init(
-            val args: AppArguments.ImageDetailScreen
-        ) : Action
+        data class Init(val screen: Screen.ImageDetailScreen) : Action
 
         @Stable
-        data class SetWallpaperClick(
-            val url: String
-        ) : Action
+        data class SetWallpaperClick(val url: String) : Action
 
         @Stable
-        data class OnTagClick(
-            val tag: String
-        ) : Action
+        data class OnTagClick(val tag: String) : Action
 
         @Stable
-        data class OnProfileClick(
-            val username: String
-        ) : Action
+        data class OnProfileClick(val username: String) : Action
 
         @Stable
-        data class OnLikeClicked(
-            val imageDetail: ImageDetail
-        ) : Action
+        data class OnLikeClicked(val imageDetail: ImageDetail) : Action
 
         @Stable
         data object DownloadImageButtonClick : Action
 
         @Stable
-        data class DownloadImageChooseClick(
-            val type: DownloadImageType
-        ) : Action
+        data class DownloadImageChooseClick(val type: DownloadImageType) : Action
 
         @Stable
         data object CloseDialog : Action

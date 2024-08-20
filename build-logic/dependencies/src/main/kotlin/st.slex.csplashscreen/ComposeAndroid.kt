@@ -26,6 +26,7 @@ internal fun Project.configureAndroidCompose(
         androidTestImplementation("androidx-compose-ui-test-junit4")
         implementationBundle("accompanist", "compose", "lifecycle")
         implementation("appcompat", "material", "koin-androidx-compose")
+        debugImplementation("androidx-compose-manifest")
     }
 
     extensions.configure<VkomposeExtension>(action = ::configureVkompose)

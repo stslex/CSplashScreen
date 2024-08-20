@@ -59,7 +59,7 @@ class SearchStore(
 
     private fun actionInit(action: Action.Init) {
         updateState { currentState ->
-            currentState.copy(query = action.args.checkedQuery)
+            currentState.copy(query = action.screen.query.trimEnd())
         }
         searchHistory.launch { data ->
             updateState { currentState ->
@@ -110,7 +110,7 @@ class SearchStore(
             runCatching {
                 interactor.clearHistory()
             }.onFailure { error ->
-                Logger.exception(error)
+                Logger.e(error)
             }
         }
     }
