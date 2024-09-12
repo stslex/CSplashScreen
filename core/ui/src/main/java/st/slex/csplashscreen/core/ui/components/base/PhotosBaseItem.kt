@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -47,9 +46,10 @@ fun PhotosBaseItem(
             .clip(RoundedCornerShape(Dimen.medium))
             .clickable(
                 onClick = onContainerClick,
-                role = Role.Button,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple()
+//                    todo check this if needed
+//                role = Role.Button,
+//                interactionSource = remember { MutableInteractionSource() },
+//                indication = rememberRipple()
             ),
     ) {
         ImageComponent(
@@ -63,9 +63,10 @@ fun PhotosBaseItem(
                 .fillMaxWidth()
                 .clickable(
                     onClick = onHeaderClick,
-                    role = Role.Button,
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple()
+//                    todo check this if needed
+//                    role = Role.Button,
+//                    interactionSource = remember { MutableInteractionSource() },
+//                    indication = rememberRipple()
                 )
                 .background(
                     color = MaterialTheme.colorScheme.background.copy(
