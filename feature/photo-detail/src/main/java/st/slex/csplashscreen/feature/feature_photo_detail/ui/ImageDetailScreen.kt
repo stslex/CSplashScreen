@@ -1,8 +1,12 @@
 package st.slex.csplashscreen.feature.feature_photo_detail.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -38,6 +42,8 @@ import kotlinx.collections.immutable.toImmutableList
 import st.slex.csplashscreen.core.ui.components.ImageComponent
 import st.slex.csplashscreen.core.ui.components.UserImageHeadWithUserName
 import st.slex.csplashscreen.core.ui.theme.Dimen
+import st.slex.csplashscreen.core.ui.theme.rememberNavAnimatedVisibilityScope
+import st.slex.csplashscreen.core.ui.theme.rememberSharedTransitionScope
 import st.slex.csplashscreen.feature.feature_photo_detail.R
 import st.slex.csplashscreen.feature.feature_photo_detail.domain.model.ImageDetail
 import st.slex.csplashscreen.feature.feature_photo_detail.ui.components.DetailImageBodyTags
@@ -181,6 +187,7 @@ private fun UserDetailImageHead(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun BindTopImageHead(
     url: String,
@@ -203,16 +210,26 @@ private fun BindTopImageHead(
         label = "detailImageHeight"
     )
 
-    ImageComponent(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height)
-            .clipToBounds()
-            .background(MaterialTheme.colorScheme.background)
-            .clickable {
-                isExpanded = isExpanded.not()
-            },
-        url = url,
-        contentScale = ContentScale.FillWidth
-    )
+    val sharedTransitionScope = rememberSharedTransitionScope()
+    with(sharedTransitionScope) {
+        ImageComponent(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height)
+                .clipToBounds()
+                .background(MaterialTheme.colorScheme.background)
+                .clickable {
+                    isExpanded = isExpanded.not()
+                }
+                .sharedBounds(
+                    sharedContentState = rememberSharedContentState(key = url),
+                    animatedVisibilityScope = rememberNavAnimatedVisibilityScope(),
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                ),
+            url = url,
+            contentScale = ContentScale.FillWidth
+        )
+    }
 }

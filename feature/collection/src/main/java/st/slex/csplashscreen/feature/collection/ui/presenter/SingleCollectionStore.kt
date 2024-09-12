@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import st.slex.csplashscreen.core.core.Logger
 import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.core.coroutine.CoroutineExt.mapState
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
@@ -33,6 +34,7 @@ class SingleCollectionStore(
 ) {
 
     override fun sendAction(action: Action) {
+        Logger.d("action: $action", TAG)
         when (action) {
             is Action.Init -> actionInit(action)
             is Action.OnProfileClick -> actionProfileClick(action)
@@ -46,7 +48,7 @@ class SingleCollectionStore(
                 collectionId = action.collectionId
             )
         }
-        allPhotos.launch { pagingData ->
+        getPhotos(action.collectionId).launch { pagingData ->
             updateState { currentState ->
                 currentState.copy(
                     photos = pagingData
@@ -54,6 +56,18 @@ class SingleCollectionStore(
             }
         }
     }
+
+    private fun getPhotos(
+        collectionId: String
+    ): StateFlow<PagingData<PhotoModel>> = Pager(pagingConfig) {
+        PagingSource { page, pageSize ->
+            interactor.getPhotos(
+                uuid = collectionId,
+                page = page,
+                pageSize = pageSize
+            ).map { it.toPresentation() }
+        }
+    }.flow.state()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val allPhotos: StateFlow<PagingData<PhotoModel>>
@@ -90,5 +104,6 @@ class SingleCollectionStore(
             pageSize = 5,
             enablePlaceholders = false
         )
+        private const val TAG = "SingleCollectionStore"
     }
 }

@@ -1,6 +1,5 @@
 package st.slex.csplashscreen.feature.home.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
@@ -17,7 +16,6 @@ import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
 import st.slex.csplashscreen.feature.home.ui.component.tabs.MainScreenTabRow
 import st.slex.csplashscreen.feature.home.ui.component.tabs.MainScreenTabs
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
     navToProfile: (username: String) -> Unit,
