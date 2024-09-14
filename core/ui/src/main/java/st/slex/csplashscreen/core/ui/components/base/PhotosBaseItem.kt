@@ -1,8 +1,11 @@
 package st.slex.csplashscreen.core.ui.components.base
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
@@ -12,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -21,11 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import st.slex.csplashscreen.core.ui.components.ImageComponent
 import st.slex.csplashscreen.core.ui.theme.Dimen
+import st.slex.csplashscreen.core.ui.theme.rememberNavAnimatedVisibilityScope
+import st.slex.csplashscreen.core.ui.theme.rememberSharedTransitionScope
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun PhotosBaseItem(
     onContainerClick: () -> Unit,
@@ -39,44 +43,58 @@ fun PhotosBaseItem(
     val itemHeight = remember {
         configuration.screenHeightDp.dp / 3
     }
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(itemHeight)
-            .padding(bottom = Dimen.medium)
-            .clip(RoundedCornerShape(Dimen.medium))
-            .clickable(
-                onClick = onContainerClick,
-                role = Role.Button,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple()
-            ),
-    ) {
-        ImageComponent(
-            modifier = Modifier.fillMaxSize(),
-            url = url,
-            contentScale = ContentScale.Crop
-        )
-        Row(
+    val sharedTransitionScope = rememberSharedTransitionScope()
+    with(sharedTransitionScope) {
+        Box(
             modifier = Modifier
-                .align(Alignment.TopStart)
+                .sharedBounds(
+                    sharedContentState = rememberSharedContentState(key = url),
+                    animatedVisibilityScope = rememberNavAnimatedVisibilityScope(),
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                )
+                .then(modifier)
                 .fillMaxWidth()
+                .height(itemHeight)
+                .padding(bottom = Dimen.medium)
+                .clip(RoundedCornerShape(Dimen.medium))
                 .clickable(
-                    onClick = onHeaderClick,
-                    role = Role.Button,
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple()
-                )
-                .background(
-                    color = MaterialTheme.colorScheme.background.copy(
-                        alpha = 0.7f
-                    )
-                )
-                .padding(Dimen.small),
-            verticalAlignment = Alignment.CenterVertically
+                    onClick = onContainerClick,
+//                    todo check this if needed
+//                role = Role.Button,
+//                interactionSource = remember { MutableInteractionSource() },
+//                indication = rememberRipple()
+                ),
         ) {
-            headerContent()
+            ImageComponent(
+                modifier = Modifier
+                    .fillMaxSize(),
+                url = url,
+                contentScale = ContentScale.Crop
+            )
+            Row(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .fillMaxWidth()
+                    .clickable(
+                        onClick = onHeaderClick,
+//                    todo check this if needed
+//                    role = Role.Button,
+//                    interactionSource = remember { MutableInteractionSource() },
+//                    indication = rememberRipple()
+                    )
+                    .background(
+                        color = MaterialTheme.colorScheme.background.copy(
+                            alpha = 0.7f
+                        )
+                    )
+                    .padding(Dimen.small),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                headerContent()
+            }
+            content()
         }
-        content()
     }
 }

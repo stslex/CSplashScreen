@@ -28,12 +28,12 @@ class HomeStore(
     initialState = State.INIT
 ) {
 
-    private val collections: StateFlow<PagingData<CollectionModel>>
-        get() = Pager(config = config) { PagingSource(interactor::getAllCollections) }
+    private val collections: StateFlow<PagingData<CollectionModel>> =
+        Pager(config = config) { PagingSource(interactor::getAllCollections) }
             .state { collection -> collection.toPresentation() }
 
-    private val photos: StateFlow<PagingData<PhotoModel>>
-        get() = Pager(config = config) { PagingSource(interactor::getAllPhotos) }
+    private val photos: StateFlow<PagingData<PhotoModel>> =
+        Pager(config = config) { PagingSource(interactor::getAllPhotos) }
             .state { image -> image.toPresentation() }
 
     override fun sendAction(action: Action) {

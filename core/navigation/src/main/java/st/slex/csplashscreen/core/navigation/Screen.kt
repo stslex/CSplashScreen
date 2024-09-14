@@ -1,5 +1,6 @@
 package st.slex.csplashscreen.core.navigation
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
@@ -32,7 +33,7 @@ sealed interface Screen {
 }
 
 inline fun <reified S : Screen> NavGraphBuilder.navScreen(
-    noinline content: @Composable (S) -> Unit
+    noinline content: @Composable AnimatedContentScope.(S) -> Unit
 ) {
     composable<S> { backStackEntry ->
         content(backStackEntry.toRoute())
