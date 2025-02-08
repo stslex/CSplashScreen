@@ -11,5 +11,3 @@ dependencies {
 
     implementation(libs.androidx.paging.runtime)
 }
-
-android.namespace = "st.slex.csplashscreen.core.ui"

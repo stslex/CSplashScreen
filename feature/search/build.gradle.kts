@@ -1,6 +1,6 @@
 plugins {
-    id("csplashscreen.android.library")
-    id("csplashscreen.android.library.compose")
+    alias(libs.plugins.convention.library)
+    alias(libs.plugins.convention.library.compose)
     alias(libs.plugins.ksp)
 }
 
@@ -14,5 +14,3 @@ dependencies {
 
     implementation(libs.androidx.paging.runtime)
 }
-
-android.namespace = "st.slex.csplashscreen.feature.search"

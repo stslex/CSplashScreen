@@ -10,8 +10,8 @@ import st.slex.csplashscreen.core.network.di.moduleCoreNetwork
 import st.slex.csplashscreen.core.photos.di.moduleCorePhotos
 import st.slex.csplashscreen.feature.collection.di.moduleFeatureSingleCollection
 import st.slex.csplashscreen.feature.favourite.di.moduleFeatureFavourite
-import st.slex.csplashscreen.feature.feature_photo_detail.di.moduleFeatureImageDetail
 import st.slex.csplashscreen.feature.home.di.moduleFeatureHome
+import st.slex.csplashscreen.feature.photo_detail.di.moduleFeatureImageDetail
 import st.slex.csplashscreen.feature.search.di.moduleFeatureSearchPhotos
 import st.slex.csplashscreen.feature.user.di.moduleFeatureUser
 import st.slex.csplashscreen.ui.InitialAppViewModel
@@ -33,5 +33,6 @@ val AppModules = listOf(
     moduleFeatureHome,
     moduleFeatureImageDetail,
     moduleFeatureSearchPhotos,
-    moduleFeatureUser
+    moduleFeatureUser,
+    moduleCoreNavigation
 )

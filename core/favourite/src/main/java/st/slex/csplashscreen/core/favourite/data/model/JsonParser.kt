@@ -1,10 +1,18 @@
 package st.slex.csplashscreen.core.favourite.data.model
 
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 object JsonParser {
 
-    inline fun <reified T : Any> String.parse(): T = Gson().fromJson(this, T::class.java)
+    val jsonParser by lazy {
+        Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+        }
+    }
 
-    fun <T : Any> T.toJson(): String = Gson().toJson(this)
+    inline fun <reified T : Any> String.parse(): T = jsonParser.decodeFromString(this)
+
+    inline fun <reified T : Any> T.toJson(): String = jsonParser.encodeToString(this)
 }

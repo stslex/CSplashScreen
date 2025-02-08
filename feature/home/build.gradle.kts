@@ -1,6 +1,6 @@
 plugins {
-    id("csplashscreen.android.library")
-    id("csplashscreen.android.library.compose")
+    alias(libs.plugins.convention.library)
+    alias(libs.plugins.convention.library.compose)
 }
 
 dependencies {
@@ -11,5 +11,3 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:photos"))
 }
-
-android.namespace = "st.slex.csplashscreen.feature.home"

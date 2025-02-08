@@ -12,7 +12,7 @@ import st.slex.csplashscreen.core.navigation.Screen
 import st.slex.csplashscreen.core.ui.theme.LocalSharedTransitionScope
 import st.slex.csplashscreen.feature.collection.navigation.singleCollectionGraph
 import st.slex.csplashscreen.feature.favourite.navigation.favouriteGraph
-import st.slex.csplashscreen.feature.feature_photo_detail.navigation.imageDetailGraph
+import st.slex.csplashscreen.feature.photo_detail.navigation.imageDetailGraph
 import st.slex.csplashscreen.feature.home.navigation.homeGraph
 import st.slex.csplashscreen.feature.search.navigation.searchPhotosGraph
 import st.slex.csplashscreen.feature.user.navigation.userGraph
