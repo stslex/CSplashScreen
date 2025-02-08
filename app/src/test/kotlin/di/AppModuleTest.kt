@@ -34,7 +34,6 @@ class AppModuleTest : KoinTest {
     @Test
     fun `check koin configuration`() {
         val navController = Mockito.mock(NavHostController::class.java)
-
         koinApplication {
             modules(
                 listOf(moduleCoreNavigation(navController)) +

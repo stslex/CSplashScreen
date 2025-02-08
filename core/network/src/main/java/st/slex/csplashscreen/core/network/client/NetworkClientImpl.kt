@@ -16,7 +16,6 @@ import io.ktor.client.request.headers
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import st.slex.csplashscreen.core.core.coroutine.AppDispatcher
 import st.slex.csplashscreen.core.network.BuildConfig
@@ -39,8 +38,7 @@ class NetworkClientImpl(
         setupDefaultRequest()
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
-    fun HttpClientConfig<AndroidEngineConfig>.setupNegotiation() {
+    private fun HttpClientConfig<AndroidEngineConfig>.setupNegotiation() {
         install(ContentNegotiation) {
             json(
                 Json {
@@ -53,7 +51,7 @@ class NetworkClientImpl(
         }
     }
 
-    fun HttpClientConfig<AndroidEngineConfig>.setupDefaultRequest() {
+    private fun HttpClientConfig<AndroidEngineConfig>.setupDefaultRequest() {
         defaultRequest {
             url {
                 host = HOST_URL

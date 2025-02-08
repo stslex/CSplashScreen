@@ -1,6 +1,6 @@
 package st.slex.csplashscreen.di
 
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import st.slex.csplashscreen.core.collection.di.moduleCoreCollection
 import st.slex.csplashscreen.core.core.di.moduleCore

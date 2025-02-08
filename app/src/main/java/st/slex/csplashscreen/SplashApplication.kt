@@ -16,10 +16,10 @@ class SplashApplication : Application() {
 
     private fun initKoin() {
         startKoin {
+            androidContext(this@SplashApplication)
             androidLogger(
                 level = if (BuildConfig.DEBUG) Level.ERROR else Level.NONE
             )
-            androidContext(this@SplashApplication)
             modules(AppModules)
         }
     }

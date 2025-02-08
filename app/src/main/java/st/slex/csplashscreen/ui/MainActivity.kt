@@ -8,8 +8,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.getKoin
 import st.slex.csplashscreen.core.navigation.di.moduleCoreNavigation
 import st.slex.csplashscreen.core.ui.theme.AppTheme
 import st.slex.csplashscreen.ui.components.NavHostControllerHolder
