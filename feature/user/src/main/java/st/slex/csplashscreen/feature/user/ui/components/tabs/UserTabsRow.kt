@@ -1,11 +1,10 @@
 package st.slex.csplashscreen.feature.user.ui.components.tabs
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -15,7 +14,6 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.launch
 import st.slex.csplashscreen.core.ui.utils.tabIndicatorOffset
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UserTabsRow(
     pagerState: PagerState,
@@ -31,11 +29,7 @@ fun UserTabsRow(
             tabPositions
                 .getOrNull(pagerState.currentPage)
                 ?.let { tabPosition ->
-                    SecondaryIndicator(
-                        Modifier.tabIndicatorOffset(
-                            currentTabPosition = tabPosition,
-                        ),
-                    )
+                    TabRowDefaults.Indicator(Modifier.tabIndicatorOffset(currentTabPosition = tabPosition))
                 }
         },
         tabs = {

@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -114,13 +114,13 @@ private fun ImageDetail(
             onLikeClicked = { imageModel?.let(onLikeClicked) },
             isLiked = imageModel?.isLiked ?: false
         )
-        HorizontalDivider(Modifier.padding(vertical = Dimen.medium))
+        Divider(modifier = Modifier.padding(vertical = Dimen.medium))
         if (imageModel?.photo?.tags.orEmpty().isNotEmpty()) {
             DetailImageBodyTags(
                 tags = imageModel?.photo?.tags.orEmpty().toImmutableList(),
                 onClick = onTagClick
             )
-            HorizontalDivider(Modifier.padding(vertical = Dimen.medium))
+            Divider(modifier = Modifier.padding(vertical = Dimen.medium))
         }
     }
 }
