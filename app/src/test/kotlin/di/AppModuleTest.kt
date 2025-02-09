@@ -1,7 +1,6 @@
 package di
 
 import android.content.Context
-import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -17,7 +16,6 @@ import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.koin.test.mock.MockProviderRule
 import org.mockito.Mockito
-import st.slex.csplashscreen.core.navigation.di.moduleCoreNavigation
 import st.slex.csplashscreen.di.AppModules
 
 class AppModuleTest : KoinTest {
@@ -33,13 +31,8 @@ class AppModuleTest : KoinTest {
 
     @Test
     fun `check koin configuration`() {
-        val navController = Mockito.mock(NavHostController::class.java)
-
         koinApplication {
-            modules(
-                listOf(moduleCoreNavigation(navController)) +
-                        AppModules
-            )
+            modules(AppModules)
             checkModules {
                 withInstance<Context>()
             }

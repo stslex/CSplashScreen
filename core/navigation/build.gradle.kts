@@ -9,5 +9,3 @@ dependencies {
     api(libs.androidx.compose.navigation)
     implementation(libs.kotlinx.serialization.json)
 }
-
-android.namespace = "st.slex.csplashscreen.core.navigation"

@@ -1,5 +1,6 @@
 package st.slex.csplashscreen
 
+import AppExt.APP_PREFIX
 import AppExt.androidTestImplementationBundle
 import AppExt.coreLibraryDesugaring
 import AppExt.findVersionInt
@@ -8,8 +9,10 @@ import AppExt.implementationBundle
 import AppExt.ksp
 import AppExt.libs
 import AppExt.testImplementationBundle
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DefaultConfig
+import com.android.build.api.dsl.LibraryExtension
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.JavaVersion
@@ -22,37 +25,50 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.properties.Properties
 
+internal fun Project.configureKotlinAndroid(
+    commonExtension: ApplicationExtension,
+): Unit = configureKotlinAndroid(commonExtension, true)
+
+internal fun Project.configureKotlinAndroid(
+    commonExtension: LibraryExtension,
+): Unit = configureKotlinAndroid(commonExtension, false)
+
 /**
  * Configure base Kotlin with Android options
  */
-internal fun Project.configureKotlinAndroid(
+private fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
-) {
-    val libs = libs
+    isApp: Boolean
+): Unit = with(commonExtension) {
 
-    commonExtension.apply {
+    compileSdk = libs.findVersionInt("compileSdk")
 
-        compileSdk = libs.findVersionInt("compileSdk")
+    //get module name from module path
+    val dropValue = if (isApp) 2 else 1
+    val moduleName = path.split(":")
+        .drop(dropValue)
+        .joinToString(".")
+        .replace("-", "_")
+    namespace = if (moduleName.isNotEmpty()) "$APP_PREFIX.$moduleName" else APP_PREFIX
 
-        defaultConfig {
-            minSdk = libs.findVersionInt("minSdk")
-            buildFeatures.buildConfig = true
+    defaultConfig {
+        minSdk = libs.findVersionInt("minSdk")
+        buildFeatures.buildConfig = true
 
-            gradleLocalProperties(
-                projectRootDir = project.rootProject.projectDir,
-                providers = providers
-            ).let { properties ->
-                setLocalProperties(properties)
-            }
+        gradleLocalProperties(
+            projectRootDir = project.rootProject.projectDir,
+            providers = providers
+        ).let { properties ->
+            setLocalProperties(properties)
         }
+    }
 
-        compileOptions {
-            // Up to Java 11 APIs are available through desugaring
-            // https://developer.android.com/studio/write/java11-minimal-support-table
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
-            isCoreLibraryDesugaringEnabled = true
-        }
+    compileOptions {
+        // Up to Java 11 APIs are available through desugaring
+        // https://developer.android.com/studio/write/java11-minimal-support-table
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     configureKotlin()

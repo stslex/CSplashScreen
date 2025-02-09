@@ -1,8 +1,8 @@
 package st.slex.csplashscreen.feature.collection.di
 
-import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import st.slex.csplashscreen.feature.collection.data.SingleCollectionRepository
 import st.slex.csplashscreen.feature.collection.data.SingleCollectionRepositoryImpl

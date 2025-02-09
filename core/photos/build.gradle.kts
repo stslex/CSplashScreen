@@ -1,6 +1,6 @@
 plugins {
-    id("csplashscreen.android.library")
-    id("csplashscreen.android.library.compose")
+    alias(libs.plugins.convention.library)
+    alias(libs.plugins.convention.library.compose)
 }
 
 dependencies {
@@ -9,8 +9,4 @@ dependencies {
     implementation(project(":core:ui"))
 
     implementation(libs.androidx.paging.runtime)
-}
-
-android {
-    namespace = "st.slex.csplashscreen.core.photos"
 }

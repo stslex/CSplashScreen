@@ -6,6 +6,8 @@ import org.gradle.kotlin.dsl.getByType
 
 object AppExt {
 
+    const val APP_PREFIX = "st.slex.csplashscreen"
+
     /**
      * Get the version catalog for the project
      * */

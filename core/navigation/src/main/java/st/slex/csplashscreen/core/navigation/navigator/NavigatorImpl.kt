@@ -1,10 +1,10 @@
 package st.slex.csplashscreen.core.navigation.navigator
 
-import androidx.navigation.NavHostController
 import st.slex.csplashscreen.core.core.Logger
+import st.slex.csplashscreen.core.navigation.navigator.holder.NavigatorHolder
 
 class NavigatorImpl(
-    private val navHostController: NavHostController
+    private val holder: NavigatorHolder
 ) : Navigator {
 
     override fun invoke(target: NavigationTarget) {
@@ -16,13 +16,13 @@ class NavigatorImpl(
     }
 
     private fun popBackStack() {
-        navHostController.popBackStack()
+        holder.navigator.popBackStack()
     }
 
     private fun navigateScreen(target: NavigationTarget.Screen) {
-        val currentRoute = navHostController.currentDestination?.route ?: return
+        val currentRoute = holder.navigator.currentDestination?.route ?: return
         try {
-            navHostController.navigate(target.screen) {
+            holder.navigator.navigate(target.screen) {
                 if (target.options.isSingleTop.not()) return@navigate
 
                 popUpTo(currentRoute) {

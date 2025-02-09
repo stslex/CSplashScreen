@@ -1,5 +1,3 @@
 plugins {
-    id("csplashscreen.android.library")
+    alias(libs.plugins.convention.library)
 }
-
-android.namespace = "st.slex.csplashscreen.core.core"

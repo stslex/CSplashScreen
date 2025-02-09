@@ -1,7 +1,7 @@
 plugins {
-    id("csplashscreen.android.library")
-    id("csplashscreen.android.library.compose") // TODO put in ui layer (need models refactoring)
-    kotlin("plugin.serialization")
+    alias(libs.plugins.convention.library)
+    alias(libs.plugins.convention.library.compose) // TODO put in ui layer (need models refactoring)
+    alias(libs.plugins.serialization)
 }
 
 dependencies {
@@ -10,5 +10,3 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.okhttp)
 }
-
-android.namespace = "st.slex.csplashscreen.core.network"

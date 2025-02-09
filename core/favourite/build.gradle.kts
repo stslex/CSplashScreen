@@ -1,6 +1,7 @@
 plugins {
-    id("csplashscreen.android.library")
+    alias(libs.plugins.convention.library)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.serialization)
 }
 
 dependencies {
@@ -9,7 +10,5 @@ dependencies {
     implementation(project(":core:photos"))
 
     implementation(libs.androidx.paging.runtime)
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.kotlinx.serialization.json)
 }
-
-android.namespace = "st.slex.csplashscreen.core.favourite"
