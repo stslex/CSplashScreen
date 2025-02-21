@@ -26,6 +26,7 @@ include(":core:navigation")
 include(":core:network")
 include(":core:photos")
 include(":core:collection")
+include(":core:image")
 
 include(":feature:home")
 include(":feature:collection")

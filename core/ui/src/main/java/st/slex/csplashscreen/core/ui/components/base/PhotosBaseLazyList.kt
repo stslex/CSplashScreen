@@ -32,7 +32,6 @@ fun <T : Any> PhotosBaseLazyList(
             vertical = Dimen.large
         ),
     ) {
-
         items(
             count = items.itemCount,
             key = items.itemKey(key),

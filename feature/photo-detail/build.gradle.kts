@@ -10,4 +10,5 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:photos"))
     implementation(project(":core:favourite"))
+    implementation(project(":core:image"))
 }
