@@ -5,12 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
-import androidx.navigation.compose.rememberNavController
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.getKoin
 import st.slex.csplashscreen.core.ui.theme.AppTheme
 import st.slex.csplashscreen.navigation.BaseNavigationHolder
-import st.slex.csplashscreen.ui.components.NavHostControllerHolder
+import st.slex.csplashscreen.ui.components.NavHostControllerHolder.Companion.rememberNavHostControllerHolder
 
 class MainActivity : ComponentActivity() {
 
@@ -20,7 +19,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             AppTheme {
-                val navHostControllerHolder = NavHostControllerHolder(rememberNavController())
+                val navHostControllerHolder = rememberNavHostControllerHolder()
                 getKoin().get<BaseNavigationHolder>().setNavController(navHostControllerHolder)
 
                 val viewModel = koinViewModel<InitialAppViewModel>()
