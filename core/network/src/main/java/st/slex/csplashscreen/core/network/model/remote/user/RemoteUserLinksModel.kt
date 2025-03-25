@@ -10,6 +10,6 @@ data class RemoteUserLinksModel(
     @SerialName("photos") val photos: String,
     @SerialName("likes") val likes: String,
     @SerialName("portfolio") val portfolio: String,
-    @SerialName("following") val following: String,
-    @SerialName("followers") val followers: String
+    @SerialName("following") val following: String?,
+    @SerialName("followers") val followers: String?
 )

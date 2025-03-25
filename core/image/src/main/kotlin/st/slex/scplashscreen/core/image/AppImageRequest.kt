@@ -6,12 +6,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
+import st.slex.csplashscreen.core.core.Logger
 
 object AppImageRequest {
 
     @Composable
     fun createImageRequestBuilder(url: String): ImageRequest.Builder {
         val context = LocalContext.current
+        Logger.tag("AppImageRequest").d("createImageRequestBuilder: $url")
         return remember {
             createImageRequestBuilder(context, url)
                 .placeholderMemoryCacheKey(url)

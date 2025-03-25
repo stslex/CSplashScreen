@@ -35,21 +35,27 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
     initialState: S
 ) : ViewModel() {
 
+    private val logger = Logger.tag(this::class.simpleName ?: "Store")
+
     private val _state: MutableStateFlow<S> = MutableStateFlow(initialState)
     val state: StateFlow<S>
         get() = _state.asStateFlow()
 
     val event: MutableSharedFlow<E> = MutableSharedFlow()
 
-    abstract fun sendAction(action: A)
+    open fun sendAction(action: A) {
+        i("action: $action")
+    }
 
     fun sendEvent(event: E) {
+        i("event: $event")
         viewModelScope.launch(appDispatcher.default) {
             this@Store.event.emit(event)
         }
     }
 
     protected fun navigate(event: N) {
+        i("navigate: $event")
         router(event)
     }
 
@@ -106,4 +112,16 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
         }
         .onEach(each)
         .launchIn(viewModelScope)
+
+    protected fun d(msg: String) {
+        logger.d(msg)
+    }
+
+    protected fun e(throwable: Throwable, msg: String? = null) {
+        logger.e(throwable, msg)
+    }
+
+    protected fun i(msg: String, throwable: Throwable? = null) {
+        logger.i(msg, throwable)
+    }
 }

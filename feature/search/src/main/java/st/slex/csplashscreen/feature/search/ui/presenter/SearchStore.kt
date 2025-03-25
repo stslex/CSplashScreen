@@ -47,6 +47,7 @@ class SearchStore(
             .state()
 
     override fun sendAction(action: Action) {
+        super.sendAction(action)
         when (action) {
             is Action.Init -> actionInit(action)
             is Action.ClearHistory -> actionClearHistory()

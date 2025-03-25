@@ -34,6 +34,14 @@ fun NavGraphBuilder.homeGraph(
             // TODO NOT IMPLEMENTED YET
         }
 
+        LaunchedEffect(photos.loadState) {
+            store.sendAction(Action.PhotosPagingState(photos.loadState))
+        }
+
+        LaunchedEffect(photos.loadState) {
+            store.sendAction(Action.CollectionsPagingState(photos.loadState))
+        }
+
         MainScreen(
             modifier = modifier,
             navToProfile = remember {
