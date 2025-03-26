@@ -13,7 +13,6 @@ import st.slex.csplashscreen.core.navigation.Screen
 import st.slex.csplashscreen.core.navigation.Screen.Favourite
 import st.slex.csplashscreen.core.navigation.Screen.Home
 import st.slex.csplashscreen.core.navigation.Screen.SearchPhotosScreen
-import kotlin.reflect.KClass
 
 enum class BottomAppBarResource(
     val unselectedIcon: ImageVector,
@@ -44,16 +43,12 @@ enum class BottomAppBarResource(
 
     companion object {
 
-        fun isAppbar(screen: Any?): Boolean = entries.any { it.screen == screen }
+        fun Screen?.isAppbar(): Boolean = entries.any { it.screen == this }
 
-        fun getByRoute(route: String): Screen? = when {
-            Home::class.checkScreen(route) -> HOME
-            SearchPhotosScreen::class.checkScreen(route) -> SEARCH
-            Favourite::class.checkScreen(route) -> FAVOURITE
-            else -> null
+        fun getByRoute(
+            route: String
+        ): Screen? = BottomAppBarResource.entries.find { entry ->
+            route.startsWith(checkNotNull(entry.screen.javaClass.canonicalName))
         }?.screen
-
-        private fun <T : Screen> KClass<T>.checkScreen(route: String): Boolean =
-            route.contains(simpleName.orEmpty())
     }
 }

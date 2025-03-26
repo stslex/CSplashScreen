@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.feature.home.ui.presenter
 
 import androidx.compose.runtime.Stable
+import androidx.paging.CombinedLoadStates
 import androidx.paging.PagingData
 import st.slex.csplashscreen.core.collection.ui.model.CollectionModel
 import st.slex.csplashscreen.core.photos.ui.model.PhotoModel
@@ -62,6 +63,16 @@ interface HomeStoreComponent : StoreComponent {
         @Stable
         data class OnImageClick(
             val uuid: String
+        ) : Action
+
+        @Stable
+        data class PhotosPagingState(
+            val combinedLoadStates: CombinedLoadStates
+        ) : Action
+
+        @Stable
+        data class CollectionsPagingState(
+            val combinedLoadStates: CombinedLoadStates
         ) : Action
     }
 }

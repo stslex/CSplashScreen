@@ -1,6 +1,7 @@
 package st.slex.csplashscreen.feature.home.domain
 
 import st.slex.csplashscreen.core.collection.data.CollectionsRepository
+import st.slex.csplashscreen.core.core.Logger
 import st.slex.csplashscreen.core.network.model.mapToDomain
 import st.slex.csplashscreen.core.network.model.toDomain
 import st.slex.csplashscreen.core.network.model.ui.CollectionDomainModel
@@ -31,4 +32,7 @@ class HomeInteractorImpl(
             pageSize = pageSize
         )
         .toDomain()
+        .also {
+            Logger.tag("DEBUG_HOME").d("getAllPhotos: $it")
+        }
 }

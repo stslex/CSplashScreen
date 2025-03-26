@@ -8,6 +8,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,7 +17,7 @@ import st.slex.csplashscreen.core.navigation.Screen
 @Composable
 fun MainBottomAppBar(
     onBottomAppBarClick: (Screen) -> Unit,
-    currentDestination: Screen?
+    currentDestination: State<Screen?>
 ) {
     NavigationBar(
         modifier = Modifier
@@ -26,7 +27,7 @@ fun MainBottomAppBar(
         BottomAppBarResource
             .entries
             .forEach { item ->
-                val isSelected = currentDestination == item.screen
+                val isSelected = currentDestination.value == item.screen
                 BottomAppBarItem(
                     item = item,
                     isSelected = isSelected,
