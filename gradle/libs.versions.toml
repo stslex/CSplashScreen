@@ -5,8 +5,8 @@ androidGradlePlugin = "8.8.1"
 androidTools = "31.8.1"
 
 minSdk = "28"
-targetSdk = "35"
-compileSdk = "35"
+targetSdk = "36"
+compileSdk = "36"
 versionName = "1.77"
 versionCode = "24"
 
