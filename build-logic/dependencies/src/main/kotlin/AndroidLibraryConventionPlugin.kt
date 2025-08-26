@@ -1,4 +1,4 @@
-import AppExt.findPluginId
+import AppExt.findVersionInt
 import AppExt.libs
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
@@ -23,7 +23,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.apply {
-                    targetSdk = 34
+                    targetSdk = libs.findVersionInt("targetSdk")
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     consumerProguardFiles("consumer-rules.pro")
                     buildTypes {
